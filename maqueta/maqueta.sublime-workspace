@@ -1,0 +1,315 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"ready",
+				"ready	document.ready - $(function()"
+			],
+			[
+				"read",
+				"ready	jQuery(document).ready"
+			],
+			[
+				"remov",
+				"removeClass	.removeClass"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 180.0,
+		"selected_items":
+		[
+			[
+				"add",
+				"Git: Add Current File"
+			],
+			[
+				"git: dif",
+				"Git: Diff Current File"
+			],
+			[
+				"git diff",
+				"Git: Diff Staged"
+			],
+			[
+				"git: add",
+				"Git: Add Current File"
+			],
+			[
+				"diff",
+				"Git: Diff Staged"
+			],
+			[
+				"git:add",
+				"Git: Add Current File"
+			],
+			[
+				"git:commit",
+				"Git: Commit"
+			],
+			[
+				"git:comma",
+				"Git: Custom Command"
+			],
+			[
+				"git:",
+				"Git: Custom Command"
+			],
+			[
+				"git:ad",
+				"Git: Add Current File"
+			],
+			[
+				"git:stat",
+				"Git: Status"
+			],
+			[
+				"git:diff",
+				"Git: Diff All"
+			],
+			[
+				"git:dif",
+				"Git: Diff Current File"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"isntal",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"Pac",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ins",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 575.0
+	},
+	"console":
+	{
+		"height": 139.0,
+		"history":
+		[
+			"sublime.log_input(False) ",
+			"sublime.log_input(True) ",
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/media/120GB/practicas_empresa/rollcard/app/views/user/login.php",
+		"/media/120GB/practicas_empresa/rollcard/.git/config",
+		"/media/120GB/practicas_empresa/rollcard/www/js/login.js",
+		"/media/120GB/practicas_empresa/rollcard/app/views/template.php",
+		"/media/120GB/practicas_empresa/rollcard/app/views/card/rcv.php",
+		"/media/120GB/practicas_empresa/rollcard/app/classes/Controller/User.php",
+		"/media/120GB/practicas_empresa/rollcard/www/less/style.less",
+		"/media/120GB/practicas_empresa/rollcard/www/less/user.less",
+		"/media/120GB/practicas_empresa/rollcard/www/js/card_receive.js",
+		"/media/120GB/practicas_empresa/rollcard/app/bootstrap.php",
+		"/home/xokas/.config/sublime-text-3/Packages/LESS/README.md",
+		"/media/120GB/practicas_empresa/rollcard/www/less/mycards.less",
+		"/media/120GB/practicas_empresa/rollcard/app/i18n/en.php",
+		"/media/120GB/practicas_empresa/rollcard/app/i18n/es.php",
+		"/media/120GB/practicas_empresa/rollcard/mobile/www/js/services.js",
+		"/media/120GB/practicas_empresa/rollcard/app/views/home/about.php",
+		"/media/120GB/practicas_empresa/rollcard/rollcard.sublime-project",
+		"/etc/fstab",
+		"/home/xokas/.cordova/lib/android/cordova/3.4.0/bin/lib/check_reqs.js",
+		"/home/xokas/.config/sublime-text-3/Packages/User/Side Bar.sublime-settings",
+		"/home/xokas/.config/sublime-text-3/Packages/Default/Default (Linux).sublime-keymap",
+		"/home/xokas/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap"
+	],
+	"find":
+	{
+		"height": 25.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"login",
+			"less",
+			"env",
+			"/user/login.json",
+			"id=\"error-message\"",
+			"error-message",
+			"card_receive.js",
+			"#login-btn",
+			"$.ajax('/user/login.json'",
+			"Route",
+			"'param'",
+			"'param'=>",
+			"'param' => 'html'",
+			"/user/login.json",
+			"$.ajax",
+			"format",
+			"id=\"terms",
+			"#terms",
+			"home.js",
+			"home.jse",
+			"js/",
+			"home",
+			"_login",
+			"js_lib",
+			"$js_lib",
+			"js_lib",
+			"ajax",
+			"$(",
+			"$",
+			"$(",
+			"$",
+			"services.js",
+			"script.js",
+			"user:login",
+			"`"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 25.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.git":
+	{
+		"height": 112.0
+	},
+	"output.sftp":
+	{
+		"height": 0.0
+	},
+	"project": "maqueta.sublime-project",
+	"replace":
+	{
+		"height": 46.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"",
+				"Package Control Messages"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 335.0,
+	"status_bar_visible": false,
+	"template_settings":
+	{
+	}
+}
