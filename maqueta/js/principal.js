@@ -1,10 +1,8 @@
-window.onload = function() {
-    var $elemento = $("#cont-basico").html();
-    for (i = 0; i < 2; i++) {
-        $($elemento).appendTo("#cont-basico");
-    }
-};
 $(document).ready(function() {
+    var elemento = $("#cont-basico").html();
+    for (i = 0; i < 2; i++) {
+        $(elemento).appendTo("#cont-basico");
+    }
     $(function() {
         $('#actividadModal').modal({
             keyboard: true,
