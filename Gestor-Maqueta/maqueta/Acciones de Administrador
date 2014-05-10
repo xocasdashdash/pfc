@@ -1,0 +1,12 @@
+-- Acciones de administrador
+- Listar cursos pendientes de aprobar:
+	- Saca el nombre del organizador
+	- Saca el nombre del curso
+	- Correo de contacto del organizador
+	- Enlace a documento pdf que se pueda presentar a la comisión de docencia
+	- Esto no debería ser nunca más de 10-15 cursos asi que se muestra en una sola página
+- Listar cursos aprobados:
+	- Permite especificar dos fechas para realizar busqueda
+- Administrar usuarios
+	- Especificando el correo de un usuario permite agregarle a la lista de secretarias, de creadores o de administradores
+	- Lista usuarios (secretarias, creadores y administradores) 
