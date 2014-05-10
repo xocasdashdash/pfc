@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Description of Application
  *
- * @ORM\Table()
+ * @ORM\Table(name="ApplicationForm")
  * @ORM\Entity()
  */
 class ApplicationForm {

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * BasicRegistration
  *
- * @ORM\Table()
+ * @ORM\Table(name="BasicRegistration")
  * @ORM\Entity
  */
 class BasicRegistration

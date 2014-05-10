@@ -7,8 +7,8 @@ use UAH\GestorActividadesBundle\Entity\Degree as Degree;
 /**
  * Activity
  *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="UAH\GestorActividadesBundle\Entity\ActivityRepository")
+ * @ORM\Table(name="Activity")
+ * @ORM\Entity()
  */
 class Activity
 {

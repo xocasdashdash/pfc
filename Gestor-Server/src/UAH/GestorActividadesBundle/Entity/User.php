@@ -3,11 +3,11 @@
 namespace UAH\GestorActividadesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User;
+use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * User
  *
- * @ORM\Table()
+ * @ORM\Table(name="User")
  * @ORM\Entity
  */
 class User implements UserInterface
@@ -70,8 +70,10 @@ class User implements UserInterface
      */
     private $uahName;
     /**
-     * @var 
+     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
+     * @ORM\JoinTable(name="User_Roles")
      */
+    private $roles;
     /**
      * Get id
      *
@@ -258,5 +260,35 @@ class User implements UserInterface
     public function getUahName()
     {
         return $this->uahName;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add roles
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Role $roles
+     * @return User
+     */
+    public function addRole(\UAH\GestorActividadesBundle\Entity\Role $roles)
+    {
+        $this->roles[] = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Remove roles
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Role $roles
+     */
+    public function removeRole(\UAH\GestorActividadesBundle\Entity\Role $roles)
+    {
+        $this->roles->removeElement($roles);
     }
 }

@@ -15,3 +15,4 @@ app/config/parameters.yml
 # Composer
 composer.phar
 /nbproject/private/
+/Gestor-Server/nbproject/private/
