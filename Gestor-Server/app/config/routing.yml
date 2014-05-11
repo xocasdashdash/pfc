@@ -1,0 +1,3 @@
+UAHGestorActividadesBundle:
+    resource: "@UAHGestorActividadesBundle/Resources/config/routing.yml"
+    
