@@ -16,3 +16,4 @@ app/config/parameters.yml
 composer.phar
 /nbproject/private/
 /Gestor-Server/nbproject/private/
+*composer.lock
