@@ -1,1 +1,89 @@
-Hello {{ name }}!
+
+{% extends '::frontend.html.twig' %}
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/index.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row" id="cont-basico">
+            {% for i in 0..5 %}
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h3>IV Jornadas de Ciencia y Tecnología Vodafone
+                            </h3>
+                            <div class="abstract-actividad ocultado-vertical">
+                                Ejemplo1Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sollicitudin tincidunt nisl, id tempus orci viverra gravida. Curabitur ante lacus, varius at turpis a, placerat gravida neque. Aliquam a quam eget nunc interdum commodo et id massa. Cras sollicitudin bibendum purus eu vestibulum. Nullam commodo vulputate tempus. Integer et egestas justo...
+                            </div>
+                            <a class="leer-mas" href="#" data-toggle="modal" data-target="#actividadModalPrincipal">Leer mas</a>
+                        </div>
+                        <div class="col-md-4 center-block collapse">
+                            <h3>02/03/2014</h3>
+                            <a href="#" class="thumbnail">
+                                <img data-src="holder.js/120x160" alt="120x160" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTYwIj48cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE2MCIgZmlsbD0iI2VlZSI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjYwIiB5PSI4MCIgc3R5bGU9ImZpbGw6I2FhYTtmb250LXdlaWdodDpib2xkO2ZvbnQtc2l6ZToxMnB4O2ZvbnQtZmFtaWx5OkFyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmO2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjEyMHgxNjA8L3RleHQ+PC9zdmc+" style="width: 120px; height: 160px;">
+                            </a>
+                            <button class="btn btn-default btn-primary center-block">
+                                <span class="glyphicon glyphicon-pencil"></span>Inscribete!</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h3>IV Jornadas de Herpetología básica
+                            </h3>
+                            <div class="abstract-actividad ocultado-vertical">
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+                            </div>
+                            <a class="leer-mas" href="#" data-toggle="modal" data-target="#actividadModalPrincipal">Leer mas</a> 
+                        </div>
+                        <div class="col-md-4 center-block collapse">
+                            <h3>02/03/2014</h3>
+                            <a href="#" class="thumbnail">
+                                <img data-src="holder.js/120x160" alt="120x160" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTYwIj48cmVjdCB3aWR0aD0iMTIwIiBoZWlnaHQ9IjE2MCIgZmlsbD0iI2VlZSI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjYwIiB5PSI4MCIgc3R5bGU9ImZpbGw6I2FhYTtmb250LXdlaWdodDpib2xkO2ZvbnQtc2l6ZToxMnB4O2ZvbnQtZmFtaWx5OkFyaWFsLEhlbHZldGljYSxzYW5zLXNlcmlmO2RvbWluYW50LWJhc2VsaW5lOmNlbnRyYWwiPjEyMHgxNjA8L3RleHQ+PC9zdmc+" style="width: 120px; height: 160px;">
+                            </a>
+                            <button class="btn btn-default btn-primary center-block">
+                                <span class="glyphicon glyphicon-pencil"></span>Inscribete!</button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+{% block modal %}
+    <div class="modal fade" id="actividadModalPrincipal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">$NOMBRE</h4>
+                </div>
+                <div class="row">
+                    <div class="modal-body" id="modalActividadCuerpo">
+                        <div class="col-lg-8">
+                            <div class="abstract-actividad">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sollicitudin tincidunt nisl, id tempus orci viverra gravida. Curabitur ante lacus, varius at turpis a, placerat gravida neque. Aliquam a quam eget nunc interdum commodo et id massa. Cras sollicitudin bibendum purus eu vestibulum. Nullam commodo vulputate tempus. Integer et egestas justo
+                            </div>
+                        </div>
+                        <div class="col-lg-4 center-block collapse">
+                            <h3>02/03/2014</h3>
+                            <a href="#" class="thumbnail">
+                                <img data-src="holder.js/120x160" alt="Imagen de prueba" src="..">
+                            </a>
+                            <button class="btn btn-default btn-primary center-block">
+                                <span class="glyphicon glyphicon-pencil"></span>Inscribete!</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

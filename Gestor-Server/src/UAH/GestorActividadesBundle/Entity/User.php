@@ -2,85 +2,95 @@
 
 namespace UAH\GestorActividadesBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\Security\Core\User\UserInterface;
+
 /**
  * User
  *
- * @ORM\Table(name="User")
- * @ORM\Entity
+ * @Table(name="User")
+ * @Entity
  */
-class User implements UserInterface
-{
+class User implements UserInterface {
+
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @Column(name="id", type="integer")
+     * @Id
+     * @GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     * @Column(name="email", type="string", length=255, nullable=true)
      */
     private $email;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="type", type="string", length=255, nullable=true)
+     * @Column(name="type", type="string", length=255, nullable=true)
      */
     private $type;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=255)
+     * @Column(name="password", type="string", length=255)
      */
     private $password;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="creationIp", type="string", length=255, nullable=true)
+     * @Column(name="creationIp", type="string", length=255, nullable=true)
      */
     private $creationIp;
-    
+
     /**
      * @var integer 
-     * @ORM\ManyToOne(targetEntity="Degree", inversedBy="id")
-     * @ORM\JoinColumn(name="degreeId", referencedColumnName="id", nullable=true)
+     * @ManyToOne(targetEntity="Degree", inversedBy="id")
+     * @JoinColumn(name="degreeId", referencedColumnName="id", nullable=true)
      */
     private $degreeId;
-    
+
     /**
      * @var string
      *
-     * @ORM\Column(name="uahName", type="string", length=255, nullable=true)
+     * @Column(name="uahName", type="string", length=255, nullable=true)
      */
     private $uahName;
+
     /**
-     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
-     * @ORM\JoinTable(name="User_Roles")
+     * @ManyToMany(targetEntity="Role", inversedBy="users")
+     * @JoinTable(name="User_Roles")
      */
     private $roles;
+
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -90,10 +100,9 @@ class User implements UserInterface
      * @param string $name
      * @return User
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
-    
+
         return $this;
     }
 
@@ -102,8 +111,7 @@ class User implements UserInterface
      *
      * @return string 
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
@@ -113,10 +121,9 @@ class User implements UserInterface
      * @param string $email
      * @return User
      */
-    public function setEmail($email)
-    {
+    public function setEmail($email) {
         $this->email = $email;
-    
+
         return $this;
     }
 
@@ -125,8 +132,7 @@ class User implements UserInterface
      *
      * @return string 
      */
-    public function getEmail()
-    {
+    public function getEmail() {
         return $this->email;
     }
 
@@ -136,10 +142,9 @@ class User implements UserInterface
      * @param integer $type
      * @return User
      */
-    public function setType($type)
-    {
+    public function setType($type) {
         $this->type = $type;
-    
+
         return $this;
     }
 
@@ -148,8 +153,7 @@ class User implements UserInterface
      *
      * @return integer 
      */
-    public function getType()
-    {
+    public function getType() {
         return $this->type;
     }
 
@@ -159,10 +163,9 @@ class User implements UserInterface
      * @param string $password
      * @return User
      */
-    public function setPassword($password)
-    {
+    public function setPassword($password) {
         $this->password = $password;
-    
+
         return $this;
     }
 
@@ -171,8 +174,7 @@ class User implements UserInterface
      *
      * @return string 
      */
-    public function getPassword()
-    {
+    public function getPassword() {
         return $this->password;
     }
 
@@ -182,10 +184,9 @@ class User implements UserInterface
      * @param string $creationIp
      * @return User
      */
-    public function setCreationIp($creationIp)
-    {
+    public function setCreationIp($creationIp) {
         $this->creationIp = $creationIp;
-    
+
         return $this;
     }
 
@@ -194,8 +195,7 @@ class User implements UserInterface
      *
      * @return string 
      */
-    public function getCreationIp()
-    {
+    public function getCreationIp() {
         return $this->creationIp;
     }
 
@@ -205,10 +205,9 @@ class User implements UserInterface
      * @param \UAH\GestorActividadesBundle\Entity\Degree $degreeId
      * @return User
      */
-    public function setDegreeId(\UAH\GestorActividadesBundle\Entity\Degree $degreeId)
-    {
+    public function setDegreeId(\UAH\GestorActividadesBundle\Entity\Degree $degreeId) {
         $this->degreeId = $degreeId;
-    
+
         return $this;
     }
 
@@ -217,8 +216,7 @@ class User implements UserInterface
      *
      * @return \UAH\GestorActividadesBundle\Entity\Degree 
      */
-    public function getDegreeId()
-    {
+    public function getDegreeId() {
         return $this->degreeId;
     }
 
@@ -238,17 +236,15 @@ class User implements UserInterface
         
     }
 
-
     /**
      * Set uahName
      *
      * @param string $uahName
      * @return User
      */
-    public function setUahName($uahName)
-    {
+    public function setUahName($uahName) {
         $this->uahName = $uahName;
-    
+
         return $this;
     }
 
@@ -257,15 +253,14 @@ class User implements UserInterface
      *
      * @return string 
      */
-    public function getUahName()
-    {
+    public function getUahName() {
         return $this->uahName;
     }
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -275,8 +270,7 @@ class User implements UserInterface
      * @param \UAH\GestorActividadesBundle\Entity\Role $roles
      * @return User
      */
-    public function addRole(\UAH\GestorActividadesBundle\Entity\Role $roles)
-    {
+    public function addRole(\UAH\GestorActividadesBundle\Entity\Role $roles) {
         $this->roles[] = $roles;
 
         return $this;
@@ -287,8 +281,8 @@ class User implements UserInterface
      *
      * @param \UAH\GestorActividadesBundle\Entity\Role $roles
      */
-    public function removeRole(\UAH\GestorActividadesBundle\Entity\Role $roles)
-    {
+    public function removeRole(\UAH\GestorActividadesBundle\Entity\Role $roles) {
         $this->roles->removeElement($roles);
     }
+
 }

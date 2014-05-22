@@ -2,66 +2,64 @@ uah_gestor_actividades_homepage:
     path:  /hello/{name}
     defaults: { _controller: UAHGestorActividadesBundle:Default:index }
 
-uah_index:
-    path:  /
-    defaults: { _controller: UAHGestorActividadesBundle:Default:index }
+#uah_index:
+#    path:  /
+#    defaults: { _controller: UAHGestorActividadesBundle:Default:index }
+#
+#uah_pagina: 
+#    path: /pag/{pagina}
+#    defaults: { _controller: UAHGestorActividadesBundle:Default:index, pagina:1}
+#    requirements:
+#        pagina: \d+           
 
-uah_pagina: 
-    path: /pag/{pagina}
-    defaults: { _controller: UAHGestorActividadesBundle:Default:index, pagina:1}
-    requirements:
-        pagina: \d+           
+#uah_perfil:
+#    path: /perfil
+#    defaults: {_controller: UAHGestorActividadesBundle:Perfil:index}
+#uah_perfil_edit:
+#    path: /perfil/edit
+#    defaults: {_controller: UAHGestorActividadesBundle:Perfil:edit}
 
-uah_perfil:
-    path: /perfil
-    defaults: {_controller: UAHGestorActividadesBundle:Perfil:index}
-uah_perfil_edit:
-    path: /perfil/edit
-    defaults: {_controller: UAHGestorActividadesBundle:Perfil:edit}
+#uah_justificante:
+#    path: /justificante
+#    defaults: {_controller: UAHGestorActividadesBundle:Justificante:index}
+#uah_justificante_show:
+#    path: /justificante/{id}
+#    defaults: {_controller: UAHGestorActividadesBundle:Justificante:show}
+#uah_justificante_create: 
+#    path: /justificante/create
+#    defaults: {_controller: UAHGestorActividadesBundle:Justificante:create}
+#uah_justificante_delete:
+#    path: /justificante/delete/{id}
+#    defaults: {_controller: UAHGestorActividadesBundle:Justificante:delete}
+#uah_justificante_hide:
+#    path: /justificante/hide/{id}
+#    defaults: {_controller: UAHGestorActividadesBundle:Justificante:hide}
 
+#uah_admin:
+#    path: /admin
+#    defaults: {_controller: UAHGestorActividadesBundle:Admin:index}
 
+#uah_secretaria:
+#    path: /secretaria
+#    defaults: {_controller: UAHGestorActividadesBundle:Secretaria:index}
+#uah_secretaria_check:
+#    path: /secretaria/check/{codigo}
+#    defaults: {_controller: UAHGestorActividadesBundle:Secretaria:check}
 
-uah_justificante:
-    path: /justificante
-    defaults: {_controller: UAHGestorActividadesBundle:Justificante:index}
-uah_justificante_show:
-    path: /justificante/{id}
-    defaults: {_controller: UAHGestorActividadesBundle:Justificante:show}
-uah_justificante_create: 
-    path: /justificante/create
-    defaults: {_controller: UAHGestorActividadesBundle:Justificante:create}
-uah_justificante_delete:
-    path: /justificante/delete/{id}
-    defaults: {_controller: UAHGestorActividadesBundle:Justificante:delete}
-uah_justificante_hide:
-    path: /justificante/hide/{id}
-    defaults: {_controller: UAHGestorActividadesBundle:Justificante:hide}
-
-uah_admin:
-    path: /admin
-    defaults: {_controller: UAHGestorActividadesBundle:Admin:index}
-
-uah_secretaria:
-    path: /secretaria
-    defaults: {_controller: UAHGestorActividadesBundle:Secretaria:index}
-uah_secretaria_check:
-    path: /secretaria/check/{codigo}
-    defaults: {_controller: UAHGestorActividadesBundle:Secretaria:check}
-
-uah_actividad_ver:
-    path: /actividad/{id}/{slug}
-    defaults: {_controller: UAHGestorActividadesBundle:Activity:show}
-    requirements:
-        id: \d+
-uah_actividad_crear: 
-    path: /actividad/create
-    defaults: {_controller: UAHGestorActividadesBundle:Activity:create}
-uah_actividad_editar:
-    path: /actividad/edit/{id}
-    defaults: {_controller: UAHGestorActividadesBundle:Activity:edit}
-uah_actividad_manage:
-    path: /actividad/manage/{id}
-    defaults: {_controller: UAHGestorActividadesBundle:Activity:manage}
-uah_actividad_enroll:
-    path: /actividad/enroll/{id}
-    defaults: {_controller: UAHGestorActividadesBundle:Activity:enroll}
+#uah_actividad_ver:
+#    path: /actividad/{id}/{slug}
+#    defaults: {_controller: UAHGestorActividadesBundle:Actividad:show}
+#    requirements:
+#        id: \d+
+#uah_actividad_crear: 
+#    path: /actividad/create
+#    defaults: {_controller: UAHGestorActividadesBundle:Actividad:create}
+#uah_actividad_editar:
+#    path: /actividad/edit/{id}
+#    defaults: {_controller: UAHGestorActividadesBundle:Actividad:edit}
+#uah_actividad_manage:
+#    path: /actividad/manage/{id}
+#    defaults: {_controller: UAHGestorActividadesBundle:Actividad:manage}
+#uah_actividad_enroll:
+#    path: /actividad/enroll/{id}
+#    defaults: {_controller: UAHGestorActividadesBundle:Actividad:enroll}

@@ -2,180 +2,195 @@
 
 namespace UAH\GestorActividadesBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\Entity;
+
 use UAH\GestorActividadesBundle\Entity\Degree as Degree;
 /**
  * Activity
  *
- * @ORM\Table(name="Activity")
- * @ORM\Entity()
+ * @Table(name="Activity")
+ * @Entity()
  */
 class Activity
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @Column(name="id", type="integer")
+     * @Id
+     * @GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=500)
+     * @Column(name="name", type="string", length=500)
      */
     private $name;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="englishName", type="string", length=500)
+     * @Column(name="englishName", type="string", length=500)
      */
     private $englishName;
     
     /**
      * @var \stdClass
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="id")
-     * @ORM\JoinColumn(name="organizer", referencedColumnName="id", nullable=false)
+     * @ManyToOne(targetEntity="User", inversedBy="id")
+     * @JoinColumn(name="organizer", referencedColumnName="id", nullable=false)
      */
     private $Organizer;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="numberOfECTSCreditsMin", type="float")
+     * @Column(name="numberOfECTSCreditsMin", type="float")
      */
     private $numberOfECTSCreditsMin;
     
     /**
      * @var float
      *
-     * @ORM\Column(name="numberOfECTSCreditsMax", type="float")
+     * @Column(name="numberOfECTSCreditsMax", type="float")
      */
     private $numberOfECTSCreditsMax;
     
     /**
      * @var float
      *
-     * @ORM\Column(name="numberOfCreditsMin", type="float")
+     * @Column(name="numberOfCreditsMin", type="float")
      */
     private $numberOfCreditsMin;
     
     /**
      * @var float
      *
-     * @ORM\Column(name="numberOfCreditsMax", type="float")
+     * @Column(name="numberOfCreditsMax", type="float")
      */
     private $numberOfCreditsMax;
     
     /**
      * @var boolean 
-     * @ORM\Column(name="isPublic", type="boolean")
+     * @Column(name="isPublic", type="boolean")
      * 
      */
     private $isPublic;
     /**
      * @var array
      *
-     * @ORM\Column(name="celebrationDates", type="json_array")
+     * @Column(name="celebrationDates", type="json_array")
      */
     private $celebrationDates;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="hasAdditionalWorkload", type="boolean")
+     * @Column(name="hasAdditionalWorkload", type="boolean")
      */
     private $hasAdditionalWorkload;
     
     /**
      * @var float
      *
-     * @ORM\Column(name="numberOfHours", type="float")
+     * @Column(name="numberOfHours", type="float")
      */
     private $numberOfHours;
     
     /**
-     * @ORM\ManyToMany(targetEntity="Degree")
-     * @ORM\JoinTable(name="Activity_Degree", 
-     *          joinColumns={@ORM\JoinColumn(name="activityId", referencedColumnName="id")},
-     *          inverseJoinColumns={@ORM\JoinColumn(name="degreeId", referencedColumnName="id")})
-     * @ORM\JoinTable(name="ActivityDegrees")
+     * @ManyToMany(targetEntity="Degree")
+     * @JoinTable(name="Activity_Degree", 
+     *          joinColumns={@JoinColumn(name="activityId", referencedColumnName="id")},
+     *          inverseJoinColumns={@JoinColumn(name="degreeId", referencedColumnName="id")})
+     * @JoinTable(name="ActivityDegrees")
      **/
     private $studentProfile;
     
     /**
      * @var string
      *
-     * @ORM\Column(name="assistanceControl", type="string")
+     * @Column(name="assistanceControl", type="string")
      */ 
     private $assistanceControl;
     /**
      * @var date
      *
-     * @ORM\Column(name="publicityStartDate", type="date")
+     * @Column(name="publicityStartDate", type="date")
      */
     private $publicityStartDate;
     
     /**
      * @var boolean
      *
-     * @ORM\Column(name="registrationManagement", type="boolean")
+     * @Column(name="registrationManagement", type="boolean")
      */
     private $registrationManagement;
     /**
      * @var boolean
      *
-     * @ORM\Column(name="extraInformationFile", type="blob")
+     * @Column(name="extraInformationFile", type="blob")
      */
     private $extraInformationFile;
     /**
      * @var string
      *
-     * @ORM\Column(name="url", type="string")
+     * @Column(name="url", type="string")
      */
     private $url;
     /**
      * @var string
      *
-     * @ORM\Column(name="slug", type="string")
+     * @Column(name="slug", type="string")
      */
     private $slug;
     /**
      * @var integer
      *
-     * @ORM\Column(name="numberOfPlacesOffered", type="integer")
+     * @Column(name="numberOfPlacesOffered", type="integer")
      */
     private $numberOfPlacesOffered;
     /**
      * @var integer
      *
-     * @ORM\Column(name="numberOfPlacesOccupied", type="integer")
+     * @Column(name="numberOfPlacesOccupied", type="integer")
      */
     private $numberOfPlacesOccupied;
     /**
      * @var boolean
      *
-     * @ORM\Column(name="approvedByComitee", type="boolean")
+     * @Column(name="approvedByComitee", type="boolean")
      */
     private $approvedByComitee;
     /**
      * @var boolean
      *
-     * @ORM\Column(name="isActive", type="boolean")
+     * @Column(name="isActive", type="boolean")
      */
     private $isActive;
     
     /**
      * @var float
      *
-     * @ORM\Column(name="cost", type="float")
+     * @Column(name="cost", type="float")
      */
     private $cost;
     
     
+    /**
+     * @var status
+     * 
+     * @Column(name="status", type="string")
+     */
+    private $status;
     
     /**
      * Constructor

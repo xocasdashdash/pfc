@@ -1,3 +1,5 @@
-UAHGestorActividadesBundle:
+UAHGestorActividadesBundle_yml:
     resource: "@UAHGestorActividadesBundle/Resources/config/routing.yml"
-    
+UAHGestorActividadesBundle_annotation:
+    resource: "@UAHGestorActividadesBundle/Controller"
+    type: annotation

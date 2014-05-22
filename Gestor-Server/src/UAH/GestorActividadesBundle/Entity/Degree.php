@@ -2,43 +2,51 @@
 
 namespace UAH\GestorActividadesBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\Entity;
 
 /**
  * Degree
  *
- * @ORM\Table(name="Degree")
- * @ORM\Entity
+ * @Table(name="Degree")
+ * @Entity
  */
-class Degree
-{
+class Degree {
+
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @Column(name="id", type="integer")
+     * @Id
+     * @GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
      * @var array
      *
-     * @ORM\Column(name="knowledgeArea", type="string")
+     * @Column(name="knowledgeArea", type="string")
      */
     private $knowledgeArea;
-    
+
     /**
      * @var string
      *
-     * @ORM\Column(name="academicCode", type="string", length=255)
+     * @Column(name="academicCode", type="string", length=255)
      */
     private $academicCode;
 
@@ -47,8 +55,7 @@ class Degree
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -58,10 +65,9 @@ class Degree
      * @param string $name
      * @return Degree
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
-    
+
         return $this;
     }
 
@@ -70,8 +76,7 @@ class Degree
      *
      * @return string 
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
@@ -81,10 +86,9 @@ class Degree
      * @param array $knowledgeArea
      * @return Degree
      */
-    public function setKnowledgeArea($knowledgeArea)
-    {
+    public function setKnowledgeArea($knowledgeArea) {
         $this->knowledgeArea = $knowledgeArea;
-    
+
         return $this;
     }
 
@@ -93,8 +97,7 @@ class Degree
      *
      * @return array 
      */
-    public function getKnowledgeArea()
-    {
+    public function getKnowledgeArea() {
         return $this->knowledgeArea;
     }
 
@@ -104,10 +107,9 @@ class Degree
      * @param string $academicCode
      * @return Degree
      */
-    public function setAcademicCode($academicCode)
-    {
+    public function setAcademicCode($academicCode) {
         $this->academicCode = $academicCode;
-    
+
         return $this;
     }
 
@@ -116,8 +118,8 @@ class Degree
      *
      * @return string 
      */
-    public function getAcademicCode()
-    {
+    public function getAcademicCode() {
         return $this->academicCode;
     }
+
 }

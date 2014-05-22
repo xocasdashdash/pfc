@@ -26,6 +26,6 @@ monolog:
 
 assetic:
     use_controller: true
-
+bazinga_faker: ~
 #swiftmailer:
 #    delivery_address: me@example.com

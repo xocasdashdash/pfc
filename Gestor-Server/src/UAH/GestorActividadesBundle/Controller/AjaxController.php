@@ -3,6 +3,7 @@
 namespace UAH\GestorActividadesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class AjaxController extends Controller
 {
