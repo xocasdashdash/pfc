@@ -4,19 +4,24 @@
         <meta charset="UTF-8" />
         <title>{% block title %}{% endblock %}</title>
         {% block stylesheets %}
-            <link href="{{ asset('vendor/normalize-css/normalize.css') }}" rel="stylesheet" type="text/css" />
-            <link href="{{ asset('vendor/bootstrap/dist/css/bootstrap.css') }}" rel="stylesheet" type="text/css" />
-
+            {% stylesheets
+             '@UAHGestorActividadesBundle/Resources/public/vendor/normalize-css/normalize.css'
+             'css/bootstrap.css' filter='cssrewrite'%}
+            <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
+            {% endstylesheets %}
+            
         {% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
     {% block body %}{% endblock %}
     {% block javascripts %}
-        {% javascripts '@UAHGestorActividadesBundle/Resources/public/vendor/jquery/jquery.js',
-                        '@UAHGestorActividadesBundle/Resources/public/vendor/holderjs/holder.js'%}
+        {% javascripts 
+            'js/jquery.js'
+            'js/bootstrap.js' 
+            '@UAHGestorActividadesBundle/Resources/public/vendor/holderjs/holder.js'%}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
     {% endblock %}
 </body>
-</html>
+</html>b
