@@ -15,6 +15,7 @@ use UAH\GestorActividadesBundle\Entity\TuibPersonaUser as TuibPersonaUser;
 use UAH\GestorActividadesBundle\DataFixtures\FakerProviders\UAHUserProvider as UAHUserProvider;
 use UAH\GestorActividadesBundle\DataFixtures\FakerProviders\UAHDegreeProvider as UAHDegreeProvider;
 use UAH\GestorActividadesBundle\DataFixtures\FakerProviders\UAHActivityProvider as UAHActivityProvider;
+use UAH\GestorActividadesBundle\Entity\User as User;
 //use \Faker\Provider;
 use \Faker\Factory as FakerFactory;
 
@@ -89,7 +90,11 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
             'englishName' => function() use($faker) {
         return $faker->sentence(10, true);
     }, 'celebrationDates' => function() use($faker) {
-        return $faker->date('d-m-Y', '31/12/2014');
+        $fechas = array();
+        foreach (range(0, rand(1, 3)) as $i){
+            $fechas[] = $faker->dateTimeBetween('-1 year', '+1 year');//d-m-Y', '31/12/2014');
+        }
+        return json_encode($fechas);        
     }, 'url' => function() use($faker) {
         return $faker->url;
     }, 'slug' => function() use($faker) {
@@ -116,12 +121,30 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
     }, 'numberOfHours' => function() use($faker) {
         return $faker->randomFloat(1, 0, 30);
     }, 'description' => function() use($faker){
-        return $faker->realText(500,4);
+        return $faker->realText(1000,4);
     }, 'image' => function() use($faker){
-        return $faker->image;
+        $image_route = $faker->image("web/upload/images",240,320);
+        $image_route =  explode("web/",$image_route);
+        $image_route = $image_route[1];
+        return $image_route;
+    }, 'publicityStartDate' => function() use($faker){
+        return $faker->dateTimeBetween('-1 month', '+1 month');
     }
         ));
         $populator->execute();
+        $userAdmin = new User();
+        $userAdmin->setName('Joaquin');
+        $userAdmin->setApellido1('Fernandez');
+        $userAdmin->setApellido2('Campo');
+        $userAdmin->setType('admin');
+        $userAdmin->setEmail("jfcampo@gmail.com");
+        $userAdmin->setIdUsuldap("http://yo.rediris.es/soy/joaquin.fernandez@uah.es/");        
+        $em = $manager->getRepository('UAHGestorActividadesBundle:Degree');
+        //$objeto = ;
+        $userAdmin->setDegreeId($em->findAll()[array_rand($em->findAll())]);
+        //$userAdmin->setCreationIp("127.0.0.1");
+        $manager->persist($userAdmin);
+        $manager->flush();
     }
 
     /**

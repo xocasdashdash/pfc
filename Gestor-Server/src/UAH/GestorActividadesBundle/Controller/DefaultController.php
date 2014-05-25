@@ -13,7 +13,11 @@ class DefaultController extends Controller
      */
     public function indexAction($pagina)
     {
-        $name = 'pepe';
-        return $this->render('UAHGestorActividadesBundle:Default:index.html.twig', array('name' => $pagina));
+        
+        $em = $this->getDoctrine()->getManager();
+        $activities = $em->getRepository('UAHGestorActividadesBundle:Activity')->findBy(array(), array('publicityStartDate' => 'ASC'));
+        $num_actividades = count($activities);
+        
+        return $this->render('UAHGestorActividadesBundle:Default:index.html.twig', array('activities' => $activities));
     }
 }

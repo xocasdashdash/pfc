@@ -4,6 +4,7 @@
 /web/fonts/*
 /web/images/*
 /web/js/*
+/web/upload/*
 /app/bootstrap*
 /app/cache/*
 /app/logs/*
