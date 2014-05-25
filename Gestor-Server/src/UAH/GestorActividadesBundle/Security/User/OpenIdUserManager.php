@@ -35,18 +35,19 @@ class OpenIdUserManager extends UserManager
         $email = $matches[2].'@edu.uah.es';
         // put your user creation logic here
         // what follows is a typical example
-//        var_dump($identity);
+        
 //        if (false === isset($attributes['mail'])) {
 //            throw new \Exception('Wea need your e-mail address!'.$attributes);
 //        }
         // in this example, we fetch User entities by e-mail
         $user = $this->entityManager->getRepository('UAHGestorActividadesBundle:User')->findOneBy(array(
-            'email' =>$email
+            'id_usuldap' =>$identity
         ));
+        
         if (null === $user) {
             throw new BadCredentialsException('No corresponding user!');
         }
-
+        
         // we create an OpenIdIdentity for this User
         $openIdIdentity = new OpenIdIdentity();
         $openIdIdentity->setIdentity($identity);

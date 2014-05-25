@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping\Entity;
 /**
  * Degree
  *
- * @Table(name="Degree")
+ * @Table(name="UAH_GAT_Degree")
  * @Entity
  */
 class Degree {

@@ -22,8 +22,9 @@
         "sensio/generator-bundle": "2.3.*",
         "incenteev/composer-parameter-handler": "~2.0",
         "doctrine/doctrine-fixtures-bundle": "2.2.*",
-        "willdurand/faker-bundle": "@stable",
-        "braincrafted/bootstrap-bundle": "~2.0"
+        "fzaninotto/faker": "1.4.*@dev",
+        "braincrafted/bootstrap-bundle": "~2.0",
+        "fp/openid-bundle": "dev-master"        
     },
     "scripts": {
         "post-install-cmd": [

@@ -9,7 +9,7 @@ class TablePrefixSubscriber implements \Doctrine\Common\EventSubscriber
  
     public function __construct($prefix)
     {
-        $this->prefix = (string) $prefix;
+        $this->prefix = '';//(string) $prefix;
     }
  
     public function getSubscribedEvents()

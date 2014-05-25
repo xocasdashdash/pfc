@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\Role\RoleInterface;
 use UAH\GestorActividadesBundle\Entity\User as User;
 
 /**
- * @Table(name="Role",uniqueConstraints={@UniqueConstraint(name="UAH_GAT_UniqueRole_idx", columns={"role"})}, indexes={@Index(name="UAH_GAT_PK_ROLE",columns={"id"})})
+ * @Table(name="UAH_GAT_Role",uniqueConstraints={@UniqueConstraint(name="UAH_GAT_UniqueRole_idx", columns={"role"})}, indexes={@Index(name="UAH_GAT_PK_ROLE",columns={"id"})})
  * @Entity()
  */
 class Role implements RoleInterface {

@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping\Entity;
 /**
  * Enrollment
  *
- * @Table(name="Enrollment")
+ * @Table(name="UAH_GAT_Enrollment")
  * @Entity
  */
 class Enrollment {
@@ -281,4 +281,27 @@ class Enrollment {
         return $this->activity;
     }
 
+
+    /**
+     * Set applicationForm
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Application $applicationForm
+     * @return Enrollment
+     */
+    public function setApplicationForm(\UAH\GestorActividadesBundle\Entity\Application $applicationForm = null)
+    {
+        $this->applicationForm = $applicationForm;
+
+        return $this;
+    }
+
+    /**
+     * Get applicationForm
+     *
+     * @return \UAH\GestorActividadesBundle\Entity\Application 
+     */
+    public function getApplicationForm()
+    {
+        return $this->applicationForm;
+    }
 }

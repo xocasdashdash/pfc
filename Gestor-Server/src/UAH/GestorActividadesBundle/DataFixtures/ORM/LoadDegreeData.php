@@ -25,37 +25,36 @@ class LoadDegreeData extends AbstractFixture implements OrderedFixtureInterface 
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager) {
-        $degrees = array(
-            "Grado en A",
-            "Grado en B",
-            "Grado en C",
-        );
-        $indexes = range(0,25);
-        
-        $knowledge_areas = array(
-            "Ciencias",
-            "Ciencias de la Salud",
-            "Ciencias Sociales y Jurídicas",
-            "Ingeniería y Arquitectura",
-            "Artes y Humanidades"
-        );
-        var_dump($knowledge_areas);
-        shuffle($knowledge_areas);
-        foreach ($indexes as $index) {
-            $entity = new Degree();
-            $entity->setName("Grado en ".  chr(65+$index));
-            $entity->setAcademicCode("G".$index);
-            $entity->setKnowledgeArea($knowledge_areas[rand(0,count($knowledge_areas)-1)]);
-            $manager->persist($entity);            
-        }
-        $manager->flush();
+//        $degrees = array(
+//            "Grado en A",
+//            "Grado en B",
+//            "Grado en C",
+//        );
+//        $indexes = range(0,25);
+//        
+//        $knowledge_areas = array(
+//            "Ciencias",
+//            "Ciencias de la Salud",
+//            "Ciencias Sociales y Jurídicas",
+//            "Ingeniería y Arquitectura",
+//            "Artes y Humanidades"
+//        );
+//        shuffle($knowledge_areas);
+//        foreach ($indexes as $index) {
+//            $entity = new Degree();
+//            $entity->setName("Grado en ".  chr(65+$index));
+//            $entity->setAcademicCode("G".$index);
+//            $entity->setKnowledgeArea($knowledge_areas[rand(0,count($knowledge_areas)-1)]);
+//            $manager->persist($entity);            
+//        }
+//        $manager->flush();
     }
 
     /**
      * {@inheritDoc}
      */
     public function getOrder() {
-        return 1;
+        return 3;
     }
 
 }

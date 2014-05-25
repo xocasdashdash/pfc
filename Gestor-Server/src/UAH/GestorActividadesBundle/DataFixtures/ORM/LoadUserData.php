@@ -25,26 +25,26 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface {
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager) {
-        $userAdmin = new User();
-        $userAdmin->setName('admin');
-        $userAdmin->setPassword('test');
-        $userAdmin->setType('ADMIN');
-        $userAdmin->setEmail("jfcampo@gmail.com");
-        $em = $manager->getRepository('UAHGestorActividadesBundle:Degree');
-        
-        //$objeto = ;
-        $userAdmin->setDegreeId($em->findAll()[array_rand($em->findAll())]);
-        //$userAdmin->setCreationIp("127.0.0.1");
-
-        $manager->persist($userAdmin);
-        $manager->flush();
+//        $userAdmin = new User();
+//        $userAdmin->setName('admin');
+//        $userAdmin->setType('ADMIN');
+//        $userAdmin->setEmail("jfcampo@gmail.com");
+//        $userAdmin->setIdUsuldap("http://yo.rediris.es/soy/joaquin.fernandez@uah.es/");        
+//        $em = $manager->getRepository('UAHGestorActividadesBundle:Degree');
+//        
+//        //$objeto = ;
+//        $userAdmin->setDegreeId($em->findAll()[array_rand($em->findAll())]);
+//        //$userAdmin->setCreationIp("127.0.0.1");
+//
+//        $manager->persist($userAdmin);
+//        $manager->flush();
     }
 
     /**
      * {@inheritDoc}
      */
     public function getOrder() {
-        return 2;
+        return 4;
     }
 
 }

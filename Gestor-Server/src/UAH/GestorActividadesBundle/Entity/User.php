@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
@@ -16,7 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * User
  *
- * @Table(name="User")
+ * @Table(name="UAH_GAT_User")
  * @Entity
  */
 class User implements UserInterface {
@@ -54,13 +55,6 @@ class User implements UserInterface {
     /**
      * @var string
      *
-     * @Column(name="password", type="string", length=255)
-     */
-    private $password;
-
-    /**
-     * @var string
-     *
      * @Column(name="creationIp", type="string", length=255, nullable=true)
      */
     private $creationIp;
@@ -84,7 +78,27 @@ class User implements UserInterface {
      * @JoinTable(name="User_Roles")
      */
     private $roles;
+    
+    /**
+     * @var string Nombre de usuario interno de la UAH que saco de la conexión de REDIRIS
+     * @Column(name="ID_USULDAP", type="string", length= 255, nullable=false, 
+     * options={"comments"="ID que me devuelve REDIRIS al hacer la autentificación por OpenId. Lo uso para buscar el resto de la información en UXXIAC.TUIB_PERSONA"})
+     * @OneToOne(targetEntity="TuibPersonaUser",inversedBy="id_usuldap")
+     * @JoinColumn(name="id_usuldap", referencedColumnName="id_usuldap")
+     */
+    private $id_usuldap;
 
+    /**
+     * @var string Apellido 1
+     * @Column(name="apellido_1", type="string", length=255, nullable=true)
+     */
+    private $apellido_1;
+    
+    /**
+     * @var string Apellido 2
+     * @Column(name="apellido_2", type="string", length=255, nullable=true)
+     */
+    private $apellido_2;
     /**
      * Get id
      *
@@ -155,27 +169,6 @@ class User implements UserInterface {
      */
     public function getType() {
         return $this->type;
-    }
-
-    /**
-     * Set password
-     *
-     * @param string $password
-     * @return User
-     */
-    public function setPassword($password) {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Get password
-     *
-     * @return string 
-     */
-    public function getPassword() {
-        return $this->password;
     }
 
     /**
@@ -285,4 +278,78 @@ class User implements UserInterface {
         $this->roles->removeElement($roles);
     }
 
+
+    /**
+     * Set id_usuldap
+     *
+     * @param string $idUsuldap
+     * @return User
+     */
+    public function setIdUsuldap($idUsuldap)
+    {
+        $this->id_usuldap = $idUsuldap;
+
+        return $this;
+    }
+
+    /**
+     * Get id_usuldap
+     *
+     * @return string 
+     */
+    public function getIdUsuldap()
+    {
+        return $this->id_usuldap;
+    }
+
+    public function getPassword() {
+        
+    }
+
+
+    /**
+     * Set apellido_1
+     *
+     * @param string $apellido1
+     * @return User
+     */
+    public function setApellido1($apellido1)
+    {
+        $this->apellido_1 = $apellido1;
+
+        return $this;
+    }
+
+    /**
+     * Get apellido_1
+     *
+     * @return string 
+     */
+    public function getApellido1()
+    {
+        return $this->apellido_1;
+    }
+
+    /**
+     * Set apellido_2
+     *
+     * @param string $apellido2
+     * @return User
+     */
+    public function setApellido2($apellido2)
+    {
+        $this->apellido_2 = $apellido2;
+
+        return $this;
+    }
+
+    /**
+     * Get apellido_2
+     *
+     * @return string 
+     */
+    public function getApellido2()
+    {
+        return $this->apellido_2;
+    }
 }

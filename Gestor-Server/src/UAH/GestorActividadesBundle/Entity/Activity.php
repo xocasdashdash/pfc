@@ -16,7 +16,7 @@ use UAH\GestorActividadesBundle\Entity\Degree as Degree;
 /**
  * Activity
  *
- * @Table(name="Activity")
+ * @Table(name="UAH_GAT_Activity")
  * @Entity()
  */
 class Activity
@@ -137,7 +137,7 @@ class Activity
     /**
      * @var boolean
      *
-     * @Column(name="extraInformationFile", type="blob")
+     * @Column(name="extraInformationFile", type="blob",nullable=true)
      */
     private $extraInformationFile;
     /**
@@ -191,6 +191,21 @@ class Activity
      * @Column(name="status", type="string")
      */
     private $status;
+    
+    /**
+     * @var status
+     * 
+     * @Column(name="description", type="text")
+     */
+    private $description;
+    
+    /**
+     * @var status
+     * 
+     * @Column(name="image", type="string")
+     */
+    private $image;
+    
     
     /**
      * Constructor
@@ -770,5 +785,28 @@ class Activity
     public function getIsPublic()
     {
         return $this->isPublic;
+    }
+
+    /**
+     * Set status
+     *
+     * @param string $status
+     * @return Activity
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return string 
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 }

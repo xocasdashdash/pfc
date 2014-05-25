@@ -26,6 +26,12 @@ monolog:
 
 assetic:
     use_controller: true
-bazinga_faker: ~
+#bazinga_faker: 
+#    orm: doctrine
+#    locale: es_ES
+#    seed: 1
+#    entities:
+#        UAH\GestorActividadesBundle\Entity\TuibPersonaUser:
+#            number: 5
 #swiftmailer:
 #    delivery_address: me@example.com

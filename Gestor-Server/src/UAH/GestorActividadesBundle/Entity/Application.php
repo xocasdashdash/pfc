@@ -15,7 +15,7 @@ use Doctrine\ORM\Mapping\Entity;
 /**
  * Description of Application
  *
- * @Table(name="Application")
+ * @Table(name="UAH_GAT_Application")
  * @Entity()
  */
 class Application {
