@@ -1,7 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
-
+    - { resource: @UAHGestorActividadesBundle/Resources/config/parameters.yml }
 framework:
     #esi:             ~
     #translator:      { fallback: "%locale%" }
@@ -90,4 +90,4 @@ braincrafted_bootstrap:
         bootstrap_template: BraincraftedBootstrapBundle:Bootstrap:bootstrap.less.twig
 fp_open_id:
     db_driver: orm
-    identity_class: UAH\GestorActividadesBundle\Entity\OpenIdIdentity
+    identity_class: UAH\GestorActividadesBundle\Entity\OpenIdIdentity       

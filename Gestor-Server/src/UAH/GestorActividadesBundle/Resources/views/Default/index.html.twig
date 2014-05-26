@@ -12,8 +12,7 @@
         {% set num_veces = 0 %}
         <div class="row" id="cont-basico">
             {% for activity in activities %}
-                {% set num_veces=num_veces+1 %}
-                <div class="col-lg-6 col-md-6 actividad">
+                <div class="col-lg-8 col-md-8 col-lg-offset-4 col-md-offset-4 actividad">
                     <div class="row"><div class="col-md-8">
                             <h3 class="titulo-actividad">{{activity.name}}</h3>
                             <div class="abstract-actividad ocultado-vertical">

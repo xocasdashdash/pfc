@@ -63,3 +63,11 @@ uah_gestor_actividades_homepage:
 #uah_actividad_enroll:
 #    path: /actividad/enroll/{id}
 #    defaults: {_controller: UAHGestorActividadesBundle:Actividad:enroll}
+#openid_login:
+#    path:     /login
+#    defaults: { _controller: UAHGestorActividadesBundle:Login:login}
+#openid_logout:
+#    path: /logout
+#    defaults: {_controller: UAHGestorActividadesBundle:Login:logout}
+#    
+        

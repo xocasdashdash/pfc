@@ -15,7 +15,7 @@ class JustificanteController extends Controller {
     public function indexAction() {      
     }    
     /**
-     * @Route("/justificante/show/{id}", requirements={"id" = "\d+"}, defaults={"id" = -11})
+     * @Route("/justificante/show/{id}", requirements={"id" = "\d+"}, defaults={"id" = -1})
      * @Method({"GET"})
      */
     public function showAction($id) {      

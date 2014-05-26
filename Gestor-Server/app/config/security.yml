@@ -30,7 +30,8 @@ security:
                 # check the desired provider documentation
                 required_attributes:
                     - contact/email     
-                    - http://openid.net/schema/namePerson/first
+                    - namePerson/first
+                    - namePerson/prefix
 
     providers:
         # the order is important here

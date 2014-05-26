@@ -140,10 +140,36 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $userAdmin->setEmail("jfcampo@gmail.com");
         $userAdmin->setIdUsuldap("http://yo.rediris.es/soy/joaquin.fernandez@uah.es/");        
         $em = $manager->getRepository('UAHGestorActividadesBundle:Degree');
-        //$objeto = ;
         $userAdmin->setDegreeId($em->findAll()[array_rand($em->findAll())]);
+        
+        $userStudent= new User();
+        $userStudent->setName('Adrián');
+        $userStudent->setApellido1('Bolonio');
+        $userStudent->setApellido2('cuesta');
+        $userStudent->setType('student');
+        $userStudent->setEmail("jfcampo@gmail.com");
+        $userStudent->setIdUsuldap("http://yo.rediris.es/soy/adrian.bolonio@uah.es/");        
+        $em = $manager->getRepository('UAHGestorActividadesBundle:Degree');
+        $userStudent->setDegreeId($em->findAll()[array_rand($em->findAll())]);
+        
+        //Roles
+        $role_student = new \UAH\GestorActividadesBundle\Entity\Role();
+        $role_student->setRole("UAH_STUDENT");
+        $role_student->setName("student");
+                
+        $role_admin = new \UAH\GestorActividadesBundle\Entity\Role();
+        $role_admin->setRole("UAH_ADMIN");
+        $role_admin->setName("admin");
+        $manager->persist($role_admin);
+        $manager->persist($role_student);
+        
+        $userStudent->addRole($role_student);
+        $userAdmin->addRole($role_admin);
+        $userAdmin->addRole($role_student);
+        
         //$userAdmin->setCreationIp("127.0.0.1");
         $manager->persist($userAdmin);
+        $manager->persist($userStudent);
         $manager->flush();
     }
 
