@@ -56,6 +56,14 @@
         },
         "branch-alias": {
             "dev-master": "2.3-dev"
+        },
+        "heroku": {
+            "document-root": "web",
+            "php-config": [
+                "date.timezone=Europe/Amsterdam",
+                "display_errors=off",
+                "short_open_tag=off"
+            ]
         }
     }
 }
