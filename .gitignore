@@ -1,6 +1,8 @@
 # Bootstrap
 app/bootstrap*
 
+bin/lessc
+
 # Symfony directories
 vendor/*
 */logs/*
