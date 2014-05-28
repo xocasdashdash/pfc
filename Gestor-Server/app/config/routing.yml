@@ -1,7 +1,0 @@
-UAHGestorActividadesBundle_yml:
-    resource: "@UAHGestorActividadesBundle/Resources/config/routing.yml"
-UAHGestorActividadesBundle_annotation:
-    resource: "@UAHGestorActividadesBundle/Controller"
-    type: annotation
-fp_openid_security:
-    resource: "@FpOpenIdBundle/Resources/config/routing/security.xml" 
