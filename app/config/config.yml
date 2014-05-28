@@ -78,7 +78,7 @@ braincrafted_bootstrap:
     output_dir: bootstrap
     assets_dir: %vendor_dir%/bootstrap
     jquery_path: %vendor_dir%/jquery/dist/jquery.js
-    less_filter: less # "less", "lessphp" or "none"
+    less_filter: lessphp # "less", "lessphp" or "none"
     auto_configure:
         assetic: true
         twig: true
