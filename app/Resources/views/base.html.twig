@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}{% endblock %}</title>
+        {% block stylesheets %}
+            {% stylesheets
+                '@UAHGestorActividadesBundle/Resources/public/vendor/normalize-css/normalize.css'
+                'css/bootstrap.css' 
+                '@UAHGestorActividadesBundle/Resources/public/css/variables.less'
+                filter='cssrewrite'%}
+            <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
+            {% endstylesheets %}
+
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+    {% block body %}{% endblock %}
+    {% block javascripts %}
+        {% javascripts 
+            'js/jquery.js'
+            'js/bootstrap.js' 
+            '@UAHGestorActividadesBundle/Resources/public/vendor/holderjs/holder.js'%}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endblock %}
+</body>
+</html>b

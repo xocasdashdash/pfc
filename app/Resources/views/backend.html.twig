@@ -1,0 +1,46 @@
+{# app/Resources/views/frontend.html.twig #}
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    {% block navbar %}
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            </button>
+            <a href="#">
+                <img height="59" src="{{asset('images/logo.gif')}}" alt="Universidad de Alcala">
+            </a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="{{ path('uah_gestoractividades_actividad_index') }}">Inicio</a></li>
+                <li><a href="{{ path('uah_gestoractividades_perfil_index') }}">Perfil</a></li>
+                {% if user is defined and user.type == 'admin' %}
+                <li><a href="{{ path('uah_gestoractividades_admin_index') }}">Administrar</a></li>
+                {% endif %}
+                <li>
+                    <form class="form-inline pull-right" role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Buscar">
+                        </div>
+                        <button type="submit" class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    {% endblock %}
+    {% block acciones_datos %}{% endblock %}
+
+    {% block content %}{% endblock %}
+
+
+{% endblock %}
