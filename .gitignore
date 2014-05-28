@@ -20,3 +20,6 @@ composer.phar
 
 # Deployment
 /Gestor-deployment/*.deb
+
+# Uploads
+Gestor-Server/web/upload/images
