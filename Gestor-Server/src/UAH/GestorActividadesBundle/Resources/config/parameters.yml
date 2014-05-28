@@ -1,4 +1,0 @@
-parameters:
-    default_openid_connector: "http://yo.rediris.es/soy/@uah.es"
-    default_redirect_after_login: "/"
-    

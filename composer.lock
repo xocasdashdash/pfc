@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "a2b682b896a492a473861058268e3a44",
+    "hash": "56faca31917b62b501b3a46c3dcee518",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -871,12 +871,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "5476642acfe1e2851b55debc3f4b6d972338f2a0"
+                "reference": "b54b2447aae9a027e8a6368276409e4daeb718b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/5476642acfe1e2851b55debc3f4b6d972338f2a0",
-                "reference": "5476642acfe1e2851b55debc3f4b6d972338f2a0",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/b54b2447aae9a027e8a6368276409e4daeb718b3",
+                "reference": "b54b2447aae9a027e8a6368276409e4daeb718b3",
                 "shasum": ""
             },
             "require": {
@@ -913,7 +913,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2014-05-14 21:18:42"
+            "time": "2014-05-26 11:53:24"
         },
         {
             "name": "incenteev/composer-parameter-handler",

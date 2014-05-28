@@ -1,9 +1,0 @@
-{% extends "FpOpenIdBundle::layout.html.twig" %}
-
-{% block fp_openid_content %}
-    {% if error %}
-        <div>{{ error }}</div>
-    {% endif %}
-
-    <a href="{{ path("fp_openid_security_check", {'openid_identifier': 'http://yo.rediris.es/'}) }}">Google</a>
-{% endblock fp_openid_content %}

@@ -15,11 +15,11 @@ app/config/parameters.yml
 # Composer
 composer.phar
 nbproject/private/
-Gestor-Server/nbproject/private/
-*composer.lock
+nbproject/
+#composer.lock
 
 # Deployment bin
 Gestor-deployment/*.deb
 
 # Uploads
-Gestor-Server/web/upload/images
+web/upload/images
