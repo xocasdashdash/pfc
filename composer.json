@@ -65,7 +65,8 @@
                 "date.timezone=Europe/Amsterdam",
                 "display_errors=off",
                 "short_open_tag=off"
-            ]
+            ],
+            "newrelic": true
         }
     }
 }
