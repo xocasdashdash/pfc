@@ -4,10 +4,10 @@
     SetEnv SYMFONY__DATABASE__USER     "..."
     SetEnv SYMFONY__DATABASE__PASSWORD "..."
 
-    DocumentRoot    "/home/xokas/pfc/Gestor-Server/web"
+    DocumentRoot    "$DIR_APACHE_WWW/web"
     DirectoryIndex  app_dev.php
 
-    <Directory "/home/xokas/pfc/Gestor-Server/web">
+    <Directory "$DIR_APACHE_WWW/web">
         AllowOverride None
         Allow from All
 
@@ -19,7 +19,7 @@
         </IfModule>
     </Directory>
 
-    CustomLog  /var/log/httpd/gat-pfc.log combined
+    CustomLog  ${APACHE_LOG_DIR}/gat-pfc.log combined
 
     KeepAlive            On
     MaxKeepAliveRequests 200

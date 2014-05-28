@@ -1,17 +1,3 @@
-127.0.0.1	localhost
-127.0.1.1	xokas-desktop
-
-# The following lines are desirable for IPv6 capable hosts
-::1     ip6-localhost ip6-loopback
-fe00::0 ip6-localnet
-ff00::0 ip6-mcastprefix
-ff02::1 ip6-allnodes
-ff02::2 ip6-allrouters
-172.24.56.101 rollcard.local
-172.24.56.101 m.rollcard.local
-#192.168.1.16 rollcard.local
-#192.168.1.16 m.rollcard.local
-
 #PFC
 127.0.0.1 gat.local
 ::1 gat.local
