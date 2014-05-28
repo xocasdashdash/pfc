@@ -24,7 +24,9 @@
         "doctrine/doctrine-fixtures-bundle": "2.2.*",
         "fzaninotto/faker": "1.4.*@dev",
         "braincrafted/bootstrap-bundle": "~2.0",
-        "fp/openid-bundle": "dev-master"        
+        "fp/openid-bundle": "dev-master",
+        "oyejorge/less.php": "~1.5"
+    
     },
     "scripts": {
         "post-install-cmd": [
