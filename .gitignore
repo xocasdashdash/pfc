@@ -17,3 +17,6 @@ composer.phar
 /nbproject/private/
 /Gestor-Server/nbproject/private/
 *composer.lock
+
+# Deployment bin
+Gestor-deployment/*.deb
