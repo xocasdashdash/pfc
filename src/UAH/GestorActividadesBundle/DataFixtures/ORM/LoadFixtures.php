@@ -205,8 +205,8 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $userMarta->addRole($roles[3]);
         
         echo "Guardando los usuarios...\n";
-        $manager->persist($userAdmin);
-        $manager->persist($userBolonio);
+        //$manager->persist($userAdmin);
+        //$manager->persist($userBolonio);
         $manager->persist($userMarta);
         $manager->persist($userAcevedo);
         $manager->flush();
