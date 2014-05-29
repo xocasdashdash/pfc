@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: @UAHGestorActividadesBundle/Resources/config/parameters.yml }
+    - { resource: params.php }
 framework:
     #esi:             ~
     #translator:      { fallback: "%locale%" }
