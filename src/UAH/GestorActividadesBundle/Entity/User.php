@@ -78,7 +78,7 @@ class User implements UserInterface {
      * @JoinTable(name="User_Roles")
      */
     private $roles;
-    
+
     /**
      * @var string Nombre de usuario interno de la UAH que saco de la conexión de REDIRIS
      * @Column(name="ID_USULDAP", type="string", length= 255, nullable=false, 
@@ -93,12 +93,13 @@ class User implements UserInterface {
      * @Column(name="apellido_1", type="string", length=255, nullable=true)
      */
     private $apellido_1;
-    
+
     /**
      * @var string Apellido 2
      * @Column(name="apellido_2", type="string", length=255, nullable=true)
      */
     private $apellido_2;
+
     /**
      * Get id
      *
@@ -218,7 +219,12 @@ class User implements UserInterface {
     }
 
     public function getRoles() {
-        return $this->roles;
+        $roles = array();
+        foreach ($this->roles as $role) {
+            $roles[] = $role->getRole();
+        }
+        //return $this->roles;
+        return $roles;
     }
 
     public function getSalt() {
@@ -278,15 +284,13 @@ class User implements UserInterface {
         $this->roles->removeElement($roles);
     }
 
-
     /**
      * Set id_usuldap
      *
      * @param string $idUsuldap
      * @return User
      */
-    public function setIdUsuldap($idUsuldap)
-    {
+    public function setIdUsuldap($idUsuldap) {
         $this->id_usuldap = $idUsuldap;
 
         return $this;
@@ -297,8 +301,7 @@ class User implements UserInterface {
      *
      * @return string 
      */
-    public function getIdUsuldap()
-    {
+    public function getIdUsuldap() {
         return $this->id_usuldap;
     }
 
@@ -306,15 +309,13 @@ class User implements UserInterface {
         
     }
 
-
     /**
      * Set apellido_1
      *
      * @param string $apellido1
      * @return User
      */
-    public function setApellido1($apellido1)
-    {
+    public function setApellido1($apellido1) {
         $this->apellido_1 = $apellido1;
 
         return $this;
@@ -325,8 +326,7 @@ class User implements UserInterface {
      *
      * @return string 
      */
-    public function getApellido1()
-    {
+    public function getApellido1() {
         return $this->apellido_1;
     }
 
@@ -336,8 +336,7 @@ class User implements UserInterface {
      * @param string $apellido2
      * @return User
      */
-    public function setApellido2($apellido2)
-    {
+    public function setApellido2($apellido2) {
         $this->apellido_2 = $apellido2;
 
         return $this;
@@ -348,8 +347,8 @@ class User implements UserInterface {
      *
      * @return string 
      */
-    public function getApellido2()
-    {
+    public function getApellido2() {
         return $this->apellido_2;
     }
+
 }
