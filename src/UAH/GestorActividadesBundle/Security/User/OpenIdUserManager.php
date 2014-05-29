@@ -31,9 +31,9 @@ class OpenIdUserManager extends UserManager {
 //Capture the username and the domain
         $reg_ex = '/^https?:\/\/yo\.rediris\.es\/soy\/((.+)\.(.+))@(\w+)\.+[a-z]{2,4}\/?/';
         preg_match($reg_ex, $identity, $matches);
-        $email = $matches[0] . '@edu.uah.es';
-        $name = $matches[1];
-        $apellido = $matches[2];
+        $email = $matches[1] . '@edu.uah.es';
+        $name = $matches[2];
+        $apellido = $matches[3];
 // put your user creation logic here
 // what follows is a typical example
 //        if (false === isset($attributes['mail'])) {
