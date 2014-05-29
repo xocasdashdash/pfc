@@ -187,7 +187,7 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $userMarta->setIdUsuldap("http://yo.rediris.es/soy/marta.lumeras@uah.es/");
         $em = $manager->getRepository('UAHGestorActividadesBundle:Degree');
         $userMarta->setDegreeId($em->findAll()[array_rand($em->findAll())]);
-
+        $userMarta->addRole($role_student);
         
         $manager->persist($userAdmin);
         $manager->persist($userStudent);

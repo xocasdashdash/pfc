@@ -46,6 +46,8 @@ class OpenIdUserManager extends UserManager
         
         if (null === $user) {
             throw new BadCredentialsException('No corresponding user!');
+        }else{
+            
         }
         
         // we create an OpenIdIdentity for this User
