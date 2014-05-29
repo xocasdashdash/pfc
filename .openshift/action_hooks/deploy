@@ -24,7 +24,7 @@ if [ -f "$OPENSHIFT_REPO_DIR/php" ]; then
 	ln -s $OPENSHIFT_REPO_DIR/web $OPENSHIFT_REPO_DIR/php
 fi
 if [ ! -d "$OPENSHIFT_REPO_DIR/web/uploads/images"]; then
-	mkdir -p $OPENSHIFT_REPO_DIR/web/uploads/images
+	mkdir -p $OPENSHIFT_REPO_DIR/web/upload/images
 fi
 chmod -R 0777 $OPENSHIFT_REPO_DIR/web/uploads
 php $OPENSHIFT_REPO_DIR/app/console doctrine:schema:update --force
