@@ -91,10 +91,10 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         return $faker->sentence(10, true);
     }, 'celebrationDates' => function() use($faker) {
         $fechas = array();
-        foreach (range(0, rand(1, 3)) as $i){
-            $fechas[] = $faker->dateTimeBetween('-1 year', '+1 year');//d-m-Y', '31/12/2014');
+        foreach (range(0, rand(1, 3)) as $i) {
+            $fechas[] = $faker->dateTimeBetween('-1 year', '+1 year'); //d-m-Y', '31/12/2014');
         }
-        return json_encode($fechas);        
+        return json_encode($fechas);
     }, 'url' => function() use($faker) {
         return $faker->url;
     }, 'slug' => function() use($faker) {
@@ -120,56 +120,79 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         return $faker->randomNumber(null, 100);
     }, 'numberOfHours' => function() use($faker) {
         return $faker->randomFloat(1, 0, 30);
-    }, 'description' => function() use($faker){
-        return $faker->realText(1000,4);
-    }, 'image' => function() use($faker){
-        $image_route = $faker->image("web/upload/images",240,320);
-        $image_route =  explode("web/",$image_route);
+    }, 'description' => function() use($faker) {
+        return $faker->realText(1000, 4);
+    }, 'image' => function() use($faker) {
+        $image_route = $faker->image("web/upload/images", 240, 320);
+        $image_route = explode("web/", $image_route);
         $image_route = $image_route[1];
         return $image_route;
-    }, 'publicityStartDate' => function() use($faker){
+    }, 'publicityStartDate' => function() use($faker) {
         return $faker->dateTimeBetween('-1 month', '+1 month');
     }
         ));
         $populator->execute();
+        
         $userAdmin = new User();
         $userAdmin->setName('Joaquin');
         $userAdmin->setApellido1('Fernandez');
         $userAdmin->setApellido2('Campo');
         $userAdmin->setType('admin');
         $userAdmin->setEmail("jfcampo@gmail.com");
-        $userAdmin->setIdUsuldap("http://yo.rediris.es/soy/joaquin.fernandez@uah.es/");        
+        $userAdmin->setIdUsuldap("http://yo.rediris.es/soy/joaquin.fernandez@uah.es/");
         $em = $manager->getRepository('UAHGestorActividadesBundle:Degree');
         $userAdmin->setDegreeId($em->findAll()[array_rand($em->findAll())]);
-        
-        $userStudent= new User();
+
+        $userStudent = new User();
         $userStudent->setName('Adrián');
         $userStudent->setApellido1('Bolonio');
         $userStudent->setApellido2('cuesta');
         $userStudent->setType('student');
         $userStudent->setEmail("jfcampo@gmail.com");
-        $userStudent->setIdUsuldap("http://yo.rediris.es/soy/adrian.bolonio@uah.es/");        
+        $userStudent->setIdUsuldap("http://yo.rediris.es/soy/adrian.bolonio@uah.es/");
         $em = $manager->getRepository('UAHGestorActividadesBundle:Degree');
         $userStudent->setDegreeId($em->findAll()[array_rand($em->findAll())]);
-        
+
         //Roles
         $role_student = new \UAH\GestorActividadesBundle\Entity\Role();
         $role_student->setRole("UAH_STUDENT");
         $role_student->setName("student");
-                
+
         $role_admin = new \UAH\GestorActividadesBundle\Entity\Role();
         $role_admin->setRole("UAH_ADMIN");
         $role_admin->setName("admin");
         $manager->persist($role_admin);
         $manager->persist($role_student);
-        
+
         $userStudent->addRole($role_student);
         $userAdmin->addRole($role_admin);
         $userAdmin->addRole($role_student);
+
+        $userAcevedo = new User();
+        $userAcevedo->setName('Javier');
+        $userAcevedo->setApellido1('Acevedo');
+        $userAcevedo->setType('admin');
+        $userAcevedo->setEmail('javier.acevedo@uah.es');
+        $userAcevedo->setType('staff');
+        $userAcevedo->setIdUsuldap("http://yo.rediris.es/soy/javier.acevedo@uah.es/");
+        $userAcevedo->addRole($role_admin);
+        $userAcevedo->addRole($role_student);        
         
-        //$userAdmin->setCreationIp("127.0.0.1");
+        $userMarta = new User();
+        $userMarta->setName('Marta');
+        $userMarta->setApellido1('Lumeras');
+        $userMarta->setApellido2('Peraljeo');
+        $userMarta->setType('student');
+        $userMarta->setEmail("marta.lumeras@edu.uah.es");
+        $userMarta->setIdUsuldap("http://yo.rediris.es/soy/marta.lumeras@uah.es/");
+        $em = $manager->getRepository('UAHGestorActividadesBundle:Degree');
+        $userMarta->setDegreeId($em->findAll()[array_rand($em->findAll())]);
+
+        
         $manager->persist($userAdmin);
         $manager->persist($userStudent);
+        $manager->persist($userMarta);
+        $manager->persist($userAcevedo);
         $manager->flush();
     }
 
