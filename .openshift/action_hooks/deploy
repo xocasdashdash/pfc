@@ -23,7 +23,7 @@ if [ -f "$OPENSHIFT_REPO_DIR/php" ]; then
  	rm -r $OPENSHIFT_REPO_DIR/php
 	ln -s $OPENSHIFT_REPO_DIR/web $OPENSHIFT_REPO_DIR/php
 fi
-if [ ! -d "$OPENSHIFT_REPO_DIR/web/uploads/images"]; then
+if [ ! -d "$OPENSHIFT_REPO_DIR/web/upload/images"]; then
 	mkdir -p $OPENSHIFT_REPO_DIR/web/upload/images
 fi
 chmod -R 0777 $OPENSHIFT_REPO_DIR/web/uploads
