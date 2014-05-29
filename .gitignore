@@ -9,8 +9,14 @@ vendor/*
 */cache/*
 app/dev/cache
 app/dev/logs
+app/prod/*
+
 web/uploads/*
 web/bundles/*
+#Imagenes copiadas por assetic:dump
+web/css/*
+web/images/*
+web/js/*
 
 # Configuration files
 app/config/parameters.ini
