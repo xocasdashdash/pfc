@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "ca780125382a1814884b89f104910940",
+    "hash": "d30212ec18b359e199c56826a3e76e28",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
