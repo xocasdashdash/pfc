@@ -37,8 +37,8 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install",
-            "mkdir -p web/uploads/images",
-            "chmod -R 777 web/uploads/",
+            "mkdir -p web/upload/images",
+            "chmod -R 777 web/upload/",
             "php app/console doctrine:schema:update --force",
             "php app/console doctrine:fixtures:load"
         ],
