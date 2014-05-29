@@ -14,6 +14,7 @@ sudo a2ensite gestor*;
 sudo service apache2 reload;
 #Lanzar composer install
 cd ..;
+sudo rm -rf app/dev/cache*;
 if [ ! -f "../composer.phar" ]; then
     curl -s https://getcomposer.org/installer | php -- --install-dir=..
 else
