@@ -1,7 +1,7 @@
 <?php
 
 # app/config/params.php
-if (isset($_SERVER['HTTP_CLIENT_IP']) || isset($_SERVER['HTTP_X_FORWARDED_FOR']) || (isset($_SERVER['REMOTE_ADDR']) && !in_array(@$_SERVER['REMOTE_ADDR'], array('127.0.0.1', 'fe80::1', '::1')))) { 
+if (isset($_SERVER['HTTP_CLIENT_IP']) || isset($_SERVER['HTTP_X_FORWARDED_FOR']) || (isset($_SERVER['REMOTE_ADDR']) && !in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', 'fe80::1', '::1')))) { 
     var_dump($container);
     $container->setParameter('database_host', getEnv("OPENSHIFT_MYSQL_DB_HOST"));
     $container->setParameter('database_port', getEnv("OPENSHIFT_MYSQL_DB_PORT"));
