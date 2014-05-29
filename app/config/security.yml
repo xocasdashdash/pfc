@@ -25,6 +25,7 @@ security:
                 post_only: false                
             fp_openid:
                 login_path: /login
+                check_path: /login_check_openid
                 create_user_if_not_exists: true # so createUserFromIdentity method will be called
                 provider: openid_user_manager # cf below
                 # previously we used 'contact/email' field. So we have to request it!
