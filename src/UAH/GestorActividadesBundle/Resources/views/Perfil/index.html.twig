@@ -1,51 +1,59 @@
 {% extends '::backend.html.twig' %}
 {% block acciones_datos %}
-    <div class="col-lg-9 col-xs-9">
-        <div style="text-align:center">
-            <h3>Datos del usuario</h3>
-        </div>
-        {# Falta dejar esto para que se cargue con las variables del usuario #}
-        <div>
-            <form class="form-horizontal" role="form">
-                <div class="form-group ">
-                    <label for="inputNombre" class="col-sm-2 col-xs-2 control-label">Nombre</label>
-                    <div class="col-sm-10  col-xs-10">
-                        <input type="text" class="form-control datos-alumno" id="inputNombre" value="Miguel de Cervantes">
-                    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 col-xs-9">
+                <div style="text-align:center">
+                    <h3>Datos del user</h3>
+                </div>
+                {# Falta dejar esto para que se cargue con las variables del user #}
+                <div>
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group ">
+                            <label for="inputNombre" class="col-sm-2 col-xs-2 control-label">Nombre</label>
+                            <div class="col-sm-10  col-xs-10">
+                                <input type="text" class="form-control datos-alumno" id="inputNombre" value="{{user.name ~ " " ~ user.apellido ~ " " ~ user.apellido2 }}">
+                            </div>
 
-                    <label for="inputEmail" class="col-sm-2 col-xs-2 control-label">Email</label>
-                    <div class="col-sm-10  col-xs-10">
-                        <input type="email" class="form-control datos-alumno" id="inputEmail" value="miguel.cervantes@uah.es">
-                    </div>
-                    <div class="col-xs-offset-2"></div>
+                            <label for="inputEmail" class="col-sm-2 col-xs-2 control-label">Email</label>
+                            <div class="col-sm-10  col-xs-10">
+                                <input type="email" class="form-control datos-alumno" id="inputEmail" value="{{user.email}}">
+                            </div>
+                            <div class="col-xs-offset-2"></div>
 
-                    <label for="inputCarrera" class="col-sm-2 col-xs-2 control-label">Carrera</label>
-                    <div class="col-sm-10  col-xs-10">
-                        <input type="text" class="form-control datos-alumno" id="inputCarrera" value="Grado en Filología Hispánica">
-                    </div>
-                    <label for="inputDNI" class="col-sm-2 col-xs-2 control-label">DNI</label>
-                    <div class="col-sm-10 col-xs-10">
-                        <input type="number" class="form-control datos-alumno" id="inputDNI" value="12345789">
-                    </div>
+                            <label for="inputCarrera" class="col-sm-2 col-xs-2 control-label">Carrera</label>
+                            <div class="col-sm-10  col-xs-10">
+                                <input type="text" class="form-control datos-alumno" id="inputCarrera" value="{{degree.name}}">
+                            </div>
+                            <label for="inputDNI" class="col-sm-2 col-xs-2 control-label">DNI</label>
+                            <div class="col-sm-10 col-xs-10">
+                                <input type="number" class="form-control datos-alumno" id="inputDNI" value="12345789">
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-3 col-xs-3">
+                <div class=" botones-perfil pull-right">
+                    <a href="#" class="btn btn-default btn-primary btn-block">Mis certificados </a>
+                    <a href="#" class="btn btn-default btn-primary btn-block">Generar un certificado</a>
+                    <a href="{{path('uah_gestoractividades_actividad_create_form')}}" class="btn btn-default btn-primary btn-block">Crear un curso</a>
+                    {% if is_granted('ROLE_STAFF') %}
+                    <a href="#" class="btn btn-default btn-primary btn-block">Verificar un certificado</a>
+                    {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <a href="#" class="btn btn-default btn-primary btn-block">Gestionar users</a>
+                    {% endif %}
+                    <a href="#" class="btn btn-default btn-primary btn-block">Actualizar datos</a>
 
                 </div>
-            </form>
-        </div>
-    </div>
-    <div class="col-lg-3 col-xs-3">
-        <div class=" botones-perfil pull-right">
-            <a href="#" class="btn btn-default btn-primary btn-block">Mis certificados </a>
-            <a href="#" class="btn btn-default btn-primary btn-block">Generar un certificado</a>
-            <a href="{{path('uah_gestoractividades_actividad_create_form')}}" class="btn btn-default btn-primary btn-block">Crear un curso</a>
-            <a href="#" class="btn btn-default btn-primary btn-block">Verificar un certificado</a>
-            <a href="#" class="btn btn-default btn-primary btn-block">Gestionar usuarios</a>
-            <a href="#" class="btn btn-default btn-primary btn-block">Actualizar datos</a>
-
+            </div>
         </div>
     </div>
 {% endblock %}
 
-{% block contenido %}
+{% block content %}
     <table>
         <thead>
             <tr>
