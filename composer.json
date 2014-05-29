@@ -40,7 +40,8 @@
             "mkdir -p web/upload/images",
             "chmod -R 777 web/upload/",
             "php app/console doctrine:schema:update --force",
-            "php app/console doctrine:fixtures:load"
+            "php app/console doctrine:fixtures:load",
+            "echo 'Haciendo install...\n'"
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
@@ -49,6 +50,7 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install",
+            "echo 'Haciendo update...\n'",
             "mkdir -p web/upload/images",
             "chmod -R 777 web/upload/",
             "php app/console doctrine:schema:update --force",
