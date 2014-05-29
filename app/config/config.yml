@@ -21,6 +21,8 @@ framework:
     session:         ~
     fragments:       ~
     http_method_override: true
+    session:
+        handler_id: session.handler.pdo
 
 # Twig Configuration
 twig:
@@ -74,7 +76,29 @@ sensio_framework_extra:
     router:  { annotations: true }
     security:   { annotations: true }
 parameters:
+     
+parameters:
+    pdo.db_options:
+        db_table:    session
+        db_id_col:   session_id
+        db_data_col: session_value
+        db_time_col: session_time
     vendor_dir: %kernel.root_dir%/../src/UAH/GestorActividadesBundle/Resources/public/vendor    
+
+
+services:
+    pdo:
+        class: PDO
+        arguments:
+            - "mysql:host=%database_host%;port=%database_port%;dbname=%database_name%"
+            - "%database_user%"
+            - "%database_password%"
+        calls:
+            - [setAttribute, [3, 2]] # \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
+
+    session.handler.pdo:
+        class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        arguments: ["@pdo", "%pdo.db_options%"]
 braincrafted_bootstrap:
     output_dir: bootstrap
     assets_dir: %vendor_dir%/bootstrap
@@ -91,4 +115,4 @@ braincrafted_bootstrap:
         bootstrap_template: BraincraftedBootstrapBundle:Bootstrap:bootstrap.less.twig
 fp_open_id:
     db_driver: orm
-    identity_class: UAH\GestorActividadesBundle\Entity\OpenIdIdentity       
+    identity_class: UAH\GestorActividadesBundle\Entity\OpenIdIdentity  
