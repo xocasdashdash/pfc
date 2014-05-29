@@ -50,7 +50,7 @@ class OpenIdUserManager extends UserManager {
             $user->setName($name);
             $user->setApellido1($apellido);
         } 
-
+        error_log("Creando identidad para".$identity);
         // we create an OpenIdIdentity for this User
         $openIdIdentity = new OpenIdIdentity();
         $openIdIdentity->setIdentity($identity);
