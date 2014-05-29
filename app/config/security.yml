@@ -49,7 +49,7 @@ security:
                     admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
     
     access_control:
-        - { path: ^/login_openid$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/secured_area, role: IS_AUTHENTICATED_OPENID }    
 
     access_control:
