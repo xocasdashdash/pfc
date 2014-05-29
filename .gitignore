@@ -25,3 +25,6 @@ Gestor-deployment/*.deb
 
 # Uploads
 web/upload/images
+
+# OpenShift
+app/config/params.php
