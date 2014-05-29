@@ -16,6 +16,7 @@ use UAH\GestorActividadesBundle\DataFixtures\FakerProviders\UAHUserProvider as U
 use UAH\GestorActividadesBundle\DataFixtures\FakerProviders\UAHDegreeProvider as UAHDegreeProvider;
 use UAH\GestorActividadesBundle\DataFixtures\FakerProviders\UAHActivityProvider as UAHActivityProvider;
 use UAH\GestorActividadesBundle\Entity\User as User;
+use UAH\GestorActividadesBundle\Entity\Role as Role;
 //use \Faker\Provider;
 use \Faker\Factory as FakerFactory;
 
@@ -132,7 +133,31 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
     }
         ));
         $populator->execute();
+
+        $roles = array();
+        //Roles
+        $roles[] = new Role();
+        $roles[count($roles)-1]->setRole("UAH_STUDENT");
+        $roles[count($roles)-1]->setName("student");
         
+        $roles[] = new Role();
+        $roles[count($roles)-1]->setRole("UAH_ADMIN");
+        $roles[count($roles)-1]->setName("admin");
+        
+        $roles[] = new Role();
+        $roles[count($roles)-1]->setRole("UAH_SUPER_ADMIN");
+        $roles[count($roles)-1]->setName("super admin");
+        
+        $roles[] = new Role();
+        $roles[count($roles)-1]->setRole("UAH_STAFF_PAS");
+        $roles[count($roles)-1]->setName("pass");
+        
+        $roles[] = new Role();
+        $roles[count($roles)-1]->setRole("UAH_STAFF_PDI");
+        $roles[count($roles)-1]->setName("pdi");
+        
+        echo "Creados todos los roles\n";
+        echo "Creando el usuario Joaquin\n";
         $userAdmin = new User();
         $userAdmin->setName('Joaquin');
         $userAdmin->setApellido1('Fernandez');
@@ -140,34 +165,23 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $userAdmin->setType('admin');
         $userAdmin->setEmail("jfcampo@gmail.com");
         $userAdmin->setIdUsuldap("http://yo.rediris.es/soy/joaquin.fernandez@uah.es/");
-        $em = $manager->getRepository('UAHGestorActividadesBundle:Degree');
-        $userAdmin->setDegreeId($em->findAll()[array_rand($em->findAll())]);
+        $em_degree = $manager->getRepository('UAHGestorActividadesBundle:Degree');
+        $userAdmin->setDegreeId($em_degree->findAll()[array_rand($em_degree->findAll())]);
+        $userAdmin->addRole($roles[2]);
+        
+        echo "Creando el usuario Bolonio\n";
+        $userBolonio = new User();
+        $userBolonio->setName('Adrián');
+        $userBolonio->setApellido1('Bolonio');
+        $userBolonio->setApellido2('cuesta');
+        $userBolonio->setType('student');
+        $userBolonio->setEmail("jfcampo@gmail.com");
+        $userBolonio->setIdUsuldap("http://yo.rediris.es/soy/adrian.bolonio@uah.es/");
+        $userBolonio->setDegreeId($em_degree->findAll()[array_rand($em_degree->findAll())]);
+        $userBolonio->addRole($roles[0]);
 
-        $userStudent = new User();
-        $userStudent->setName('Adrián');
-        $userStudent->setApellido1('Bolonio');
-        $userStudent->setApellido2('cuesta');
-        $userStudent->setType('student');
-        $userStudent->setEmail("jfcampo@gmail.com");
-        $userStudent->setIdUsuldap("http://yo.rediris.es/soy/adrian.bolonio@uah.es/");
-        $em = $manager->getRepository('UAHGestorActividadesBundle:Degree');
-        $userStudent->setDegreeId($em->findAll()[array_rand($em->findAll())]);
-
-        //Roles
-        $role_student = new \UAH\GestorActividadesBundle\Entity\Role();
-        $role_student->setRole("UAH_STUDENT");
-        $role_student->setName("student");
-
-        $role_admin = new \UAH\GestorActividadesBundle\Entity\Role();
-        $role_admin->setRole("UAH_ADMIN");
-        $role_admin->setName("admin");
-        $manager->persist($role_admin);
-        $manager->persist($role_student);
-
-        $userStudent->addRole($role_student);
-        $userAdmin->addRole($role_admin);
-        $userAdmin->addRole($role_student);
-
+        //Acevedo
+        echo "Creando el usuario Acevedo\n";
         $userAcevedo = new User();
         $userAcevedo->setName('Javier');
         $userAcevedo->setApellido1('Acevedo');
@@ -175,9 +189,10 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $userAcevedo->setEmail('javier.acevedo@uah.es');
         $userAcevedo->setType('staff');
         $userAcevedo->setIdUsuldap("http://yo.rediris.es/soy/javier.acevedo@uah.es/");
-        $userAcevedo->addRole($role_admin);
-        $userAcevedo->addRole($role_student);        
-        
+        $userAcevedo->addRole($roles[1]);
+
+        //Marta
+        echo "Creando el usuario Marta\n";
         $userMarta = new User();
         $userMarta->setName('Marta');
         $userMarta->setApellido1('Lumeras');
@@ -185,15 +200,17 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $userMarta->setType('student');
         $userMarta->setEmail("marta.lumeras@edu.uah.es");
         $userMarta->setIdUsuldap("http://yo.rediris.es/soy/marta.lumeras@uah.es/");
-        $em = $manager->getRepository('UAHGestorActividadesBundle:Degree');
-        $userMarta->setDegreeId($em->findAll()[array_rand($em->findAll())]);
-        $userMarta->addRole($role_student);
+        $em_degree = $manager->getRepository('UAHGestorActividadesBundle:Degree');
+        $userMarta->setDegreeId($em_degree->findAll()[array_rand($em_degree->findAll())]);
+        $userMarta->addRole($roles[3]);
         
+        echo "Guardando los usuarios...\n";
         $manager->persist($userAdmin);
-        $manager->persist($userStudent);
+        $manager->persist($userBolonio);
         $manager->persist($userMarta);
         $manager->persist($userAcevedo);
         $manager->flush();
+        echo "Usuarios guardados\n";
     }
 
     /**

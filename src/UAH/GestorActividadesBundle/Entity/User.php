@@ -74,7 +74,7 @@ class User implements UserInterface {
     private $uahName;
 
     /**
-     * @ManyToMany(targetEntity="Role", inversedBy="users")
+     * @ManyToMany(targetEntity="Role", inversedBy="users",cascade={"persist"})
      * @JoinTable(name="User_Roles")
      */
     private $roles;
