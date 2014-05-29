@@ -59,6 +59,8 @@ class OpenIdUserManager extends UserManager {
 
         $this->entityManager->persist($openIdIdentity);
         $this->entityManager->flush();
+        error_log("Identidad creada:".$openIdIdentity->getId());
+        $this->entityManager->clear();
 
         return $user; // you must return an UserInterface instance (or throw an exception)
     }
