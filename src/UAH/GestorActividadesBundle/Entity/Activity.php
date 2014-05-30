@@ -185,9 +185,9 @@ class Activity
     
     
     /**
-     * @var status
-     * 
-     * @Column(name="status", type="string")
+     * @var int Estado del registro
+     * @OneToOne(targetEntity="Status_activity")
+     * @JoinColumn(name="status_activity", referencedColumnName="id")
      */
     private $status;
     
