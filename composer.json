@@ -41,7 +41,7 @@
             "mkdir -p web/upload/images",
             "chmod -R 777 web/upload/",
             "php app/console doctrine:schema:update --force",
-            "php app/console doctrine:query:sql 'CREATE TABLE session (session_id varchar(255) NOT NULL, session_value varchar(4000) NOT NULL, session_time int(11) NOT NULL,    PRIMARY KEY (session_id);'",
+            "php app/console doctrine:query:sql 'CREATE TABLE GAT_UAH_session (session_id varchar(255) NOT NULL, session_value varchar(4000) NOT NULL, session_time int(11) NOT NULL,    PRIMARY KEY (session_id));'",
             "php app/console doctrine:fixtures:load"
             
         ],
@@ -57,7 +57,7 @@
             "chmod -R 777 web/upload/",
             "php app/console doctrine:schema:update --force",
             "php app/console doctrine:fixtures:load",
-            "php app/console doctrine:query:sql 'CREATE TABLE session (session_id varchar(255) NOT NULL, session_value varchar(4000) NOT NULL, session_time int(11) NOT NULL,    PRIMARY KEY (session_id))'"
+            "php app/console doctrine:query:sql 'CREATE TABLE GAT_UAH_session (session_id varchar(255) NOT NULL, session_value varchar(4000) NOT NULL, session_time int(11) NOT NULL,    PRIMARY KEY (session_id))'"
 
         ]
     },
