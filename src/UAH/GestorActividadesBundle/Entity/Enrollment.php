@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\Table;
@@ -19,7 +20,7 @@ use Doctrine\ORM\Mapping\Entity;
  * @Entity
  */
 class Enrollment {
-
+    
     /**
      * @var integer
      *
@@ -28,13 +29,6 @@ class Enrollment {
      * @GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @var string
-     *
-     * @Column(name="dni", type="string", length=255)
-     */
-    private $dni;
 
     /**
      * @var datetime
@@ -56,21 +50,6 @@ class Enrollment {
 
     /**
      *
-     * @var integer
-     * @ManyToOne(targetEntity="Activity", inversedBy="id")
-     * @JoinColumn(name="activityId", referencedColumnName="id", nullable=false)
-     */
-    private $activity;
-
-    /**
-     * @var integer
-     * @ManyToOne(targetEntity="Application", inversedBy="id")
-     * @JoinColumn(name="idApplication", referencedColumnName="id", nullable=true)
-     */
-    private $applicationForm;
-
-    /**
-     *
      * @var float
      * @Column(name="recognizedCredits",type="float", nullable=true)
      */
@@ -82,6 +61,35 @@ class Enrollment {
      * @Column(name="creditsType",type="float", nullable=true)
      */
     private $creditsType;
+    
+    /**
+     * @var int Estado del registro
+     * @OneToOne(targetEntity="Status_enrollment")
+     * @JoinColumn(name="status_enrollment", referencedColumnName="id")
+     */
+    private $status;
+    /**
+     *
+     * @var usuario
+     * @ManyToOne(targetEntity="User", inversedBy="id")
+     * @JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
+     */
+    private $user;
+
+    /**
+     *
+     * @var integer
+     * @ManyToOne(targetEntity="Activity", inversedBy="id")
+     * @JoinColumn(name="activity_id", referencedColumnName="id", nullable=false)
+     */
+    private $activity;
+
+    /**
+     * @var integer
+     * @ManyToOne(targetEntity="Application", inversedBy="id")
+     * @JoinColumn(name="application_id", referencedColumnName="id", nullable=true)
+     */
+    private $applicationForm;
 
     /**
      * Get id
@@ -90,27 +98,6 @@ class Enrollment {
      */
     public function getId() {
         return $this->id;
-    }
-
-    /**
-     * Set dni
-     *
-     * @param string $dni
-     * @return Enrollment
-     */
-    public function setDni($dni) {
-        $this->dni = $dni;
-
-        return $this;
-    }
-
-    /**
-     * Get dni
-     *
-     * @return string 
-     */
-    public function getDni() {
-        return $this->dni;
     }
 
     /**
@@ -281,15 +268,13 @@ class Enrollment {
         return $this->activity;
     }
 
-
     /**
      * Set applicationForm
      *
      * @param \UAH\GestorActividadesBundle\Entity\Application $applicationForm
      * @return Enrollment
      */
-    public function setApplicationForm(\UAH\GestorActividadesBundle\Entity\Application $applicationForm = null)
-    {
+    public function setApplicationForm(\UAH\GestorActividadesBundle\Entity\Application $applicationForm = null) {
         $this->applicationForm = $applicationForm;
 
         return $this;
@@ -300,8 +285,54 @@ class Enrollment {
      *
      * @return \UAH\GestorActividadesBundle\Entity\Application 
      */
-    public function getApplicationForm()
-    {
+    public function getApplicationForm() {
         return $this->applicationForm;
+    }
+
+
+    /**
+     * Set status_enrollment
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Status_enrollment $statusEnrollment
+     * @return Enrollment
+     */
+    public function setStatusEnrollment(\UAH\GestorActividadesBundle\Entity\Status_enrollment $statusEnrollment = null)
+    {
+        $this->status_enrollment = $statusEnrollment;
+
+        return $this;
+    }
+
+    /**
+     * Get status_enrollment
+     *
+     * @return \UAH\GestorActividadesBundle\Entity\Status_enrollment 
+     */
+    public function getStatusEnrollment()
+    {
+        return $this->status_enrollment;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\User $user
+     * @return Enrollment
+     */
+    public function setUser(\UAH\GestorActividadesBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \UAH\GestorActividadesBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }
