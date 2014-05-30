@@ -32,7 +32,7 @@ class Application {
     /**
      * @var integer userId;
      * @ManyToOne(targetEntity="User",fetch="EAGER",inversedBy="id")
-     * @JoinColumn(name="userId", referencedColumnName="id")
+     * @JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $userId;
 

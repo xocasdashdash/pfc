@@ -68,7 +68,7 @@ class TuibPersonaUser implements UserInterface {
 
     /**
      * @var string Nombre de usuario interno de la UAH que saco de la conexión de REDIRIS
-     * @Column(name="ID_USULDAP", type="string", length= 100, nullable=false, 
+     * @Column(name="ID_USULDAP", type="string", length= 255, nullable=false, 
      * options={"comments"="ID que me devuelve REDIRIS al hacer la autentificación por OpenId. Lo uso para buscar el resto de la información en UXXIAC.TUIB_PERSONA"})
      * @OneToOne(targetEntity="User", mappedBy="id_usuldap")
      */

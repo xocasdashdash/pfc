@@ -60,33 +60,11 @@ class User implements UserInterface {
     private $creationIp;
 
     /**
-     * @var integer 
-     * @ManyToOne(targetEntity="Degree", inversedBy="id")
-     * @JoinColumn(name="degreeId", referencedColumnName="id", nullable=true)
-     */
-    private $degreeId;
-
-    /**
      * @var string
      *
      * @Column(name="uahName", type="string", length=255, nullable=true)
      */
     private $uahName;
-
-    /**
-     * @ManyToMany(targetEntity="Role", inversedBy="users",cascade={"persist"})
-     * @JoinTable(name="User_Roles")
-     */
-    private $roles;
-
-    /**
-     * @var string Nombre de usuario interno de la UAH que saco de la conexión de REDIRIS
-     * @Column(name="ID_USULDAP", type="string", length= 255, nullable=false, 
-     * options={"comments"="ID que me devuelve REDIRIS al hacer la autentificación por OpenId. Lo uso para buscar el resto de la información en UXXIAC.TUIB_PERSONA"})
-     * @OneToOne(targetEntity="TuibPersonaUser",inversedBy="id_usuldap")
-     * @JoinColumn(name="id_usuldap", referencedColumnName="id_usuldap")
-     */
-    private $id_usuldap;
 
     /**
      * @var string Apellido 1
@@ -99,6 +77,42 @@ class User implements UserInterface {
      * @Column(name="apellido_2", type="string", length=255, nullable=true)
      */
     private $apellido_2;
+
+    /**
+     * @var string Numero de documento de identidad/NIE con letra
+     * @Column(name="documento_identidad", type="string", length=255, nullable=true)
+     */
+    private $documento_identidad;
+
+    /**
+     * @var string Tipo de documento de identidad: Pasaporte, NIE o DNI 
+     * @Column(name="tipo_documento_identidad", type="string", length=255, nullable=true)
+     */
+    private $tipo_documento_identidad;
+
+    /**
+     * @var integer 
+     * @ManyToOne(targetEntity="Degree", inversedBy="id")
+     * @JoinColumn(name="degree_id", referencedColumnName="id", nullable=true)
+     */
+    private $degree_id;
+
+    /**
+     * @ManyToMany(targetEntity="Role", inversedBy="users",cascade={"persist"})
+     * @JoinTable(name="UAH_GAT_User_Roles",
+     * joinColumns={@JoinColumn(name="role_id", referencedColumnName="id")},
+     * inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id")})
+     */
+    private $roles;
+
+    /**
+     * @var string Nombre de usuario interno de la UAH que saco de la conexión de REDIRIS
+     * @Column(name="ID_USULDAP", type="string", length= 255, nullable=false, 
+     * options={"comments"="ID que me devuelve REDIRIS al hacer la autentificación por OpenId. Lo uso para buscar el resto de la información en UXXIAC.TUIB_PERSONA"})
+     * @OneToOne(targetEntity="TuibPersonaUser",inversedBy="id_usuldap")
+     * @JoinColumn(name="usuldap_id", referencedColumnName="id_usuldap")
+     */
+    private $id_usuldap;
 
     /**
      * Get id
@@ -351,4 +365,50 @@ class User implements UserInterface {
         return $this->apellido_2;
     }
 
+
+    /**
+     * Set documento_identidad
+     *
+     * @param string $documentoIdentidad
+     * @return User
+     */
+    public function setDocumentoIdentidad($documentoIdentidad)
+    {
+        $this->documento_identidad = $documentoIdentidad;
+
+        return $this;
+    }
+
+    /**
+     * Get documento_identidad
+     *
+     * @return string 
+     */
+    public function getDocumentoIdentidad()
+    {
+        return $this->documento_identidad;
+    }
+
+    /**
+     * Set tipo_documento_identidad
+     *
+     * @param string $tipoDocumentoIdentidad
+     * @return User
+     */
+    public function setTipoDocumentoIdentidad($tipoDocumentoIdentidad)
+    {
+        $this->tipo_documento_identidad = $tipoDocumentoIdentidad;
+
+        return $this;
+    }
+
+    /**
+     * Get tipo_documento_identidad
+     *
+     * @return string 
+     */
+    public function getTipoDocumentoIdentidad()
+    {
+        return $this->tipo_documento_identidad;
+    }
 }

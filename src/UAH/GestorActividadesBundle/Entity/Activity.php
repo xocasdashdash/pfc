@@ -108,10 +108,9 @@ class Activity
     
     /**
      * @ManyToMany(targetEntity="Degree")
-     * @JoinTable(name="Activity_Degree", 
-     *          joinColumns={@JoinColumn(name="activityId", referencedColumnName="id")},
-     *          inverseJoinColumns={@JoinColumn(name="degreeId", referencedColumnName="id")})
-     * @JoinTable(name="ActivityDegrees")
+     * @JoinTable(name="UAH_GAT_Activity_Degree", 
+     *          joinColumns={@JoinColumn(name="activity_id", referencedColumnName="id")},
+     *          inverseJoinColumns={@JoinColumn(name="degree_id", referencedColumnName="id")})
      **/
     private $studentProfile;
     
