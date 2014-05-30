@@ -3,10 +3,10 @@ security:
         Symfony\Component\Security\Core\User\User: plaintext
 
     role_hierarchy:
-        ROLE_STAFF_PAS: ROLE_STUDENT
-        ROLE_STAFF_PDI: ROLE_STUDENT
-        ROLE_ADMIN: [ROLE_STAFF_PAS,ROLE_STAFF_PDI]
-        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_UAH_STAFF_PAS: ROLE_UAH_STUDENT
+        ROLE_UAH_STAFF_PDI: ROLE_UAH_STUDENT
+        ROLE_UAH_ADMIN: [ROLE_UAH_STAFF_PAS,ROLE_UAH_STAFF_PDI]
+        ROLE_UAH_SUPER_ADMIN: [ROLE_UAH_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     firewalls:
         dev:

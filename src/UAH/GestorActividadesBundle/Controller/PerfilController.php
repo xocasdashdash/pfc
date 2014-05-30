@@ -16,13 +16,16 @@ class PerfilController extends Controller {
      * @Security("is_fully_authenticated()")
      */
     public function indexAction() {
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $this->getUser();
         if ($user) {
             $degree = $user->getDegreeId();
         }
+        $roles = implode(',',$user->getRoles());
+        
         return $this->render('UAHGestorActividadesBundle:Perfil:index.html.twig', array('user' => $user,
                     'degree' => $degree,
-            'items' => array()));
+            'items' => array(),
+            'roles' => $roles));
     }
 
     /**

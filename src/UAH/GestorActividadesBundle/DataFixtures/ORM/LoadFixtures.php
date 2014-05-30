@@ -137,23 +137,23 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $roles = array();
         //Roles
         $roles[] = new Role();
-        $roles[count($roles)-1]->setRole("UAH_STUDENT");
+        $roles[count($roles)-1]->setRole("ROLE_UAH_STUDENT");
         $roles[count($roles)-1]->setName("student");
         
         $roles[] = new Role();
-        $roles[count($roles)-1]->setRole("UAH_ADMIN");
+        $roles[count($roles)-1]->setRole("ROLE_UAH_ADMIN");
         $roles[count($roles)-1]->setName("admin");
         
         $roles[] = new Role();
-        $roles[count($roles)-1]->setRole("UAH_SUPER_ADMIN");
+        $roles[count($roles)-1]->setRole("ROLE_UAH_SUPER_ADMIN");
         $roles[count($roles)-1]->setName("super admin");
         
         $roles[] = new Role();
-        $roles[count($roles)-1]->setRole("UAH_STAFF_PAS");
+        $roles[count($roles)-1]->setRole("ROLE_UAH_STAFF_PAS");
         $roles[count($roles)-1]->setName("pass");
         
         $roles[] = new Role();
-        $roles[count($roles)-1]->setRole("UAH_STAFF_PDI");
+        $roles[count($roles)-1]->setRole("ROLE_UAH_STAFF_PDI");
         $roles[count($roles)-1]->setName("pdi");
         
         echo "Creados todos los roles\n";
@@ -205,8 +205,8 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $userMarta->addRole($roles[3]);
         
         echo "Guardando los usuarios...\n";
-        //$manager->persist($userAdmin);
-        //$manager->persist($userBolonio);
+        $manager->persist($userAdmin);
+        $manager->persist($userBolonio);
         $manager->persist($userMarta);
         $manager->persist($userAcevedo);
         $manager->flush();
