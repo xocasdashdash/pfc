@@ -10,8 +10,8 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-9" style="text-align:center">
-                    <h3>Datos del user</h3>
-                </div>
+                <h3>Datos del user</h3>
+            </div>
             <div class="col-lg-9 col-xs-9" id="left-block">                
                 {# Falta dejar esto para que se cargue con las variables del user #}
                 <div>
@@ -83,13 +83,18 @@
                 <tbody>
                     {% for row in items %}
                         <tr>
-                            {% for column in row %}
-                                {% if loop.first  %}<td>{{loop.index}}</td>{% endif %}
-                                <td>{{ column }}</td>
-                            {% endfor %}
+
+                            <td>{{loop.index}}</td>
+                            <td>{{ activity.name }}</td>
+                            <td>{{ enrollment.dateRegistered}}</td>
+                            <td>{{ enrollment.status_enrollment.status == 'STATUS_VERIFIED' }}</td>
+                            <td>{{ enrollment.recognizedCredits }}</td>
+
                         </tr>
                         {% else %}
-                            <tr><td colspan="6" class="text-center">No hemos encontrado ningún dato tuyo de actividades. <br>Porque no pruebas a inscribirte en alguna</td></tr>
+                            <tr>
+                                <td colspan="6" class="text-center">No hemos encontrado ningún dato tuyo de actividades. <br>Porque no pruebas a inscribirte en alguna</td>
+                            </tr>
 
                             {% endfor %}
                             </tbody>
