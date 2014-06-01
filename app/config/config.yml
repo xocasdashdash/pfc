@@ -79,7 +79,7 @@ parameters:
      
 parameters:
     pdo.db_options:
-        db_table:    UAH_GAT_session
+        db_table:    GAT_UAH_Session
         db_id_col:   session_id
         db_data_col: session_value
         db_time_col: session_time
