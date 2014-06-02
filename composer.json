@@ -26,8 +26,10 @@
         "fzaninotto/faker": "1.4.*@dev",
         "braincrafted/bootstrap-bundle": "~2.0",
         "fp/openid-bundle": "dev-master",
-        "oyejorge/less.php": "~1.5"
-    
+        "oyejorge/less.php": "~1.5",
+        "doctrine/migrations": "dev-master",
+        "doctrine/doctrine-migrations-bundle": "dev-master"
+
     },
     "scripts": {
         "post-install-cmd": [
@@ -39,12 +41,8 @@
             "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install",
             "echo 'Haciendo install...\n'",
             "mkdir -p web/upload/images",
-            "chmod -R 777 web/upload/",
-            "php app/console doctrine:schema:update --force",
-            "php app/console doctrine:query:sql 'DROP TABLE GAT_UAH_session'",
-            "php app/console doctrine:query:sql 'CREATE TABLE GAT_UAH_session (session_id varchar(255) NOT NULL, session_value varchar(4000) NOT NULL, session_time int(11) NOT NULL,    PRIMARY KEY (session_id));'",
+            "sudo chmod -R 777 web/upload/",
             "php app/console doctrine:fixtures:load"
-            
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
@@ -53,14 +51,7 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install",
-            "echo 'Haciendo update...\n'",
-            "mkdir -p web/upload/images",
-            "chmod -R 777 web/upload/",
-            "php app/console doctrine:schema:update --force",
-            "php app/console doctrine:fixtures:load",
-            "php app/console doctrine:query:sql 'DROP TABLE GAT_UAH_session'",
-            "php app/console doctrine:query:sql 'CREATE TABLE GAT_UAH_session (session_id varchar(255) NOT NULL, session_value varchar(4000) NOT NULL, session_time int(11) NOT NULL,    PRIMARY KEY (session_id))'"
-
+            "echo 'Haciendo update...\n'"           
         ]
     },
     "config": {

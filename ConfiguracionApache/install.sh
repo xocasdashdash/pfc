@@ -24,4 +24,7 @@ php ../composer.phar install
 #Arreglo la cache
 chmod -R 0777 app/dev/cache
 chmod -R 0777 app/dev/logs
+
+#Genero el script de la bd
+./app/console doctrine:schema:create --dump-sql|sed 's?FK_?'UAH_GAT_FK_'?' |sed 's?IDX_?'UAH_GAT_IDX_'?' > script_creacion.sql 
 cd -

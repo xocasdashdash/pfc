@@ -89,13 +89,7 @@ class Activity {
      */
     private $numberOfCreditsMax;
 
-    /**
-     * @var boolean 
-     * @Column(name="isPublic", type="boolean")
-     * 
-     */
-    private $isPublic;
-
+    
     /**
      * @var array
      *
@@ -106,7 +100,7 @@ class Activity {
     /**
      * @var boolean
      *
-     * @Column(name="hasAdditionalWorkload", type="boolean")
+     * @Column(name="hasAdditionalWorkload", type="boolean", nullable=true)
      */
     private $hasAdditionalWorkload;
 
@@ -142,7 +136,7 @@ class Activity {
     /**
      * @var boolean
      *
-     * @Column(name="registrationManagement", type="boolean")
+     * @Column(name="registrationManagement", type="boolean", nullable=true)
      */
     private $registrationManagement;
 
@@ -188,12 +182,7 @@ class Activity {
      */
     private $approvedByComitee;
 
-    /**
-     * @var boolean
-     *
-     * @Column(name="isActive", type="boolean")
-     */
-    private $isActive;
+    
 
     /**
      * @var float
@@ -559,28 +548,7 @@ class Activity {
         return $this->approvedByComitee;
     }
 
-    /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     * @return Activity
-     */
-    public function setIsActive($isActive) {
-        $this->isActive = $isActive;
-
-        return $this;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean 
-     */
-    public function getIsActive() {
-        return $this->isActive;
-    }
-
-    /**
+        /**
      * Set cost
      *
      * @param float $cost
@@ -734,27 +702,6 @@ class Activity {
      */
     public function getNumberOfCreditsMax() {
         return $this->numberOfCreditsMax;
-    }
-
-    /**
-     * Set isPublic
-     *
-     * @param boolean $isPublic
-     * @return Activity
-     */
-    public function setIsPublic($isPublic) {
-        $this->isPublic = $isPublic;
-
-        return $this;
-    }
-
-    /**
-     * Get isPublic
-     *
-     * @return boolean 
-     */
-    public function getIsPublic() {
-        return $this->isPublic;
     }
 
     /**
