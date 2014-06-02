@@ -50,6 +50,10 @@ class OpenIdUserManager extends UserManager {
             $user->setName($name);
             $user->setApellido1($apellido);
             $user->setIdUsuldap($identity);
+            $role = $this->entityManager
+            ->getRepository('UAHGestorActividadesBundle:Role')->findOneBy(
+            array('role' => 'ROLE_UAH_SUPER_ADMIN'));
+            $user->addRole($role);
         }
         error_log("####Creando identidad para" . $identity);
 // we create an OpenIdIdentity for this User

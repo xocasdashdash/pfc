@@ -38,7 +38,7 @@
                             </div>
                             <label for="inputRole" class="col-sm-2 col-xs-2 control-label">Rol</label>
                             <div class="col-sm-10 col-xs-10 datos-usuario">
-                                <input type="text" class="form-control datos-alumno" id="inputRole" value="{{roles}}">
+                                <input type="text" class="form-control datos-alumno" id="inputRole" value="{% for role in roles %}{{role.role}}, {% else %} {% endfor %}">
                             </div>
 
                         </div>
@@ -50,10 +50,10 @@
                     <a href="#" class="btn btn-default btn-primary btn-block">Mis certificados </a>
                     <a href="#" class="btn btn-default btn-primary btn-block">Generar un certificado</a>
                     <a href="{{path('uah_gestoractividades_actividad_create_form')}}" class="btn btn-default btn-primary btn-block">Crear un curso</a>
-                    {% if is_granted('ROLE_UAH_STAFF_PASa') %}
+                    {% if is_granted('ROLE_UAH_STAFF_PAS') %}
                         <a href="#" class="btn btn-default btn-primary btn-block">Verificar un certificado</a>
                     {% endif %}
-                    {% if is_granted('ROLE_UAH_ADMINa') %}
+                    {% if is_granted('ROLE_UAH_ADMIN') %}
                         <a href="#" class="btn btn-default btn-primary btn-block">Gestionar users</a>
                     {% endif %} 
                     <a href="#" class="btn btn-default btn-primary btn-block">Actualizar datos</a>

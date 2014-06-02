@@ -1,4 +1,4 @@
-<?php   
+<?php
 
 namespace UAH\GestorActividadesBundle\Entity;
 
@@ -12,11 +12,11 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Entity;
+
 /**
  * @Entity
  */
-class Status_activity extends Status{
-    
-    protected $discr = "activity";
-    
+class Statusenrollment extends Status {
+
+
 }

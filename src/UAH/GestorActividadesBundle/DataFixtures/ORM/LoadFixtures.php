@@ -17,9 +17,9 @@ use UAH\GestorActividadesBundle\DataFixtures\FakerProviders\UAHDegreeProvider as
 use UAH\GestorActividadesBundle\DataFixtures\FakerProviders\UAHActivityProvider as UAHActivityProvider;
 use UAH\GestorActividadesBundle\Entity\User as User;
 use UAH\GestorActividadesBundle\Entity\Role as Role;
-use UAH\GestorActividadesBundle\Entity\Status_activity as Status_activity;
+use UAH\GestorActividadesBundle\Entity\Statusactivity as Statusactivity;
 use UAH\GestorActividadesBundle\Entity\Status as Status;
-use UAH\GestorActividadesBundle\Entity\Status_enrollment as Status_enrollment;
+use UAH\GestorActividadesBundle\Entity\Statusenrollment as Statusenrollment;
 //use \Faker\Provider;
 use \Faker\Factory as FakerFactory;
 
@@ -37,42 +37,42 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         
         echo "Creando los estados..";        
         $statuses = array();
-        $statuses[] = new Status_activity();
+        $statuses[] = new Statusactivity();
         $statuses[count($statuses)-1]->setStatus("STATUS_PENDIENTE");
         $statuses[count($statuses)-1]->setNameEs("Pendiente de aprobación");
         $statuses[count($statuses)-1]->setNameEn("Pending aproval ");
         
-        $statuses[] = new Status_activity();
+        $statuses[] = new Statusactivity();
         $statuses[count($statuses)-1]->setStatus("STATUS_PUBLICADO");
         $statuses[count($statuses)-1]->setNameEs("Publicado");
         $statuses[count($statuses)-1]->setNameEn("Published");
         
-        $statuses[] = new Status_activity();
+        $statuses[] = new Statusactivity();
         $statuses[count($statuses)-1]->setStatus("STATUS_BORRADOR");
         $statuses[count($statuses)-1]->setNameEs("Borrador");
         $statuses[count($statuses)-1]->setNameEn("Draft");
         
-        $statuses[] = new Status_activity();
+        $statuses[] = new Statusactivity();
         $statuses[count($statuses)-1]->setStatus("STATUS_CERRADO");
         $statuses[count($statuses)-1]->setNameEs("Cerrado");
         $statuses[count($statuses)-1]->setNameEn("Closed");
         
-        $statuses[] = new Status_activity();
+        $statuses[] = new Statusactivity();
         $statuses[count($statuses)-1]->setStatus("STATUS_APROBADO");
         $statuses[count($statuses)-1]->setNameEs("Aprobado");
         $statuses[count($statuses)-1]->setNameEn("Approved");
         
-        $statuses[] = new Status_enrollment();
+        $statuses[] = new Statusenrollment();
         $statuses[count($statuses)-1]->setStatus("STATUS_INSCRITO");
         $statuses[count($statuses)-1]->setNameEs("Inscrito");
         $statuses[count($statuses)-1]->setNameEn("Enrolled");
         
-        $statuses[] = new Status_enrollment();
+        $statuses[] = new Statusenrollment();
         $statuses[count($statuses)-1]->setStatus("STATUS_VERIFICADO");
         $statuses[count($statuses)-1]->setNameEs("Verificado");
         $statuses[count($statuses)-1]->setNameEn("Verified");
         
-        $statuses[] = new Status_enrollment();
+        $statuses[] = new Statusenrollment();
         $statuses[count($statuses)-1]->setStatus("STATUS_RECONOCIDO");
         $statuses[count($statuses)-1]->setNameEs("Reconocido");
         $statuses[count($statuses)-1]->setNameEn("Recognized");
@@ -157,9 +157,7 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         return $faker->slug;
     }, 'cost' => function() use($faker) {
         return 0;
-    }, 'status' => function () use($faker) {
-        return $faker->status;
-    }, 'numberOfECTSCreditsMin' => function() use($faker) {
+    },  'numberOfECTSCreditsMin' => function() use($faker) {
         return $faker->randomFloat(1, 0, 10);
     }, 'numberOfECTSCreditsMax' => function() use($faker) {
         return $faker->randomFloat(1, 0, 10);
@@ -175,9 +173,9 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         return $faker->randomFloat(1, 0, 30);
     }, 'description' => function() use($faker) {
         return $faker->realText(1000, 4);
-    }, 'image' => function() use($faker) {
+    }, 'image_path' => function() use($faker) {
         $image_route = $faker->image("web/upload/images", 240, 320);
-        $image_route = explode("web/", $image_route);
+        $image_route = explode("web/upload/images/", $image_route);
         $image_route = $image_route[1];
         return $image_route;
     }, 'publicityStartDate' => function() use($faker) {
@@ -241,7 +239,7 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $userAcevedo->setEmail('javier.acevedo@uah.es');
         $userAcevedo->setType('staff');
         $userAcevedo->setIdUsuldap("http://yo.rediris.es/soy/javier.acevedo@uah.es/");
-        $userAcevedo->addRole($roles[1]);
+        $userAcevedo->addRole($roles[2]);
 
         //Marta
         echo "Creando el usuario Marta\n";
@@ -257,10 +255,11 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $userMarta->addRole($roles[3]);
         
         echo "Guardando los usuarios...\n";
-        $manager->persist($userAdmin);
+        //$manager->persist($userAdmin);
         $manager->persist($userBolonio);
         $manager->persist($userMarta);
         $manager->persist($userAcevedo);
+        $manager->flush();
         echo "Usuarios guardados\n";
         
     }

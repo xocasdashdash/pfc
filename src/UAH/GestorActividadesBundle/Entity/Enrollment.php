@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
@@ -64,8 +64,8 @@ class Enrollment {
     
     /**
      * @var int Estado del registro
-     * @OneToOne(targetEntity="Status_enrollment")
-     * @JoinColumn(name="status_enrollment", referencedColumnName="id")
+     * @OneToOne(targetEntity="Statusenrollment")
+     * @JoinColumn(name="status", referencedColumnName="id")
      */
     private $status;
     /**
@@ -291,26 +291,26 @@ class Enrollment {
 
 
     /**
-     * Set status_enrollment
+     * Set Statusenrollment
      *
-     * @param \UAH\GestorActividadesBundle\Entity\Status_enrollment $statusEnrollment
+     * @param \UAH\GestorActividadesBundle\Entity\Statusenrollment $Statusenrollment
      * @return Enrollment
      */
-    public function setStatusEnrollment(\UAH\GestorActividadesBundle\Entity\Status_enrollment $statusEnrollment = null)
+    public function setStatusenrollment(\UAH\GestorActividadesBundle\Entity\Statusenrollment $Statusenrollment = null)
     {
-        $this->status_enrollment = $statusEnrollment;
+        $this->Statusenrollment = $Statusenrollment;
 
         return $this;
     }
 
     /**
-     * Get status_enrollment
+     * Get Statusenrollment
      *
-     * @return \UAH\GestorActividadesBundle\Entity\Status_enrollment 
+     * @return \UAH\GestorActividadesBundle\Entity\Statusenrollment 
      */
-    public function getStatusEnrollment()
+    public function getStatusenrollment()
     {
-        return $this->status_enrollment;
+        return $this->Statusenrollment;
     }
 
     /**
@@ -334,5 +334,28 @@ class Enrollment {
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set status
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Statusenrollment $status
+     * @return Enrollment
+     */
+    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusenrollment $status = null)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return \UAH\GestorActividadesBundle\Entity\Statusenrollment 
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 }

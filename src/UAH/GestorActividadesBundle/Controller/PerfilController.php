@@ -20,8 +20,9 @@ class PerfilController extends Controller {
         if ($user) {
             $degree = $user->getDegreeId();
         }
-        $roles = implode(',',$user->getRoles());
-        
+        $roles = $this->getUser()->getUserRoles();
+        //var_dump($roles);
+
         return $this->render('UAHGestorActividadesBundle:Perfil:index.html.twig', array('user' => $user,
                     'degree' => $degree,
             'items' => array(),

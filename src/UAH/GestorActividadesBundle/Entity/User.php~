@@ -210,11 +210,11 @@ class User implements UserInterface {
     /**
      * Set degreeId
      *
-     * @param \UAH\GestorActividadesBundle\Entity\Degree $degreeId
+     * @param \UAH\GestorActividadesBundle\Entity\Degree $degree_id
      * @return User
      */
-    public function setDegreeId(\UAH\GestorActividadesBundle\Entity\Degree $degreeId) {
-        $this->degreeId = $degreeId;
+    public function setDegreeId(\UAH\GestorActividadesBundle\Entity\Degree $degree_id) {
+        $this->degree_id = $degree_id;
 
         return $this;
     }
@@ -225,7 +225,7 @@ class User implements UserInterface {
      * @return \UAH\GestorActividadesBundle\Entity\Degree 
      */
     public function getDegreeId() {
-        return $this->degreeId;
+        return $this->degree_id;
     }
 
     public function eraseCredentials() {
@@ -237,7 +237,7 @@ class User implements UserInterface {
         foreach ($this->roles as $role) {
             $roles[] = $role->getRole();
         }
-        //return $this->roles;
+        return $this->roles;
         return $roles;
     }
 
