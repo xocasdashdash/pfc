@@ -64,7 +64,7 @@ class Enrollment {
     
     /**
      * @var int Estado del registro
-     * @OneToOne(targetEntity="Statusenrollment")
+     * @ManyToOne(targetEntity="Statusenrollment")
      * @JoinColumn(name="status", referencedColumnName="id")
      */
     private $status;

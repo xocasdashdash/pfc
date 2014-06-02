@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use UAH\GestorActividadesBundle\Entity\OpenIdIdentity;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
+use UAH\GestorActividadesBundle\Entity\DefaultPermit as DefaultPermit;
 use UAH\GestorActividadesBundle\Entity\User as User;
 
 class OpenIdUserManager extends UserManager {
@@ -50,10 +51,17 @@ class OpenIdUserManager extends UserManager {
             $user->setName($name);
             $user->setApellido1($apellido);
             $user->setIdUsuldap($identity);
-            $role = $this->entityManager
-            ->getRepository('UAHGestorActividadesBundle:Role')->findOneBy(
-            array('role' => 'ROLE_UAH_SUPER_ADMIN'));
-            $user->addRole($role);
+            $roles = $this->entityManager->getRepository('UAHGestorActividadesBundle:DefaultPermit')->findOneBy(
+                            array('id_usuldap' => $identity))->getRoles();
+            if (!$roles) {
+                $role = $this->entityManager
+                                ->getRepository('UAHGestorActividadesBundle:Role')->findOneBy(
+                        array('role' => 'ROLE_UAH_STUDENT'));
+            } else {
+                foreach ($roles as $role) {
+                    $user->addRole($role);
+                }
+            }
         }
         error_log("####Creando identidad para" . $identity);
 // we create an OpenIdIdentity for this User

@@ -236,9 +236,11 @@ class User implements UserInterface {
         $roles = array();
         foreach ($this->roles as $role) {
             $roles[] = $role->getRole();
-        }
-        return $this->roles;
+        }        
         return $roles;
+    }
+    public function getUserRoles(){
+        return $this->roles;
     }
 
     public function getSalt() {

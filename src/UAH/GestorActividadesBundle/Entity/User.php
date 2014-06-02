@@ -100,8 +100,8 @@ class User implements UserInterface {
     /**
      * @ManyToMany(targetEntity="Role", inversedBy="users",cascade={"persist"})
      * @JoinTable(name="UAH_GAT_User_Roles",
-     * joinColumns={@JoinColumn(name="role_id", referencedColumnName="id")},
-     * inverseJoinColumns={@JoinColumn(name="user_id", referencedColumnName="id")})
+     * joinColumns={@JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")},
+     * inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")})
      */
     private $roles;
 

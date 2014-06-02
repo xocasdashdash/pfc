@@ -817,7 +817,7 @@ class Activity {
      * @return string 
      */
     public function getImagePath() {
-        return $this->image_path;
+        return $this->getImageWebPath();//image_path;
     }
 
     /**
@@ -842,11 +842,11 @@ class Activity {
     }
 
     public function getAbsolutePath() {
-        return null === $this->path ? null : $this->getUploadRootDir() . '/' . $this->image_path;
+        return null === $this->image_path ? null : $this->getUploadRootDir() . '/' . $this->image_path;
     }
 
-    public function getWebPath() {
-        return null === $this->path ? null : $this->getUploadDir() . '/' . $this->image_path;
+    public function getImageWebPath() {
+        return null === $this->image_path ? null : $this->getUploadDir() . '/' . $this->image_path;
     }
 
     protected function getUploadRootDir() {

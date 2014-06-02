@@ -204,7 +204,7 @@ class Activity {
 
     /**
      * @var int Estado del registro
-     * @OneToOne(targetEntity="Statusactivity")
+     * @ManyToOne(targetEntity="Statusactivity")
      * @JoinColumn(name="status_activity", referencedColumnName="id")
      */
     private $status;

@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping\DiscriminatorMap;
  * @Entity
  * @InheritanceType("SINGLE_TABLE")
  * @DiscriminatorColumn(name="discr", type="string")
- * @DiscriminatorMap({"activity" = "Statusactivity", "enrollment" = "Statusenrollment"})
+ * @DiscriminatorMap({"activity" = "Statusactivity", "enrollment" = "Statusenrollment", "degree" ="Statusdegree"})
  */
 class Status{
     
