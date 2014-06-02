@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping\Entity;
 /**
  * @Entity
  */
-class Statusenrollment extends Status {
-
-
+class Statusdegree extends Status {
+    
 }

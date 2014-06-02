@@ -17,6 +17,7 @@ use UAH\GestorActividadesBundle\DataFixtures\FakerProviders\UAHDegreeProvider as
 use UAH\GestorActividadesBundle\DataFixtures\FakerProviders\UAHActivityProvider as UAHActivityProvider;
 use UAH\GestorActividadesBundle\Entity\User as User;
 use UAH\GestorActividadesBundle\Entity\Role as Role;
+use UAH\GestorActividadesBundle\Entity\DefaultPermit as DefaultPermit;
 use UAH\GestorActividadesBundle\Entity\Statusactivity as Statusactivity;
 use UAH\GestorActividadesBundle\Entity\Status as Status;
 use UAH\GestorActividadesBundle\Entity\Statusenrollment as Statusenrollment;
@@ -34,55 +35,55 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
      * {@inheritDoc}
      */
     public function load(ObjectManager $manager) {
-        
-        echo "Creando los estados..";        
+
+        echo "Creando los estados..";
         $statuses = array();
         $statuses[] = new Statusactivity();
-        $statuses[count($statuses)-1]->setStatus("STATUS_PENDIENTE");
-        $statuses[count($statuses)-1]->setNameEs("Pendiente de aprobación");
-        $statuses[count($statuses)-1]->setNameEn("Pending aproval ");
-        
+        $statuses[count($statuses) - 1]->setStatus("STATUS_PENDIENTE");
+        $statuses[count($statuses) - 1]->setNameEs("Pendiente de aprobación");
+        $statuses[count($statuses) - 1]->setNameEn("Pending aproval ");
+
         $statuses[] = new Statusactivity();
-        $statuses[count($statuses)-1]->setStatus("STATUS_PUBLICADO");
-        $statuses[count($statuses)-1]->setNameEs("Publicado");
-        $statuses[count($statuses)-1]->setNameEn("Published");
-        
+        $statuses[count($statuses) - 1]->setStatus("STATUS_PUBLICADO");
+        $statuses[count($statuses) - 1]->setNameEs("Publicado");
+        $statuses[count($statuses) - 1]->setNameEn("Published");
+
         $statuses[] = new Statusactivity();
-        $statuses[count($statuses)-1]->setStatus("STATUS_BORRADOR");
-        $statuses[count($statuses)-1]->setNameEs("Borrador");
-        $statuses[count($statuses)-1]->setNameEn("Draft");
-        
+        $statuses[count($statuses) - 1]->setStatus("STATUS_BORRADOR");
+        $statuses[count($statuses) - 1]->setNameEs("Borrador");
+        $statuses[count($statuses) - 1]->setNameEn("Draft");
+
         $statuses[] = new Statusactivity();
-        $statuses[count($statuses)-1]->setStatus("STATUS_CERRADO");
-        $statuses[count($statuses)-1]->setNameEs("Cerrado");
-        $statuses[count($statuses)-1]->setNameEn("Closed");
-        
+        $statuses[count($statuses) - 1]->setStatus("STATUS_CERRADO");
+        $statuses[count($statuses) - 1]->setNameEs("Cerrado");
+        $statuses[count($statuses) - 1]->setNameEn("Closed");
+
         $statuses[] = new Statusactivity();
-        $statuses[count($statuses)-1]->setStatus("STATUS_APROBADO");
-        $statuses[count($statuses)-1]->setNameEs("Aprobado");
-        $statuses[count($statuses)-1]->setNameEn("Approved");
-        
+        $statuses[count($statuses) - 1]->setStatus("STATUS_APROBADO");
+        $statuses[count($statuses) - 1]->setNameEs("Aprobado");
+        $statuses[count($statuses) - 1]->setNameEn("Approved");
+
         $statuses[] = new Statusenrollment();
-        $statuses[count($statuses)-1]->setStatus("STATUS_INSCRITO");
-        $statuses[count($statuses)-1]->setNameEs("Inscrito");
-        $statuses[count($statuses)-1]->setNameEn("Enrolled");
-        
+        $statuses[count($statuses) - 1]->setStatus("STATUS_INSCRITO");
+        $statuses[count($statuses) - 1]->setNameEs("Inscrito");
+        $statuses[count($statuses) - 1]->setNameEn("Enrolled");
+
         $statuses[] = new Statusenrollment();
-        $statuses[count($statuses)-1]->setStatus("STATUS_VERIFICADO");
-        $statuses[count($statuses)-1]->setNameEs("Verificado");
-        $statuses[count($statuses)-1]->setNameEn("Verified");
-        
+        $statuses[count($statuses) - 1]->setStatus("STATUS_VERIFICADO");
+        $statuses[count($statuses) - 1]->setNameEs("Verificado");
+        $statuses[count($statuses) - 1]->setNameEn("Verified");
+
         $statuses[] = new Statusenrollment();
-        $statuses[count($statuses)-1]->setStatus("STATUS_RECONOCIDO");
-        $statuses[count($statuses)-1]->setNameEs("Reconocido");
-        $statuses[count($statuses)-1]->setNameEn("Recognized");
-        
+        $statuses[count($statuses) - 1]->setStatus("STATUS_RECONOCIDO");
+        $statuses[count($statuses) - 1]->setNameEs("Reconocido");
+        $statuses[count($statuses) - 1]->setNameEn("Recognized");
+
         foreach ($statuses as $status) {
             $manager->persist($status);
-        }        
+        }
         $manager->flush();
         echo "Estados creados\n";
-        
+
         $faker = FakerFactory::create('es_ES');
         $faker->addProvider(new UAHUserProvider($faker));
         $faker->addProvider(new UAHDegreeProvider($faker));
@@ -157,7 +158,7 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         return $faker->slug;
     }, 'cost' => function() use($faker) {
         return 0;
-    },  'numberOfECTSCreditsMin' => function() use($faker) {
+    }, 'numberOfECTSCreditsMin' => function() use($faker) {
         return $faker->randomFloat(1, 0, 10);
     }, 'numberOfECTSCreditsMax' => function() use($faker) {
         return $faker->randomFloat(1, 0, 10);
@@ -183,30 +184,63 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
     }
         ));
         $populator->execute();
+        
+        echo "Creando los roles...";
 
         $roles = array();
         //Roles
         $roles[] = new Role();
-        $roles[count($roles)-1]->setRole("ROLE_UAH_STUDENT");
-        $roles[count($roles)-1]->setName("student");
-        
+        $roles[count($roles) - 1]->setRole("ROLE_UAH_STUDENT");
+        $roles[count($roles) - 1]->setName("student");
+
         $roles[] = new Role();
-        $roles[count($roles)-1]->setRole("ROLE_UAH_ADMIN");
-        $roles[count($roles)-1]->setName("admin");
-        
+        $roles[count($roles) - 1]->setRole("ROLE_UAH_ADMIN");
+        $roles[count($roles) - 1]->setName("admin");
+
         $roles[] = new Role();
-        $roles[count($roles)-1]->setRole("ROLE_UAH_SUPER_ADMIN");
-        $roles[count($roles)-1]->setName("super admin");
-        
+        $roles[count($roles) - 1]->setRole("ROLE_UAH_SUPER_ADMIN");
+        $roles[count($roles) - 1]->setName("super admin");
+
         $roles[] = new Role();
-        $roles[count($roles)-1]->setRole("ROLE_UAH_STAFF_PAS");
-        $roles[count($roles)-1]->setName("pass");
-        
+        $roles[count($roles) - 1]->setRole("ROLE_UAH_STAFF_PAS");
+        $roles[count($roles) - 1]->setName("pass");
+
         $roles[] = new Role();
-        $roles[count($roles)-1]->setRole("ROLE_UAH_STAFF_PDI");
-        $roles[count($roles)-1]->setName("pdi");
+        $roles[count($roles) - 1]->setRole("ROLE_UAH_STAFF_PDI");
+        $roles[count($roles) - 1]->setName("pdi");
         
+        foreach ($roles as $role) {
+            $manager->persist($role);
+        }
+        $manager->flush();
         echo "Creados todos los roles\n";
+
+        echo "Creando los permisos...";
+        $defaultpermits = array();
+        $defaultpermits[] = new DefaultPermit();
+        $defaultpermits[count($defaultpermits) - 1]->addRole($roles[2]);
+        $defaultpermits[count($defaultpermits) - 1]->setIdUsuldap("http://yo.rediris.es/soy/joaquin.fernandez@uah.es/");
+
+        $defaultpermits[] = new DefaultPermit();
+        $defaultpermits[count($defaultpermits) - 1]->addRole($roles[4]);
+        $defaultpermits[count($defaultpermits) - 1]->setIdUsuldap("http://yo.rediris.es/soy/adrian.bolonio@uah.es/");
+
+        $defaultpermits[] = new DefaultPermit();
+        $defaultpermits[count($defaultpermits) - 1]->addRole($roles[2]);
+        $defaultpermits[count($defaultpermits) - 1]->setIdUsuldap("http://yo.rediris.es/soy/javier.acevedo@uah.es/");
+
+        $defaultpermits[] = new DefaultPermit();
+        $defaultpermits[count($defaultpermits) - 1]->addRole($roles[0]);
+        $defaultpermits[count($defaultpermits) - 1]->setIdUsuldap("http://yo.rediris.es/soy/marta.lumeras@uah.es/");
+
+
+        foreach ($defaultpermits as $defaultpermit) {
+            $manager->persist($defaultpermit);
+        }
+        $manager->flush();
+
+        echo "Permisos creados\n";
+
         echo "Creando el usuario Joaquin\n";
         $userAdmin = new User();
         $userAdmin->setName('Joaquin');
@@ -218,7 +252,7 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $em_degree = $manager->getRepository('UAHGestorActividadesBundle:Degree');
         $userAdmin->setDegreeId($em_degree->findAll()[array_rand($em_degree->findAll())]);
         $userAdmin->addRole($roles[2]);
-        
+
         echo "Creando el usuario Bolonio\n";
         $userBolonio = new User();
         $userBolonio->setName('Adrián');
@@ -253,7 +287,7 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $em_degree = $manager->getRepository('UAHGestorActividadesBundle:Degree');
         $userMarta->setDegreeId($em_degree->findAll()[array_rand($em_degree->findAll())]);
         $userMarta->addRole($roles[3]);
-        
+
         echo "Guardando los usuarios...\n";
         //$manager->persist($userAdmin);
         $manager->persist($userBolonio);
@@ -261,7 +295,6 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $manager->persist($userAcevedo);
         $manager->flush();
         echo "Usuarios guardados\n";
-        
     }
 
     /**

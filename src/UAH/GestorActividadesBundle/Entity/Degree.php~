@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
@@ -49,6 +50,13 @@ class Degree {
      * @Column(name="academicCode", type="string", length=255)
      */
     private $academicCode;
+    
+    /**
+     * @var int Estado del registro
+     * @OneToOne(targetEntity="Statusdegree")
+     * @JoinColumn(name="status_degree", referencedColumnName="id")
+     */
+    private $status;
 
     /**
      * Get id
@@ -122,4 +130,27 @@ class Degree {
         return $this->academicCode;
     }
 
+
+    /**
+     * Set status
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Statusdegree $status
+     * @return Degree
+     */
+    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusdegree $status = null)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return \UAH\GestorActividadesBundle\Entity\Statusdegree 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
 }
