@@ -52,15 +52,16 @@ class OpenIdUserManager extends UserManager {
             $user->setApellido1($apellido);
             $user->setIdUsuldap($identity);
             $roles = $this->entityManager->getRepository('UAHGestorActividadesBundle:DefaultPermit')->findOneBy(
-                            array('id_usuldap' => $identity))->getRoles();
-            if (!$roles) {
-                $role = $this->entityManager
-                                ->getRepository('UAHGestorActividadesBundle:Role')->findOneBy(
-                        array('role' => 'ROLE_UAH_STUDENT'));
-            } else {
+                    array('id_usuldap' => $identity));
+            if ($roles) {
+                $roles = $roles->getRoles();
                 foreach ($roles as $role) {
                     $user->addRole($role);
                 }
+            } else {
+                $role = $this->entityManager
+                                ->getRepository('UAHGestorActividadesBundle:Role')->findOneBy(
+                        array('role' => 'ROLE_UAH_STUDENT'));
             }
         }
         error_log("####Creando identidad para" . $identity);
