@@ -12,12 +12,14 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 
 /**
  * Enrollment
  *
  * @Table(name="UAH_GAT_Enrollment")
- * @Entity
+ * @Entity(repositoryClass="Repository\EnrollmentRepository")
+ * @HasLifecycleCallbacks
  */
 class Enrollment {
     
@@ -164,48 +166,6 @@ class Enrollment {
     }
 
     /**
-     * Set actividad
-     *
-     * @param \UAH\GestorActividadesBundle\Entity\Activity $actividad
-     * @return Enrollment
-     */
-    public function setActividad(\UAH\GestorActividadesBundle\Entity\Activity $actividad) {
-        $this->actividad = $actividad;
-
-        return $this;
-    }
-
-    /**
-     * Get actividad
-     *
-     * @return \UAH\GestorActividadesBundle\Entity\Activity 
-     */
-    public function getActividad() {
-        return $this->actividad;
-    }
-
-    /**
-     * Set applicationForm
-     *
-     * @param \UAH\GestorActividadesBundle\Entity\Application $applicationForm
-     * @return Enrollment
-     */
-    public function setApplication(\UAH\GestorActividadesBundle\Entity\Application $applicationForm = null) {
-        $this->applicationForm = $applicationForm;
-
-        return $this;
-    }
-
-    /**
-     * Get applicationForm
-     *
-     * @return \UAH\GestorActividadesBundle\Entity\Application 
-     */
-    public function getApplication() {
-        return $this->applicationForm;
-    }
-
-    /**
      * Set recognizedCredits
      *
      * @param float $recognizedCredits
@@ -289,30 +249,6 @@ class Enrollment {
         return $this->applicationForm;
     }
 
-
-    /**
-     * Set Statusenrollment
-     *
-     * @param \UAH\GestorActividadesBundle\Entity\Statusenrollment $Statusenrollment
-     * @return Enrollment
-     */
-    public function setStatusenrollment(\UAH\GestorActividadesBundle\Entity\Statusenrollment $Statusenrollment = null)
-    {
-        $this->Statusenrollment = $Statusenrollment;
-
-        return $this;
-    }
-
-    /**
-     * Get Statusenrollment
-     *
-     * @return \UAH\GestorActividadesBundle\Entity\Statusenrollment 
-     */
-    public function getStatusenrollment()
-    {
-        return $this->Statusenrollment;
-    }
-
     /**
      * Set user
      *
@@ -357,5 +293,19 @@ class Enrollment {
     public function getStatus()
     {
         return $this->status;
+    }
+    
+    /**
+     * @PrePersist
+     */
+    public function prepare(){
+        if(is_null($this->getDateRegistered())){
+            $this->setDateRegistered(new DateTime("now"));
+        }
+        if(is_null($this->getStatus())){
+            $em = $this->getDoctrine()->getManager();
+            $default_status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getDefault();
+            $this->setStatus($default_status);
+        }
     }
 }
