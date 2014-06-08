@@ -8,16 +8,17 @@
 
 namespace UAH\GestorActividadesBundle\Repository;
 
+use Doctrine\ORM\EntityRepository;
+
 class StatusEnrollmentRepository extends EntityRepository {
 
     /**
      * 
      * @return Esta funcion devuelve el valor por defecto que tienen los enrollment.
      */
-    public function getDefault(){
-        $resultado = $this->getEntityManager->getRepository('UAHGestorActividadesBundle:Statusenrollment')->
-                        findOneBy(array(
-                            'status' => 'STATUS_INSCRITO'));
+    public function getDefault() {
+        $resultado = $this->findOneBy(array(
+            'status' => 'STATUS_INSCRITO'));
         return $resultado;
     }
 

@@ -11,7 +11,6 @@ namespace UAH\GestorActividadesBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use \Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use UAH\GestorActividadesBundle\Entity\TuibPersonaUser as TuibPersonaUser;
 use UAH\GestorActividadesBundle\DataFixtures\FakerProviders\UAHUserProvider as UAHUserProvider;
 use UAH\GestorActividadesBundle\DataFixtures\FakerProviders\UAHDegreeProvider as UAHDegreeProvider;
 use UAH\GestorActividadesBundle\DataFixtures\FakerProviders\UAHActivityProvider as UAHActivityProvider;
@@ -92,26 +91,6 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
 
         $faker->seed(10);
         $populator = new \Faker\ORM\Doctrine\Populator($faker, $manager);
-        //Personas de la bd
-        $populator->addEntity('UAHGestorActividadesBundle:TuibPersonaUser', 10, array(
-            'nomprs' => function() use ($faker) {
-        return $faker->nomprs();
-    },
-            'll1prs' => function() use($faker) {
-        return $faker->ll1prs();
-    },
-            'll2prs' => function() use($faker) {
-        return $faker->ll2prs();
-    },
-            'tlfprs' => function() use($faker) {
-        return $faker->tlfprs();
-    },
-            'id_usuldap' => null,
-            'email' => null,
-                ), array(function($vista) {
-        $vista->create_id_usuldap();
-        $vista->create_email();
-    },));
         //Grados
         $populator->addEntity('UAHGestorActividadesBundle:Degree', 20, array(
             'name' => function() use ($faker) {
@@ -120,7 +99,7 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
             'knowledgeArea' => function() use ($faker) {
         return $faker->knowledge_areas();
     }, 'academicCode' => function() use ($faker) {
-        return "G" . $faker->unique()->randomNumber(null, 100);
+        return "G" . $faker->unique()->numberBetween(0, 100);
     },
         ));
         //Usuarios
@@ -169,7 +148,7 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
     }, 'numberOfPlacesOccupied' => function() use($faker) {
         return 0;
     }, 'numberOfPlacesOffered' => function() use($faker) {
-        return $faker->randomNumber(null, 100);
+        return $faker->numberBetween(0, 100);
     }, 'numberOfHours' => function() use($faker) {
         return $faker->randomFloat(1, 0, 30);
     }, 'description' => function() use($faker) {
