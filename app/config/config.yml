@@ -103,6 +103,11 @@ services:
     session.handler.pdo:
         class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
         arguments: ["@pdo", "%pdo.db_options%"]
+    #Esto lo hago para evitar problemas con campos Date (https://github.com/doctrine/DoctrineBundle/issues/217)
+    oracle.listener:
+        class: Doctrine\DBAL\Event\Listeners\OracleSessionInit 
+        tags:
+            - { name: doctrine.event_listener, event: postConnect }
 braincrafted_bootstrap:
     output_dir: bootstrap
     assets_dir: %vendor_dir%/bootstrap
