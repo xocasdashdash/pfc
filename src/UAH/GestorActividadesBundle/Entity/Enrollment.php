@@ -13,6 +13,8 @@ use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\ORM\Mapping\PrePersist;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**
  * Enrollment
@@ -298,12 +300,12 @@ class Enrollment {
     /**
      * @PrePersist
      */
-    public function prepare(){
+    public function prepare(LifecycleEventArgs $event){
         if(is_null($this->getDateRegistered())){
             $this->setDateRegistered(new DateTime("now"));
         }
         if(is_null($this->getStatus())){
-            $em = $this->getDoctrine()->getManager();
+            $em = $event->getEntityManager();
             $default_status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getDefault();
             $this->setStatus($default_status);
         }

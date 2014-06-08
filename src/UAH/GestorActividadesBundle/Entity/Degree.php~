@@ -53,7 +53,7 @@ class Degree {
     
     /**
      * @var int Estado del registro
-     * @OneToOne(targetEntity="Statusdegree")
+     * @ManyToOne(targetEntity="Statusdegree")
      * @JoinColumn(name="status_degree", referencedColumnName="id")
      */
     private $status;
