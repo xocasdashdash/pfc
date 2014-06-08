@@ -21,8 +21,9 @@ framework:
     session:         ~
     fragments:       ~
     http_method_override: true
+    #Aqui va 
     session:
-        handler_id: session.handler.pdo
+        handler_id: session.handler.oci8
 
 # Twig Configuration
 twig:
@@ -82,7 +83,7 @@ sensio_framework_extra:
 parameters:
      
 parameters:
-    pdo.db_options:
+    oci8.db_options:
         db_table:    UAH_GAT_Session
         db_id_col:   session_id
         db_data_col: session_value
@@ -91,18 +92,22 @@ parameters:
 
 
 services:
-    pdo:
-        class: PDO
-        arguments:
-            - "mysql:host=%database_host%;port=%database_port%;dbname=%database_name%"
-            - "%database_user%"
-            - "%database_password%"
-        calls:
-            - [setAttribute, [3, 2]] # \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
+#    oci:
+#        class: PDO
+#        arguments:
+#            #- "mysql:host=%database_host%;port=%database_port%;dbname=%database_name%"
+#            - "oracle:host=localhost:1521:xef"
+#            - "%database_user%"
+#            - "%database_password%"
+#        calls:
+#            - [setAttribute, [3, 2]] # \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION
 
-    session.handler.pdo:
-        class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
-        arguments: ["@pdo", "%pdo.db_options%"]
+    session.handler.oci8:
+        # Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        class:     UAH\GestorActividadesBundle\Services\DoctrineSessionHandler 
+        #arguments: ["@doctrine.dbal.default_connection", "%pdo.db_options%"]
+        arguments: ["@doctrine.dbal.default_connection", "%oci8.db_options%"]
+    
     #Esto lo hago para evitar problemas con campos Date (https://github.com/doctrine/DoctrineBundle/issues/217)
     oracle.listener:
         class: Doctrine\DBAL\Event\Listeners\OracleSessionInit 
