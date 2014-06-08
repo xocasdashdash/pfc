@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping\PostRemove;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use UAH\GestorActividadesBundle\Entity\Degree as Degree;
-
+use Doctrine\ORM\Event\LifecycleEventArgs;
 /**
  * Activity
  *
@@ -89,7 +89,6 @@ class Activity {
      */
     private $numberOfCreditsMax;
 
-    
     /**
      * @var array
      *
@@ -181,8 +180,6 @@ class Activity {
      * @Column(name="approvedByComitee", type="boolean")
      */
     private $approvedByComitee;
-
-    
 
     /**
      * @var float
@@ -548,7 +545,7 @@ class Activity {
         return $this->approvedByComitee;
     }
 
-        /**
+    /**
      * Set cost
      *
      * @param float $cost
@@ -764,7 +761,7 @@ class Activity {
      * @return string 
      */
     public function getImagePath() {
-        return $this->getImageWebPath();//image_path;
+        return $this->getImageWebPath(); //image_path;
     }
 
     /**
@@ -809,12 +806,10 @@ class Activity {
     }
 
     /**
-     * @PrePersist()
-     * @PreUpdate()
+     * @PrePersist
+     * @PreUpdate
      */
-    public function preUpload() {
-
-
+    public function preUpload(LifecycleEventArgs $event) {
 
         // Genero un slug para cada actividad
         // replace non letter or digits by -
@@ -837,6 +832,11 @@ class Activity {
             // do whatever you want to generate a unique name
             $filename = sha1($this->getSlug() . uniqid(mt_rand(), true));
             $this->image_path = $filename . '.' . $this->getImageBlob()->guessExtension();
+        }
+        if (is_null($this->getStatus())) {
+            $em = $event->getEntityManager();
+            $default_status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getDefault();
+            $this->setStatus($default_status);
         }
     }
 

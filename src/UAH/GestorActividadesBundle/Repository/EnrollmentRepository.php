@@ -7,6 +7,7 @@
  */
 
 namespace UAH\GestorActividadesBundle\Repository;
+use Doctrine\ORM\EntityRepository;
 
 class EnrollmentRepository extends EntityRepository {
 
