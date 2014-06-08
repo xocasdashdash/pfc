@@ -9,7 +9,9 @@ vendor/*
 */cache/*
 app/dev/cache
 app/dev/logs
+app/dev/*
 app/prod/*
+
 
 web/uploads/*
 web/bundles/*
