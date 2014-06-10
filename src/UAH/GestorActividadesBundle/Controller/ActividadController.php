@@ -17,7 +17,7 @@ class ActividadController extends Controller {
      */
     public function indexAction($id) {
         
-    }
+    } 
 
     /**
      * @Route("/actividad/create", name="uah_gestoractividades_actividad_create_form")

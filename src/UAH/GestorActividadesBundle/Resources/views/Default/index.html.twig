@@ -12,7 +12,7 @@
         {% set num_veces = 0 %}
         <div class="row" id="cont-basico">
             {% for activity in activities %}
-                <div class="col-lg-8 col-md-8 col-lg-offset-4 col-md-offset-4 actividad">
+                <div class="col-lg-8 col-md-8 col-lg-offset-4 col-md-offset-4 actividad" data-activity-id="{{activity.id}}">
                     <div class="row"><div class="col-md-8">
                             <h3 class="titulo-actividad">{{activity.name}}</h3>
                             <div class="abstract-actividad ocultado-vertical">
@@ -25,7 +25,7 @@
                             <a href="#" class="thumbnail ">
                                 <img class="imagen-actividad" src="{{asset(activity.imagepath)}}" style="width: 120px; height: 160px;">                                 
                             </a>
-                            <button class="btn btn-default btn-primary center-block">
+                            <button class="btn btn-default btn-primary center-block enroll-button">
                                 <span class="glyphicon glyphicon-pencil"></span>Inscribete!</button>
                         </div>
                     </div>
@@ -33,9 +33,12 @@
             {% endfor %}
         </div>
     </div>
-    {#{% if app.user %}
-    {#    user: {{dump(app.user)}}
-    {#{% endif %}#}
+    {% if app.user %}
+        {#user: {{dump(app.user)}}#}
+        ROLE_ADMIN: {{dump(is_granted('UAH_ROLE_ADMIN'))}}
+        ROLE_ADMIN: {{dump(is_granted('UAH_ROLE_ADMIN'))}}
+        ROLE_ADMIN: {{dump(is_granted('UAH_ROLE_ADMIN'))}}
+    {% endif %}
 {% endblock %}
 {% block modal %}
     <div class="modal fade" id="actividadModalPrincipal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
