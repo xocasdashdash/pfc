@@ -11,16 +11,18 @@ namespace UAH\GestorActividadesBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use UAH\GestorActividadesBundle\Entity\Enrollment;
+use UAH\GestorActividadesBundle\Entity\Activity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use UAH\GestorActividadesBundle\Repository\EnrollmentRepository;
 
 class EnrollmentController extends Controller {
 
     /**
-     * @Route("/enroll/{activity_id}",requirements={"pagina" = "\d+"})
-     * @ParamConverter("post", class="UAHGestorACtividadesBundle:Activity",options={"id" = "activity_id"})
-     * @Security("has_role('UAH_ROLE_STUDENT')")
+     * @Route("/enroll/{activity_id}",requirements={"pagina" = "\d+"}, options={"expose"=true})
+     * @ParamConverter("actividad", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
+     * @Security("is_granted('ROLE_UAH_STUDENT')")
      */
     public function enrollAction(Activity $actividad) {
         /*
@@ -38,11 +40,16 @@ class EnrollmentController extends Controller {
                 return new Response('Enrolled');
             } else {
                 $enrollment = new Enrollment();
-                $enrollment->setActividad($actividad);
+                $enrollment->setActivity($actividad);
                 $enrollment->setUser($user);
                 $em->persist($enrollment);
-                $actividad->setNumberOfPlacesOccupied;
+                $actividad->setNumberOfPlacesOccupied($actividad->getNumberOfPlacesOccupied() + 1);
+                $em->persist($actividad);
+                $em->flush();
+                return new Response('Enrolled');
             }
+        } else {
+            return new Response('Full');
         }
     }
 

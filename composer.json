@@ -28,7 +28,8 @@
         "fp/openid-bundle": "dev-master",
         "oyejorge/less.php": "~1.5",
         "doctrine/migrations": "dev-master",
-        "doctrine/doctrine-migrations-bundle": "dev-master"
+        "doctrine/doctrine-migrations-bundle": "dev-master",
+        "friendsofsymfony/jsrouting-bundle": "1.5.*"
 
     },
     "scripts": {

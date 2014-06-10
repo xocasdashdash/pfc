@@ -21,8 +21,8 @@ class EnrollmentRepository extends EntityRepository {
 
         $resultado = $this->getEntityManager()->getRepository('UAHGestorActividadesBundle:Enrollment')->
                 findBy(array(
-            'activity_id' => $activity,
-            'user_id' => $user
+            'activity' => $activity,
+            'user' => $user
         ));
 
         return is_null($resultado);
