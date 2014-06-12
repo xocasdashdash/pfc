@@ -25,7 +25,7 @@ class EnrollmentRepository extends EntityRepository {
             'user' => $user
         ));
 
-        return is_null($resultado);
+        return $resultado;
     }
 
     /**
