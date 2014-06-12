@@ -309,5 +309,6 @@ class Enrollment {
             $default_status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getDefault();
             $this->setStatus($default_status);
         }
+        $this->setIsProcessed(false);
     }
 }
