@@ -30,9 +30,7 @@
                             <a href="#">
                                 {% image '@UAHGestorActividadesBundle/Resources/public/images/logo.gif' %}
                                 <img height="59" src="{{asset_url}}" alt="Universidad de Alcala">
-
                                 {% endimage %}
-
                             </a>                    
                         </div>
                         <div class="navbar-collapse collapse">
@@ -67,15 +65,18 @@
             {% endblock %}  
 
         {% endblock %}
-        {% block javascripts %}
+        
+    </body>
+    {% block javascripts %}
             {% javascripts 
             'js/jquery.js'
-            'js/bootstrap.js' 
-            '@UAHGestorActividadesBundle/Resources/public/vendor/holderjs/holder.js'%}
+            'js/bootstrap.js'
+            '@UAHGestorActividadesBundle/Resources/public/vendor/holderjs/holder.js' %}
+            {#            '@UAHGestorActividadesBundle/Resources/public/vendor/jquery-ui/ui/jquery-ui.js'%}
+            #}            
             <script type="text/javascript" src="{{ asset_url }}"></script>
             {% endjavascripts %}
             <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
             <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
         {% endblock %}
-    </body>
 </html>b

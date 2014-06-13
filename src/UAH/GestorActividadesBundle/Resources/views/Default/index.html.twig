@@ -23,22 +23,28 @@
                         <div class="col-md-4 center-block collapse">
                             <h3 class="fecha-publicidad-actividad">{{activity.publicityStartDate|date("d/m/Y")}}</h3>
                             <a href="#" class="thumbnail ">
-                                <img class="imagen-actividad" src="{{asset(activity.imagepath)}}" style="width: 120px; height: 160px;">                                 
-                            </a>
-                            <button class="btn btn-default btn-primary center-block enroll-button">
-                                <span class="glyphicon glyphicon-pencil"></span>Inscribete!</button>
+                                <img class="imagen-actividad" src="{{asset(activity.imagepath)}}" style="width: 120px; height: 160px;">                                         </a>
+                            <div>
+                                {% if activity.id in enrollments %}
+                                    <button class="btn btn-default center-block btn-success  already-enrolled">
+                                        <span class="texto">Inscrito!</span>
+                                        <span class="glyphicon glyphicon-ok"></span>
+                                    </button>
+                                {%else%}
+                                    <button class="btn btn-default center-block btn-primary enroll-button">
+                                        <span class="texto">Inscribete!</span>
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                {%endif%}
+                            </div>
+
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
     </div>
-    {% if app.user %}
-        {#user: {{dump(app.user)}}#}
-        ROLE_ADMIN: {{dump(is_granted('UAH_ROLE_ADMIN'))}}
-        ROLE_ADMIN: {{dump(is_granted('UAH_ROLE_ADMIN'))}}
-        ROLE_ADMIN: {{dump(is_granted('UAH_ROLE_ADMIN'))}}
-    {% endif %}
+
 {% endblock %}
 {% block modal %}
     <div class="modal fade" id="actividadModalPrincipal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -71,4 +77,8 @@
             </div>
         </div>
     </div>
+
+    {% image '@UAHGestorActividadesBundle/Resources/public/images/ajax-loader.gif' %}
+    <div class="hide" ><img src="{{asset_url}}" id="ajax-loading-image" style="vertical-align:middle;"></div>
+    {% endimage %}
 {% endblock %}
