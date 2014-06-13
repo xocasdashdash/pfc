@@ -81,21 +81,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for row in items %}
+                    {% for enrollment in enrollments %}
                         <tr>
-
-                            <td>{{loop.index}}</td>
-                            <td>{{ activity.name }}</td>
+                            <td>#{{loop.index}}</td>
+                            <td>{{ enrollment.activity.name }}</td>
                             <td>{{ enrollment.dateRegistered}}</td>
                             <td>{{ enrollment.status_enrollment.status == 'STATUS_VERIFIED' }}</td>
                             <td>{{ enrollment.recognizedCredits }}</td>
-
+                            <td>Ask!</td>
                         </tr>
                         {% else %}
                             <tr>
-                                <td colspan="6" class="text-center">No hemos encontrado ningún dato tuyo de actividades. <br>Porque no pruebas a inscribirte en alguna</td>
+                                <td colspan="6" class="text-center">No hemos encontrado ningún dato tuyo de actividades. 
+                                    <br>Porque no pruebas a inscribirte en alguna
+                                </td>
                             </tr>
-
                             {% endfor %}
                             </tbody>
                         </table>
