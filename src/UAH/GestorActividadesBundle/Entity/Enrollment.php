@@ -77,7 +77,7 @@ class Enrollment {
      * @ManyToOne(targetEntity="User", inversedBy="enrollments")
      * @JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
      */
-    private $users;
+    private $user;
 
     /**
      *
