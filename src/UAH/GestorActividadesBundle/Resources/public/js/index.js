@@ -36,11 +36,21 @@ $(document).ready(function() {
 //    });
     $('.actividad').on('click', '.enroll-button', function(event) {
         var $id = $(event.delegateTarget).data('activity-id');
+        var $boton = $(this);
+//        var $width = $boton.width();
+//        var $height = $boton.height();
+        var $img = $('#ajax-loading-image');
+        //$boton.html('');
+        $boton.html($img.clone());
+
         $.post(Routing.generate('uah_gestoractividades_enrollment_enroll', {activity_id: $id}))
                 .done(function() {
-                    console.log('Inscrito en la actividad:' + activity_id);
+                    console.log('Inscrito en la actividad:' + $id);
+                    $boton.addClass('btn-success  already-enrolled').removeClass('btn-primary enroll-button');
+                    $boton.html('<span class="texto">Inscrito!</span><span class="glyphicon glyphicon-ok"></span>');
                 })
                 .fail(function() {
+                    $boton.html('<span class="texto">Inscribete!</span><span class="glyphicon glyphicon-pencil"></span>');
                     console.log('Error al inscribirse');
                 });
     });

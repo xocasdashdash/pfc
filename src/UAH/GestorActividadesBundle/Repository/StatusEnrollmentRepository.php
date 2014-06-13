@@ -22,4 +22,31 @@ class StatusEnrollmentRepository extends EntityRepository {
         return $resultado;
     }
 
+    /**
+     * 
+     * @return Esta funcion devuelve el valor por defecto que tienen los enrollment inactivos.
+     */
+    public function getInactive() {
+        $resultado = $this->findBy(array(
+            'status' => 'STATUS_UNENROLLED'));
+        return $resultado;
+    }
+
+    /**
+     * 
+     * @return Esta funcion devuelve el valor por defecto que tienen los enrollment inactivos.
+     */
+    public function getActive() {
+        $active_status = array();
+        $active_status[] = "STATUS_INSCRITO";
+        $active_status[] = "STATUS_RECONOCIDO";
+        $active_status[] = "STATUS_VERIFICADO";
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('st')->from('UAHGestorActividadesBundle:Statusenrollment', 'st')->
+                where('st.status in (:status)')->setParameter(':status', $active_status);
+        $resultado = $qb->getQuery()->getResult();
+        
+        return $resultado;
+    }
+
 }
