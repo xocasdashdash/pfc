@@ -414,7 +414,6 @@ class Activity {
      */
     public function setRegistrationManagement($registrationManagement) {
         $this->registrationManagement = $registrationManagement;
-
         return $this;
     }
 

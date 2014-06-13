@@ -6,7 +6,7 @@
         {% block stylesheets %}
             {% stylesheets
                 '@UAHGestorActividadesBundle/Resources/public/vendor/normalize-css/normalize.css'
-                'css/bootstrap.css' 
+                'bootstrap/css/bootstrap.css' 
                 '@UAHGestorActividadesBundle/Resources/public/css/base/*.less'
                 filter='cssrewrite'%}
             <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
@@ -69,8 +69,8 @@
     </body>
     {% block javascripts %}
             {% javascripts 
-            'js/jquery.js'
-            'js/bootstrap.js'
+            'bootstrap/js/jquery.js'
+            'bootstrap/js/bootstrap.js'
             '@UAHGestorActividadesBundle/Resources/public/vendor/holderjs/holder.js' %}
             {#            '@UAHGestorActividadesBundle/Resources/public/vendor/jquery-ui/ui/jquery-ui.js'%}
             #}            

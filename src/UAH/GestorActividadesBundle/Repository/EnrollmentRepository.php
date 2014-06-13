@@ -20,10 +20,9 @@ class EnrollmentRepository extends EntityRepository {
      */
     public function checkEnrolled($user, $activity) {
 
-        $resultado = $this->getEntityManager()->getRepository('UAHGestorActividadesBundle:Enrollment')->
-                findBy(array(
+        $resultado = $this->findBy(array(
             'activity' => $activity,
-            'user' => $user
+            'users' => $user
         ));
 
         return $resultado;
@@ -54,15 +53,15 @@ class EnrollmentRepository extends EntityRepository {
     public function getEnrolledActivities($user, $paginacion = 1) {
         $em = $this->getEntityManager();
 
-        
-        $consulta = $em->createQuery('SELECT a FROM UAHGestorActividadesBundle:Activity a JOIN UAHGestorActividadesBundle:Enrollment e'.
-                ' with e.activity=a.id where e.user=:user and e.status IN (:status)');
+
+        $consulta = $em->createQuery('SELECT a FROM UAHGestorActividadesBundle:Activity a JOIN UAHGestorActividadesBundle:Enrollment e' .
+                ' with e.activity=a.id where e.users=:user and e.status IN (:status)');
         $consulta->setParameter('user', $user);
         $active_status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getActive();
         $consulta->setParameter('status', $active_status);
         $results = $consulta->getResult();
         $activities = array();
-        foreach ($results as $key => $result){
+        foreach ($results as $key => $result) {
             $activities[$key] = $result->getActivity();
         }
         return $activities;

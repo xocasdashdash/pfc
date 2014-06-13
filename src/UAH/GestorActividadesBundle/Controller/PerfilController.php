@@ -25,7 +25,7 @@ class PerfilController extends Controller {
 
         return $this->render('UAHGestorActividadesBundle:Perfil:index.html.twig', array('user' => $user,
                     'degree' => $degree,
-            'items' => array(),
+            'enrollments' => array(),
             'roles' => $roles));
     }
 
