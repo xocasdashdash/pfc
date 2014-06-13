@@ -22,7 +22,7 @@ class EnrollmentRepository extends EntityRepository {
 
         $resultado = $this->findBy(array(
             'activity' => $activity,
-            'users' => $user
+            'user' => $user
         ));
 
         return $resultado;
@@ -54,8 +54,8 @@ class EnrollmentRepository extends EntityRepository {
         $em = $this->getEntityManager();
 
 
-        $consulta = $em->createQuery('SELECT a FROM UAHGestorActividadesBundle:Activity a JOIN UAHGestorActividadesBundle:Enrollment e' .
-                ' with e.activity=a.id where e.users=:user and e.status IN (:status)');
+        $consulta = $em->createQuery('SELECT a.id FROM UAHGestorActividadesBundle:Activity a JOIN UAHGestorActividadesBundle:Enrollment e' .
+                ' where e.user=:user and e.status IN (:status)');
         $consulta->setParameter('user', $user);
         $active_status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getActive();
         $consulta->setParameter('status', $active_status);
