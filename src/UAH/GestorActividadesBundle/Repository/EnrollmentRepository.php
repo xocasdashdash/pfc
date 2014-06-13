@@ -9,6 +9,7 @@
 namespace UAH\GestorActividadesBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 
 class EnrollmentRepository extends EntityRepository {
 
@@ -55,16 +56,12 @@ class EnrollmentRepository extends EntityRepository {
 
 
         $consulta = $em->createQuery('SELECT a.id FROM UAHGestorActividadesBundle:Activity a JOIN UAHGestorActividadesBundle:Enrollment e' .
-                ' where e.user=:user and e.status IN (:status)');
+                ' WITH a.id = e.activity where e.user=:user and e.status IN (:status)');
         $consulta->setParameter('user', $user);
         $active_status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getActive();
         $consulta->setParameter('status', $active_status);
-        $results = $consulta->getResult();
-        $activities = array();
-        foreach ($results as $key => $result) {
-            $activities[$key] = $result->getActivity();
-        }
-        return $activities;
+        $results = $consulta->getResult(); 
+        return array_map('current', $results);
     }
 
 }
