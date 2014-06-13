@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "81e2e94546e29ebec9a76958d7a03218",
+    "hash": "5ba3be2f8c63f15aed7c12b6d05f67ec",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -852,16 +852,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "v2.4.3",
+            "version": "2.4.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/doctrine2.git",
-                "reference": "8a13376d42b5ea467727ffe730aa0e14ca3c5e29"
+                "reference": "84f8ef5ca46f02f3001af47ba25fc917c776a247"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/8a13376d42b5ea467727ffe730aa0e14ca3c5e29",
-                "reference": "8a13376d42b5ea467727ffe730aa0e14ca3c5e29",
+                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/84f8ef5ca46f02f3001af47ba25fc917c776a247",
+                "reference": "84f8ef5ca46f02f3001af47ba25fc917c776a247",
                 "shasum": ""
             },
             "require": {
@@ -924,7 +924,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2014-06-10 11:49:08"
+            "time": "2014-06-10 11:49:09"
         },
         {
             "name": "fp/openid-bundle",
@@ -1046,16 +1046,16 @@
         },
         {
             "name": "fzaninotto/faker",
-            "version": "dev-master",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "0b903eaff5da0a5043e2769c5ec1f50620652812"
+                "reference": "010c7efedd88bf31141a02719f51fb44c732d5a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/0b903eaff5da0a5043e2769c5ec1f50620652812",
-                "reference": "0b903eaff5da0a5043e2769c5ec1f50620652812",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/010c7efedd88bf31141a02719f51fb44c732d5a0",
+                "reference": "010c7efedd88bf31141a02719f51fb44c732d5a0",
                 "shasum": ""
             },
             "require": {
@@ -1067,9 +1067,7 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": {
-                    "dev-master": "1.5.x-dev"
-                }
+                "branch-alias": []
             },
             "autoload": {
                 "psr-0": {
@@ -1092,7 +1090,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2014-06-04 14:44:10"
+            "time": "2014-06-04 14:43:02"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -2161,6 +2159,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "doctrine/orm": 20,
         "fzaninotto/faker": 20,
         "fp/openid-bundle": 20,
         "doctrine/migrations": 20,

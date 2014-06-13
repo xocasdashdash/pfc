@@ -1,4 +1,4 @@
-<?php   
+<?php
 
 namespace UAH\GestorActividadesBundle\Entity;
 
@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\InheritanceType;
 use Doctrine\ORM\Mapping\DiscriminatorColumn;
 use Doctrine\ORM\Mapping\DiscriminatorMap;
+
 /**
  * @Table(name="UAH_GAT_Status")
  * @Entity
@@ -22,59 +23,57 @@ use Doctrine\ORM\Mapping\DiscriminatorMap;
  * @DiscriminatorColumn(name="discr", type="string")
  * @DiscriminatorMap({"activity" = "Statusactivity", "enrollment" = "Statusenrollment", "degree" ="Statusdegree"})
  */
-class Status{
-    
+class Status {
+
     /**
      * @Column(name="id",type="integer")
      * @Id
      * @GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
      *
      * @var String Cadena que uso para saber en que clase se usa el estado 
      * Todas los nombres siguen el esquema STATUS_{descripcion sin espacios}
-     * @Column(name="name_es", type="string", length=255, nullable=false,
+     * @Column(name="name_es", type="string", length=255,nullable=true), 
      * options={
      * "comments"="Cadena que uso para mostrar en que estado esta. En castellano"
      * })
      * 
      */
-    private $name_es;
-    
+    private $name_es = 'Nombre en castellano';
+
     /**
      *
      * @var String Cadena que uso para saber en que clase se usa el estado 
      * Todas los nombres siguen el esquema STATUS_{descripcion sin espacios}
-     * @Column(name="name_en", type="string", length=255, nullable=false,
+     * @Column(name="name_en", type="string", length=255,nullable=true), 
      * options={
      * "comments"="Cadena que uso para mostrar en que estado esta. En ingles"
      * })
      * 
      */
-    private $name_en;
-    
+    private $name_en = 'English name';
+
     /**
      *
      * @var String Cadena que uso para saber en que clase se usa el estado 
      * Todas los nombres siguen el esquema STATUS_{descripcion sin espacios}
-     * @Column(name="status", type="string", length=255, nullable=false,
+     * @Column(name="status", type="string", length=255, nullable=true),
      * options={
      * "comments"="Cadena que uso para saber en que clase se usa el estado.Todos los nombres siguen el esquema STATUS_{descripcion sin espacios}"
      * })
      * 
      */
-    private $status;  
-    
-    
+    private $status = 'Estado por defecto';
+
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -84,8 +83,7 @@ class Status{
      * @param string $nameEs
      * @return Status
      */
-    public function setNameEs($nameEs)
-    {
+    public function setNameEs($nameEs) {
         $this->name_es = $nameEs;
 
         return $this;
@@ -96,8 +94,7 @@ class Status{
      *
      * @return string 
      */
-    public function getNameEs()
-    {
+    public function getNameEs() {
         return $this->name_es;
     }
 
@@ -107,8 +104,7 @@ class Status{
      * @param string $nameEn
      * @return Status
      */
-    public function setNameEn($nameEn)
-    {
+    public function setNameEn($nameEn) {
         $this->name_en = $nameEn;
 
         return $this;
@@ -119,8 +115,7 @@ class Status{
      *
      * @return string 
      */
-    public function getNameEn()
-    {
+    public function getNameEn() {
         return $this->name_en;
     }
 
@@ -130,8 +125,7 @@ class Status{
      * @param string $status
      * @return Status
      */
-    public function setStatus($status)
-    {
+    public function setStatus($status) {
         $this->status = $status;
 
         return $this;
@@ -142,8 +136,8 @@ class Status{
      *
      * @return string 
      */
-    public function getStatus()
-    {
+    public function getStatus() {
         return $this->status;
     }
+
 }

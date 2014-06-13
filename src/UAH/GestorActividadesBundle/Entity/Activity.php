@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
@@ -22,6 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use UAH\GestorActividadesBundle\Entity\Degree as Degree;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+
 /**
  * Activity
  *
@@ -56,7 +57,7 @@ class Activity {
 
     /**
      * @var \stdClass
-     * @ManyToOne(targetEntity="User", inversedBy="id")
+     * @ManyToOne(targetEntity="User", inversedBy="activities")
      * @JoinColumn(name="organizer", referencedColumnName="id", nullable=false)
      */
     private $Organizer;
@@ -127,8 +128,8 @@ class Activity {
 
     /**
      * @var date
-     *
-     * @Column(name="publicityStartDate", type="date")
+     * Tiempo en unix (segundos desde el 1 de enero de 1970)
+     * @Column(name="publicityStartDate", type="datetime", nullable=true)
      */
     private $publicityStartDate;
 
@@ -213,6 +214,13 @@ class Activity {
      * @Assert\File(maxSize="6000000")
      */
     private $image_blob;
+
+    /**
+     *
+     * @var type
+     * @OneToMany(targetEntity="Enrollment", mappedBy="activity")
+     */
+    private $activities;
 
     /**
      * Constructor
@@ -383,9 +391,9 @@ class Activity {
      * @param \DateTime $publicityStartDate
      * @return Activity
      */
-    public function setPublicityStartDate($publicityStartDate) {
+    public function setPublicityStartDate(\DateTime $publicityStartDate) {
+        //Guardo el tiempo con un entero de unix
         $this->publicityStartDate = $publicityStartDate;
-
         return $this;
     }
 
