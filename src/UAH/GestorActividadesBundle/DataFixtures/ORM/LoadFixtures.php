@@ -76,6 +76,11 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $statuses[count($statuses) - 1]->setStatus("STATUS_RECONOCIDO");
         $statuses[count($statuses) - 1]->setNameEs("Reconocido");
         $statuses[count($statuses) - 1]->setNameEn("Recognized");
+        
+        $statuses[] = new Statusenrollment();
+        $statuses[count($statuses) - 1]->setStatus("STATUS_UNENROLLED");
+        $statuses[count($statuses) - 1]->setNameEs("Desinscrito");
+        $statuses[count($statuses) - 1]->setNameEn("Unenrolled");
 
         foreach ($statuses as $status) {
             $manager->persist($status);

@@ -15,7 +15,6 @@ class Version20140605231940 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "oracle", "Migration can only be executed safely on 'oracle'.");
         
-        $this->addSql("DROP TABLE UAH_GAT_MIGRATION_VERSIONS");
         $this->addSql("ALTER TABLE UAH_GAT_STATUS MODIFY (name_en  VARCHAR2(255) DEFAULT NULL, name_es  VARCHAR2(255) DEFAULT NULL, status  VARCHAR2(255) DEFAULT NULL)");
         $this->addSql("ALTER TABLE UAH_GAT_USER MODIFY (ID_USULDAP  VARCHAR2(255) DEFAULT NULL)");
     }
