@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
@@ -75,26 +74,26 @@ class Enrollment {
     /**
      *
      * @var usuario
-     * @ManyToOne(targetEntity="User", inversedBy="id")
+     * @ManyToOne(targetEntity="User", inversedBy="enrollments")
      * @JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
      */
-    private $user;
+    private $users;
 
     /**
      *
      * @var integer
-     * @ManyToOne(targetEntity="Activity", inversedBy="id")
+     * @ManyToOne(targetEntity="Activity", inversedBy="activities")
      * @JoinColumn(name="activity_id", referencedColumnName="id", nullable=false)
      */
     private $activity;
 
     /**
      * @var integer
-     * @ManyToOne(targetEntity="Application", inversedBy="id")
+     * @ManyToOne(targetEntity="Application", inversedBy="enrollments")
      * @JoinColumn(name="application_id", referencedColumnName="id", nullable=true)
      */
     private $applicationForm;
-
+    
     /**
      * Get id
      *
@@ -133,7 +132,6 @@ class Enrollment {
      */
     public function setDateRegistered($dateRegistered) {
         $this->dateRegistered = $dateRegistered;
-
         return $this;
     }
 
