@@ -7,6 +7,7 @@
  */
 
 namespace UAH\GestorActividadesBundle\Repository;
+
 use Doctrine\ORM\EntityRepository;
 
 class EnrollmentRepository extends EntityRepository {
@@ -21,11 +22,11 @@ class EnrollmentRepository extends EntityRepository {
 
         $resultado = $this->getEntityManager()->getRepository('UAHGestorActividadesBundle:Enrollment')->
                 findBy(array(
-            'activity_id' => $activity,
-            'user_id' => $user
+            'activity' => $activity,
+            'user' => $user
         ));
 
-        return is_null($resultado);
+        return $resultado;
     }
 
     /**
@@ -34,7 +35,7 @@ class EnrollmentRepository extends EntityRepository {
      * @return type Devuelvo el numero de usuarios inscritos teniendo en cuenta los estados
      */
     public function num_enrolled($activity) {
-        $em = $this->getENtityManager();
+        $em = $this->getEntityManager();
         $consulta = $em->createQuery('SELECT COUNT(e.id) FROM UAHGestorActividadesBundle:Enrollment e where '
                 . 'e.activity=:activity and e.status=:status');
         $consulta->setParameter('activity', $activity);
@@ -43,6 +44,28 @@ class EnrollmentRepository extends EntityRepository {
 
         $resultado = $consulta->getSingleScalarResult();
         return $resultado;
+    }
+
+    /**
+     * 
+     * @param type $paginacion Numero de página en la que estoy
+     * @param type $user Usuario del que quiero las actividades en las que esta registrado
+     */
+    public function getEnrolledActivities($user, $paginacion = 1) {
+        $em = $this->getEntityManager();
+
+        
+        $consulta = $em->createQuery('SELECT a FROM UAHGestorActividadesBundle:Activity a JOIN UAHGestorActividadesBundle:Enrollment e'.
+                ' with e.activity=a.id where e.user=:user and e.status IN (:status)');
+        $consulta->setParameter('user', $user);
+        $active_status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getActive();
+        $consulta->setParameter('status', $active_status);
+        $results = $consulta->getResult();
+        $activities = array();
+        foreach ($results as $key => $result){
+            $activities[$key] = $result->getActivity();
+        }
+        return $activities;
     }
 
 }

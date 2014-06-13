@@ -67,7 +67,7 @@ doctrine:
 doctrine_migrations:
     dir_name: %kernel.root_dir%/DoctrineMigrations
     namespace: Application\Migrations
-    table_name: UAH_GAT_migration_versions
+    table_name: UAH_GAT_MIGRATION_VERSIONS
     name: Migraciones entre versiones
 # Swiftmailer Configuration
 swiftmailer:

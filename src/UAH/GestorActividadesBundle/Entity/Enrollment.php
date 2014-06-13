@@ -20,7 +20,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
  * Enrollment
  *
  * @Table(name="UAH_GAT_Enrollment")
- * @Entity(repositoryClass="Repository\EnrollmentRepository")
+ * @Entity(repositoryClass="UAH\GestorActividadesBundle\Repository\EnrollmentRepository")
  * @HasLifecycleCallbacks
  */
 class Enrollment {
@@ -36,7 +36,7 @@ class Enrollment {
 
     /**
      * @var datetime
-     * @Column(name="dateProcessed", type="datetime")
+     * @Column(name="dateProcessed", type="datetime",nullable=true)
      */
     private $dateProcessed;
 
@@ -302,12 +302,13 @@ class Enrollment {
      */
     public function prepare(LifecycleEventArgs $event){
         if(is_null($this->getDateRegistered())){
-            $this->setDateRegistered(new DateTime("now"));
+            $this->setDateRegistered(new \DateTime("now"));
         }
         if(is_null($this->getStatus())){
             $em = $event->getEntityManager();
             $default_status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getDefault();
             $this->setStatus($default_status);
         }
+        $this->setIsProcessed(false);
     }
 }
