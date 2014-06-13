@@ -10,15 +10,12 @@ namespace UAH\GestorActividadesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\PropertyAccess\Exception\RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class LoginController extends Controller {
 
     /**
      * 
-     * Route("/login/{after_login}/{openid_identifier}", defaults={"after_login" = " ","openid_identifier" = " " })
      * @Route("/login")
      */
     public function loginAction(Request $request){
@@ -30,8 +27,8 @@ class LoginController extends Controller {
             return new \Symfony\Component\HttpFoundation\JsonResponse($respuesta,401);
         }
         $openid_identifier = $this->container->getParameter("default_openid_connector");
-        return $this->redirect($this->generateUrl("fp_openid_security_check", array('openid_identifier' => $openid_identifier), "301"));
-        /* ,/*'_target_path' => $after_login) */
+        return $this->redirect($this->generateUrl("fp_openid_security_check", 
+                array('openid_identifier' => $openid_identifier), "301"));
     }
 
     /**
