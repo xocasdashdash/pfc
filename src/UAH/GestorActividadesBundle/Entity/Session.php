@@ -22,7 +22,7 @@ class Session {
     private $session_id;
     
     /**
-     * @Column(name="session_value", type="string", length=4000)
+     * @Column(name="session_value", type="text")
      * 
      */
     private $session_value;
