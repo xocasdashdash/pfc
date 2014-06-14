@@ -18,11 +18,7 @@ class DefaultController extends Controller {
         $activities = $em->getRepository('UAHGestorActividadesBundle:Activity')->findBy(array(), array('publicityStartDate' => 'ASC'));
         $num_actividades = count($activities);
         $enrollments_id = array();
-        $enrolled_activities = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrolledActivities($this->getUser(), $pagina);
-//        foreach ($enrolled_activities as $key => $enrolled_activity){
-//            $enrollments_id[$key] = $enrolled_activity->getId();
-//        }
-        var_dump($enrolled_activities);
+        $enrolled_activities = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrolledActivitiesId($this->getUser(), $pagina);
         return $this->render('UAHGestorActividadesBundle:Default:index.html.twig', array(
                     'activities' => $activities,
                     'enrollments' => $enrolled_activities));

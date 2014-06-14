@@ -9,7 +9,7 @@ namespace UAH\GestorActividadesBundle\Controller;
  */
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use UAH\GestorActividadesBundle\Entity\Enrollment;
 use UAH\GestorActividadesBundle\Entity\Activity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -37,7 +37,7 @@ class EnrollmentController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $is_enrolled = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->checkEnrolled($user, $actividad);
             if ($is_enrolled) {
-                return new Response('Enrolled');
+                return new JsonResponse('Enrolled');
             } else {
                 $enrollment = new Enrollment();
                 $enrollment->setActivity($actividad);
@@ -46,10 +46,10 @@ class EnrollmentController extends Controller {
                 $actividad->setNumberOfPlacesOccupied($actividad->getNumberOfPlacesOccupied() + 1);
                 $em->persist($actividad);
                 $em->flush();
-                return new Response('Enrolled');
+                return new JsonResponse ('Enrolled');
             }
         } else {
-            return new Response('Full');
+            return new JsonResponse('Full');
         }
     }
 

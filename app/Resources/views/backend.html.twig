@@ -5,7 +5,7 @@
     {{ parent() }}
     {% stylesheets 
         '@UAHGestorActividadesBundle/Resources/public/css/backend/*.less'%}
-        <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
     {% endstylesheets %}
 {% endblock %}
 {% block javascripts %}
@@ -61,9 +61,12 @@
             </div>
         </div>
     {% endblock %}
-{% block acciones_datos %}{% endblock %}
+    <div class="container">
+        {% block acciones_datos %}
+        {% endblock %}
 
-{% block content %}{% endblock %}
-
+        {% block content %}
+        {% endblock %}
+    </div>
 
 {% endblock %}

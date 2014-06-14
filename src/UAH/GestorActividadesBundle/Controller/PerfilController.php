@@ -17,16 +17,19 @@ class PerfilController extends Controller {
      */
     public function indexAction() {
         $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+
         if ($user) {
             $degree = $user->getDegreeId();
         }
         $roles = $this->getUser()->getUserRoles();
         //var_dump($roles);
-
+        $enrolled_activities = $em->getRepository('UAHGestorActividadesBundle:Enrollment')
+                ->getEnrolledActivities($this->getUser(), 1);
         return $this->render('UAHGestorActividadesBundle:Perfil:index.html.twig', array('user' => $user,
                     'degree' => $degree,
-            'enrollments' => array(),
-            'roles' => $roles));
+                    'enrolled_activities' => $enrolled_activities,
+                    'roles' => $roles));
     }
 
     /**
