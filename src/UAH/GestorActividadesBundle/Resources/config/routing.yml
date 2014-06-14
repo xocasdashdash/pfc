@@ -1,7 +1,3 @@
-uah_gestor_actividades_homepage:
-    path:  /hello/{name}
-    defaults: { _controller: UAHGestorActividadesBundle:Default:index }
-
 #uah_index:
 #    path:  /
 #    defaults: { _controller: UAHGestorActividadesBundle:Default:index }

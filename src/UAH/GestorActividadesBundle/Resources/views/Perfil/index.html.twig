@@ -7,98 +7,95 @@
 
 {% endblock %}
 {% block acciones_datos %}
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-9" style="text-align:center">
-                <h3>Datos del user</h3>
-            </div>
-            <div class="col-lg-9 col-xs-9" id="left-block">                
-                {# Falta dejar esto para que se cargue con las variables del user #}
-                <div>
-                    <form class="form-horizontal" role="form">
-                        <div class="form-group ">
-                            <label for="inputNombre" class="col-sm-2 col-xs-2 control-label">Nombre</label>
-                            <div class="col-sm-10  col-xs-10 datos-usuario">
-                                <input type="text" class="form-control datos-alumno" id="inputNombre" value="{{user.name ~ " " ~ user.apellido1 ~ " " ~ user.apellido2 }}">
-                            </div>
-
-                            <label for="inputEmail" class="col-sm-2 col-xs-2 control-label">Email</label>
-                            <div class="col-sm-10  col-xs-10 datos-usuario">
-                                <input type="email" class="form-control datos-alumno" id="inputEmail" value="{{user.email}}">
-                            </div>
-                            <div class="col-xs-offset-2"></div>
-
-                            <label for="inputCarrera" class="col-sm-2 col-xs-2 control-label">Carrera</label>
-                            <div class="col-sm-10  col-xs-10 datos-usuario">
-                                <input type="text" class="form-control datos-alumno" id="inputCarrera" value="{{degree.name |default("Ningun grado encontrado")}}">
-                            </div>
-                            <label for="inputDNI" class="col-sm-2 col-xs-2 control-label">DNI</label>
-                            <div class="col-sm-10 col-xs-10 datos-usuario">
-                                <input type="number" class="form-control datos-alumno" id="inputDNI" value="12345789">
-                            </div>
-                            <label for="inputRole" class="col-sm-2 col-xs-2 control-label">Rol</label>
-                            <div class="col-sm-10 col-xs-10 datos-usuario">
-                                <input type="text" class="form-control datos-alumno" id="inputRole" value="{% for role in roles %}{{role.role}}, {% else %} {% endfor %}">
-                            </div>
-
+    <div class="row">
+        <div class="col-lg-9" style="text-align:center">
+            <h3>Datos del user</h3>
+        </div>
+        <div class="col-lg-9 col-xs-9" id="left-block">                
+            {# Falta dejar esto para que se cargue con las variables del user #}
+            <div>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group ">
+                        <label for="inputNombre" class="col-sm-2 col-xs-2 control-label">Nombre</label>
+                        <div class="col-sm-10  col-xs-10 datos-usuario">
+                            <input type="text" class="form-control datos-alumno" id="inputNombre" value="{{user.name ~ " " ~ user.apellido1 ~ " " ~ user.apellido2 }}">
                         </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col-lg-3 col-xs-3 children" id="right-block">                
-                <div class="pull-right " >
-                    <a href="#" class="btn btn-default btn-primary btn-block">Mis certificados </a>
-                    <a href="#" class="btn btn-default btn-primary btn-block">Generar un certificado</a>
-                    <a href="{{path('uah_gestoractividades_actividad_create_form')}}" class="btn btn-default btn-primary btn-block">Crear un curso</a>
-                    {% if is_granted('ROLE_UAH_STAFF_PAS') %}
-                        <a href="#" class="btn btn-default btn-primary btn-block">Verificar un certificado</a>
-                    {% endif %}
-                    {% if is_granted('ROLE_UAH_ADMIN') %}
-                        <a href="#" class="btn btn-default btn-primary btn-block">Gestionar users</a>
-                    {% endif %} 
-                    <a href="#" class="btn btn-default btn-primary btn-block">Actualizar datos</a>
 
-                </div>
+                        <label for="inputEmail" class="col-sm-2 col-xs-2 control-label">Email</label>
+                        <div class="col-sm-10  col-xs-10 datos-usuario">
+                            <input type="email" class="form-control datos-alumno" id="inputEmail" value="{{user.email}}">
+                        </div>
+                        <div class="col-xs-offset-2"></div>
+
+                        <label for="inputCarrera" class="col-sm-2 col-xs-2 control-label">Carrera</label>
+                        <div class="col-sm-10  col-xs-10 datos-usuario">
+                            <input type="text" class="form-control datos-alumno" id="inputCarrera" value="{{degree.name |default("Ningun grado encontrado")}}">
+                        </div>
+                        <label for="inputDNI" class="col-sm-2 col-xs-2 control-label">DNI</label>
+                        <div class="col-sm-10 col-xs-10 datos-usuario">
+                            <input type="number" class="form-control datos-alumno" id="inputDNI" value="12345789">
+                        </div>
+                        <label for="inputRole" class="col-sm-2 col-xs-2 control-label">Rol</label>
+                        <div class="col-sm-10 col-xs-10 datos-usuario">
+                            <input type="text" class="form-control datos-alumno" id="inputRole" value="{% for role in roles %}{{role.role}}, {% else %} {% endfor %}">
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-3 col-xs-3 children" id="right-block">                
+            <div class="pull-right " >
+                <a href="#" class="btn btn-default btn-primary btn-block">Mis certificados </a>
+                <a href="#" class="btn btn-default btn-primary btn-block">Generar un certificado</a>
+                <a href="{{path('uah_gestoractividades_actividad_create_form')}}" class="btn btn-default btn-primary btn-block">Crear un curso</a>
+                {% if is_granted('ROLE_UAH_STAFF_PAS') %}
+                    <a href="#" class="btn btn-default btn-primary btn-block">Verificar un certificado</a>
+                {% endif %}
+                {% if is_granted('ROLE_UAH_ADMIN') %}
+                    <a href="#" class="btn btn-default btn-primary btn-block">Gestionar users</a>
+                {% endif %} 
+                <a href="#" class="btn btn-default btn-primary btn-block">Actualizar datos</a>
+
             </div>
         </div>
     </div>
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="row zona-tabla">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        {% set headers = ['#', 'Nombre', 'Fecha inscripción', 'Asistencia verificada', 'Creditos reconocidos', 'Solicitar verificación'] %} 
-                        <th>#</th>
-                        <th class="nombre-actividad">Nombre</th>
-                        <th>Fecha inscripción</th>
-                        <th>Asistencia verificada</th>
-                        <th>Créditos reconocidos</th>
-                        <th>Solicitar verificación</th>
+    <div class="row zona-tabla">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    {% set headers = ['#', 'Nombre', 'Fecha inscripción', 'Asistencia verificada', 'Creditos reconocidos', 'Solicitar verificación'] %} 
+                    <th>#</th>
+                    <th class="nombre-actividad">Nombre</th>
+                    <th>Fecha inscripción</th>
+                    <th>Asistencia verificada</th>
+                    <th>Créditos reconocidos</th>
+                    <th>Solicitar verificación</th>
 
+                </tr>
+            </thead>
+            <tbody>
+                {% for enrolled_activity in enrolled_activities %}
+                    <tr>
+                        <td>#{{loop.index}}</td>
+                        <td>{{ enrolled_activity.name }}</td>
+                        <td>{{ enrolled_activity.dateRegistered |date('d/m/Y')}}</td>
+                        <td>{{ enrolled_activity.isProcessed? 'Si':'No' }}</td>
+                        <td>{{ enrolled_activity.recognizedCredits }}</td>
+                        <td>Ask!</td>
                     </tr>
-                </thead>
-                <tbody>
-                    {% for enrollment in enrollments %}
+                    {% else %}
                         <tr>
-                            <td>#{{loop.index}}</td>
-                            <td>{{ enrollment.activity.name }}</td>
-                            <td>{{ enrollment.dateRegistered}}</td>
-                            <td>{{ enrollment.status_enrollment.status == 'STATUS_VERIFIED' }}</td>
-                            <td>{{ enrollment.recognizedCredits }}</td>
-                            <td>Ask!</td>
+                            <td colspan="6" class="text-center">
+                                No hemos encontrado ningún dato tuyo de actividades. 
+                                Porque no pruebas a inscribirte en alguna
+                            </td>
                         </tr>
-                        {% else %}
-                            <tr>
-                                <td colspan="6" class="text-center">No hemos encontrado ningún dato tuyo de actividades. 
-                                    <br>Porque no pruebas a inscribirte en alguna
-                                </td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
-                {% endblock %}
+{% endblock %}

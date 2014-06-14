@@ -51,7 +51,7 @@ class EnrollmentRepository extends EntityRepository {
      * @param type $paginacion Numero de página en la que estoy
      * @param type $user Usuario del que quiero las actividades en las que esta registrado
      */
-    public function getEnrolledActivities($user, $paginacion = 1) {
+    public function getEnrolledActivitiesId($user, $paginacion = 1) {
         $em = $this->getEntityManager();
 
 
@@ -63,5 +63,26 @@ class EnrollmentRepository extends EntityRepository {
         $results = $consulta->getResult(); 
         return array_map('current', $results);
     }
+    
+    /**
+     * 
+     * @param type $paginacion Numero de página en la que estoy
+     * @param type $user Usuario del que quiero las actividades en las que esta registrado
+     */
+    public function getEnrolledActivities($user, $paginacion = 1) {
+        $em = $this->getEntityManager();
+
+
+        $consulta = $em->createQuery('SELECT a.id,a.name,a.englishName,e.dateRegistered,e.isProcessed, e.recognizedCredits'.
+                ' FROM UAHGestorActividadesBundle:Activity a '.
+                'JOIN UAHGestorActividadesBundle:Enrollment e' .
+                ' WITH a.id = e.activity where e.user=:user and e.status IN (:status)');
+        $consulta->setParameter('user', $user);
+        $active_status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getActive();
+        $consulta->setParameter('status', $active_status);
+        $results = $consulta->getResult(); 
+        return $results;
+    }
+    
 
 }
