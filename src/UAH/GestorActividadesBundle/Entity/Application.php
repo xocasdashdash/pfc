@@ -179,4 +179,44 @@ class Application {
         return $this->isProcessed;
     }
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->enrollments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add enrollments
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollments
+     * @return Application
+     */
+    public function addEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments)
+    {
+        $this->enrollments[] = $enrollments;
+
+        return $this;
+    }
+
+    /**
+     * Remove enrollments
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollments
+     */
+    public function removeEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments)
+    {
+        $this->enrollments->removeElement($enrollments);
+    }
+
+    /**
+     * Get enrollments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEnrollments()
+    {
+        return $this->enrollments;
+    }
 }

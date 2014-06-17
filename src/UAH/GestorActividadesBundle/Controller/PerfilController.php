@@ -23,7 +23,6 @@ class PerfilController extends Controller {
             $degree = $user->getDegreeId();
         }
         $roles = $this->getUser()->getUserRoles();
-        //var_dump($roles);
         $enrolled_activities = $em->getRepository('UAHGestorActividadesBundle:Enrollment')
                 ->getEnrolledActivities($this->getUser(), 1);
         return $this->render('UAHGestorActividadesBundle:Perfil:index.html.twig', array('user' => $user,

@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
@@ -34,7 +35,7 @@ class User implements UserInterface {
     /**
      * @var string
      *
-     * @Column(name="name", type="string", length=255)
+     * @Column(name="name", type="string", length=255,nullable=true)
      */
     private $name;
 
@@ -92,7 +93,7 @@ class User implements UserInterface {
 
     /**
      * @var integer 
-     * @ManyToOne(targetEntity="Degree", inversedBy="id")
+     * @ManyToOne(targetEntity="Degree", inversedBy="degree_students")
      * @JoinColumn(name="degree_id", referencedColumnName="id", nullable=true)
      */
     private $degree_id;
@@ -107,12 +108,30 @@ class User implements UserInterface {
 
     /**
      * @var string Nombre de usuario interno de la UAH que saco de la conexión de REDIRIS
-     * @Column(name="ID_USULDAP", type="string", length= 255, nullable=false, 
+     * @Column(name="ID_USULDAP", type="string", length= 255, nullable=true), 
      * options={"comments"="ID que me devuelve REDIRIS al hacer la autentificación por OpenId. Lo uso para buscar el resto de la información en UXXIAC.TUIB_PERSONA"})
      * @OneToOne(targetEntity="TuibPersonaUser",inversedBy="id_usuldap")
      * @JoinColumn(name="usuldap_id", referencedColumnName="id_usuldap")
      */
     private $id_usuldap;
+
+    /**
+     * @OneToMany(targetEntity="Activity", mappedBy="Organizer")
+     * @var type 
+     */
+    private $activities;
+    
+    /**
+     * @OneToMany(targetEntity="Application", mappedBy="userId")
+     * @var type 
+     */
+    private $applications;
+    
+    /**
+     * @OneToMany(targetEntity="Enrollment", mappedBy="user")
+     * @var type 
+     */
+    private $enrollments;
 
     /**
      * Get id
@@ -236,10 +255,11 @@ class User implements UserInterface {
         $roles = array();
         foreach ($this->roles as $role) {
             $roles[] = $role->getRole();
-        }        
+        }
         return $roles;
     }
-    public function getUserRoles(){
+
+    public function getUserRoles() {
         return $this->roles;
     }
 
@@ -367,15 +387,13 @@ class User implements UserInterface {
         return $this->apellido_2;
     }
 
-
     /**
      * Set documento_identidad
      *
      * @param string $documentoIdentidad
      * @return User
      */
-    public function setDocumentoIdentidad($documentoIdentidad)
-    {
+    public function setDocumentoIdentidad($documentoIdentidad) {
         $this->documento_identidad = $documentoIdentidad;
 
         return $this;
@@ -386,8 +404,7 @@ class User implements UserInterface {
      *
      * @return string 
      */
-    public function getDocumentoIdentidad()
-    {
+    public function getDocumentoIdentidad() {
         return $this->documento_identidad;
     }
 
@@ -397,8 +414,7 @@ class User implements UserInterface {
      * @param string $tipoDocumentoIdentidad
      * @return User
      */
-    public function setTipoDocumentoIdentidad($tipoDocumentoIdentidad)
-    {
+    public function setTipoDocumentoIdentidad($tipoDocumentoIdentidad) {
         $this->tipo_documento_identidad = $tipoDocumentoIdentidad;
 
         return $this;
@@ -409,8 +425,8 @@ class User implements UserInterface {
      *
      * @return string 
      */
-    public function getTipoDocumentoIdentidad()
-    {
+    public function getTipoDocumentoIdentidad() {
         return $this->tipo_documento_identidad;
     }
+
 }

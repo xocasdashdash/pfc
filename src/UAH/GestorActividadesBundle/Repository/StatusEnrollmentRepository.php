@@ -41,6 +41,8 @@ class StatusEnrollmentRepository extends EntityRepository {
         $active_status[] = "STATUS_INSCRITO";
         $active_status[] = "STATUS_RECONOCIDO";
         $active_status[] = "STATUS_VERIFICADO";
+        $active_status[] = "STATUS_NO_RECONOCIDO";
+        $active_status[] = "STATUS_PENDIENTE_VERIFICACION";
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('st')->from('UAHGestorActividadesBundle:Statusenrollment', 'st')->
                 where('st.status in (:status)')->setParameter(':status', $active_status);
