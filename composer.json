@@ -44,7 +44,9 @@
             "mkdir -p web/upload/images",
             "sudo chmod -R 777 web/upload/",
             "php app/console doctrine:schema:drop --force",
+            "echo 'drop hecho\n'",
             "php app/console doctrine:schema:create",
+            "echo 'Esquema creado\n'",
             "php app/console doctrine:fixtures:load"
         ],
         "post-update-cmd": [
