@@ -47,7 +47,7 @@
             "echo 'drop hecho\n'",
             "php app/console doctrine:schema:create",
             "echo 'Esquema creado\n'",
-            "php app/console doctrine:fixtures:load",
+            "php app/console doctrine:fixtures:load"
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
