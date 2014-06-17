@@ -8,7 +8,7 @@ if (isset($_SERVER['HTTP_CLIENT_IP']) || isset($_SERVER['HTTP_X_FORWARDED_FOR'])
     $container->setParameter('database_name', getEnv("OPENSHIFT_APP_NAME"));
     $container->setParameter('database_user', getEnv("OPENSHIFT_MYSQL_DB_USERNAME"));
     $container->setParameter('database_password', getEnv("OPENSHIFT_MYSQL_DB_PASSWORD"));
-    $container->setParameter('database_password', "pdo_mysql");
+    $container->setParameter('database_driver', "pdo_mysql");
 } else {
     //Configuracion ORACLE
     //$container->setParameter('database_host', "localhost");
