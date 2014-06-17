@@ -43,7 +43,9 @@
             "echo 'Haciendo install...\n'",
             "mkdir -p web/upload/images",
             "sudo chmod -R 777 web/upload/",
-            "php app/console doctrine:fixtures:load"
+            "php app/console doctrine:schema:drop --force",
+            "php app/console doctrine:schema:create",
+            "php app/console doctrine:fixtures:load",
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
