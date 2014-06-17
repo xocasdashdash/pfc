@@ -82,7 +82,7 @@ class Enrollment {
     /**
      *
      * @var integer
-     * @ManyToOne(targetEntity="Activity", inversedBy="activities")
+     * @ManyToOne(targetEntity="Activity", inversedBy="enrollees")
      * @JoinColumn(name="activity_id", referencedColumnName="id", nullable=false)
      */
     private $activity;

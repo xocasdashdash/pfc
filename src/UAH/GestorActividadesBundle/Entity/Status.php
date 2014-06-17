@@ -139,5 +139,9 @@ class Status {
     public function getStatus() {
         return $this->status;
     }
+    
+    public function toString(){
+        
+    }
 
 }

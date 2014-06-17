@@ -76,7 +76,17 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $statuses[count($statuses) - 1]->setStatus("STATUS_RECONOCIDO");
         $statuses[count($statuses) - 1]->setNameEs("Reconocido");
         $statuses[count($statuses) - 1]->setNameEn("Recognized");
-        
+
+        $statuses[] = new Statusenrollment();
+        $statuses[count($statuses) - 1]->setStatus("STATUS_NO_RECONOCIDO");
+        $statuses[count($statuses) - 1]->setNameEs("No reconocido");
+        $statuses[count($statuses) - 1]->setNameEn("Not Recognized");
+
+        $statuses[] = new Statusenrollment();
+        $statuses[count($statuses) - 1]->setStatus("STATUS_PENDIENTE_VERIFICACION");
+        $statuses[count($statuses) - 1]->setNameEs("No reconocido");
+        $statuses[count($statuses) - 1]->setNameEn("Not Recognized");
+
         $statuses[] = new Statusenrollment();
         $statuses[count($statuses) - 1]->setStatus("STATUS_UNENROLLED");
         $statuses[count($statuses) - 1]->setNameEs("Desinscrito");
@@ -93,7 +103,6 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $faker->addProvider(new UAHDegreeProvider($faker));
         $faker->addProvider(new \Faker\Provider\Internet($faker));
         $faker->addProvider(new UAHActivityProvider($faker));
-
         $faker->seed(10);
         $populator = new \Faker\ORM\Doctrine\Populator($faker, $manager);
         //Grados
@@ -168,7 +177,7 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
     }
         ));
         $populator->execute();
-        
+
         echo "Creando los roles...";
 
         $roles = array();
@@ -192,7 +201,7 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $roles[] = new Role();
         $roles[count($roles) - 1]->setRole("ROLE_UAH_STAFF_PDI");
         $roles[count($roles) - 1]->setName("pdi");
-        
+
         foreach ($roles as $role) {
             $manager->persist($role);
         }

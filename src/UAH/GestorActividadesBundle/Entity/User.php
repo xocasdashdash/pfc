@@ -429,4 +429,103 @@ class User implements UserInterface {
         return $this->tipo_documento_identidad;
     }
 
+
+    /**
+     * Add activities
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Activity $activities
+     * @return User
+     */
+    public function addActivity(\UAH\GestorActividadesBundle\Entity\Activity $activities)
+    {
+        $this->activities[] = $activities;
+
+        return $this;
+    }
+
+    /**
+     * Remove activities
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Activity $activities
+     */
+    public function removeActivity(\UAH\GestorActividadesBundle\Entity\Activity $activities)
+    {
+        $this->activities->removeElement($activities);
+    }
+
+    /**
+     * Get activities
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getActivities()
+    {
+        return $this->activities;
+    }
+
+    /**
+     * Add applications
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Application $applications
+     * @return User
+     */
+    public function addApplication(\UAH\GestorActividadesBundle\Entity\Application $applications)
+    {
+        $this->applications[] = $applications;
+
+        return $this;
+    }
+
+    /**
+     * Remove applications
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Application $applications
+     */
+    public function removeApplication(\UAH\GestorActividadesBundle\Entity\Application $applications)
+    {
+        $this->applications->removeElement($applications);
+    }
+
+    /**
+     * Get applications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getApplications()
+    {
+        return $this->applications;
+    }
+
+    /**
+     * Add enrollments
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollments
+     * @return User
+     */
+    public function addEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments)
+    {
+        $this->enrollments[] = $enrollments;
+
+        return $this;
+    }
+
+    /**
+     * Remove enrollments
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollments
+     */
+    public function removeEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments)
+    {
+        $this->enrollments->removeElement($enrollments);
+    }
+
+    /**
+     * Get enrollments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEnrollments()
+    {
+        return $this->enrollments;
+    }
 }

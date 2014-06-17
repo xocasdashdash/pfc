@@ -128,7 +128,6 @@ class Activity {
 
     /**
      * @var date
-     * Tiempo en unix (segundos desde el 1 de enero de 1970)
      * @Column(name="publicityStartDate", type="datetime", nullable=true)
      */
     private $publicityStartDate;
@@ -220,7 +219,14 @@ class Activity {
      * @var type
      * @OneToMany(targetEntity="Enrollment", mappedBy="activity")
      */
-    private $activities;
+    private $enrollees;
+
+    /**
+     * 
+     * @var type Fecha en la que comienza la actividad. Una vez comenzada nadie se puede desapuntar
+     * @Column(name="start_date",type="datetime", nullable=false) 
+     */
+    private $start_date;
 
     /**
      * Constructor
@@ -831,7 +837,7 @@ class Activity {
         $slug = preg_replace('~[^-\w]+~', '', $slug);
 
         if (empty($slug)) {
-            $slug = 'n-a';
+            $slug = 'n-a' . uniqid();
         }
         $this->setSlug($slug);
 
@@ -845,11 +851,14 @@ class Activity {
             $default_status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getDefault();
             $this->setStatus($default_status);
         }
+        //Modifico la fecha de inicio teniendo en cuenta la primera que se pone como de celebracion
+        $fechas = json_decode($this->getCelebrationDates());
+        $this->setStartDate(\DateTime::createFromFormat("Y-m-d H:i:s", $fechas[0]->date,  new \DateTimeZone($fechas[0]->timezone)));//$fechas[0]);
     }
 
     /**
-     * @PostPersist()
-     * @PostUpdate()
+     * @PostPersist
+     * @PostUpdate
      */
     public function upload() {
         if (null === $this->getImageBlob()) {
@@ -872,12 +881,64 @@ class Activity {
     }
 
     /**
-     * @PostRemove()
+     * @PostRemove
      */
     public function removeUpload() {
         if ($file = $this->getAbsolutePath()) {
             unlink($file);
         }
+    }
+
+    /**
+     * Set start_date
+     *
+     * @param \DateTime $startDate
+     * @return Activity
+     */
+    public function setStartDate(\Datetime $startDate) {
+        
+        $this->start_date = $startDate;
+
+        return $this;
+    }
+
+    /**
+     * Get start_date
+     *
+     * @return \DateTime 
+     */
+    public function getStartDate() {
+        return $this->start_date;
+    }
+
+    /**
+     * Add enrollees
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollees
+     * @return Activity
+     */
+    public function addEnrollee(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollees) {
+        $this->enrollees[] = $enrollees;
+
+        return $this;
+    }
+
+    /**
+     * Remove enrollees
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollees
+     */
+    public function removeEnrollee(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollees) {
+        $this->enrollees->removeElement($enrollees);
+    }
+
+    /**
+     * Get enrollees
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEnrollees() {
+        return $this->enrollees;
     }
 
 }
