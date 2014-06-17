@@ -27,5 +27,5 @@ if [ ! -d "$OPENSHIFT_REPO_DIR/web/upload/images" ]; then
 	mkdir -p $OPENSHIFT_REPO_DIR/web/upload/images
 fi
 chmod -R 0777 $OPENSHIFT_REPO_DIR/web/upload
-php $OPENSHIFT_REPO_DIR/app/console doctrine:schema:update --force
-php $OPENSHIFT_REPO_DIR/app/console doctrine:fixtures:load 
+#php $OPENSHIFT_REPO_DIR/app/console doctrine:schema:update --force
+#php $OPENSHIFT_REPO_DIR/app/console doctrine:fixtures:load 
