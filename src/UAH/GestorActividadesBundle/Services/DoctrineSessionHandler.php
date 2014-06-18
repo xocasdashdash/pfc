@@ -155,10 +155,12 @@ class DoctrineSessionHandler implements \SessionHandlerInterface {
         try {
             $mergeSql = $this->getMergeSql();
             if (null !== $mergeSql) {
+                error_log($mergeSql);
                 $mergeStmt = $this->getConnection()->prepare($mergeSql);
                 $mergeStmt->bindParam(':id', $sessionId, "string");
                 $mergeStmt->bindParam(':data', $encoded, "string");
                 $mergeStmt->bindValue(':time', time(), "integer");
+                
                 $mergeStmt->execute();
 
                 return true;
@@ -200,7 +202,7 @@ class DoctrineSessionHandler implements \SessionHandlerInterface {
     private function getMergeSql() {
         $driver = $this->getConnection()->getDriver()->getName();
 
-
+        
         switch ($driver) {
             case 'pdo_mysql':
                 return "INSERT INTO $this->table ($this->idCol, $this->dataCol, $this->timeCol) VALUES (:id, :data, :time) " .

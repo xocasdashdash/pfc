@@ -42,7 +42,7 @@
             "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install",
             "echo 'Haciendo install...\n'",
             "mkdir -p web/upload/images",
-            "sudo chmod -R 777 web/upload/",
+            "chmod -R 777 web/upload/",
             "php app/console doctrine:schema:drop --force",
             "echo 'drop hecho\n'",
             "php app/console doctrine:schema:create",
