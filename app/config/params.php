@@ -3,7 +3,7 @@
 # app/config/params.php
 if (isset($_SERVER['HTTP_CLIENT_IP']) || isset($_SERVER['HTTP_X_FORWARDED_FOR']) || (isset($_SERVER['REMOTE_ADDR']) && !in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', 'fe80::1', '::1'))) || getEnv("OPENSHIFT_MYSQL_DB_HOST")) {
     echo"LOADING";
-    $container->setParameter('doctrine.dbal.default_connection','openshift');
+    $container->setParameter('database_driver', "pdo_mysql");
     $container->setParameter('database_host', getEnv("OPENSHIFT_MYSQL_DB_HOST"));
     $container->setParameter('database_port', getEnv("OPENSHIFT_MYSQL_DB_PORT"));
     $container->setParameter('database_name', getEnv("OPENSHIFT_APP_NAME"));
@@ -11,8 +11,6 @@ if (isset($_SERVER['HTTP_CLIENT_IP']) || isset($_SERVER['HTTP_X_FORWARDED_FOR'])
     $container->setParameter('database_password', getEnv("OPENSHIFT_MYSQL_DB_PASSWORD"));
 } else {
     //Configuracion ORACLE
-    $container->setParameter('doctrine.dbal.default_connection','default');
-
     $container->setParameter('database_driver', "oci8");
     $container->setParameter('database_name', "XE");
     $container->setParameter('database_service', "true");
