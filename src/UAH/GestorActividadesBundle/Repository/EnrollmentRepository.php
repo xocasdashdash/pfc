@@ -10,6 +10,7 @@ namespace UAH\GestorActividadesBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
+use UAH\GestorActividadesBundle\Entity\Activity;
 
 class EnrollmentRepository extends EntityRepository {
 
@@ -20,13 +21,16 @@ class EnrollmentRepository extends EntityRepository {
      * @return Esta funcion devuelve un resultado verdadero o falso dependiendo de si esta inscrito o no
      */
     public function checkEnrolled($user, $activity) {
-
-        $resultado = $this->findBy(array(
-            'activity' => $activity,
-            'user' => $user
-        ));
-
-        return $resultado;
+        $enrolled_activities = $this->getEnrolledActivitiesId($user);
+        return in_array($activity->getId(), $enrolled_activities);
+    }
+    
+    public function canEnroll(Activity $activity){
+        $valid_statuses = 
+            $this->getEntityManager()->getRepository('UAHGestorActividadesBundle:Statusactivity')->getValidStatus();
+        $valid_statuses_ids = \array_map('current',$valid_statuses);
+        return \in_array($activity->getStatus()->getId(), $valid_statuses_ids);
+        
     }
 
     /**
@@ -48,13 +52,11 @@ class EnrollmentRepository extends EntityRepository {
 
     /**
      * 
-     * @param type $paginacion Numero de página en la que estoy
-     * @param type $user Usuario del que quiero las actividades en las que esta registrado
+     * @param type $user Numero de página en la que estoy
+     * @param type $paginacion Usuario del que quiero las actividades en las que esta registrado
      */
     public function getEnrolledActivitiesId($user, $paginacion = 1) {
         $em = $this->getEntityManager();
-
-
         $consulta = $em->createQuery('SELECT a.id FROM UAHGestorActividadesBundle:Activity a JOIN UAHGestorActividadesBundle:Enrollment e' .
                 ' WITH a.id = e.activity where e.user=:user and e.status IN (:status)');
         $consulta->setParameter('user', $user);
@@ -66,8 +68,8 @@ class EnrollmentRepository extends EntityRepository {
     
     /**
      * 
-     * @param type $paginacion Numero de página en la que estoy
      * @param type $user Usuario del que quiero las actividades en las que esta registrado
+     * @param type $paginacion Numero de página en la que estoy
      */
     public function getEnrolledActivities($user, $paginacion = 1) {
         $em = $this->getEntityManager();
