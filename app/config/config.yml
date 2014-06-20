@@ -2,6 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: @UAHGestorActividadesBundle/Resources/config/parameters.yml }
+    - { resource: params.php }
 framework:
     #esi:             ~
     #translator:      { fallback: "%locale%" }
@@ -20,12 +21,15 @@ framework:
     session:         ~
     fragments:       ~
     http_method_override: true
+    #Aqui va 
+    session:
+        handler_id: session.handler.oci8
 
 # Twig Configuration
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
-
+    cache:  false
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"
@@ -46,21 +50,29 @@ assetic:
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   "%database_driver%"
-        host:     "%database_host%"
-        port:     "%database_port%"
-        dbname:   "%database_name%"
-        user:     "%database_user%"
-        password: "%database_password%"
-        charset:  UTF8
-        # if using pdo_sqlite as your database driver, add the path in parameters.yml
-        # e.g. database_path: "%kernel.root_dir%/data/data.db3"
-        # path:     "%database_path%"
+        default_connection: default
+        connections:
+            default:
+                driver:   "%database_driver%"
+                host:     "%database_host%"
+                port:     "%database_port%"
+                dbname:   "%database_name%"
+                user:     "%database_user%"
+                password: "%database_password%"
+                charset:  UTF8            
+            
+            # if using pdo_sqlite as your database driver, add the path in parameters.yml
+            # e.g. database_path: "%kernel.root_dir%/data/data.db3"
+            # path:     "%database_path%"
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
-
+doctrine_migrations:
+    dir_name: %kernel.root_dir%/DoctrineMigrations
+    namespace: Application\Migrations
+    table_name: UAH_GAT_MIGRATION_VERSIONS
+    name: Migraciones entre versiones
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"
@@ -73,7 +85,27 @@ sensio_framework_extra:
     router:  { annotations: true }
     security:   { annotations: true }
 parameters:
+     
+parameters:
+    oci8.db_options:
+        db_table:    UAH_GAT_Session
+        db_id_col:   session_id
+        db_data_col: session_value
+        db_time_col: session_time
     vendor_dir: %kernel.root_dir%/../src/UAH/GestorActividadesBundle/Resources/public/vendor    
+
+
+services:
+    session.handler.oci8:
+        # Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        class:     UAH\GestorActividadesBundle\Services\DoctrineSessionHandler 
+        arguments: ["@doctrine.dbal.default_connection", "%oci8.db_options%"]
+    
+    #Esto lo hago para evitar problemas con campos Date (https://github.com/doctrine/DoctrineBundle/issues/217)
+    oracle.listener:
+        class: UAH\GestorActividadesBundle\Services\OracleSessionInit 
+        tags:
+            - { name: doctrine.event_listener, event: postConnect, connection: default }
 braincrafted_bootstrap:
     output_dir: bootstrap
     assets_dir: %vendor_dir%/bootstrap
@@ -90,4 +122,4 @@ braincrafted_bootstrap:
         bootstrap_template: BraincraftedBootstrapBundle:Bootstrap:bootstrap.less.twig
 fp_open_id:
     db_driver: orm
-    identity_class: UAH\GestorActividadesBundle\Entity\OpenIdIdentity       
+    identity_class: UAH\GestorActividadesBundle\Entity\OpenIdIdentity  

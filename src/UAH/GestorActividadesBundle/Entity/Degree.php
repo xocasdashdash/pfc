@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
@@ -49,7 +50,19 @@ class Degree {
      * @Column(name="academicCode", type="string", length=255)
      */
     private $academicCode;
+    
+    /**
+     * @var int Estado del registro
+     * @ManyToOne(targetEntity="Statusdegree")
+     * @JoinColumn(name="status_degree", referencedColumnName="id")
+     */
+    private $status;
 
+    
+    /**
+     * @OneToMany(targetEntity="User", mappedBy="degree_id")
+     */
+    private $degree_students;
     /**
      * Get id
      *
@@ -122,4 +135,67 @@ class Degree {
         return $this->academicCode;
     }
 
+
+    /**
+     * Set status
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Statusdegree $status
+     * @return Degree
+     */
+    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusdegree $status = null)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return \UAH\GestorActividadesBundle\Entity\Statusdegree 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->degree_students = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add degree_students
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\User $degreeStudents
+     * @return Degree
+     */
+    public function addDegreeStudent(\UAH\GestorActividadesBundle\Entity\User $degreeStudents)
+    {
+        $this->degree_students[] = $degreeStudents;
+
+        return $this;
+    }
+
+    /**
+     * Remove degree_students
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\User $degreeStudents
+     */
+    public function removeDegreeStudent(\UAH\GestorActividadesBundle\Entity\User $degreeStudents)
+    {
+        $this->degree_students->removeElement($degreeStudents);
+    }
+
+    /**
+     * Get degree_students
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDegreeStudents()
+    {
+        return $this->degree_students;
+    }
 }

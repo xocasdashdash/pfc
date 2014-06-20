@@ -6,20 +6,24 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\ORM\Mapping\PrePersist;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**
  * Enrollment
  *
  * @Table(name="UAH_GAT_Enrollment")
- * @Entity
+ * @Entity(repositoryClass="UAH\GestorActividadesBundle\Repository\EnrollmentRepository")
+ * @HasLifecycleCallbacks
  */
 class Enrollment {
-
+    
     /**
      * @var integer
      *
@@ -30,15 +34,8 @@ class Enrollment {
     private $id;
 
     /**
-     * @var string
-     *
-     * @Column(name="dni", type="string", length=255)
-     */
-    private $dni;
-
-    /**
      * @var datetime
-     * @Column(name="dateProcessed", type="datetime")
+     * @Column(name="dateProcessed", type="datetime",nullable=true)
      */
     private $dateProcessed;
 
@@ -56,21 +53,6 @@ class Enrollment {
 
     /**
      *
-     * @var integer
-     * @ManyToOne(targetEntity="Activity", inversedBy="id")
-     * @JoinColumn(name="activityId", referencedColumnName="id", nullable=false)
-     */
-    private $activity;
-
-    /**
-     * @var integer
-     * @ManyToOne(targetEntity="Application", inversedBy="id")
-     * @JoinColumn(name="idApplication", referencedColumnName="id", nullable=true)
-     */
-    private $applicationForm;
-
-    /**
-     *
      * @var float
      * @Column(name="recognizedCredits",type="float", nullable=true)
      */
@@ -82,7 +64,36 @@ class Enrollment {
      * @Column(name="creditsType",type="float", nullable=true)
      */
     private $creditsType;
+    
+    /**
+     * @var int Estado del registro
+     * @ManyToOne(targetEntity="Statusenrollment")
+     * @JoinColumn(name="status", referencedColumnName="id")
+     */
+    private $status;
+    /**
+     *
+     * @var usuario
+     * @ManyToOne(targetEntity="User", inversedBy="enrollments")
+     * @JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
+     */
+    private $user;
 
+    /**
+     *
+     * @var integer
+     * @ManyToOne(targetEntity="Activity", inversedBy="enrollees")
+     * @JoinColumn(name="activity_id", referencedColumnName="id", nullable=false)
+     */
+    private $activity;
+
+    /**
+     * @var integer
+     * @ManyToOne(targetEntity="Application", inversedBy="enrollments")
+     * @JoinColumn(name="application_id", referencedColumnName="id", nullable=true)
+     */
+    private $applicationForm;
+    
     /**
      * Get id
      *
@@ -90,27 +101,6 @@ class Enrollment {
      */
     public function getId() {
         return $this->id;
-    }
-
-    /**
-     * Set dni
-     *
-     * @param string $dni
-     * @return Enrollment
-     */
-    public function setDni($dni) {
-        $this->dni = $dni;
-
-        return $this;
-    }
-
-    /**
-     * Get dni
-     *
-     * @return string 
-     */
-    public function getDni() {
-        return $this->dni;
     }
 
     /**
@@ -142,7 +132,6 @@ class Enrollment {
      */
     public function setDateRegistered($dateRegistered) {
         $this->dateRegistered = $dateRegistered;
-
         return $this;
     }
 
@@ -174,48 +163,6 @@ class Enrollment {
      */
     public function getIsProcessed() {
         return $this->isProcessed;
-    }
-
-    /**
-     * Set actividad
-     *
-     * @param \UAH\GestorActividadesBundle\Entity\Activity $actividad
-     * @return Enrollment
-     */
-    public function setActividad(\UAH\GestorActividadesBundle\Entity\Activity $actividad) {
-        $this->actividad = $actividad;
-
-        return $this;
-    }
-
-    /**
-     * Get actividad
-     *
-     * @return \UAH\GestorActividadesBundle\Entity\Activity 
-     */
-    public function getActividad() {
-        return $this->actividad;
-    }
-
-    /**
-     * Set applicationForm
-     *
-     * @param \UAH\GestorActividadesBundle\Entity\Application $applicationForm
-     * @return Enrollment
-     */
-    public function setApplication(\UAH\GestorActividadesBundle\Entity\Application $applicationForm = null) {
-        $this->applicationForm = $applicationForm;
-
-        return $this;
-    }
-
-    /**
-     * Get applicationForm
-     *
-     * @return \UAH\GestorActividadesBundle\Entity\Application 
-     */
-    public function getApplication() {
-        return $this->applicationForm;
     }
 
     /**
@@ -281,15 +228,13 @@ class Enrollment {
         return $this->activity;
     }
 
-
     /**
      * Set applicationForm
      *
      * @param \UAH\GestorActividadesBundle\Entity\Application $applicationForm
      * @return Enrollment
      */
-    public function setApplicationForm(\UAH\GestorActividadesBundle\Entity\Application $applicationForm = null)
-    {
+    public function setApplicationForm(\UAH\GestorActividadesBundle\Entity\Application $applicationForm = null) {
         $this->applicationForm = $applicationForm;
 
         return $this;
@@ -300,8 +245,68 @@ class Enrollment {
      *
      * @return \UAH\GestorActividadesBundle\Entity\Application 
      */
-    public function getApplicationForm()
-    {
+    public function getApplicationForm() {
         return $this->applicationForm;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\User $user
+     * @return Enrollment
+     */
+    public function setUser(\UAH\GestorActividadesBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \UAH\GestorActividadesBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set status
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Statusenrollment $status
+     * @return Enrollment
+     */
+    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusenrollment $status = null)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return \UAH\GestorActividadesBundle\Entity\Statusenrollment 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+    
+    /**
+     * @PrePersist
+     */
+    public function prepare(LifecycleEventArgs $event){
+        if(is_null($this->getDateRegistered())){
+            $this->setDateRegistered(new \DateTime("now"));
+        }
+        if(is_null($this->getStatus())){
+            $em = $event->getEntityManager();
+            $default_status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getDefault();
+            $this->setStatus($default_status);
+        }
+        $this->setIsProcessed(false);
     }
 }

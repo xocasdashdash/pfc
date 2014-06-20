@@ -10,30 +10,25 @@ namespace UAH\GestorActividadesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\PropertyAccess\Exception\RuntimeException;
+use Symfony\Component\HttpFoundation\Request;
 
 class LoginController extends Controller {
 
     /**
      * 
-     * @Route("/login/{after_login}/{openid_identifier}", defaults={"after_login" = " ","openid_identifier" = " " })
+     * @Route("/login")
      */
-    public function loginAction($after_login, $openid_identifier) {
-        if ($openid_identifier === " " &&
-                $this->container->hasParameter("default_openid_connector")) {
-            $openid_identifier = $this->container->getParameter("default_openid_connector");
-        } else {
-            throw new RuntimeException("Falta configurar el parametro default_openid_connector");
+    public function loginAction(Request $request){
+        
+        if($request->isXmlHttpRequest() && !$this->container->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')){
+            $respuesta = array();
+            $respuesta['message'] = 'NOT_LOGGED_IN';
+            $respuesta['status'] = 'error';
+            return new \Symfony\Component\HttpFoundation\JsonResponse($respuesta,401);
         }
-        if ($after_login === " " &&
-                $this->container->hasParameter("default_redirect_after_login")) {
-            $after_login = $this->container->getParameter("default_redirect_after_login");
-        } else {
-            throw new RuntimeException("Falta configurar el parametro default_redirect_after_login");
-        }
-
-        return $this->redirect($this->generateUrl("fp_openid_security_check", array('openid_identifier' => $openid_identifier,
-                            '_target_path' => $after_login)), 301);
+        $openid_identifier = $this->container->getParameter("default_openid_connector");
+        return $this->redirect($this->generateUrl("fp_openid_security_check", 
+                array('openid_identifier' => $openid_identifier), "301"));
     }
 
     /**

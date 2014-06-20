@@ -6,21 +6,32 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Entity;
-
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\ORM\Mapping\PrePersist;
+use Doctrine\ORM\Mapping\PreUpdate;
+use Doctrine\ORM\Mapping\PostPersist;
+use Doctrine\ORM\Mapping\PostUpdate;
+use Doctrine\ORM\Mapping\PostRemove;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use UAH\GestorActividadesBundle\Entity\Degree as Degree;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+
 /**
  * Activity
  *
  * @Table(name="UAH_GAT_Activity")
  * @Entity()
+ * @HasLifecycleCallbacks
  */
-class Activity
-{
+class Activity {
+
     /**
      * @var integer
      *
@@ -36,17 +47,17 @@ class Activity
      * @Column(name="name", type="string", length=500)
      */
     private $name;
-    
+
     /**
      * @var string
      *
      * @Column(name="englishName", type="string", length=500)
      */
     private $englishName;
-    
+
     /**
      * @var \stdClass
-     * @ManyToOne(targetEntity="User", inversedBy="id")
+     * @ManyToOne(targetEntity="User", inversedBy="activities")
      * @JoinColumn(name="organizer", referencedColumnName="id", nullable=false)
      */
     private $Organizer;
@@ -57,34 +68,28 @@ class Activity
      * @Column(name="numberOfECTSCreditsMin", type="float")
      */
     private $numberOfECTSCreditsMin;
-    
+
     /**
      * @var float
      *
      * @Column(name="numberOfECTSCreditsMax", type="float")
      */
     private $numberOfECTSCreditsMax;
-    
+
     /**
      * @var float
      *
      * @Column(name="numberOfCreditsMin", type="float")
      */
     private $numberOfCreditsMin;
-    
+
     /**
      * @var float
      *
      * @Column(name="numberOfCreditsMax", type="float")
      */
     private $numberOfCreditsMax;
-    
-    /**
-     * @var boolean 
-     * @Column(name="isPublic", type="boolean")
-     * 
-     */
-    private $isPublic;
+
     /**
      * @var array
      *
@@ -95,133 +100,147 @@ class Activity
     /**
      * @var boolean
      *
-     * @Column(name="hasAdditionalWorkload", type="boolean")
+     * @Column(name="hasAdditionalWorkload", type="boolean", nullable=true)
      */
     private $hasAdditionalWorkload;
-    
+
     /**
      * @var float
      *
      * @Column(name="numberOfHours", type="float")
      */
     private $numberOfHours;
-    
+
     /**
      * @ManyToMany(targetEntity="Degree")
-     * @JoinTable(name="Activity_Degree", 
-     *          joinColumns={@JoinColumn(name="activityId", referencedColumnName="id")},
-     *          inverseJoinColumns={@JoinColumn(name="degreeId", referencedColumnName="id")})
-     * @JoinTable(name="ActivityDegrees")
-     **/
+     * @JoinTable(name="UAH_GAT_Activity_Degree", 
+     *          joinColumns={@JoinColumn(name="activity_id", referencedColumnName="id")},
+     *          inverseJoinColumns={@JoinColumn(name="degree_id", referencedColumnName="id")})
+     * */
     private $studentProfile;
-    
+
     /**
      * @var string
      *
      * @Column(name="assistanceControl", type="string")
-     */ 
+     */
     private $assistanceControl;
+
     /**
      * @var date
-     *
-     * @Column(name="publicityStartDate", type="date")
+     * @Column(name="publicityStartDate", type="datetime", nullable=true)
      */
     private $publicityStartDate;
-    
+
     /**
      * @var boolean
      *
-     * @Column(name="registrationManagement", type="boolean")
+     * @Column(name="registrationManagement", type="boolean", nullable=true)
      */
     private $registrationManagement;
+
     /**
      * @var boolean
      *
      * @Column(name="extraInformationFile", type="blob",nullable=true)
      */
     private $extraInformationFile;
+
     /**
      * @var string
      *
      * @Column(name="url", type="string")
      */
     private $url;
+
     /**
      * @var string
      *
      * @Column(name="slug", type="string")
      */
     private $slug;
+
     /**
      * @var integer
      *
      * @Column(name="numberOfPlacesOffered", type="integer")
      */
     private $numberOfPlacesOffered;
+
     /**
      * @var integer
      *
      * @Column(name="numberOfPlacesOccupied", type="integer")
      */
     private $numberOfPlacesOccupied;
+
     /**
      * @var boolean
      *
      * @Column(name="approvedByComitee", type="boolean")
      */
     private $approvedByComitee;
-    /**
-     * @var boolean
-     *
-     * @Column(name="isActive", type="boolean")
-     */
-    private $isActive;
-    
+
     /**
      * @var float
      *
      * @Column(name="cost", type="float")
      */
     private $cost;
-    
-    
+
     /**
-     * @var status
-     * 
-     * @Column(name="status", type="string")
+     * @var int Estado del registro
+     * @ManyToOne(targetEntity="Statusactivity")
+     * @JoinColumn(name="status_activity", referencedColumnName="id")
      */
     private $status;
-    
+
     /**
-     * @var status
+     * @var 
      * 
      * @Column(name="description", type="text")
      */
     private $description;
-    
+
     /**
-     * @var status
+     * @var 
      * 
-     * @Column(name="image", type="string")
+     * @Column(name="image_path", type="string")
      */
-    private $image;
-    
-    
+    private $image_path;
+
+    /**
+     * @Assert\File(maxSize="6000000")
+     */
+    private $image_blob;
+
+    /**
+     *
+     * @var type
+     * @OneToMany(targetEntity="Enrollment", mappedBy="activity")
+     */
+    private $enrollees;
+
+    /**
+     * 
+     * @var type Fecha en la que comienza la actividad. Una vez comenzada nadie se puede desapuntar
+     * @Column(name="start_date",type="datetime", nullable=false) 
+     */
+    private $start_date;
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->studentProfile = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -231,10 +250,9 @@ class Activity
      * @param string $name
      * @return Activity
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
-    
+
         return $this;
     }
 
@@ -243,8 +261,7 @@ class Activity
      *
      * @return string 
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
@@ -254,10 +271,9 @@ class Activity
      * @param string $englishName
      * @return Activity
      */
-    public function setEnglishName($englishName)
-    {
+    public function setEnglishName($englishName) {
         $this->englishName = $englishName;
-    
+
         return $this;
     }
 
@@ -266,8 +282,7 @@ class Activity
      *
      * @return string 
      */
-    public function getEnglishName()
-    {
+    public function getEnglishName() {
         return $this->englishName;
     }
 
@@ -277,10 +292,9 @@ class Activity
      * @param float $numberOfECTSCredits
      * @return Activity
      */
-    public function setNumberOfECTSCredits($numberOfECTSCredits)
-    {
+    public function setNumberOfECTSCredits($numberOfECTSCredits) {
         $this->numberOfECTSCredits = $numberOfECTSCredits;
-    
+
         return $this;
     }
 
@@ -289,8 +303,7 @@ class Activity
      *
      * @return float 
      */
-    public function getNumberOfECTSCredits()
-    {
+    public function getNumberOfECTSCredits() {
         return $this->numberOfECTSCredits;
     }
 
@@ -300,10 +313,9 @@ class Activity
      * @param array $celebrationDates
      * @return Activity
      */
-    public function setCelebrationDates($celebrationDates)
-    {
+    public function setCelebrationDates($celebrationDates) {
         $this->celebrationDates = $celebrationDates;
-    
+
         return $this;
     }
 
@@ -312,8 +324,7 @@ class Activity
      *
      * @return array 
      */
-    public function getCelebrationDates()
-    {
+    public function getCelebrationDates() {
         return $this->celebrationDates;
     }
 
@@ -323,10 +334,9 @@ class Activity
      * @param boolean $hasAdditionalWorkload
      * @return Activity
      */
-    public function setHasAdditionalWorkload($hasAdditionalWorkload)
-    {
+    public function setHasAdditionalWorkload($hasAdditionalWorkload) {
         $this->hasAdditionalWorkload = $hasAdditionalWorkload;
-    
+
         return $this;
     }
 
@@ -335,8 +345,7 @@ class Activity
      *
      * @return boolean 
      */
-    public function getHasAdditionalWorkload()
-    {
+    public function getHasAdditionalWorkload() {
         return $this->hasAdditionalWorkload;
     }
 
@@ -346,10 +355,9 @@ class Activity
      * @param float $numberOfHours
      * @return Activity
      */
-    public function setNumberOfHours($numberOfHours)
-    {
+    public function setNumberOfHours($numberOfHours) {
         $this->numberOfHours = $numberOfHours;
-    
+
         return $this;
     }
 
@@ -358,8 +366,7 @@ class Activity
      *
      * @return float 
      */
-    public function getNumberOfHours()
-    {
+    public function getNumberOfHours() {
         return $this->numberOfHours;
     }
 
@@ -369,10 +376,9 @@ class Activity
      * @param string $assistanceControl
      * @return Activity
      */
-    public function setAssistanceControl($assistanceControl)
-    {
+    public function setAssistanceControl($assistanceControl) {
         $this->assistanceControl = $assistanceControl;
-    
+
         return $this;
     }
 
@@ -381,8 +387,7 @@ class Activity
      *
      * @return string 
      */
-    public function getAssistanceControl()
-    {
+    public function getAssistanceControl() {
         return $this->assistanceControl;
     }
 
@@ -392,10 +397,9 @@ class Activity
      * @param \DateTime $publicityStartDate
      * @return Activity
      */
-    public function setPublicityStartDate($publicityStartDate)
-    {
+    public function setPublicityStartDate(\DateTime $publicityStartDate) {
+        //Guardo el tiempo con un entero de unix
         $this->publicityStartDate = $publicityStartDate;
-    
         return $this;
     }
 
@@ -404,8 +408,7 @@ class Activity
      *
      * @return \DateTime 
      */
-    public function getPublicityStartDate()
-    {
+    public function getPublicityStartDate() {
         return $this->publicityStartDate;
     }
 
@@ -415,10 +418,8 @@ class Activity
      * @param boolean $registrationManagement
      * @return Activity
      */
-    public function setRegistrationManagement($registrationManagement)
-    {
+    public function setRegistrationManagement($registrationManagement) {
         $this->registrationManagement = $registrationManagement;
-    
         return $this;
     }
 
@@ -427,8 +428,7 @@ class Activity
      *
      * @return boolean 
      */
-    public function getRegistrationManagement()
-    {
+    public function getRegistrationManagement() {
         return $this->registrationManagement;
     }
 
@@ -438,10 +438,9 @@ class Activity
      * @param string $extraInformationFile
      * @return Activity
      */
-    public function setExtraInformationFile($extraInformationFile)
-    {
+    public function setExtraInformationFile($extraInformationFile) {
         $this->extraInformationFile = $extraInformationFile;
-    
+
         return $this;
     }
 
@@ -450,8 +449,7 @@ class Activity
      *
      * @return string 
      */
-    public function getExtraInformationFile()
-    {
+    public function getExtraInformationFile() {
         return $this->extraInformationFile;
     }
 
@@ -461,10 +459,9 @@ class Activity
      * @param string $url
      * @return Activity
      */
-    public function setUrl($url)
-    {
+    public function setUrl($url) {
         $this->url = $url;
-    
+
         return $this;
     }
 
@@ -473,8 +470,7 @@ class Activity
      *
      * @return string 
      */
-    public function getUrl()
-    {
+    public function getUrl() {
         return $this->url;
     }
 
@@ -484,10 +480,9 @@ class Activity
      * @param string $slug
      * @return Activity
      */
-    public function setSlug($slug)
-    {
+    public function setSlug($slug) {
         $this->slug = $slug;
-    
+
         return $this;
     }
 
@@ -496,8 +491,7 @@ class Activity
      *
      * @return string 
      */
-    public function getSlug()
-    {
+    public function getSlug() {
         return $this->slug;
     }
 
@@ -507,10 +501,9 @@ class Activity
      * @param integer $numberOfPlacesOffered
      * @return Activity
      */
-    public function setNumberOfPlacesOffered($numberOfPlacesOffered)
-    {
+    public function setNumberOfPlacesOffered($numberOfPlacesOffered) {
         $this->numberOfPlacesOffered = $numberOfPlacesOffered;
-    
+
         return $this;
     }
 
@@ -519,8 +512,7 @@ class Activity
      *
      * @return integer 
      */
-    public function getNumberOfPlacesOffered()
-    {
+    public function getNumberOfPlacesOffered() {
         return $this->numberOfPlacesOffered;
     }
 
@@ -530,10 +522,9 @@ class Activity
      * @param integer $numberOfPlacesOccupied
      * @return Activity
      */
-    public function setNumberOfPlacesOccupied($numberOfPlacesOccupied)
-    {
+    public function setNumberOfPlacesOccupied($numberOfPlacesOccupied) {
         $this->numberOfPlacesOccupied = $numberOfPlacesOccupied;
-    
+
         return $this;
     }
 
@@ -542,8 +533,7 @@ class Activity
      *
      * @return integer 
      */
-    public function getNumberOfPlacesOccupied()
-    {
+    public function getNumberOfPlacesOccupied() {
         return $this->numberOfPlacesOccupied;
     }
 
@@ -553,10 +543,9 @@ class Activity
      * @param boolean $approvedByComitee
      * @return Activity
      */
-    public function setApprovedByComitee($approvedByComitee)
-    {
+    public function setApprovedByComitee($approvedByComitee) {
         $this->approvedByComitee = $approvedByComitee;
-    
+
         return $this;
     }
 
@@ -565,32 +554,8 @@ class Activity
      *
      * @return boolean 
      */
-    public function getApprovedByComitee()
-    {
+    public function getApprovedByComitee() {
         return $this->approvedByComitee;
-    }
-
-    /**
-     * Set isActive
-     *
-     * @param boolean $isActive
-     * @return Activity
-     */
-    public function setIsActive($isActive)
-    {
-        $this->isActive = $isActive;
-    
-        return $this;
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean 
-     */
-    public function getIsActive()
-    {
-        return $this->isActive;
     }
 
     /**
@@ -599,10 +564,9 @@ class Activity
      * @param float $cost
      * @return Activity
      */
-    public function setCost($cost)
-    {
+    public function setCost($cost) {
         $this->cost = $cost;
-    
+
         return $this;
     }
 
@@ -611,8 +575,7 @@ class Activity
      *
      * @return float 
      */
-    public function getCost()
-    {
+    public function getCost() {
         return $this->cost;
     }
 
@@ -622,10 +585,9 @@ class Activity
      * @param \UAH\GestorActividadesBundle\Entity\User $organizer
      * @return Activity
      */
-    public function setOrganizer(\UAH\GestorActividadesBundle\Entity\User $organizer)
-    {
+    public function setOrganizer(\UAH\GestorActividadesBundle\Entity\User $organizer) {
         $this->Organizer = $organizer;
-    
+
         return $this;
     }
 
@@ -634,8 +596,7 @@ class Activity
      *
      * @return \UAH\GestorActividadesBundle\Entity\User 
      */
-    public function getOrganizer()
-    {
+    public function getOrganizer() {
         return $this->Organizer;
     }
 
@@ -645,10 +606,9 @@ class Activity
      * @param \UAH\GestorActividadesBundle\Entity\Degree $studentProfile
      * @return Activity
      */
-    public function addStudentProfile(\UAH\GestorActividadesBundle\Entity\Degree $studentProfile)
-    {
+    public function addStudentProfile(\UAH\GestorActividadesBundle\Entity\Degree $studentProfile) {
         $this->studentProfile[] = $studentProfile;
-    
+
         return $this;
     }
 
@@ -657,8 +617,7 @@ class Activity
      *
      * @param \UAH\GestorActividadesBundle\Entity\Degree $studentProfile
      */
-    public function removeStudentProfile(\UAH\GestorActividadesBundle\Entity\Degree $studentProfile)
-    {
+    public function removeStudentProfile(\UAH\GestorActividadesBundle\Entity\Degree $studentProfile) {
         $this->studentProfile->removeElement($studentProfile);
     }
 
@@ -667,8 +626,7 @@ class Activity
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getStudentProfile()
-    {
+    public function getStudentProfile() {
         return $this->studentProfile;
     }
 
@@ -678,10 +636,9 @@ class Activity
      * @param float $numberOfECTSCreditsMin
      * @return Activity
      */
-    public function setNumberOfECTSCreditsMin($numberOfECTSCreditsMin)
-    {
+    public function setNumberOfECTSCreditsMin($numberOfECTSCreditsMin) {
         $this->numberOfECTSCreditsMin = $numberOfECTSCreditsMin;
-    
+
         return $this;
     }
 
@@ -690,8 +647,7 @@ class Activity
      *
      * @return float 
      */
-    public function getNumberOfECTSCreditsMin()
-    {
+    public function getNumberOfECTSCreditsMin() {
         return $this->numberOfECTSCreditsMin;
     }
 
@@ -701,10 +657,9 @@ class Activity
      * @param float $numberOfECTSCreditsMax
      * @return Activity
      */
-    public function setNumberOfECTSCreditsMax($numberOfECTSCreditsMax)
-    {
+    public function setNumberOfECTSCreditsMax($numberOfECTSCreditsMax) {
         $this->numberOfECTSCreditsMax = $numberOfECTSCreditsMax;
-    
+
         return $this;
     }
 
@@ -713,8 +668,7 @@ class Activity
      *
      * @return float 
      */
-    public function getNumberOfECTSCreditsMax()
-    {
+    public function getNumberOfECTSCreditsMax() {
         return $this->numberOfECTSCreditsMax;
     }
 
@@ -724,10 +678,9 @@ class Activity
      * @param float $numberOfCreditsMin
      * @return Activity
      */
-    public function setNumberOfCreditsMin($numberOfCreditsMin)
-    {
+    public function setNumberOfCreditsMin($numberOfCreditsMin) {
         $this->numberOfCreditsMin = $numberOfCreditsMin;
-    
+
         return $this;
     }
 
@@ -736,8 +689,7 @@ class Activity
      *
      * @return float 
      */
-    public function getNumberOfCreditsMin()
-    {
+    public function getNumberOfCreditsMin() {
         return $this->numberOfCreditsMin;
     }
 
@@ -747,10 +699,9 @@ class Activity
      * @param float $numberOfCreditsMax
      * @return Activity
      */
-    public function setNumberOfCreditsMax($numberOfCreditsMax)
-    {
+    public function setNumberOfCreditsMax($numberOfCreditsMax) {
         $this->numberOfCreditsMax = $numberOfCreditsMax;
-    
+
         return $this;
     }
 
@@ -759,32 +710,8 @@ class Activity
      *
      * @return float 
      */
-    public function getNumberOfCreditsMax()
-    {
+    public function getNumberOfCreditsMax() {
         return $this->numberOfCreditsMax;
-    }
-
-    /**
-     * Set isPublic
-     *
-     * @param boolean $isPublic
-     * @return Activity
-     */
-    public function setIsPublic($isPublic)
-    {
-        $this->isPublic = $isPublic;
-    
-        return $this;
-    }
-
-    /**
-     * Get isPublic
-     *
-     * @return boolean 
-     */
-    public function getIsPublic()
-    {
-        return $this->isPublic;
     }
 
     /**
@@ -793,8 +720,7 @@ class Activity
      * @param string $status
      * @return Activity
      */
-    public function setStatus($status)
-    {
+    public function setStatus($status) {
         $this->status = $status;
 
         return $this;
@@ -805,8 +731,7 @@ class Activity
      *
      * @return string 
      */
-    public function getStatus()
-    {
+    public function getStatus() {
         return $this->status;
     }
 
@@ -816,8 +741,7 @@ class Activity
      * @param string $description
      * @return Activity
      */
-    public function setDescription($description)
-    {
+    public function setDescription($description) {
         $this->description = $description;
 
         return $this;
@@ -828,31 +752,193 @@ class Activity
      *
      * @return string 
      */
-    public function getDescription()
-    {
+    public function getDescription() {
         return $this->description;
     }
 
     /**
-     * Set image
+     * Set image_path
      *
-     * @param string $image
+     * @param string $imagePath
      * @return Activity
      */
-    public function setImage($image)
-    {
-        $this->image = $image;
+    public function setImagePath($imagePath) {
+        $this->image_path = $imagePath;
 
         return $this;
     }
 
     /**
-     * Get image
+     * Get image_path
      *
      * @return string 
      */
-    public function getImage()
-    {
-        return $this->image;
+    public function getImagePath() {
+        return $this->getImageWebPath(); //image_path;
     }
+
+    /**
+     * Set image_blob
+     *
+     * @param string $imageBlob
+     * @return Activity
+     */
+    public function setImageBlob(UploadedFile $imageBlob) {
+        $this->image_blob = $imageBlob;
+
+        return $this;
+    }
+
+    /**
+     * Get image_blob
+     *
+     * @return string 
+     */
+    public function getImageBlob() {
+        return $this->image_blob;
+    }
+
+    public function getAbsolutePath() {
+        return null === $this->image_path ? null : $this->getUploadRootDir() . '/' . $this->image_path;
+    }
+
+    public function getImageWebPath() {
+        return null === $this->image_path ? null : $this->getUploadDir() . '/' . $this->image_path;
+    }
+
+    protected function getUploadRootDir() {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__ . '/../../../../web/' . $this->getUploadDir();
+    }
+
+    protected function getUploadDir() {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'upload/images';
+    }
+
+    /**
+     * @PrePersist
+     * @PreUpdate
+     */
+    public function preUpload(LifecycleEventArgs $event) {
+
+        // Genero un slug para cada actividad
+        // replace non letter or digits by -
+        $slug = preg_replace('~[^\\pL\d]+~u', '-', $this->getName());
+        // trim
+        $slug = trim($slug, '-');
+        // transliterate
+        $slug = iconv('utf-8', 'us-ascii//TRANSLIT', $slug);
+        // lowercase
+        $slug = strtolower($slug);
+        // remove unwanted characters
+        $slug = preg_replace('~[^-\w]+~', '', $slug);
+
+        if (empty($slug)) {
+            $slug = 'n-a' . uniqid();
+        }
+        $this->setSlug($slug);
+
+        if (null !== $this->getImageBlob()) {
+            // do whatever you want to generate a unique name
+            $filename = sha1($this->getSlug() . uniqid(mt_rand(), true));
+            $this->image_path = $filename . '.' . $this->getImageBlob()->guessExtension();
+        }
+        if (is_null($this->getStatus())) {
+            $em = $event->getEntityManager();
+            $default_status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getDefault();
+            $this->setStatus($default_status);
+        }
+        //Modifico la fecha de inicio teniendo en cuenta la primera que se pone como de celebracion
+        $fechas = json_decode($this->getCelebrationDates());
+        $this->setStartDate(\DateTime::createFromFormat("Y-m-d H:i:s", $fechas[0]->date,  new \DateTimeZone($fechas[0]->timezone)));//$fechas[0]);
+    }
+
+    /**
+     * @PostPersist
+     * @PostUpdate
+     */
+    public function upload() {
+        if (null === $this->getImageBlob()) {
+            return;
+        }
+
+        // if there is an error when moving the file, an exception will
+        // be automatically thrown by move(). This will properly prevent
+        // the entity from being persisted to the database on error
+        $this->getImageBlob()->move($this->getUploadRootDir(), $this->image_path);
+
+        // check if we have an old image
+        if (isset($this->temp)) {
+            // delete the old image
+            unlink($this->getUploadRootDir() . '/' . $this->temp);
+            // clear the temp image path
+            $this->temp = null;
+        }
+        $this->image_blob = null;
+    }
+
+    /**
+     * @PostRemove
+     */
+    public function removeUpload() {
+        if ($file = $this->getAbsolutePath()) {
+            unlink($file);
+        }
+    }
+
+    /**
+     * Set start_date
+     *
+     * @param \DateTime $startDate
+     * @return Activity
+     */
+    public function setStartDate(\Datetime $startDate) {
+        
+        $this->start_date = $startDate;
+
+        return $this;
+    }
+
+    /**
+     * Get start_date
+     *
+     * @return \DateTime 
+     */
+    public function getStartDate() {
+        return $this->start_date;
+    }
+
+    /**
+     * Add enrollees
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollees
+     * @return Activity
+     */
+    public function addEnrollee(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollees) {
+        $this->enrollees[] = $enrollees;
+
+        return $this;
+    }
+
+    /**
+     * Remove enrollees
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollees
+     */
+    public function removeEnrollee(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollees) {
+        $this->enrollees->removeElement($enrollees);
+    }
+
+    /**
+     * Get enrollees
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEnrollees() {
+        return $this->enrollees;
+    }
+
 }

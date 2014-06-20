@@ -11,7 +11,8 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.4.*",
-        "doctrine/orm": "~2.2,>=2.2.3",
+        "doctrine/orm": "2.4.*@dev",
+        "symfony/icu": "1.0.*",
         "doctrine/doctrine-bundle": "1.2.*",
         "twig/extensions": "1.0.*",
         "symfony/assetic-bundle": "2.3.*",
@@ -25,8 +26,11 @@
         "fzaninotto/faker": "1.4.*@dev",
         "braincrafted/bootstrap-bundle": "~2.0",
         "fp/openid-bundle": "dev-master",
-        "oyejorge/less.php": "~1.5"
-    
+        "oyejorge/less.php": "~1.5",
+        "doctrine/migrations": "dev-master",
+        "doctrine/doctrine-migrations-bundle": "dev-master",
+        "friendsofsymfony/jsrouting-bundle": "1.5.*"
+
     },
     "scripts": {
         "post-install-cmd": [
@@ -35,7 +39,15 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install"
+            "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install",
+            "echo 'Haciendo install...\n'",
+            "mkdir -p web/upload/images",
+            "chmod -R 777 web/upload/",
+            "php app/console doctrine:schema:drop --force",
+            "echo 'drop hecho\n'",
+            "php app/console doctrine:schema:create",
+            "echo 'Esquema creado\n'",
+            "php app/console doctrine:fixtures:load"
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
@@ -43,7 +55,8 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install"
+            "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install",
+            "echo 'Haciendo update...\n'"
         ]
     },
     "config": {
@@ -58,15 +71,6 @@
         },
         "branch-alias": {
             "dev-master": "2.3-dev"
-        },
-        "heroku": {
-            "document-root": "web",
-            "php-config": [
-                "date.timezone=Europe/Amsterdam",
-                "display_errors=off",
-                "short_open_tag=off"
-            ],
-            "newrelic": true
         }
     }
 }
