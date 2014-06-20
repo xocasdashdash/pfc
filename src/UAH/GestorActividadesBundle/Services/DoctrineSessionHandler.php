@@ -155,12 +155,10 @@ class DoctrineSessionHandler implements \SessionHandlerInterface {
         try {
             $mergeSql = $this->getMergeSql();
             if (null !== $mergeSql) {
-                error_log($mergeSql);
                 $mergeStmt = $this->getConnection()->prepare($mergeSql);
-                $mergeStmt->bindParam(':id', $sessionId, "string");
-                $mergeStmt->bindParam(':data', $encoded, "string");
-                $mergeStmt->bindValue(':time', time(), "integer");
-                
+                $mergeStmt->bindParam(':id', $sessionId, \PDO::PARAM_STR);
+                $mergeStmt->bindParam(':data', $encoded, \PDO::PARAM_STR);
+                $mergeStmt->bindValue(':time', time(), \PDO::PARAM_INT);                
                 $mergeStmt->execute();
 
                 return true;
@@ -177,9 +175,9 @@ class DoctrineSessionHandler implements \SessionHandlerInterface {
                 $insertStmt = $this->getConnection()->prepare(
                         "INSERT INTO $this->table ($this->idCol, $this->dataCol, $this->timeCol) VALUES (:id, :data, :time)"
                 );
-                $insertStmt->bindParam(':id', $sessionId, "string");
-                $insertStmt->bindParam(':data', $encoded, "string");
-                $insertStmt->bindValue(':time', time(), "integer");
+                $insertStmt->bindParam(':id', $sessionId, \PDO::PARAM_STR);
+                $insertStmt->bindParam(':data', $encoded, \PDO::PARAM_STR);
+                $insertStmt->bindValue(':time', time(), \PDO::PARAM_INT);
                 $insertStmt->execute();
 
                 $this->getConnection()->commit();
