@@ -19,6 +19,8 @@ class AppKernel extends Kernel {
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
             new Fp\OpenIdBundle\FpOpenIdBundle(),
+            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
@@ -34,5 +36,14 @@ class AppKernel extends Kernel {
     public function registerContainerConfiguration(LoaderInterface $loader) {
         $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml');
     }
-    
+
+
+    public function getCacheDir() {
+        return $this->rootDir . '/' . $this->environment . '/cache';
+    }
+
+    public function getLogDir() {
+        return $this->rootDir . '/' . $this->environment . '/logs';
+    }
+
 }

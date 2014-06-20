@@ -53,7 +53,7 @@ class Role implements RoleInterface {
     private $users;
 
     public function __construct() {
-        $this->users = new ArrayCollection();
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

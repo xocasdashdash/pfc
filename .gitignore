@@ -7,8 +7,18 @@ bin/lessc
 vendor/*
 */logs/*
 */cache/*
+app/dev/cache
+app/dev/logs
+app/dev/*
+app/prod/*
+
+
 web/uploads/*
 web/bundles/*
+#Imagenes copiadas por assetic:dump
+web/css/*
+web/images/*
+web/js/*
 
 # Configuration files
 app/config/parameters.ini
@@ -25,3 +35,8 @@ Gestor-deployment/*.deb
 
 # Uploads
 web/upload/images
+
+#Binaries
+bin/*
+# OpenShift
+app/config/params.php

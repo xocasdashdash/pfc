@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
@@ -34,7 +35,7 @@ class User implements UserInterface {
     /**
      * @var string
      *
-     * @Column(name="name", type="string", length=255)
+     * @Column(name="name", type="string", length=255,nullable=true)
      */
     private $name;
 
@@ -60,13 +61,6 @@ class User implements UserInterface {
     private $creationIp;
 
     /**
-     * @var integer 
-     * @ManyToOne(targetEntity="Degree", inversedBy="id")
-     * @JoinColumn(name="degreeId", referencedColumnName="id", nullable=true)
-     */
-    private $degreeId;
-
-    /**
      * @var string
      *
      * @Column(name="uahName", type="string", length=255, nullable=true)
@@ -74,31 +68,71 @@ class User implements UserInterface {
     private $uahName;
 
     /**
-     * @ManyToMany(targetEntity="Role", inversedBy="users")
-     * @JoinTable(name="User_Roles")
-     */
-    private $roles;
-    
-    /**
-     * @var string Nombre de usuario interno de la UAH que saco de la conexión de REDIRIS
-     * @Column(name="ID_USULDAP", type="string", length= 255, nullable=false, 
-     * options={"comments"="ID que me devuelve REDIRIS al hacer la autentificación por OpenId. Lo uso para buscar el resto de la información en UXXIAC.TUIB_PERSONA"})
-     * @OneToOne(targetEntity="TuibPersonaUser",inversedBy="id_usuldap")
-     * @JoinColumn(name="id_usuldap", referencedColumnName="id_usuldap")
-     */
-    private $id_usuldap;
-
-    /**
      * @var string Apellido 1
      * @Column(name="apellido_1", type="string", length=255, nullable=true)
      */
     private $apellido_1;
-    
+
     /**
      * @var string Apellido 2
      * @Column(name="apellido_2", type="string", length=255, nullable=true)
      */
     private $apellido_2;
+
+    /**
+     * @var string Numero de documento de identidad/NIE con letra
+     * @Column(name="documento_identidad", type="string", length=255, nullable=true)
+     */
+    private $documento_identidad;
+
+    /**
+     * @var string Tipo de documento de identidad: Pasaporte, NIE o DNI 
+     * @Column(name="tipo_documento_identidad", type="string", length=255, nullable=true)
+     */
+    private $tipo_documento_identidad;
+
+    /**
+     * @var integer 
+     * @ManyToOne(targetEntity="Degree", inversedBy="degree_students")
+     * @JoinColumn(name="degree_id", referencedColumnName="id", nullable=true)
+     */
+    private $degree_id;
+
+    /**
+     * @ManyToMany(targetEntity="Role", inversedBy="users",cascade={"persist"})
+     * @JoinTable(name="UAH_GAT_User_Roles",
+     * joinColumns={@JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")},
+     * inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")})
+     */
+    private $roles;
+
+    /**
+     * @var string Nombre de usuario interno de la UAH que saco de la conexión de REDIRIS
+     * @Column(name="ID_USULDAP", type="string", length= 255, nullable=true), 
+     * options={"comments"="ID que me devuelve REDIRIS al hacer la autentificación por OpenId. Lo uso para buscar el resto de la información en UXXIAC.TUIB_PERSONA"})
+     * @OneToOne(targetEntity="TuibPersonaUser",inversedBy="id_usuldap")
+     * @JoinColumn(name="usuldap_id", referencedColumnName="id_usuldap")
+     */
+    private $id_usuldap;
+
+    /**
+     * @OneToMany(targetEntity="Activity", mappedBy="Organizer")
+     * @var type 
+     */
+    private $activities;
+    
+    /**
+     * @OneToMany(targetEntity="Application", mappedBy="userId")
+     * @var type 
+     */
+    private $applications;
+    
+    /**
+     * @OneToMany(targetEntity="Enrollment", mappedBy="user")
+     * @var type 
+     */
+    private $enrollments;
+
     /**
      * Get id
      *
@@ -195,11 +229,11 @@ class User implements UserInterface {
     /**
      * Set degreeId
      *
-     * @param \UAH\GestorActividadesBundle\Entity\Degree $degreeId
+     * @param \UAH\GestorActividadesBundle\Entity\Degree $degree_id
      * @return User
      */
-    public function setDegreeId(\UAH\GestorActividadesBundle\Entity\Degree $degreeId) {
-        $this->degreeId = $degreeId;
+    public function setDegreeId(\UAH\GestorActividadesBundle\Entity\Degree $degree_id) {
+        $this->degree_id = $degree_id;
 
         return $this;
     }
@@ -210,7 +244,7 @@ class User implements UserInterface {
      * @return \UAH\GestorActividadesBundle\Entity\Degree 
      */
     public function getDegreeId() {
-        return $this->degreeId;
+        return $this->degree_id;
     }
 
     public function eraseCredentials() {
@@ -218,6 +252,14 @@ class User implements UserInterface {
     }
 
     public function getRoles() {
+        $roles = array();
+        foreach ($this->roles as $role) {
+            $roles[] = $role->getRole();
+        }
+        return $roles;
+    }
+
+    public function getUserRoles() {
         return $this->roles;
     }
 
@@ -278,15 +320,13 @@ class User implements UserInterface {
         $this->roles->removeElement($roles);
     }
 
-
     /**
      * Set id_usuldap
      *
      * @param string $idUsuldap
      * @return User
      */
-    public function setIdUsuldap($idUsuldap)
-    {
+    public function setIdUsuldap($idUsuldap) {
         $this->id_usuldap = $idUsuldap;
 
         return $this;
@@ -297,8 +337,7 @@ class User implements UserInterface {
      *
      * @return string 
      */
-    public function getIdUsuldap()
-    {
+    public function getIdUsuldap() {
         return $this->id_usuldap;
     }
 
@@ -306,15 +345,13 @@ class User implements UserInterface {
         
     }
 
-
     /**
      * Set apellido_1
      *
      * @param string $apellido1
      * @return User
      */
-    public function setApellido1($apellido1)
-    {
+    public function setApellido1($apellido1) {
         $this->apellido_1 = $apellido1;
 
         return $this;
@@ -325,8 +362,7 @@ class User implements UserInterface {
      *
      * @return string 
      */
-    public function getApellido1()
-    {
+    public function getApellido1() {
         return $this->apellido_1;
     }
 
@@ -336,8 +372,7 @@ class User implements UserInterface {
      * @param string $apellido2
      * @return User
      */
-    public function setApellido2($apellido2)
-    {
+    public function setApellido2($apellido2) {
         $this->apellido_2 = $apellido2;
 
         return $this;
@@ -348,8 +383,149 @@ class User implements UserInterface {
      *
      * @return string 
      */
-    public function getApellido2()
-    {
+    public function getApellido2() {
         return $this->apellido_2;
+    }
+
+    /**
+     * Set documento_identidad
+     *
+     * @param string $documentoIdentidad
+     * @return User
+     */
+    public function setDocumentoIdentidad($documentoIdentidad) {
+        $this->documento_identidad = $documentoIdentidad;
+
+        return $this;
+    }
+
+    /**
+     * Get documento_identidad
+     *
+     * @return string 
+     */
+    public function getDocumentoIdentidad() {
+        return $this->documento_identidad;
+    }
+
+    /**
+     * Set tipo_documento_identidad
+     *
+     * @param string $tipoDocumentoIdentidad
+     * @return User
+     */
+    public function setTipoDocumentoIdentidad($tipoDocumentoIdentidad) {
+        $this->tipo_documento_identidad = $tipoDocumentoIdentidad;
+
+        return $this;
+    }
+
+    /**
+     * Get tipo_documento_identidad
+     *
+     * @return string 
+     */
+    public function getTipoDocumentoIdentidad() {
+        return $this->tipo_documento_identidad;
+    }
+
+
+    /**
+     * Add activities
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Activity $activities
+     * @return User
+     */
+    public function addActivity(\UAH\GestorActividadesBundle\Entity\Activity $activities)
+    {
+        $this->activities[] = $activities;
+
+        return $this;
+    }
+
+    /**
+     * Remove activities
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Activity $activities
+     */
+    public function removeActivity(\UAH\GestorActividadesBundle\Entity\Activity $activities)
+    {
+        $this->activities->removeElement($activities);
+    }
+
+    /**
+     * Get activities
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getActivities()
+    {
+        return $this->activities;
+    }
+
+    /**
+     * Add applications
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Application $applications
+     * @return User
+     */
+    public function addApplication(\UAH\GestorActividadesBundle\Entity\Application $applications)
+    {
+        $this->applications[] = $applications;
+
+        return $this;
+    }
+
+    /**
+     * Remove applications
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Application $applications
+     */
+    public function removeApplication(\UAH\GestorActividadesBundle\Entity\Application $applications)
+    {
+        $this->applications->removeElement($applications);
+    }
+
+    /**
+     * Get applications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getApplications()
+    {
+        return $this->applications;
+    }
+
+    /**
+     * Add enrollments
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollments
+     * @return User
+     */
+    public function addEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments)
+    {
+        $this->enrollments[] = $enrollments;
+
+        return $this;
+    }
+
+    /**
+     * Remove enrollments
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollments
+     */
+    public function removeEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments)
+    {
+        $this->enrollments->removeElement($enrollments);
+    }
+
+    /**
+     * Get enrollments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEnrollments()
+    {
+        return $this->enrollments;
     }
 }
