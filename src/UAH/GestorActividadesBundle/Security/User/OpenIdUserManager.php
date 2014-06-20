@@ -64,8 +64,7 @@ class OpenIdUserManager extends UserManager {
                         array('role' => 'ROLE_UAH_STUDENT'));
             }
         }
-        error_log("####Creando identidad para" . $identity);
-// we create an OpenIdIdentity for this User
+        // we create an OpenIdIdentity for this User
         $openIdIdentity = new OpenIdIdentity();
         $openIdIdentity->setIdentity($identity);
         $openIdIdentity->setAttributes($attributes);
@@ -76,7 +75,6 @@ class OpenIdUserManager extends UserManager {
             $this->entityManager->persist($openIdIdentity);
             $this->entityManager->flush();
             $this->entityManager->clear();
-            error_log("####Identidad creada:" . $openIdIdentity->getId());
         } catch (Exception $e) {
             error_log("EXCEPCION" . print_r($e, true));
         }
