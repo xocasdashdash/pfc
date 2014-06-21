@@ -49,7 +49,10 @@ class ActivityType extends AbstractType {
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'UAH\GestorActividadesBundle\Entity\Activity'
+            'data_class' => 'UAH\GestorActividadesBundle\Entity\Activity',
+            'csrf_protection' => true,
+            'csrf_field_name' => '_token',
+            'intention' => 'activity_item'
         ));
     }
 
