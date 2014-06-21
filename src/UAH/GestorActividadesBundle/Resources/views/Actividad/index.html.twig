@@ -1,4 +1,10 @@
 {% extends '::frontend.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/frontend/activity/activity.less' %}
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
+    {% endstylesheets %}
+{% endblock %}
 {% block javascripts %}
     {{ parent() }}
     {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/index.js' %}
@@ -7,35 +13,60 @@
 
 {% endblock %}
 {% block content %}
-
-    <div class="modal fade" id="actividadModalPrincipal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">$NOMBRE</h4>
+    <div class="container">
+        {% if activity.organizer == app.user or is_granted('ROLE_UAH_ADMIN') %}        
+            <div class="row">
+                <div class="text-center col-xs-6">
+                    <a href="{{path('uah_gestoractividades_actividad_edit',{'activity_id': activity.id})}}">
+                        <h4>EDITAR</h4>
+                    </a>
                 </div>
+                <div class="text-center col-xs-6">
+                    <a href="{{path('uah_gestoractividades_actividad_admin',{'activity_id': activity.id})}}">
+                        <h4>ADMINISTRAR</h4>
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="actividad">
                 <div class="row">
-                    <div class="modal-body" id="modalActividadCuerpo">
-                        <div class="col-lg-8">
-                            <div class="abstract-actividad">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sollicitudin tincidunt nisl, id tempus orci viverra gravida. Curabitur ante lacus, varius at turpis a, placerat gravida neque. Aliquam a quam eget nunc interdum commodo et id massa. Cras sollicitudin bibendum purus eu vestibulum. Nullam commodo vulputate tempus. Integer et egestas justo
-                            </div>
-                        </div>
-                        <div class="col-lg-4 center-block collapse">
-                            <h3>02/03/2014</h3>
-                            <a href="#" class="thumbnail">
-                                <img data-src="holder.js/120x160" alt="Imagen de prueba" src="..">
-                            </a>
-                            <button class="btn btn-default btn-primary center-block">
-                                <span class="glyphicon glyphicon-pencil"></span>Inscribete!</button>
+                    <div class ="title text-center">
+                        <h1>{{ activity.name}}</h1>
+                    </div>
+                </div>
+                <div class="row sub-title">
+                    <div class="left-column col-lg-8 col-xs-8">
+                        <span class="organizador pull-left">Organizado por {{activity.organizername}}</span>
+                    </div>
+                    <div class="left-column col-lg-4 col-xs-4 text-center">
+                        <div class="row">
+                            <div class="col-xs-4">Inicio</div><div class="col-xs-8">{{activity.startdate|date("d/m/Y H:i")}}</div>
+                            <div class="col-xs-4">Final</div><div class="col-xs-8">{{activity.finishdate|date("d/m/Y H:i")}}</div>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <div class="row">
+                    <div class="left-column col-lg-8 col-xs-8 activity-description">
+                        <span>
+                            {{activity.description}}
+                        </span>
+                    </div>
+                    <div class="right-column col-lg-4 col-xs-4 ">
+                        <a href="#" class="">
+                            <img  class="center-block img-rounded" alt="Imagen de prueba" src="{{asset(activity.imagepath)}}">
+                        </a>
+                        <div class="enrollment-button">
+
+                            <button class="btn btn-default btn-primary center-block enroll-button">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span>Inscribete!</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 {% endblock %}

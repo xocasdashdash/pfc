@@ -234,7 +234,12 @@ class Activity {
      * @Column(name="finish_date",type="datetime", nullable=false) 
      */
     private $finish_date;
-
+    /**
+     *
+     * @var type Nombre de la organización/persona que organiza la actividad
+     * @Column(name="organizer_name", type="string", nullable=false)
+     */
+    private $organizer_name;
     /**
      * Constructor
      */
@@ -950,4 +955,27 @@ class Activity {
         return $this->enrollees;
     }
 
+
+    /**
+     * Set finish_date
+     *
+     * @param \DateTime $finishDate
+     * @return Activity
+     */
+    public function setFinishDate($finishDate)
+    {
+        $this->finish_date = $finishDate;
+
+        return $this;
+    }
+
+    /**
+     * Get finish_date
+     *
+     * @return \DateTime 
+     */
+    public function getFinishDate()
+    {
+        return $this->finish_date;
+    }
 }
