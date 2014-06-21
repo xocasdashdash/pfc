@@ -234,7 +234,12 @@ class Activity {
      * @Column(name="finish_date",type="datetime", nullable=false) 
      */
     private $finish_date;
-
+    /**
+     *
+     * @var type Nombre de la organización/persona que organiza la actividad
+     * @Column(name="organizer_name", type="string", nullable=false)
+     */
+    private $organizer_name;
     /**
      * Constructor
      */
@@ -972,5 +977,28 @@ class Activity {
     public function getFinishDate()
     {
         return $this->finish_date;
+    }
+
+    /**
+     * Set organizer_name
+     *
+     * @param string $organizerName
+     * @return Activity
+     */
+    public function setOrganizerName($organizerName)
+    {
+        $this->organizer_name = $organizerName;
+
+        return $this;
+    }
+
+    /**
+     * Get organizer_name
+     *
+     * @return string 
+     */
+    public function getOrganizerName()
+    {
+        return $this->organizer_name;
     }
 }
