@@ -14,8 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ActividadController extends Controller {
 
     /**
-     * @Route("/actividad/{activity_id}",requirements={"activity_id" = "\d+"}, options={"expose"=true})))
-     * @Route("/actividad/{activity_id}/{slug}",requirements={"activity_id" = "\d+"}, options={"expose"=true}))
+     * @Route("/actividad/{activity_id}-{slug}",requirements={"activity_id" = "\d+"}, defaults={"slug" = ""}, options={"expose"=true}))
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Method({"GET"})
      */
@@ -61,9 +60,12 @@ class ActividadController extends Controller {
      * @Security("has_role('ROLE_UAH_STAFF_PDI')")
      */
     public function editAction(Activity $activity, Request $request) {
-        $form = $this->createForm(new ActivityType(), $activity);
-        if ($request->isMethod("POST"))
-            $form->handleRequest($request);
+        $form = $this->createForm(new ActivityType(), $activity
+                , array(
+            'edit' => true
+        ));
+
+        $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $activity->setOrganizer($this->getUser());
@@ -71,8 +73,9 @@ class ActividadController extends Controller {
             $activity->setApprovedByComitee(0);
             $em->persist($activity);
             $em->flush();
-            return $this->redirect($this->generateUrl("uah_gestoractividades_actividad_index", array('activity_id' => $activity->getId())));
-        } else {
+            return $this->redirect($this->generateUrl("uah_gestoractividades_actividad_index", array('activity_id' => $activity->getId(), 'slug' => $activity->getSlug())));
+        } /*else {
+            
             $data = $request->request->all();
             print("REQUEST DATA<br/>");
             foreach ($data as $k => $d) {
@@ -93,7 +96,7 @@ class ActividadController extends Controller {
                 print_r($d);
                 print("</pre>");
             }
-        }
+        }*/
 
         return $this->render('UAHGestorActividadesBundle:Actividad:edit.html.twig', array(
                     'form' => $form->createView(),

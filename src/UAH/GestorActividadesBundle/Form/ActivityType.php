@@ -52,7 +52,8 @@ class ActivityType extends AbstractType {
             'data_class' => 'UAH\GestorActividadesBundle\Entity\Activity',
             'csrf_protection' => true,
             'csrf_field_name' => '_token',
-            'intention' => 'activity_item'
+            'intention' => 'activity_item',
+            'edit' => false
         ));
     }
 
