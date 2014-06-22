@@ -1,15 +1,26 @@
 {% extends '::backend.html.twig' %}
+{% block javascripts %}
+    {{parent()}}
+    {% javascripts 
+        '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js'
+        '@UAHGestorActividadesBundle/Resources/public/js/backend/create_activity.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block stylesheets %}
+    {{parent()}}
+    {% stylesheets '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-datepicker/build/build3.less' %}
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
+    {% endstylesheets %}
+{% endblock %}
 {% block content %}
-    <div class="container">
-        <div class="row">
-            {{ form_start(form, { 'action': path('uah_gestoractividades_actividad_edit',{'activity_id': activity.id}) }) }}
+    <div class="row">
+        {#{% form_theme form with ['UAHGestorActividadesBundle:Actividad:Form/bootstrap-form-horizontal.html.twig'] %}  #}
+        {{ form(form, { 'style': 'horizontal' }) }}
+        {{ form_start(form)}}
+        {{ form_row(form.name) }}
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
 
-            {{ form(form) }}
-            {{ form_widget(form._token) }}
-
-            {{ form_rest(form) }}
-            {{ form_end(form) }}
-
-        </div>
     </div>
 {% endblock %}
