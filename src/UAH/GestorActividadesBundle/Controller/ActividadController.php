@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ActividadController extends Controller {
 
     /**
-     * @Route("/actividad/{activity_id}/{slug}",requirements={"activity_id" = "\d+"}, options={"expose"=true}))
+     * @Route("/actividad/{activity_id}-{slug}",requirements={"activity_id" = "\d+"}, defaults={"slug" = ""}, options={"expose"=true}))
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Method({"GET"})
      */
@@ -60,8 +60,67 @@ class ActividadController extends Controller {
      * @Security("has_role('ROLE_UAH_STAFF_PDI')")
      */
     public function editAction(Activity $activity, Request $request) {
+        $form = $this->createForm(new ActivityType(), $activity
+                , array(
+            'edit' => true
+        ));
+
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $activity->setOrganizer($this->getUser());
+            $activity->setNumberOfPlacesOccupied(0);
+            $activity->setApprovedByComitee(0);
+            $em->persist($activity);
+            $em->flush();
+            return $this->redirect($this->generateUrl("uah_gestoractividades_actividad_index", array('activity_id' => $activity->getId(), 'slug' => $activity->getSlug())));
+        } /*else {
+            
+            $data = $request->request->all();
+            print("REQUEST DATA<br/>");
+            foreach ($data as $k => $d) {
+                print("$k: <pre>");
+                print_r($d);
+                print("</pre>");
+            }
+            $children = $form->all();
+            print("<br/>FORM CHILDREN<br/>");
+            foreach ($children as $ch) {
+                print($ch->getName() . "<br/>");
+            }
+            $data = array_diff_key($data, $children);
+//$data contains now extra fields
+            print("<br/>DIFF DATA<br/>");
+            foreach ($data as $k => $d) {
+                print("$k: <pre>");
+                print_r($d);
+                print("</pre>");
+            }
+        }*/
+
         return $this->render('UAHGestorActividadesBundle:Actividad:edit.html.twig', array(
-                    'form' => $form->createView()));
+                    'form' => $form->createView(),
+                    'activity' => $activity));
+    }
+
+    /**
+     * @Route("/actividad/update/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1})
+     * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
+     * @Security("has_role('ROLE_UAH_STAFF_PDI')")
+     */
+    public function updateAction(Activity $activity, Request $request) {
+        $editForm = $this->createForm(new ActivityType(), $activity);
+        $rutaFotoOriginal = $editForm->getData()->getImagePath();
+
+        $editForm->handleRequest($request);
+        if ($editForm->isValid()) {
+            $em->persist($activity);
+            $em->flush();
+            return $this->redirect($this->generateUrl("uah_gestoractividades_actividad_index", array('activity_id' => $activity->getId())));
+        } else {
+            return $this->render('UAHGestorActividadesBundle:Actividad:edit.html.twig', array(
+                        'form' => $editForm->createView()));
+        }
     }
 
     /**
