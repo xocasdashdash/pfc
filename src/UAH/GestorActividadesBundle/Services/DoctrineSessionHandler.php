@@ -58,8 +58,8 @@ class DoctrineSessionHandler implements \SessionHandlerInterface {
         if (!array_key_exists('db_table', $dbOptions)) {
             throw new \InvalidArgumentException('You must provide the "db_table" option for a DoctrineSessionStorage.');
         }
-        $this->dbalConnection = $dbalConnection;//->getParams();
-        
+        $this->dbalConnection = $dbalConnection; //->getParams();
+
         $dbOptions = array_merge(array(
             'db_id_col' => 'sess_id',
             'db_data_col' => 'sess_data',
@@ -155,12 +155,17 @@ class DoctrineSessionHandler implements \SessionHandlerInterface {
         try {
             $mergeSql = $this->getMergeSql();
             if (null !== $mergeSql) {
+                error_log("Length data: " . strlen($encoded));
+                error_log("Length id: " . strlen($sessionId));
                 $mergeStmt = $this->getConnection()->prepare($mergeSql);
                 $mergeStmt->bindParam(':id', $sessionId, \PDO::PARAM_STR);
                 $mergeStmt->bindParam(':data', $encoded, \PDO::PARAM_STR);
-                $mergeStmt->bindValue(':time', time(), \PDO::PARAM_INT);                
-                $mergeStmt->execute();
-
+                $mergeStmt->bindValue(':time', time(), \PDO::PARAM_INT);
+                try {
+                    $mergeStmt->execute();
+                } catch (Exception $e) {
+                    error_log(print_r($e, true));
+                }
                 return true;
             }
             $this->getConnection()->beginTransaction();
@@ -199,14 +204,15 @@ class DoctrineSessionHandler implements \SessionHandlerInterface {
      */
     private function getMergeSql() {
         $driver = $this->getConnection()->getDriver()->getName();
-
-        
         switch ($driver) {
             case 'pdo_mysql':
                 return "INSERT INTO $this->table ($this->idCol, $this->dataCol, $this->timeCol) VALUES (:id, :data, :time) " .
                         "ON DUPLICATE KEY UPDATE $this->dataCol = VALUES($this->dataCol), $this->timeCol = VALUES($this->timeCol)";
             case 'oci8':
                 // DUAL is Oracle specific dummy table
+                //Bug de Oracle al hacer merge con clob
+                return null;
+
                 return "MERGE INTO $this->table USING DUAL ON ($this->idCol = :id) " .
                         "WHEN NOT MATCHED THEN INSERT ($this->idCol, $this->dataCol, $this->timeCol) VALUES (:id, :data, :time) " .
                         "WHEN MATCHED THEN UPDATE SET $this->dataCol = :data";
@@ -226,10 +232,9 @@ class DoctrineSessionHandler implements \SessionHandlerInterface {
      * @return \PDO
      */
     protected function getConnection() {
-        
+
         //$connection = DriverManager::getConnection($this->dbalConnectionParameters);
         return $this->dbalConnection;
-        return $connection;
     }
 
 }
