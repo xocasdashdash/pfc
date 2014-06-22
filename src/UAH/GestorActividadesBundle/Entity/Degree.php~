@@ -158,4 +158,44 @@ class Degree {
     {
         return $this->status;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->degree_students = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add degree_students
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\User $degreeStudents
+     * @return Degree
+     */
+    public function addDegreeStudent(\UAH\GestorActividadesBundle\Entity\User $degreeStudents)
+    {
+        $this->degree_students[] = $degreeStudents;
+
+        return $this;
+    }
+
+    /**
+     * Remove degree_students
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\User $degreeStudents
+     */
+    public function removeDegreeStudent(\UAH\GestorActividadesBundle\Entity\User $degreeStudents)
+    {
+        $this->degree_students->removeElement($degreeStudents);
+    }
+
+    /**
+     * Get degree_students
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getDegreeStudents()
+    {
+        return $this->degree_students;
+    }
 }

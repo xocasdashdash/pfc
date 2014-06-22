@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}{% endblock %}</title>
+        <link href="http://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed|Alegreya:700" rel="stylesheet" type="text/css" />
         {% block stylesheets %}
             {% stylesheets
                 '@UAHGestorActividadesBundle/Resources/public/vendor/normalize-css/normalize.css'
@@ -42,8 +43,6 @@
                                     {% else %}
                                     <li><a href="{{ path("uah_gestoractividades_login_login")}}" >Log in</a></li>
                                     {% endif %}
-                                    {# fp_openid_security_check", {'openid_identifier': 'http://yo.rediris.es/','_target_path': "/"}) }}"#}
-
                                 <li><a href="{{ path('uah_gestoractividades_perfil_index') }}">Perfil</a></li>
                                     {% if user is defined and user.type == 'admin' %}
                                     <li><a href="{{ path('uah_gestoractividades_admin_index') }}">Administrar</a></li>
@@ -65,18 +64,16 @@
             {% endblock %}  
 
         {% endblock %}
-        
+
     </body>
     {% block javascripts %}
-            {% javascripts 
+        {% javascripts 
             'bootstrap/js/jquery.js'
             'bootstrap/js/bootstrap.js'
-            '@UAHGestorActividadesBundle/Resources/public/vendor/holderjs/holder.js' %}
-            {#            '@UAHGestorActividadesBundle/Resources/public/vendor/jquery-ui/ui/jquery-ui.js'%}
-            #}            
-            <script type="text/javascript" src="{{ asset_url }}"></script>
-            {% endjavascripts %}
-            <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-            <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-        {% endblock %}
-</html>b
+            '@UAHGestorActividadesBundle/Resources/public/vendor/holderjs/holder.js' %}                
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+        <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+    {% endblock %}
+</html>
