@@ -25,15 +25,6 @@ $(document).ready(function() {
             $('#modal-image').attr("src", $(event.target).closest('.actividad').find('.imagen-actividad').attr("src"));
         });
     });
-//    $('#inputFechaDatePicker .input-group.date').datepicker({
-//        format: "dd/mm/yyyy",
-//        weekStart: 1,
-//        todayBtn: true,
-//        language: "es",
-//        multidate: true,
-//        multidateSeparator: ";",
-//        todayHighlight: true
-//    });
     $('.actividad').on('click', '.enroll-button', function(event) {
         var $id = $(event.delegateTarget).data('activity-id');
         var $boton = $(this);
@@ -62,7 +53,7 @@ $(document).ready(function() {
                 403: function(data) {
                     console.log('Error al inscribirse');
                     $boton.html('<span class="texto">Inscribete!</span><span class="glyphicon glyphicon-pencil"></span>');
-                    
+
                     $('#notification').removeClass('hide');
                     switch (data.responseJSON.type) {
                         case 'notice':
@@ -95,5 +86,8 @@ $(document).ready(function() {
         evt.preventDefault();
         $('#notification').addClass('hide');
         $('#notification').removeClass('alert-info alert-warning alert-danger');
+    });
+    $('.img-activity').click(function(e) {
+        $('#imgmodal img').attr('src', $(this).attr('data-img-src'));
     });
 });
