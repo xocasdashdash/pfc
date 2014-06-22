@@ -229,6 +229,18 @@ class Activity {
     private $start_date;
 
     /**
+     * 
+     * @var type Fecha en la que comienza la actividad. Una vez comenzada nadie se puede desapuntar
+     * @Column(name="finish_date",type="datetime", nullable=false) 
+     */
+    private $finish_date;
+    /**
+     *
+     * @var type Nombre de la organización/persona que organiza la actividad
+     * @Column(name="organizer_name", type="string", nullable=false)
+     */
+    private $organizer_name;
+    /**
      * Constructor
      */
     public function __construct() {
@@ -853,7 +865,9 @@ class Activity {
         }
         //Modifico la fecha de inicio teniendo en cuenta la primera que se pone como de celebracion
         $fechas = json_decode($this->getCelebrationDates());
-        $this->setStartDate(\DateTime::createFromFormat("Y-m-d H:i:s", $fechas[0]->date,  new \DateTimeZone($fechas[0]->timezone)));//$fechas[0]);
+        $this->setStartDate(\DateTime::createFromFormat("Y-m-d H:i:s", $fechas[0]->date, new \DateTimeZone($fechas[0]->timezone)));
+        //Modifico la fecha de final teniendo en cuenta la última fecha que se pone como de celebracion
+        $this->setFinishDate(\DateTime::createFromFormat("Y-m-d H:i:s", $fechas[count($fechas) - 1]->date, new \DateTimeZone($fechas[count($fechas) - 1]->timezone)));
     }
 
     /**
@@ -896,7 +910,7 @@ class Activity {
      * @return Activity
      */
     public function setStartDate(\Datetime $startDate) {
-        
+
         $this->start_date = $startDate;
 
         return $this;
@@ -941,4 +955,50 @@ class Activity {
         return $this->enrollees;
     }
 
+
+    /**
+     * Set finish_date
+     *
+     * @param \DateTime $finishDate
+     * @return Activity
+     */
+    public function setFinishDate($finishDate)
+    {
+        $this->finish_date = $finishDate;
+
+        return $this;
+    }
+
+    /**
+     * Get finish_date
+     *
+     * @return \DateTime 
+     */
+    public function getFinishDate()
+    {
+        return $this->finish_date;
+    }
+
+    /**
+     * Set organizer_name
+     *
+     * @param string $organizerName
+     * @return Activity
+     */
+    public function setOrganizerName($organizerName)
+    {
+        $this->organizer_name = $organizerName;
+
+        return $this;
+    }
+
+    /**
+     * Get organizer_name
+     *
+     * @return string 
+     */
+    public function getOrganizerName()
+    {
+        return $this->organizer_name;
+    }
 }

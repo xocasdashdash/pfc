@@ -13,8 +13,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use UAH\GestorActividadesBundle\Entity\Enrollment;
 use UAH\GestorActividadesBundle\Entity\Activity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use UAH\GestorActividadesBundle\Repository\EnrollmentRepository;
 
 class EnrollmentController extends Controller {
@@ -30,10 +30,10 @@ class EnrollmentController extends Controller {
 
     /**
      * @Route("/enroll/{activity_id}",requirements={"pagina" = "\d+"}, options={"expose"=true})
-     * @ParamConverter("actividad", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
+     * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("is_granted('ROLE_UAH_STUDENT')")
      */
-    public function enrollAction(Activity $actividad) {
+    public function enrollAction(Activity $activity) {
         /*
          * 
          * Inscribo al usuario
@@ -44,9 +44,9 @@ class EnrollmentController extends Controller {
         //Compruebo que el usuario no esta ya inscrito en la actividad (Si ya esta, le devuelvo ok)
         $em = $this->getDoctrine()->getManager();
         //Uso bitmasks para saber que tipo de error hay (si lo hay) 
-        $check_enrolled = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->checkEnrolled($user, $actividad);
-        $free_places = ($actividad->getNumberOfPlacesOccupied() >= $actividad->getNumberOfPlacesOffered()) << 1;
-        $can_enroll =  ($em->getRepository('UAHGestorActividadesBundle:Enrollment')->canEnroll($actividad));
+        $check_enrolled = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->checkEnrolled($user, $activity);
+        $free_places = ($activity->getNumberOfPlacesOccupied() >= $activity->getNumberOfPlacesOffered()) << 1;
+        $can_enroll =  ($em->getRepository('UAHGestorActividadesBundle:Enrollment')->canEnroll($activity));
         $permissions = $check_enrolled | $free_places <<1 | $can_enroll <<2;
         $response = array();
 
@@ -67,11 +67,11 @@ class EnrollmentController extends Controller {
             $code = 403;
         } else {
             $enrollment = new Enrollment();
-            $enrollment->setActivity($actividad);
+            $enrollment->setActivity($activity);
             $enrollment->setUser($user);
             $em->persist($enrollment);
-            $actividad->setNumberOfPlacesOccupied($actividad->getNumberOfPlacesOccupied() + 1);
-            $em->persist($actividad);
+            $activity->setNumberOfPlacesOccupied($activity->getNumberOfPlacesOccupied() + 1);
+            $em->persist($activity);
             $em->flush();
             $code = 200;
             $response = 'Enrolled';
