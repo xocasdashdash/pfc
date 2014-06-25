@@ -57,9 +57,12 @@ class ActividadController extends Controller {
     /**
      * @Route("/actividad/edit/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
-     * @Security("has_role('ROLE_UAH_STAFF_PDI')")
+     * @Security("(is_granted('edit_activity',activity) && has_role('ROLE_UAH_STAFF_PDI')) || has_role('ROLE_UAH_ADMIN')")
      */
     public function editAction(Activity $activity, Request $request) {
+        if (false === $this->get('security.context')->isGranted('edit_activity', $activity)) {
+            throw new AccessDeniedException('Unauthorised access!');
+        }
         $form = $this->createForm(new ActivityType(), $activity
                 , array(
             'edit' => true
@@ -74,30 +77,7 @@ class ActividadController extends Controller {
             $em->persist($activity);
             $em->flush();
             return $this->redirect($this->generateUrl("uah_gestoractividades_actividad_index", array('activity_id' => $activity->getId(), 'slug' => $activity->getSlug())));
-        } /*else {
-            
-            $data = $request->request->all();
-            print("REQUEST DATA<br/>");
-            foreach ($data as $k => $d) {
-                print("$k: <pre>");
-                print_r($d);
-                print("</pre>");
-            }
-            $children = $form->all();
-            print("<br/>FORM CHILDREN<br/>");
-            foreach ($children as $ch) {
-                print($ch->getName() . "<br/>");
-            }
-            $data = array_diff_key($data, $children);
-//$data contains now extra fields
-            print("<br/>DIFF DATA<br/>");
-            foreach ($data as $k => $d) {
-                print("$k: <pre>");
-                print_r($d);
-                print("</pre>");
-            }
-        }*/
-
+        } 
         return $this->render('UAHGestorActividadesBundle:Actividad:edit.html.twig', array(
                     'form' => $form->createView(),
                     'activity' => $activity));
@@ -106,7 +86,7 @@ class ActividadController extends Controller {
     /**
      * @Route("/actividad/update/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
-     * @Security("has_role('ROLE_UAH_STAFF_PDI')")
+     * @Security("(is_granted('edit_activity',activity) && has_role('ROLE_UAH_STAFF_PDI')) || has_role('ROLE_UAH_ADMIN')")
      */
     public function updateAction(Activity $activity, Request $request) {
         $editForm = $this->createForm(new ActivityType(), $activity);
@@ -126,11 +106,16 @@ class ActividadController extends Controller {
     /**
      * @Route("/actividad/admin/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
-     * @Security("has_role('ROLE_UAH_STAFF_PDI')")
+     * @Security("(is_granted('edit_activity',activity) && has_role('ROLE_UAH_STAFF_PDI')) || has_role('ROLE_UAH_ADMIN')")
      */
     public function adminAction(Activity $activity, Request $request) {
+        
+        $enrollments = $activity->getEnrollees();
+        
         return $this->render('UAHGestorActividadesBundle:Actividad:admin.html.twig', array(
-                    'form' => $form->createView()));
+                    'enrollments' => $enrollments,
+                    'activity' => $activity));
+        
     }
 
     /**
