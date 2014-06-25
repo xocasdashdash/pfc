@@ -1,0 +1,80 @@
+{% extends '::backend.html.twig' %}
+{% block javascripts %}
+    {{parent()}}
+    {% javascripts 
+        '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js'
+        '@UAHGestorActividadesBundle/Resources/public/js/backend/create_activity.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets 
+        '@UAHGestorActividadesBundle/Resources/public/css/backend/admin.less'%}
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
+    {% endstylesheets %}
+{% endblock %}
+{% block acciones_datos %}
+    <div class="row acciones_datos flex-container">
+        <div class="flex-item">
+            <button type="button" class="btn btn-default">Copiar e-mails a portapapeles</button>
+        </div>
+        <div class="flex-item">
+            <button type="button" class="btn btn-default">Reconocer marcados</button>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th class="nombre-actividad">Nombre y apellidos</th>
+                <th>E-mail</th>
+                <th>Fecha Inscripción</th>
+                <th>Tipo de plan de estudios</th>
+                <th>Reconocer asistencia</th>
+                <th>Créditos a reconocer</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for enrollment in enrollments %}
+                <tr>
+                    <td>#{{ loop.index }}</td>
+                    <td>{{ enrollment.user.name ~ " " ~ enrollment.user.apellido1 ~ " " ~ enrollment.user.apellido2}}</td>
+                    <td>{{ enrollment.user.email }}</td>
+                    <td>{{ enrollment.dateRegistered |date('d/m/Y') }}</td>
+                    <td>{{ enrollment.user.degreeId}}</td>
+                    {#                        <td>{{ enrolled_activity.isRecognized? 'Si':'No' }}</td>
+                    #}                        {#TODO:Meter que según el estado muestre un campo diferente con acciones diferentes
+                                                - Si estoy marcado como asistente -> Pedir justificante
+                                                - Si estoy marcado como pendiente de asistir (start_date < now) -> Dar de baja
+                                                - Si estoy marcado como justificante -> Ocultar #}    
+                    {% if enrollment.status.STATUS =="STATUS_INSCRITO" %}
+                    <td><input type="checkbox" name="Reconocer" value="{{enrollment.id}}" /> </td>
+                    <td><input type="text" name="number_of_credits" placeholder="Número de créditos"></td>
+                    {% elseif enrollment.status.STATUS =="STATUS_RECONOCIDO" %}
+                    <td><input type="checkbox" name="Reconocer" value="{{enrollment.id}}" disabled checked> </td>
+                    <td><input type="text" name="number_of_credits" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
+                    {% elseif enrollment.status.STATUS =="STATUS_NO_RECONOCIDO" %}
+                    <td><input type="checkbox" name="Reconocer" value="{{enrollment.id}}" disabled> </td>
+                    <td><input type="text" name="number_of_credits" placeholder="Número de créditos" disabled>0</td>
+                    {% elseif enrollment.status.STATUS =="STATUS_PENDIENTE_VERIFICACION" %}
+                    <td><input type="checkbox" name="Reconocer" value="{{enrollment.id}}" disabled checked> </td>
+                    <td><input type="text" name="number_of_credits" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
+                    {% elseif enrollment.status.STATUS =="STATUS_VERIFICADO" %}
+                    <td><input type="checkbox" name="Reconocer" value="{{enrollment.id}}" disabled checked> </td>
+                    <td><input type="text" name="number_of_credits" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
+                    {% endif %}
+                    <td>{{ enrollment.status.STATUS}}</td>
+                </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center">
+                            No hemos encontrado ningún usuario inscrito en la actividad.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% endblock %}
