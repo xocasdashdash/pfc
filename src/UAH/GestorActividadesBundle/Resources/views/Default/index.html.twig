@@ -5,7 +5,12 @@
     {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/index.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-
+{% endblock %}
+{% block stylesheets %}
+    {{parent()}}
+    {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/frontend/index/*.less' %}
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
+    {% endstylesheets %}
 {% endblock %}
 {% block notifications %}
     <div class="alert alert-dismissable hide message" id="notification">
@@ -20,26 +25,27 @@
             {% for activity in activities %}
                 <div class="col-lg-8 col-md-8 col-lg-offset-4 col-md-offset-4 actividad" data-activity-id="{{activity.id}}">
                     <div class="row"><div class="col-md-8">
-                            <h3 class="titulo-actividad">{{activity.name}}</h3>
+                            <h3 class="titulo-actividad"><a href="{{path('uah_gestoractividades_actividad_index',{'activity_id': activity.id,'slug':activity.slug})}}">{{activity.name}}</a></h3>
                             <div class="abstract-actividad ocultado-vertical">
                                 {{activity.description}}
                             </div>
                             <a class="leer-mas" href="#" data-toggle="modal" data-target="#actividadModalPrincipal">Leer mas</a>
                         </div>
-                        <div class="col-md-4 center-block collapse">
+                        <div class="col-md-4 center-block collapse right-column">
                             <h3 class="fecha-publicidad-actividad">{{activity.publicityStartDate|date("d/m/Y")}}</h3>
-                            <a href="#" class="thumbnail ">
-                                <img class="imagen-actividad" src="{{asset(activity.imagepath)}}" style="width: 120px; height: 160px;">                                         </a>
+                            <a href="{{path('uah_gestoractividades_actividad_index',{'activity_id': activity.id,'slug':activity.slug})}}">
+                                <img class="center-block img-rounded img-activity img-small" data-img-src="{{asset(activity.imagepath)}}" src="{{asset(activity.imagepath)}}" data-toggle="modal" data-target="#img-modal" >                                         
+                            </a>
                             <div class="enrollment-button">
                                 {% if activity.id in enrollments %}
                                     <button class="btn btn-default center-block btn-success already-enrolled">
                                         <span class="texto">Inscrito!</span>
-                                        <span class="glyphicon glyphicon-ok"></span>
+                                        <i class="fa fa-check fa-2x"></i> 
                                     </button>
-                                {%else%}
+                                    {%else%}
                                     <button class="btn btn-default center-block btn-primary enroll-button">
                                         <span class="texto">Inscribete!</span>
-                                        <span class="glyphicon glyphicon-pencil"></span>
+                                        <i class="fa fa-pencil-square-o fa-2x"></i>
                                     </button>
                                 {%endif%}
                             </div>
@@ -64,13 +70,13 @@
                     <div class="modal-body" >
                         <div class="col-lg-8">
                             <div class="abstract-actividad-modal" id="modal-abstract">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sollicitudin tincidunt nisl, id tempus orci viverra gravida. Curabitur ante lacus, varius at turpis a, placerat gravida neque. Aliquam a quam eget nunc interdum commodo et id massa. Cras sollicitudin bibendum purus eu vestibulum. Nullam commodo vulputate tempus. Integer et egestas justo
+
                             </div>
                         </div>
                         <div class="col-lg-4 center-block collapse">
-                            <h3 id="modal-fecha" >02/03/2014</h3>
-                            <a href="#" class="thumbnail">
-                                <img id="modal-image" src="..">
+                            <h3 id="modal-fecha"></h3>
+                            <a href="">
+                                <img class="center-block img-rounded img-activity img-big" src="" >                                         
                             </a>
                             <button class="btn btn-default btn-primary center-block">
                                 <span class="glyphicon glyphicon-pencil"></span>Inscribete!</button>
@@ -83,8 +89,21 @@
             </div>
         </div>
     </div>
+    <div id="img-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:800px;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+            <img src="/images/brackets/6teamDouble1.jpg">
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div>
+    </div>
 
     {% image '@UAHGestorActividadesBundle/Resources/public/images/ajax-loader.gif' %}
-    <div class="hide" ><img src="{{asset_url}}" id="ajax-loading-image" style="vertical-align:middle;"></div>
+    <div class="hide" ><i class="fa fa-spinner fa-spin fa-2x" id="ajax-loading-image"></i>
+    <!--    <img src="{{asset_url}}"  style="vertical-align:middle;"> -->
+    </div>
     {% endimage %}
 {% endblock %}

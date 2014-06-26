@@ -11,6 +11,7 @@ namespace UAH\GestorActividadesBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use UAH\GestorActividadesBundle\Entity\Activity;
+use UAH\GestorActividadesBundle\Entity\User;
 
 class EnrollmentRepository extends EntityRepository {
 
@@ -20,17 +21,20 @@ class EnrollmentRepository extends EntityRepository {
      * @param type $activity
      * @return Esta funcion devuelve un resultado verdadero o falso dependiendo de si esta inscrito o no
      */
-    public function checkEnrolled($user, $activity) {
+    public function checkEnrolled(User $user, Activity $activity) {
         $enrolled_activities = $this->getEnrolledActivitiesId($user);
         return in_array($activity->getId(), $enrolled_activities);
     }
-    
-    public function canEnroll(Activity $activity){
-        $valid_statuses = 
-            $this->getEntityManager()->getRepository('UAHGestorActividadesBundle:Statusactivity')->getValidStatus();
-        $valid_statuses_ids = \array_map('current',$valid_statuses);
+
+    /**
+     * 
+     * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
+     * @return boolean si está o no inscrito
+     */
+    public function canEnroll(Activity $activity) {
+        $valid_statuses = $this->getEntityManager()->getRepository('UAHGestorActividadesBundle:Statusactivity')->getValidStatus();
+        $valid_statuses_ids = \array_map('current', $valid_statuses);
         return \in_array($activity->getStatus()->getId(), $valid_statuses_ids);
-        
     }
 
     /**
@@ -38,7 +42,7 @@ class EnrollmentRepository extends EntityRepository {
      * @param type $activity
      * @return type Devuelvo el numero de usuarios inscritos teniendo en cuenta los estados
      */
-    public function num_enrolled($activity) {
+    public function num_enrolled(Activity $activity) {
         $em = $this->getEntityManager();
         $consulta = $em->createQuery('SELECT COUNT(e.id) FROM UAHGestorActividadesBundle:Enrollment e where '
                 . 'e.activity=:activity and e.status=:status');
@@ -62,31 +66,51 @@ class EnrollmentRepository extends EntityRepository {
         $consulta->setParameter('user', $user);
         $active_status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getActive();
         $consulta->setParameter('status', $active_status);
-        $results = $consulta->getResult(); 
+        $results = $consulta->getResult();
         return array_map('current', $results);
     }
-    
+
     /**
      * 
-     * @param type $user Usuario del que quiero las actividades en las que esta registrado
-     * @param type $paginacion Numero de página en la que estoy
+     * @param User $user Usuario del que quiero las actividades en las que esta registrado
+     * @param int $paginacion Numero de página en la que estoy
      */
-    public function getEnrolledActivities($user, $paginacion = 1) {
+    public function getEnrolledActivities(User $user, $paginacion = 1) {
         $em = $this->getEntityManager();
 
 
-        $consulta = $em->createQuery('SELECT a.id,a.name,a.englishName,e.dateRegistered,e.isProcessed, e.recognizedCredits,a.start_date,se.status'.
-                ' FROM UAHGestorActividadesBundle:Activity a '.
+        $consulta = $em->createQuery('SELECT a.id,a.name,a.englishName,e.dateRegistered,e.isProcessed, e.recognizedCredits,a.start_date,se.status' .
+                ' FROM UAHGestorActividadesBundle:Activity a ' .
                 'JOIN UAHGestorActividadesBundle:Enrollment e' .
-                ' WITH a.id = e.activity '.
-                'JOIN UAHGestorActividadesBundle:Statusenrollment se'.
+                ' WITH a.id = e.activity ' .
+                'JOIN UAHGestorActividadesBundle:Statusenrollment se' .
                 ' with e.status = se.id where e.user=:user and e.status IN (:status)');
         $consulta->setParameter('user', $user);
         $active_status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getActive();
         $consulta->setParameter('status', $active_status);
-        $results = $consulta->getResult(); 
+        $results = $consulta->getResult();
         return $results;
     }
-    
+
+    /**
+     * 
+     * @param \UAH\GestorActividadesBundle\Entity\Activity $activity Actividad que voy a cargar
+     */
+    public function getEnrolledInActivity(Activity $activity) {
+        $em = $this->getEntityManager();
+        $dql = " SELECT u.name,u.apellido_1,u.apellido_2 ,u.email,e.dateRegistered, e.id," .
+                " se.status, e.recognizedCredits, IDENTITY(u.degree_id) as degree_id " .
+                " FROM UAHGestorActividadesBundle:Enrollment e " .
+                " JOIN UAHGestorActividadesBundle:User u " .
+                " WITH u.id = e.user " .
+                " JOIN UAHGestorActividadesBundle:Statusenrollment se " .
+                " WITH e.status = se.id " .
+                " WHERE e.activity = :activity";
+
+        $consulta = $em->createQuery($dql);
+        $consulta->setParameter('activity', $activity);
+        $results = $consulta->getResult();
+        return $results;
+    }
 
 }
