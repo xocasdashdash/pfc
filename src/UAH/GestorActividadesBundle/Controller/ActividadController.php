@@ -77,7 +77,7 @@ class ActividadController extends Controller {
             $em->persist($activity);
             $em->flush();
             return $this->redirect($this->generateUrl("uah_gestoractividades_actividad_index", array('activity_id' => $activity->getId(), 'slug' => $activity->getSlug())));
-        } 
+        }
         return $this->render('UAHGestorActividadesBundle:Actividad:edit.html.twig', array(
                     'form' => $form->createView(),
                     'activity' => $activity));
@@ -109,13 +109,13 @@ class ActividadController extends Controller {
      * @Security("(is_granted('edit_activity',activity) && has_role('ROLE_UAH_STAFF_PDI')) || has_role('ROLE_UAH_ADMIN')")
      */
     public function adminAction(Activity $activity, Request $request) {
-        
-        $enrollments = $activity->getEnrollees();
+
+        $em = $this->getDoctrine()->getManager();
+        $enrollments = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrolledInActivity($activity);
         
         return $this->render('UAHGestorActividadesBundle:Actividad:admin.html.twig', array(
                     'enrollments' => $enrollments,
                     'activity' => $activity));
-        
     }
 
     /**
