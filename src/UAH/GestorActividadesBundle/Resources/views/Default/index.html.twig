@@ -40,12 +40,12 @@
                                 {% if activity.id in enrollments %}
                                     <button class="btn btn-default center-block btn-success already-enrolled">
                                         <span class="texto">Inscrito!</span>
-                                        <span class="glyphicon glyphicon-ok"></span>
+                                        <i class="fa fa-check fa-2x"></i> 
                                     </button>
-                                {%else%}
+                                    {%else%}
                                     <button class="btn btn-default center-block btn-primary enroll-button">
                                         <span class="texto">Inscribete!</span>
-                                        <span class="glyphicon glyphicon-pencil"></span>
+                                        <i class="fa fa-pencil-square-o fa-2x"></i>
                                     </button>
                                 {%endif%}
                             </div>
@@ -102,6 +102,8 @@
     </div>
 
     {% image '@UAHGestorActividadesBundle/Resources/public/images/ajax-loader.gif' %}
-    <div class="hide" ><img src="{{asset_url}}" id="ajax-loading-image" style="vertical-align:middle;"></div>
+    <div class="hide" ><i class="fa fa-spinner fa-spin fa-2x" id="ajax-loading-image"></i>
+    <!--    <img src="{{asset_url}}"  style="vertical-align:middle;"> -->
+    </div>
     {% endimage %}
 {% endblock %}
