@@ -14,7 +14,7 @@ class ActivityType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-                ->add('name', null, array('label' => 'Nombre'))
+                ->add('name', null, array('label' => 'Nombre', 'attr' => array('help_text' => 'Título que tiene la actividad')))
                 ->add('englishName', null, array('label' => 'Nombre (Inglés)'))
                 ->add('organizerName', null, array('label' => 'Nombre de la organización', 'attr' => array('help_text' => 'Ej. Facultad de..., Cátedra Vodafone...')))
                 ->add('numberOfECTSCreditsMin', 'number', array('precision' => 2, 'label' => 'Créditos ECTS mínimos'))

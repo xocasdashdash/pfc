@@ -17,3 +17,9 @@ services:
 #        arguments: [@faker.generator]
 #        tags:
 #            - { name: bazinga_faker.provider }          
+    security.access.activity_edit_admin_voter:
+        class:      UAH\GestorActividadesBundle\Security\Authorization\Voter\ActivityVoter
+        public:     false
+        tags:
+           - { name: security.voter }
+        arguments: [@doctrine.orm.entity_manager]
