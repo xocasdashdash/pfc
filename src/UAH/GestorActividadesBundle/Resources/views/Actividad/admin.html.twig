@@ -3,7 +3,8 @@
     {{parent()}}
     {% javascripts 
         '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js'
-        '@UAHGestorActividadesBundle/Resources/public/js/backend/create_activity.js' %}
+        '@UAHGestorActividadesBundle/Resources/public/js/backend/create_activity.js' 
+        '@UAHGestorActividadesBundle/Resources/public/js/backend/admin.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
@@ -20,12 +21,12 @@
             <button type="button" class="btn btn-default">Copiar e-mails a portapapeles</button>
         </div>
         <div class="flex-item">
-            <button type="button" class="btn btn-default">Reconocer marcados</button>
+            <button type="button" class="btn btn-default" id="btn_reconocer">Reconocer marcados</button>
         </div>
     </div>
 {% endblock %}
 {% block content %}
-    <table class="table table-bordered">
+    <table class="table table-bordered" id="tbl_inscritos">
         <thead>
             <tr>
                 <th>#</th>
@@ -46,21 +47,21 @@
                     <td>{{ enrollment.dateRegistered |date('d/m/Y') }}</td>
                     <td>{{ enrollment.degree_id}}</td>
                     {% if enrollment.status =="STATUS_INSCRITO" %}
-                    <td><input type="checkbox" name="Reconocer" value="{{enrollment.id}}" /> </td>
-                    <td><input type="text" name="number_of_credits" placeholder="Número de créditos"></td>
-                    {% elseif enrollment.status =="STATUS_RECONOCIDO" %}
-                    <td><input type="checkbox" name="Reconocer" value="{{enrollment.id}}" disabled checked> </td>
-                    <td><input type="text" name="number_of_credits" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
-                    {% elseif enrollment.status =="STATUS_NO_RECONOCIDO" %}
-                    <td><input type="checkbox" name="Reconocer" value="{{enrollment.id}}" disabled> </td>
-                    <td><input type="text" name="number_of_credits" placeholder="Número de créditos" disabled>0</td>
-                    {% elseif enrollment.status =="STATUS_PENDIENTE_VERIFICACION" %}
-                    <td><input type="checkbox" name="Reconocer" value="{{enrollment.id}}" disabled checked> </td>
-                    <td><input type="text" name="number_of_credits" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
-                    {% elseif enrollment.status =="STATUS_VERIFICADO" %}
-                    <td><input type="checkbox" name="Reconocer" value="{{enrollment.id}}" disabled checked> </td>
-                    <td><input type="text" name="number_of_credits" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
-                    {% endif %}
+                        <td><input type="checkbox" id="reconocer" value="{{enrollment.id}}" /> </td>
+                        <td><input type="text" id="number_of_credits" placeholder="Número de créditos"></td>
+                        {% elseif enrollment.status =="STATUS_RECONOCIDO" %}
+                        <td><input type="checkbox" id="reconocer" value="{{enrollment.id}}" disabled checked> </td>
+                        <td><input type="text" id="number_of_credits" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
+                        {% elseif enrollment.status =="STATUS_NO_RECONOCIDO" %}
+                        <td><input type="checkbox" id="reconocer" value="{{enrollment.id}}" disabled> </td>
+                        <td><input type="text" id="number_of_credits" placeholder="Número de créditos" disabled>0</td>
+                        {% elseif enrollment.status =="STATUS_PENDIENTE_VERIFICACION" %}
+                        <td><input type="checkbox" id="reconocer" value="{{enrollment.id}}" disabled checked> </td>
+                        <td><input type="text" id="number_of_credits" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
+                        {% elseif enrollment.status =="STATUS_VERIFICADO" %}
+                        <td><input type="checkbox" id="reconocer" value="{{enrollment.id}}" disabled checked> </td>
+                        <td><input type="text" id="number_of_credits" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
+                        {% endif %}
                     <td>{{ enrollment.status}}</td>
                 </tr>
                 {% else %}

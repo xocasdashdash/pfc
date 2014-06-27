@@ -14,6 +14,7 @@ use UAH\GestorActividadesBundle\Entity\Enrollment;
 use UAH\GestorActividadesBundle\Entity\Activity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use UAH\GestorActividadesBundle\Repository\EnrollmentRepository;
 
@@ -33,21 +34,25 @@ class EnrollmentController extends Controller {
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("is_granted('ROLE_UAH_STUDENT')")
      */
-    public function enrollAction(Activity $activity) {
+    public function enrollAction(Activity $activity, Request $request) {
         /*
          * 
          * Inscribo al usuario
          */
+        
         //Cargo el usuario
         $user = $this->getUser();
         //Compruebo que la actividad tiene huecos libres (places_occupied<places_offered)
         //Compruebo que el usuario no esta ya inscrito en la actividad (Si ya esta, le devuelvo ok)
         $em = $this->getDoctrine()->getManager();
+        $valido = $this->get('form.csrf_provider')->isCsrfTokenValid('basico', $request->headers->get('X-CSRFToken'));
+        
+        return new JsonResponse($valido);
         //Uso bitmasks para saber que tipo de error hay (si lo hay) 
         $check_enrolled = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->checkEnrolled($user, $activity);
         $free_places = ($activity->getNumberOfPlacesOccupied() >= $activity->getNumberOfPlacesOffered()) << 1;
-        $can_enroll =  ($em->getRepository('UAHGestorActividadesBundle:Enrollment')->canEnroll($activity));
-        $permissions = $check_enrolled | $free_places <<1 | $can_enroll <<2;
+        $can_enroll = ($em->getRepository('UAHGestorActividadesBundle:Enrollment')->canEnroll($activity));
+        $permissions = $check_enrolled | $free_places << 1 | $can_enroll << 2;
         $response = array();
 
         if ($permissions & self::ENROLLMENT_ERROR_ALREADY_ENROLLED) {
