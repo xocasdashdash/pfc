@@ -19,6 +19,7 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
+        <div class="hide" id="csrf-ajax-token">{{csrf_token(csrf_initialize|default('basico'))}}</div>
         {% block body %}
             {% block navbar %}
                 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -72,7 +73,8 @@
         {% javascripts 
             'bootstrap/js/jquery.js'
             'bootstrap/js/bootstrap.js'
-            '@UAHGestorActividadesBundle/Resources/public/vendor/holderjs/holder.js' %}                
+            '@UAHGestorActividadesBundle/Resources/public/vendor/holderjs/holder.js'
+            '@UAHGestorActividadesBundle/Resources/public/js/base/base.js'%}                
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
         <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
