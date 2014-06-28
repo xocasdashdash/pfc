@@ -10,11 +10,11 @@ $(document).ready(function() {
         $filas_seleccionadas = $('#tbl_inscritos :checked').closest('tr');
         $filas_values = [];
         $filas_seleccionadas.map(function(index, value) {
-            $id_enrollment = $(value).find("#reconocer").val();
-            $number_of_credits = $(value).find("#number_of_credits").val();
+            $id_enrollment = $(value).find(".check_reconocer").val();
+            $number_of_credits = $(value).find(".numero_de_creditos").val();
             $fila = [];
             $fila['id'] = $id_enrollment;
-            $fila['number_of_credits'] = $number_of_credits;
+            $fila['numero_de_creditos'] = $number_of_credits;
             $filas_values[index] = $fila;
         });
     });

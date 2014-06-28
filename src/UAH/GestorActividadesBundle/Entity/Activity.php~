@@ -203,7 +203,7 @@ class Activity {
     private $description;
 
     /**
-     * @var 
+     * @var string Path a la imagen que voy a guardar
      * 
      * @Column(name="image_path", type="string")
      */
@@ -216,32 +216,37 @@ class Activity {
 
     /**
      *
-     * @var type
+     * @var User
      * @OneToMany(targetEntity="Enrollment", mappedBy="activity")
      */
     private $enrollees;
 
     /**
      * 
-     * @var type Fecha en la que comienza la actividad. Una vez comenzada nadie se puede desapuntar
+     * @var date Fecha en la que comienza la actividad. Una vez comenzada nadie se puede desapuntar
      * @Column(name="start_date",type="datetime", nullable=false) 
      */
     private $start_date;
 
     /**
      * 
-     * @var type Fecha en la que comienza la actividad. Una vez comenzada nadie se puede desapuntar
+     * @var date Fecha en la que comienza la actividad. Una vez comenzada nadie se puede desapuntar
      * @Column(name="finish_date",type="datetime", nullable=false) 
      */
     private $finish_date;
+
     /**
      *
-     * @var type Nombre de la organización/persona que organiza la actividad
+     * @var string Nombre de la organización/persona que organiza la actividad
      * @Column(name="organizer_name", type="string", nullable=false)
      */
     private $organizer_name;
-    
-    private $celebration_dates_unencoded;
+
+    /**
+     * @var string Columna que utilizo para cargar las fechas de celebración 
+     */
+    private $celebrationDatesUnencoded;
+
     /**
      * Constructor
      */
@@ -957,15 +962,13 @@ class Activity {
         return $this->enrollees;
     }
 
-
     /**
      * Set finish_date
      *
      * @param \DateTime $finishDate
      * @return Activity
      */
-    public function setFinishDate($finishDate)
-    {
+    public function setFinishDate($finishDate) {
         $this->finish_date = $finishDate;
 
         return $this;
@@ -976,8 +979,7 @@ class Activity {
      *
      * @return \DateTime 
      */
-    public function getFinishDate()
-    {
+    public function getFinishDate() {
         return $this->finish_date;
     }
 
@@ -987,8 +989,7 @@ class Activity {
      * @param string $organizerName
      * @return Activity
      */
-    public function setOrganizerName($organizerName)
-    {
+    public function setOrganizerName($organizerName) {
         $this->organizer_name = $organizerName;
 
         return $this;
@@ -999,8 +1000,25 @@ class Activity {
      *
      * @return string 
      */
-    public function getOrganizerName()
-    {
+    public function getOrganizerName() {
         return $this->organizer_name;
     }
+
+    public function setCelebrationDatesUnencoded($celebrationDatesUnencoded) {
+        $this->celebrationDatesUnencoded = $celebrationDatesUnencoded;
+        return $this;
+    }
+
+    public function getCelebrationDatesUnencoded() {
+        $fechas = json_decode($this->getCelebrationDates());
+        $resultado = '';
+        if ($fechas !== null) {
+            foreach ($fechas as $fecha) {
+
+                $resultado.=date("d/m/Y", strtotime($fecha->date)) . (($fecha === end($fechas)) ? "" : ",");
+            }
+        }
+        return $resultado;
+    }
+
 }
