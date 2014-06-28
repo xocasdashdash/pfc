@@ -40,36 +40,75 @@
         </thead>
         <tbody>
             {% for enrollment in enrollments %}
-                <tr>
+                <tr data-id-enrollment="{{enrollment.id}}">
                     <td>#{{ loop.index }}</td>
                     <td>{{ enrollment.name ~ " " ~ enrollment.apellido_1 ~ " " ~ enrollment.apellido_2}}</td>
                     <td>{{ enrollment.email }}</td>
                     <td>{{ enrollment.dateRegistered |date('d/m/Y') }}</td>
-                    <td>{{ enrollment.degree_id}}</td>
-                    {% if enrollment.status =="STATUS_INSCRITO" %}
-                        <td><input type="checkbox" id="reconocer" value="{{enrollment.id}}" /> </td>
-                        <td><input type="text" id="number_of_credits" placeholder="Número de créditos"></td>
-                        {% elseif enrollment.status =="STATUS_RECONOCIDO" %}
-                        <td><input type="checkbox" id="reconocer" value="{{enrollment.id}}" disabled checked> </td>
-                        <td><input type="text" id="number_of_credits" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
-                        {% elseif enrollment.status =="STATUS_NO_RECONOCIDO" %}
-                        <td><input type="checkbox" id="reconocer" value="{{enrollment.id}}" disabled> </td>
-                        <td><input type="text" id="number_of_credits" placeholder="Número de créditos" disabled>0</td>
-                        {% elseif enrollment.status =="STATUS_PENDIENTE_VERIFICACION" %}
-                        <td><input type="checkbox" id="reconocer" value="{{enrollment.id}}" disabled checked> </td>
-                        <td><input type="text" id="number_of_credits" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
-                        {% elseif enrollment.status =="STATUS_VERIFICADO" %}
-                        <td><input type="checkbox" id="reconocer" value="{{enrollment.id}}" disabled checked> </td>
-                        <td><input type="text" id="number_of_credits" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
+                    <td>
+                        {% if enrollment.status_degree == "STATUS_RENEWED" %}
+                            Plan renovado
+                        {% elseif enrollment.status_degree == "STATUS_NON_RENEWED" %}
+                            Plan no renovado
+                        {% else %}
+                            plan no reconocido
                         {% endif %}
-                    <td>{{ enrollment.status}}</td>
+
+                    </td>
+                    {% set min_step_credits = 0.05 %}
+                    {% if enrollment.status_enrollment == "STATUS_INSCRITO" %}      
+                        {% if enrollment.status_degree is defined %}
+                            {# Aquí configuro el numero mínimo y máximo de créditos para la validación automática html #}
+                            {% if enrollment.status_degree == "STATUS_RENEWED" %}
+                                {%  set max_credits = activity.numberOfECTSCreditsMax %}
+                                {%  set min_credits = activity.numberOfECTSCreditsMin %}
+                            {% elseif enrollment.status_degree == "STATUS_NON_RENEWED" %}
+                                {%  set max_credits = activity.numberOfCreditsMax %}
+                                {%  set min_credits = activity.numberOfCreditsMin %}
+                            {% endif %}
+                        {% else %}
+                            {% set max_creditos = 0 %}
+                            {% set min_creditos = 0 %}
+                        {% endif %}
+
+                        <td class="reconocer"><input type="checkbox" class="check_reconocer" value="{{enrollment.id}}"> </td>
+                        <td class="reconocer"><input type="number" step="{{ min_step_credits }}"  pattern="[0-9]+([\.|,][0-9]+)?"
+                                                     min="{{ min_credits}}" 
+                                                     max="{{ max_credits }}" 
+                                                     class="numero_de_creditos" 
+                                                     placeholder="Número de créditos">
+                            <div class="ayuda"><span> Minimo: {{min_credits}} | Máximo: {{max_credits}}</span></div></td>
+                        {% elseif enrollment.status_enrollment =="STATUS_RECONOCIDO" %}
+                        <td class="reconocido"><input type="checkbox" class="check_reconocer" disabled checked> </td>
+                        <td class="reconocido"><input type="text" id="numero_de_creditos" placeholder="Número de créditos" disabled value="{{enrollment.recognizedCredits}}"> </td>
+                        {% elseif enrollment.status_enrollment == "STATUS_NO_RECONOCIDO" %}
+                        <td colspan="2">
+                            {# Al presionar aquí hago varias cosas:
+                            - Mando mensaje al servidor pasando al estado de esta persona a inscrito
+                            - El servidor me devuelve en el mensaje el tipo de créditos que son ECTS o Libre, el minimo y el máximo
+                            - 
+                            #}
+                            <button class="btn btn-default">Cambiar a reconocido</button>
+                        </td>
+                    {% elseif enrollment.status_enrollment == "STATUS_PENDIENTE_VERIFICACION" %}
+                        <td><input type="checkbox" class="check_reconocer" disabled checked> </td>
+                        <td><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
+                        {% elseif enrollment.status_enrollment == "STATUS_VERIFICADO" %}
+                        <td><input type="checkbox" class="check_reconocer"  disabled checked> </td>
+                        <td><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
+                        {% endif %}
+                    <td>
+                        {{ enrollment.status_enrollment}}
+                    </td>
                 </tr>
                 {% else %}
+
                     <tr>
                         <td colspan="6" class="text-center">
                             No hemos encontrado ningún usuario inscrito en la actividad.
                         </td>
                     </tr>
+
                     {% endfor %}
                     </tbody>
                 </table>

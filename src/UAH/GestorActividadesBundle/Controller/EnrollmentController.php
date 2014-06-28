@@ -47,7 +47,6 @@ class EnrollmentController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $valido = $this->get('form.csrf_provider')->isCsrfTokenValid('basico', $request->headers->get('X-CSRFToken'));
         
-        return new JsonResponse($valido);
         //Uso bitmasks para saber que tipo de error hay (si lo hay) 
         $check_enrolled = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->checkEnrolled($user, $activity);
         $free_places = ($activity->getNumberOfPlacesOccupied() >= $activity->getNumberOfPlacesOffered()) << 1;

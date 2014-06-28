@@ -99,12 +99,17 @@ class EnrollmentRepository extends EntityRepository {
     public function getEnrolledInActivity(Activity $activity) {
         $em = $this->getEntityManager();
         $dql = " SELECT u.name,u.apellido_1,u.apellido_2 ,u.email,e.dateRegistered, e.id," .
-                " se.status, e.recognizedCredits, IDENTITY(u.degree_id) as degree_id " .
+                " se.status as status_enrollment, e.recognizedCredits, IDENTITY(u.degree_id) as degree_id, " .
+                " sd.status as status_degree ".
                 " FROM UAHGestorActividadesBundle:Enrollment e " .
                 " JOIN UAHGestorActividadesBundle:User u " .
                 " WITH u.id = e.user " .
                 " JOIN UAHGestorActividadesBundle:Statusenrollment se " .
                 " WITH e.status = se.id " .
+                " JOIN UAHGestorActividadesBundle:Degree d ".
+                " WITH d.id = u.degree_id ".
+                " JOIN UAHGestorActividadesBundle:Statusdegree sd ".
+                " WITH d.status = sd.id ".                
                 " WHERE e.activity = :activity";
 
         $consulta = $em->createQuery($dql);
