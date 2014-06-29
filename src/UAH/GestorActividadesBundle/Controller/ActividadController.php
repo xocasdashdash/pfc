@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use UAH\GestorActividadesBundle\Form\ActivityType as ActivityType;
 use UAH\GestorActividadesBundle\Entity\Activity;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class ActividadController extends Controller {
 
@@ -112,10 +113,13 @@ class ActividadController extends Controller {
 
         $em = $this->getDoctrine()->getManager();
         $enrollments = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrolledInActivity($activity);
-        
-        return $this->render('UAHGestorActividadesBundle:Actividad:admin.html.twig', array(
-                    'enrollments' => $enrollments,
-                    'activity' => $activity));
+        $response = $this->render('UAHGestorActividadesBundle:Actividad:admin.html.twig', array(
+            'enrollments' => $enrollments,
+            'activity' => $activity));
+        $token = $this->get('form.csrf_provider')->generateCsrfToken('administracion');
+        $cookie = new Cookie('X-CSRFToken', $token, 0, '/', null, false, false);
+        $response->headers->setCookie($cookie);
+        return $response;
     }
 
     /**

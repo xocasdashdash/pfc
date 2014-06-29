@@ -12,7 +12,8 @@ $(document).ready(function() {
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("X-CSRFToken", $("#csrf-ajax-token").text());
+                var csrf_cookie_token = $.cookie("X-CSRFToken");
+                xhr.setRequestHeader("X-CSRFToken", csrf_cookie_token);
             }
         }
     });
