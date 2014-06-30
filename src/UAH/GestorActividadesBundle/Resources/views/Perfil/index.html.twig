@@ -93,21 +93,21 @@
                                                     - Si estoy marcado como justificante -> Ocultar #}        
                         <td>{{ date(enrolled_activity.start_date)|date("d/m/Y") }} </td>
                         <td>{{ enrolled_activity.recognizedCredits }}</td>
-                        {% if  date(enrolled_activity.start_date) > "now"|date("d/m/Y") and  enrolled_activity.status=="STATUS_INSCRITO"%}
+                        {% if  date(enrolled_activity.start_date) > "now"|date("d/m/Y") and  enrolled_activity.code=="STATUS_INSCRITO"%}
                             <td>darme de baja </td>
-                        {% elseif enrolled_activity.status == "STATUS_RECONOCIDO" %}
+                        {% elseif enrolled_activity.code == "STATUS_RECONOCIDO" %}
                             <td><input type="checkbox" />Añadir a certificado</td>
-                            {% elseif enrolled_activity.status == "STATUS_PENDIENTE_VERIFICACION" %}
+                            {% elseif enrolled_activity.code == "STATUS_PENDIENTE_VERIFICACION" %}
                             <td><input type="checkbox" />Añadir a certificado</td>
-                            {% elseif enrolled_activity.status == "STATUS_VERIFICADO" %}
+                            {% elseif enrolled_activity.code == "STATUS_VERIFICADO" %}
                             <td>Verificado</td>
-                        {% elseif enrolled_activity.status == "STATUS_NO_RECONOCIDO" %}
+                        {% elseif enrolled_activity.code == "STATUS_NO_RECONOCIDO" %}
 
                             <td>Actividad no reconocida</td>
                         {% else %}                            
                             <td>Estado no reconocido</td>
                         {% endif %}
-                        <td>{{ enrolled_activity.status }}</td>
+                        <td>{{ enrolled_activity.code }}</td>
 
                     </tr>
                     {% else %}

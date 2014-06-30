@@ -18,7 +18,7 @@ class StatusEnrollmentRepository extends EntityRepository {
      */
     public function getDefault() {
         $resultado = $this->findOneBy(array(
-            'status' => 'STATUS_INSCRITO'));
+            'code' => 'STATUS_INSCRITO'));
         return $resultado;
     }
 
@@ -28,7 +28,7 @@ class StatusEnrollmentRepository extends EntityRepository {
      */
     public function getInactive() {
         $resultado = $this->findBy(array(
-            'status' => 'STATUS_UNENROLLED'));
+            'code' => 'STATUS_UNENROLLED'));
         return $resultado;
     }
 
@@ -45,8 +45,22 @@ class StatusEnrollmentRepository extends EntityRepository {
         $active_status[] = "STATUS_PENDIENTE_VERIFICACION";
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('st')->from('UAHGestorActividadesBundle:Statusenrollment', 'st')->
-                where('st.status in (:status)')->setParameter(':status', $active_status);
+                where('st.code in (:code)')->setParameter(':code', $active_status);
         $resultado = $qb->getQuery()->getResult();
+        
+        return $resultado;
+    }
+    /**
+     * 
+     * @return Esta funcion devuelve el valor por defecto que tienen los enrollment inactivos.
+     */
+    public function getRecognized() {
+        $recognize_status = array();
+        $recognize_status[] = "STATUS_RECONOCIDO";
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('st')->from('UAHGestorActividadesBundle:Statusenrollment', 'st')->
+                where('st.code in (:code)')->setParameter(':code', $recognize_status);
+        $resultado = $qb->getQuery()->getSingleResult();
         
         return $resultado;
     }

@@ -18,15 +18,34 @@
 {% block acciones_datos %}
     <div class="row acciones_datos flex-container">
         <div class="flex-item">
-            <button type="button" class="btn btn-default">Copiar e-mails a portapapeles</button>
+            <button type="button" class="btn btn-default" title="Copia todos los e-mails al portapapeles" >Copiar e-mails <br>a portapapeles</button>
         </div>
         <div class="flex-item">
-            <button type="button" class="btn btn-default" id="btn_reconocer" data-activity-id="{{activity.id}}">Reconocer marcados</button>
+            <button type="button" class="btn btn-default" id="btn_reconocer" data-activity-id="{{activity.id}}" title="Reconoce los créditos marcados a las inscripciones seleccionadas">Reconocer créditos <br>a los marcados</button>
+        </div>
+        <div class="flex-item">
+            <button type="button" class="btn btn-default" id="btn_unrecognize" data-activity-id="{{activity.id}}" title="Marca los inscritos a los que desees quitar el reconocimiento de los créditos">Eliminar reconocimiento</button>
+        </div>
+        <div class="flex-item">
+            <button type="button" class="btn btn-default" id="btn_not_present" data-activity-id="{{activity.id}}" title="Marca los inscritos a los que quieras marcar como no asistentes">Marcar como no asistente</button>
+        </div>
+        <div class="flex-item">
+            <button type="button" class="btn btn-default" id="btn_present" data-activity-id="{{activity.id}}" title="Si te has equivocado y quieres marcar a alguien como inscrito de nuevo para reconocerle créditos usa esta opción" >Marcar como asistente</button>
+        </div>
+        <div class="flex-item">
+            <button type="button" class="btn btn-default" id="btn_close_activity" data-activity-id="{{activity.id}}" title="Cierra la actividad. Si ya has marcado todos los reconocimientos y no quieres hacer más modificaciones, usa esta opción">Cerrar actividad</button>
+        </div>
+        <div class="flex-item">
+            <button type="button" class="btn btn-default" id="btn_print_report" data-activity-id="{{activity.id}}" title="Descarga un PDF con el listado de asistentes al evento">Imprimir listado de asistentes</button>
+        </div>
+        
+        <div class="flex-item">
+            <button type="button" class="btn btn-default" id="btn_print_report" data-activity-id="{{activity.id}}" title="Recarga la página con solamente aquellos que estén pendientes de marcar">Mostrar solamente los pendientes</button>
         </div>
     </div>
 {% endblock %}
 {% block content %}
-    <table class="table table-bordered" id="tbl_inscritos">
+    <table class="table table-bordered" id="tbl_enrolled">
         <thead>
             <tr>
                 <th>#</th>
@@ -34,7 +53,7 @@
                 <th>E-mail</th>
                 <th>Fecha Inscripción</th>
                 <th>Tipo de plan de estudios</th>
-                <th>Reconocer asistencia</th>
+                <th>Acción</th>
                 <th>Créditos a reconocer</th>
             </tr>
         </thead>
@@ -72,24 +91,20 @@
                         {% endif %}
 
                         <td class="reconocer"><input type="checkbox" class="check_reconocer" value="{{enrollment.id}}"> </td>
+                            {# Alternativa para reconocimiento de numeros ^[0-9]{1,2}\,[0-9]{1}[0,5]{1}$|^[0-9]{1,2}\.[0-9]{1}[0,5]{1}$ #}
                         <td class="reconocer"><input type="number" step="{{ min_step_credits }}"  pattern="[0-9]+([\.|,][0-9]+)?"
                                                      min="{{ min_credits}}" 
                                                      max="{{ max_credits }}" 
                                                      class="numero_de_creditos" 
-                                                     placeholder="Número de créditos">
+                                                     placeholder="Número de créditos"
+                                                     tabindex="{{loop.index}}">
                             <div class="ayuda"><span> Minimo: {{min_credits}} | Máximo: {{max_credits}}</span></div></td>
-                        {% elseif enrollment.status_enrollment =="STATUS_RECONOCIDO" %}
-                        <td class="reconocido"><input type="checkbox" class="check_reconocer" disabled checked> </td>
-                        <td class="reconocido"><input type="text" id="numero_de_creditos" placeholder="Número de créditos" disabled value="{{enrollment.recognizedCredits}}"> </td>
+                        {% elseif enrollment.status_enrollment =="STATUS_RECONOCIDO" %}                            
+                        <td class="unrecognize"><input type="checkbox" class="check_unrecognize" value="{{enrollment.id}}"></td>
+                        <td class="unrecognize"><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled value="{{enrollment.recognizedCredits}}"></td>
                         {% elseif enrollment.status_enrollment == "STATUS_NO_RECONOCIDO" %}
-                        <td colspan="2">
-                            {# Al presionar aquí hago varias cosas:
-                            - Mando mensaje al servidor pasando al estado de esta persona a inscrito
-                            - El servidor me devuelve en el mensaje el tipo de créditos que son ECTS o Libre, el minimo y el máximo
-                            - 
-                            #}
-                            <button class="btn btn-default">Cambiar a reconocido</button>
-                        </td>
+                        <td class="not-present"><input type="checkbox" value="{{enrollment.id}}"></td>
+                        <td class="not-present"><input type="text" disabled value="0"></td>
                     {% elseif enrollment.status_enrollment == "STATUS_PENDIENTE_VERIFICACION" %}
                         <td><input type="checkbox" class="check_reconocer" disabled checked> </td>
                         <td><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
