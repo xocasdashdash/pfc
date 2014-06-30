@@ -5,7 +5,6 @@ namespace UAH\GestorActividadesBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use UAH\GestorActividadesBundle\Entity\Task;
 
 class DefaultController extends Controller {
 

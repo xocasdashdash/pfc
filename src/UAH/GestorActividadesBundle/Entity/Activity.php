@@ -318,15 +318,6 @@ class Activity {
     }
 
     /**
-     * Get numberOfECTSCredits
-     *
-     * @return float 
-     */
-    public function getNumberOfECTSCredits() {
-        return $this->numberOfECTSCredits;
-    }
-
-    /**
      * Set celebrationDates
      *
      * @param array $celebrationDates

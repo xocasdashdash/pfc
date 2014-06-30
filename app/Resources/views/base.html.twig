@@ -9,6 +9,7 @@
                 '@UAHGestorActividadesBundle/Resources/public/vendor/normalize-css/normalize.css'
                 'bootstrap/css/bootstrap.css' 
                 '@UAHGestorActividadesBundle/Resources/public/css/base/*.less'
+                '@UAHGestorActividadesBundle/Resources/public/vendor/qTip2/jquery.qtip.min.css'
                 filter='cssrewrite'%}
             <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
             {% endstylesheets %}
@@ -19,6 +20,7 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
+        <div class="hide" id="csrf-ajax-token">{{csrf_token(csrf_initialize|default('basico'))}}</div>
         {% block body %}
             {% block navbar %}
                 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -72,10 +74,15 @@
         {% javascripts 
             'bootstrap/js/jquery.js'
             'bootstrap/js/bootstrap.js'
-            '@UAHGestorActividadesBundle/Resources/public/vendor/holderjs/holder.js' %}                
+            '@UAHGestorActividadesBundle/Resources/public/vendor/holderjs/holder.js'
+            '@UAHGestorActividadesBundle/Resources/public/vendor/jquery.cookie/jquery.cookie.js'
+            '@UAHGestorActividadesBundle/Resources/public/vendor/bootbox.js/bootbox.js'
+            '@UAHGestorActividadesBundle/Resources/public/js/base/base.js'
+            '@UAHGestorActividadesBundle/Resources/public/vendor/qTip2/jquery.qtip.min.js' %}                
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
         <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/jquery.qtip.min.js"></script>
     {% endblock %}
 </html>
