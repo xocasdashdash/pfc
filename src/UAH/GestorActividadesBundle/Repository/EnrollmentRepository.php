@@ -79,7 +79,7 @@ class EnrollmentRepository extends EntityRepository {
         $em = $this->getEntityManager();
 
 
-        $consulta = $em->createQuery('SELECT a.id,a.name,a.englishName,e.dateRegistered,e.isProcessed, e.recognizedCredits,a.start_date,se.status' .
+        $consulta = $em->createQuery('SELECT a.id,a.name,a.englishName,e.dateRegistered,e.isProcessed, e.recognizedCredits,a.start_date,se.code ' .
                 ' FROM UAHGestorActividadesBundle:Activity a ' .
                 'JOIN UAHGestorActividadesBundle:Enrollment e' .
                 ' WITH a.id = e.activity ' .
@@ -99,21 +99,56 @@ class EnrollmentRepository extends EntityRepository {
     public function getEnrolledInActivity(Activity $activity) {
         $em = $this->getEntityManager();
         $dql = " SELECT u.name,u.apellido_1,u.apellido_2 ,u.email,e.dateRegistered, e.id," .
-                " se.status as status_enrollment, e.recognizedCredits, IDENTITY(u.degree_id) as degree_id, " .
-                " sd.status as status_degree ".
+                " se.code as status_enrollment, e.recognizedCredits, IDENTITY(u.degree_id) as degree_id, " .
+                " sd.code as status_degree " .
                 " FROM UAHGestorActividadesBundle:Enrollment e " .
                 " JOIN UAHGestorActividadesBundle:User u " .
                 " WITH u.id = e.user " .
                 " JOIN UAHGestorActividadesBundle:Statusenrollment se " .
                 " WITH e.status = se.id " .
-                " JOIN UAHGestorActividadesBundle:Degree d ".
-                " WITH d.id = u.degree_id ".
-                " JOIN UAHGestorActividadesBundle:Statusdegree sd ".
-                " WITH d.status = sd.id ".                
+                " JOIN UAHGestorActividadesBundle:Degree d " .
+                " WITH d.id = u.degree_id " .
+                " JOIN UAHGestorActividadesBundle:Statusdegree sd " .
+                " WITH d.status = sd.id " .
                 " WHERE e.activity = :activity";
 
         $consulta = $em->createQuery($dql);
         $consulta->setParameter('activity', $activity);
+        $results = $consulta->getResult();
+        return $results;
+    }
+
+    /**
+     * 
+     * @param \UAH\GestorActividadesBundle\Entity\Activity $activity Actividad que voy a cargar
+     */
+    /*
+      SELECT e.id, e.activity, se.status as status_enrollment, sd.status as status_degree FROM UAHGestorActividadesBundle:Enrollment e JOIN UAHGestorActividadesBundle:User u WITH u.id = e.user JOIN UAHGestorActividadesBundle:Statusenrollment se WITH e.status = se.id JOIN UAHGestorActividadesBundle:Degree d WITH d.id = u.degree_id JOIN UAHGestorActividadesBundle:Statusdegree sd WITH d.status = sd.id JOIN UAHGestorActividadesBundle:Activity a WITH e.activity = a.id WHERE e.enrollment.id IN (:enrollments)
+     */
+    public function getEnrollmentsByID($enrollments) {
+        $em = $this->getEntityManager();
+//        $dql = " SELECT e.id, a, " .
+//                " se.code as status_enrollment, " .
+//                " sd.code as status_degree " .
+//                " FROM UAHGestorActividadesBundle:Enrollment e " .
+//                " JOIN UAHGestorActividadesBundle:User u " .
+//                " WITH u.id = e.user " .
+//                " JOIN UAHGestorActividadesBundle:Statusenrollment se " .
+//                " WITH e.status = se.id " .
+//                " JOIN UAHGestorActividadesBundle:Degree d " .
+//                " WITH d.id = u.degree_id " .
+//                " JOIN UAHGestorActividadesBundle:Statusdegree sd " .
+//                " WITH d.status = sd.id " .
+//                " JOIN UAHGestorActividadesBundle:Activity a " .
+//                " WITH e.activity = a.id " .
+//                " WHERE e IN (:enrollments) " .
+//                " ORDER BY e.id ASC";
+        $dql = " SELECT e " .
+                " FROM UAHGestorActividadesBundle:Enrollment e " .
+                " WHERE e IN (:enrollments) " .
+                " ORDER BY e.id ASC";
+        $consulta = $em->createQuery($dql);
+        $consulta->setParameter('enrollments', $enrollments);
         $results = $consulta->getResult();
         return $results;
     }
