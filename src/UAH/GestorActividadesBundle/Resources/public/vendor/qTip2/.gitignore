@@ -1,0 +1,6 @@
+*~
+*.diff
+*.patch
+.DS_Store
+dist/
+node_modules/

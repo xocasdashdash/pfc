@@ -23,7 +23,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
  * @HasLifecycleCallbacks
  */
 class Enrollment {
-    
+
     /**
      * @var integer
      *
@@ -64,13 +64,14 @@ class Enrollment {
      * @Column(name="creditsType",type="float", nullable=true)
      */
     private $creditsType;
-    
+
     /**
      * @var int Estado del registro
      * @ManyToOne(targetEntity="Statusenrollment")
      * @JoinColumn(name="status", referencedColumnName="id")
      */
     private $status;
+
     /**
      *
      * @var usuario
@@ -93,7 +94,7 @@ class Enrollment {
      * @JoinColumn(name="application_id", referencedColumnName="id", nullable=true)
      */
     private $applicationForm;
-    
+
     /**
      * Get id
      *
@@ -255,8 +256,7 @@ class Enrollment {
      * @param \UAH\GestorActividadesBundle\Entity\User $user
      * @return Enrollment
      */
-    public function setUser(\UAH\GestorActividadesBundle\Entity\User $user = null)
-    {
+    public function setUser(\UAH\GestorActividadesBundle\Entity\User $user = null) {
         $this->user = $user;
 
         return $this;
@@ -267,8 +267,7 @@ class Enrollment {
      *
      * @return \UAH\GestorActividadesBundle\Entity\User 
      */
-    public function getUser()
-    {
+    public function getUser() {
         return $this->user;
     }
 
@@ -278,8 +277,7 @@ class Enrollment {
      * @param \UAH\GestorActividadesBundle\Entity\Statusenrollment $status
      * @return Enrollment
      */
-    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusenrollment $status = null)
-    {
+    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusenrollment $status = null) {
         $this->status = $status;
 
         return $this;
@@ -290,23 +288,40 @@ class Enrollment {
      *
      * @return \UAH\GestorActividadesBundle\Entity\Statusenrollment 
      */
-    public function getStatus()
-    {
+    public function getStatus() {
         return $this->status;
     }
-    
+
     /**
      * @PrePersist
      */
-    public function prepare(LifecycleEventArgs $event){
-        if(is_null($this->getDateRegistered())){
+    public function prepare(LifecycleEventArgs $event) {
+        if (is_null($this->getDateRegistered())) {
             $this->setDateRegistered(new \DateTime("now"));
         }
-        if(is_null($this->getStatus())){
+        if (is_null($this->getStatus())) {
             $em = $event->getEntityManager();
             $default_status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getDefault();
             $this->setStatus($default_status);
         }
         $this->setIsProcessed(false);
     }
+
+    /**
+     * PreUpdate
+     */
+//    public function preupdate(LifecycleEventArgs $event) {
+//
+//        if ($event->hasChangedField('status')) {
+//            $em = $event->getEntityManager();
+//            if ($this->getStatus() === $em->
+//                            getRepository('UAHGestorActividadesBundle:Statusenrollment')->getRecognized()) {
+//                $this->setDateProcessed(new \DateTime("now"));
+//            } elseif ($this->getStatus() === $em->
+//                            getRepository('UAHGestorActividadesBundle:Statusenrollment')->getDefault()) {
+//                $event->getEntity()->
+//                
+//            }
+//        }
+//    }
 }
