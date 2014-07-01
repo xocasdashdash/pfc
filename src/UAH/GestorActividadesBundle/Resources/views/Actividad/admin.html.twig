@@ -16,45 +16,55 @@
     {% endstylesheets %}
 {% endblock %}
 {% block acciones_datos %}
-    <div class="row acciones_datos">
+    <div class="row acciones_datos hidden-print">
         <div class="flex-container">
             <div class="flex-item">
                 <button type="button" class="btn btn-default" title="Copia todos los e-mails al portapapeles" >Copiar e-mails <br>a portapapeles</button>
             </div>
             <div class="flex-item">
-                <button type="button" class="btn btn-default" id="btn_reconocer" data-activity-id="{{activity.id}}" title="Reconoce los créditos marcados a las inscripciones seleccionadas">Reconocer créditos <br>a los marcados</button>
+                <button type="button" class="btn btn-default" id="btn_recognize" data-activity-id="{{activity.id}}" title="Reconoce los créditos marcados a las inscripciones seleccionadas">Reconocer créditos <br>a los marcados</button>
             </div>
             <div class="flex-item">
                 <button type="button" class="btn btn-default" id="btn_unrecognize" data-activity-id="{{activity.id}}" title="Marca los inscritos a los que desees quitar el reconocimiento de los créditos">Eliminar reconocimiento</button>
             </div>
             <div class="flex-item">
-                <button type="button" class="btn btn-default" id="btn_present" data-activity-id="{{activity.id}}" title="Si te has equivocado y quieres marcar a alguien como inscrito de nuevo para reconocerle créditos usa esta opción" >Marcar como asistente</button>
+                <button type="button" class="btn btn-default" id="btn_present" data-activity-id="{{activity.id}}" title="Si te has equivocado y quieres marcar a alguien como inscrito de nuevo para reconocerle los créditos usa esta opción" >Marcar como asistente</button>
             </div>
             <div class="flex-item">
                 <button type="button" class="btn btn-default" id="btn_close_activity" data-activity-id="{{activity.id}}" title="Cierra la actividad. Si ya has marcado todos los reconocimientos y no quieres hacer más modificaciones, usa esta opción">Cerrar actividad</button>
             </div>
             <div class="flex-item">
-                <button type="button" class="btn btn-default" id="btn_print_report" data-activity-id="{{activity.id}}" title="Descarga un PDF con el listado de asistentes al evento">Imprimir listado de asistentes</button>
+                <button type="button" class="btn btn-default" id="btn_print_report" data-activity-id="{{activity.id}}" title="Imprime un listado de los asistentes para llevar un control por firma">Imprimir listado de asistentes</button>
             </div>
 
             <div class="flex-item">
-                <button type="button" class="btn btn-default" id="btn_print_report" data-activity-id="{{activity.id}}" title="Recarga la página con solamente aquellos que estén pendientes de marcar">Mostrar solamente los pendientes</button>
+                <button type="button" class="btn btn-default" id="btn_show_pending" data-activity-id="{{activity.id}}" title="Recarga la página con solamente aquellos que estén pendientes de marcar">Mostrar solamente los pendientes</button>
             </div>
         </div>
     </div>
 {% endblock %}
 {% block content %}
-    <div class="row">
+    <div class="visible-print-block print" style="padding-bottom:20px;margin-bottom: 20px;">
+        <div class="col-xs-4">Título de la actividad(Es):</div><div class="col-xs-8">{{activity.name}}<br></div>
+        <div class="col-xs-4">Título de la actividad(En):</div><div class="col-xs-8">{{activity.englishName|default('-')}}<br></div>
+        <div class="col-xs-4">Días de celebración:</div><div class="col-xs-8">{{activity.celebrationDatesUnencoded()}}<br></div>
+        <div class="col-xs-4">Primer día:</div><div class="col-xs-8">{{activity.startDate |date('d/m/Y')}}<br></div>
+        <div class="col-xs-4">Último día:</div><div class="col-xs-8">{{activity.finishDate |date('d/m/Y')}}<br></div>
+
+    </div>
+    <div class="col-xs-12 visible-print-block print" style="height:20px;"></div>
+    <div class="row" style="padding-top:20px;">
         <table class="table table-bordered" id="tbl_enrolled">
             <thead>
                 <tr>
                     <th>#</th>
                     <th class="nombre-actividad">Nombre y apellidos</th>
-                    <th>E-mail</th>
+                    <th class="hidden-print">E-mail</th>
                     <th>Fecha Inscripción</th>
-                    <th class="no-print">Tipo de plan de estudios</th>
-                    <th class="no-print">Acción</th>
-                    <th class="no-print">Créditos a reconocer</th>
+                    <th>Tipo de plan de estudios</th>
+                    <th class="hidden-print">Acción</th>
+                    <th class="hidden-print">Créditos a reconocer</th>
+                    <th class="visible-print print" >Firma</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,9 +72,9 @@
                     <tr data-id-enrollment="{{enrollment.id}}">
                         <td>#{{ loop.index }}</td>
                         <td>{{ enrollment.name ~ " " ~ enrollment.apellido_1 ~ " " ~ enrollment.apellido_2}}</td>
-                        <td>{{ enrollment.email }}</td>
+                        <td class="hidden-print">{{ enrollment.email }}</td>
                         <td>{{ enrollment.dateRegistered |date('d/m/Y') }}</td>
-                        <td class="no-print">
+                        <td>
                             {% if enrollment.status_degree == "STATUS_RENEWED" %}
                                 Plan renovado
                             {% elseif enrollment.status_degree == "STATUS_NON_RENEWED" %}
@@ -75,7 +85,7 @@
 
                         </td>
                         {% set min_step_credits = 0.05 %}
-                        {% if enrollment.status_enrollment == "STATUS_INSCRITO" %}      
+                        {% if enrollment.status_enrollment == "STATUS_ENROLLED" %}      
                             {% if enrollment.status_degree is defined %}
                                 {# Aquí configuro el numero mínimo y máximo de créditos para la validación automática html #}
                                 {% if enrollment.status_degree == "STATUS_RENEWED" %}
@@ -90,31 +100,31 @@
                                 {% set min_creditos = 0 %}
                             {% endif %}
 
-                            <td class="reconocer"><input type="checkbox" class="check_reconocer" value="{{enrollment.id}}"> </td>
+                            <td class="reconocer no-print"><input type="checkbox" class="check_reconocer" value="{{enrollment.id}}"> </td>
                                 {# Alternativa para reconocimiento de numeros ^[0-9]{1,2}\,[0-9]{1}[0,5]{1}$|^[0-9]{1,2}\.[0-9]{1}[0,5]{1}$ #}
-                            <td class="reconocer"><input type="number" step="{{ min_step_credits }}"  pattern="[0-9]+([\.|,][0-9]+)?"
-                                                         min="{{ min_credits}}" 
-                                                         max="{{ max_credits }}" 
-                                                         class="numero_de_creditos" 
-                                                         placeholder="Número de créditos"
-                                                         tabindex="{{loop.index}}">
+                            <td class="reconocer no-print"><input type="number" step="{{ min_step_credits }}"  pattern="[0-9]+([\.|,][0-9]+)?"
+                                                                  min="{{ min_credits}}" 
+                                                                  max="{{ max_credits }}" 
+                                                                  class="numero_de_creditos" 
+                                                                  placeholder="Número de créditos"
+                                                                  tabindex="{{loop.index}}">
                                 <div class="ayuda"><span> Minimo: {{min_credits}} | Máximo: {{max_credits}}</span></div></td>
-                            {% elseif enrollment.status_enrollment =="STATUS_RECONOCIDO" %}                            
-                            <td class="unrecognize"><input type="checkbox" class="check_unrecognize" value="{{enrollment.id}}"></td>
-                            <td class="unrecognize"><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled value="{{enrollment.recognizedCredits}}"></td>
-                            {% elseif enrollment.status_enrollment == "STATUS_NO_RECONOCIDO" %}
-                            <td class="not-present"><input type="checkbox" value="{{enrollment.id}}"></td>
-                            <td class="not-present"><input type="text" disabled value="0"></td>
-                            {% elseif enrollment.status_enrollment == "STATUS_PENDIENTE_VERIFICACION" %}
+                            {% elseif enrollment.status_enrollment =="STATUS_RECOGNIZED" %}                            
+                            <td class="unrecognize hidden-print"><input type="checkbox" class="check_unrecognize" value="{{enrollment.id}}"></td>
+                            <td class="unrecognize hidden-print"><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled value="{{enrollment.recognizedCredits}}"></td>
+                            {% elseif enrollment.status_enrollment == "STATUS_NOT_RECOGNIZED" %}
+                            <td class="not-present hidden-print"><input type="checkbox" value="{{enrollment.id}}"></td>
+                            <td class="not-present hidden-print"><input type="text" disabled value="0"></td>
+                            {% elseif enrollment.status_enrollment == "STATUS_PENDING_VERIFICATION" %}
                             <td><input type="checkbox" class="check_reconocer" disabled checked> </td>
                             <td><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
-                            {% elseif enrollment.status_enrollment == "STATUS_VERIFICADO" %}
-                            <td><input type="checkbox" class="check_reconocer"  disabled checked> </td>
-                            <td><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
+                            {% elseif enrollment.status_enrollment == "STATUS_VERIFIED" %}
+                            <td class="hidden-print"><input type="checkbox" class="check_reconocer"  disabled checked> </td>
+                            <td class="hidden-print"><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
                             {% endif %}
-                        <td>
-                            {{ enrollment.status_enrollment}}
-                        </td>
+                        <td class="visible-print-block print"></td>
+
+
                     </tr>
                     {% else %}
 
@@ -125,6 +135,11 @@
                         </tr>
 
                         {% endfor %}
+                            <tr class="visible-print-block print"><td></td><td></td><td></td><td></td><td></td></tr>
+                            <tr class="visible-print-block print"><td></td><td></td><td></td><td></td><td></td></tr>
+                            <tr class="visible-print-block print"><td></td><td></td><td></td><td></td><td></td></tr>
+                            <tr class="visible-print-block print"><td></td><td></td><td></td><td></td><td></td></tr>
+
                         </tbody>
                     </table>
                 </div>

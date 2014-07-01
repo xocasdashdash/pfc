@@ -94,8 +94,9 @@ class EnrollmentRepository extends EntityRepository {
     /**
      * 
      * @param \UAH\GestorActividadesBundle\Entity\Activity $activity Actividad que voy a cargar
+     * @param String $filter Filtro que voy a usar
      */
-    public function getEnrolledInActivity(Activity $activity) {
+    public function getEnrolledInActivity(Activity $activity, $filter = "all") {
         $em = $this->getEntityManager();
         $dql = " SELECT u.name,u.apellido_1,u.apellido_2 ,u.email,e.dateRegistered, e.id," .
                 " se.code as status_enrollment, e.recognizedCredits, IDENTITY(u.degree_id) as degree_id, " .
@@ -109,9 +110,21 @@ class EnrollmentRepository extends EntityRepository {
                 " WITH d.id = u.degree_id " .
                 " JOIN UAHGestorActividadesBundle:Statusdegree sd " .
                 " WITH d.status = sd.id " .
-                " WHERE e.activity = :activity";
-
+                " WHERE e.activity = :activity ";
+        if ($filter !== "all") {
+            $dql .= " and e.status = :status ";
+            if ($filter === "enrolled") {
+                $status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getEnrolledStatus();
+            } else if ($filter === "recognized") {
+                $status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getRecognizedStatus();
+            } else if ($filter === "not_recognized") {
+                $status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getNotRecognizedStatus();
+            }
+        }
         $consulta = $em->createQuery($dql);
+        if ($filter !== "all") {
+            $consulta->setParameter('status', $status);
+        }
         $consulta->setParameter('activity', $activity);
         $results = $consulta->getResult();
         return $results;
