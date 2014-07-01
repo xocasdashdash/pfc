@@ -31,7 +31,7 @@ $(document).ready(function() {
             at: 'bottom center', // at the bottom right of...
             //target: $('.selector') // my target
         },
-        //style: {classes: 'qtip-light'},
+        style: {classes: 'hidden-print'},
         adjust: {
             x: 10,
             y: 10
@@ -42,9 +42,34 @@ $(document).ready(function() {
     $('#btn_not_present').on('click', function(evt) {
         $activity_id = $(this).data('activity-id');
         $checked_rows = getSelectedIds('.reconocer');
-        
+
     });
 
+    $('#btn_print_report').on('click', function(evt) {
+        window.print();
+    });
+
+    $('#btn_show_pending').on('click', function(evt) {
+        var url = window.location.href;
+        var paramName = "show";
+        var paramValue = "pending";
+        if (url.indexOf(paramName + "=") >= 0)
+        {
+            var prefix = url.substring(0, url.indexOf(paramName));
+            var suffix = url.substring(url.indexOf(paramName));
+            suffix = suffix.substring(suffix.indexOf("=") + 1);
+            suffix = (suffix.indexOf("&") >= 0) ? suffix.substring(suffix.indexOf("&")) : "";
+            url = prefix + paramName + "=" + paramValue + suffix;
+        }
+        else
+        {
+            if (url.indexOf("?") < 0)
+                url += "?" + paramName + "=" + paramValue;
+            else
+                url += "&" + paramName + "=" + paramValue;
+        }
+        window.location.href = url;
+    });
     $('#btn_close_activity').on('click', function(evt) {
         $activity_id = $(this).data('activity-id');
         bootbox.confirm("¿Estás seguro que quieres cerrar esta actividad?", function(result) {
@@ -107,7 +132,7 @@ $(document).ready(function() {
         }
     });
 
-    $('#btn_reconocer').on('click', function(evt) {
+    $('#btn_recognize').on('click', function(evt) {
         $filas_seleccionadas = $('#tbl_enrolled :checked:enabled').closest('tr');
         $checked_rows = [];
         var valid_data = true;
@@ -143,7 +168,7 @@ $(document).ready(function() {
                         data: JSON.stringify($checked_rows),
                         statusCode: {
                             200: function(data) {
-                                location.reload(true);
+                                window.location.href = window.location.href.split("?")[0];
                             },
                             401: function(data) {
                                 /*

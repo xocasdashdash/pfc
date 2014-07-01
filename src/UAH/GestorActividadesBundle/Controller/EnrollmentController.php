@@ -111,12 +111,12 @@ class EnrollmentController extends Controller {
                 $enrollment = $enrollment_repository->find($recognizement->id);
                 //Compruebo el estado de la inscripcion y que la inscripción se corresponda con mi actividad
                 //Si no paso esta comprobación de seguridad, guardo un error y continuo
-                if (!($enrollment->getStatus()->getCode() === "STATUS_INSCRITO") ||
+                if (!($enrollment->getStatus()->getCode() === "STATUS_ENROLLED") ||
                         !($enrollment->getActivity()->getId() === $activity->getId())) {
                     $respuesta['type'] = 'error';
                     $respuesta['code'] = self::RECOGNIZEMENT_ERROR_BASIC;
                     $respuesta['message'] = 'El estado no es el correcto';
-                    $respuesta_json[id] = $respuesta;
+                    $respuesta_json[$recognizement->id] = $respuesta;
                     continue;
                 }
                 //Compruebo el estado del grado. Grados no activos no pueden calcular sus créditos
@@ -125,7 +125,7 @@ class EnrollmentController extends Controller {
                     $respuesta['type'] = 'error';
                     $respuesta['code'] = self::RECOGNIZEMENT_ERROR_NO_DEGREE;
                     $respuesta['message'] = 'No tiene un plan de estudios valido';
-                    $respuesta_json[id] = $respuesta;
+                    $respuesta_json[$recognizement->id] = $respuesta;
                     continue;
                 }
 
@@ -136,7 +136,7 @@ class EnrollmentController extends Controller {
                     $respuesta['type'] = 'error';
                     $respuesta['code'] = self::RECOGNIZEMENT_ERROR_WRONG_NUMBER_FORMAT;
                     $respuesta['message'] = 'Formato de número incorrecto';
-                    $respuesta_json[id] = $respuesta;
+                    $respuesta_json[$recognizement->id] = $respuesta;
                     continue;
                 }
                 if ($enrollment->getUser()->getDegreeId()->getStatus()->getCode() == "STATUS_RENEWED") {
@@ -161,7 +161,7 @@ class EnrollmentController extends Controller {
                     $respuesta['type'] = 'error';
                     $respuesta['code'] = self::RECOGNIZEMENT_ERROR_WRONG_NUMBER;
                     $respuesta['message'] = 'Número de créditos fuera de rango';
-                    $respuesta_json[id] = $respuesta;
+                    $respuesta_json[$recognizement->id] = $respuesta;
                 }
             }
             if (isset($valid_input) and $valid_input) {

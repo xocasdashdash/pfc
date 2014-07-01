@@ -113,7 +113,13 @@ class ActividadController extends Controller {
     public function adminAction(Activity $activity, Request $request) {
 
         $em = $this->getDoctrine()->getManager();
-        $enrollments = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrolledInActivity($activity);
+        $repository = $em->getRepository('UAHGestorActividadesBundle:Enrollment');
+        if ($request->query->get('show')) {
+            $filter = "enrolled";
+        } else {
+            $filter = "all";
+        }
+        $enrollments = $repository->getEnrolledInActivity($activity, $filter);
         $response = $this->render('UAHGestorActividadesBundle:Actividad:admin.html.twig', array(
             'enrollments' => $enrollments,
             'activity' => $activity));
