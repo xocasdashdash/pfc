@@ -43,27 +43,27 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
          */
         $statuses = array();
         $statuses[] = new Statusactivity();
-        $statuses[count($statuses) - 1]->setCode("STATUS_PENDIENTE");
+        $statuses[count($statuses) - 1]->setCode("STATUS_PENDING");
         $statuses[count($statuses) - 1]->setNameEs("Pendiente de aprobación");
         $statuses[count($statuses) - 1]->setNameEn("Pending aproval ");
 
         $statuses[] = new Statusactivity();
-        $statuses[count($statuses) - 1]->setCode("STATUS_PUBLICADO");
+        $statuses[count($statuses) - 1]->setCode("STATUS_PUBLISHED");
         $statuses[count($statuses) - 1]->setNameEs("Publicado");
         $statuses[count($statuses) - 1]->setNameEn("Published");
 
         $statuses[] = new Statusactivity();
-        $statuses[count($statuses) - 1]->setCode("STATUS_BORRADOR");
+        $statuses[count($statuses) - 1]->setCode("STATUS_DRAFT");
         $statuses[count($statuses) - 1]->setNameEs("Borrador");
         $statuses[count($statuses) - 1]->setNameEn("Draft");
 
         $statuses[] = new Statusactivity();
-        $statuses[count($statuses) - 1]->setCode("STATUS_CERRADO");
+        $statuses[count($statuses) - 1]->setCode("STATUS_CLOSED");
         $statuses[count($statuses) - 1]->setNameEs("Cerrado");
         $statuses[count($statuses) - 1]->setNameEn("Closed");
 
         $statuses[] = new Statusactivity();
-        $statuses[count($statuses) - 1]->setCode("STATUS_APROBADO");
+        $statuses[count($statuses) - 1]->setCode("STATUS_APPROVED");
         $statuses[count($statuses) - 1]->setNameEs("Aprobado");
         $statuses[count($statuses) - 1]->setNameEn("Approved");
 
@@ -71,27 +71,27 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
          * INSCRIPCIONES
          */
         $statuses[] = new Statusenrollment();
-        $statuses[count($statuses) - 1]->setCode("STATUS_INSCRITO");
+        $statuses[count($statuses) - 1]->setCode("STATUS_ENROLLED");
         $statuses[count($statuses) - 1]->setNameEs("Inscrito");
         $statuses[count($statuses) - 1]->setNameEn("Enrolled");
 
         $statuses[] = new Statusenrollment();
-        $statuses[count($statuses) - 1]->setCode("STATUS_VERIFICADO");
+        $statuses[count($statuses) - 1]->setCode("STATUS_VERIFIED");
         $statuses[count($statuses) - 1]->setNameEs("Verificado");
         $statuses[count($statuses) - 1]->setNameEn("Verified");
 
         $statuses[] = new Statusenrollment();
-        $statuses[count($statuses) - 1]->setCode("STATUS_RECONOCIDO");
+        $statuses[count($statuses) - 1]->setCode("STATUS_RECOGNIZED");
         $statuses[count($statuses) - 1]->setNameEs("Reconocido");
         $statuses[count($statuses) - 1]->setNameEn("Recognized");
 
         $statuses[] = new Statusenrollment();
-        $statuses[count($statuses) - 1]->setCode("STATUS_NO_RECONOCIDO");
+        $statuses[count($statuses) - 1]->setCode("STATUS_NOT_RECOGNIZED");
         $statuses[count($statuses) - 1]->setNameEs("No reconocido");
         $statuses[count($statuses) - 1]->setNameEn("Not Recognized");
 
         $statuses[] = new Statusenrollment();
-        $statuses[count($statuses) - 1]->setCode("STATUS_PENDIENTE_VERIFICACION");
+        $statuses[count($statuses) - 1]->setCode("STATUS_PENDING_VERIFICATION");
         $statuses[count($statuses) - 1]->setNameEs("No reconocido");
         $statuses[count($statuses) - 1]->setNameEn("Not Recognized");
 

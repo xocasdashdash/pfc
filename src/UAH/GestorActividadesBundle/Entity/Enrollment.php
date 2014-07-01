@@ -275,7 +275,6 @@ class Enrollment {
             $default_status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getDefault();
             $this->setStatus($default_status);
         }
-        $this->setIsProcessed(false);
     }
 
     /**
@@ -286,7 +285,7 @@ class Enrollment {
 //        if ($event->hasChangedField('status')) {
 //            $em = $event->getEntityManager();
 //            if ($this->getStatus() === $em->
-//                            getRepository('UAHGestorActividadesBundle:Statusenrollment')->getRecognized()) {
+//                            getRepository('UAHGestorActividadesBundle:Statusenrollment')->getRecognizedStatus()) {
 //                $this->setDateProcessed(new \DateTime("now"));
 //            } elseif ($this->getStatus() === $em->
 //                            getRepository('UAHGestorActividadesBundle:Statusenrollment')->getDefault()) {
