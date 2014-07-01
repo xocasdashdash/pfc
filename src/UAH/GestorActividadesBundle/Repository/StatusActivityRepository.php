@@ -11,7 +11,7 @@ class StatusActivityRepository extends EntityRepository {
      */
     public function getDefault(){
         $resultado = $this->findOneBy(array(
-                            'status' => 'STATUS_PENDIENTE'));
+                            'code' => 'STATUS_PENDIENTE'));
         return $resultado;
     }
 
@@ -20,7 +20,7 @@ class StatusActivityRepository extends EntityRepository {
         $valid_status[] = "STATUS_PUBLICADO";
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('st')->from('UAHGestorActividadesBundle:Statusactivity', 'st')->
-                where('st.status in (:status)')->setParameter(':status', $valid_status);
+                where('st.code in (:status)')->setParameter(':status', $valid_status);
         $result = $qb->getQuery()->getResult();
         return $result;
     }
