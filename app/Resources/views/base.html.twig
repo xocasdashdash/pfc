@@ -66,6 +66,18 @@
                     </div>
                 </div>
             {% endblock %}  
+            {% block flashmessages %}
+                {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
+                {% block notifications %}
+                    <div class="container">
+                        <div class="alert alert-dismissable hide message" id="notification">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <strong id="type"></strong>
+                            <span id="message"></span>
+                        </div>
+                    </div>
+                {% endblock %}
+            {% endblock %}
 
         {% endblock %}
         <div class="ajax-loading"></div>

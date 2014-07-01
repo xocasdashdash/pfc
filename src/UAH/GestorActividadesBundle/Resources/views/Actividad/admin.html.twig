@@ -1,13 +1,16 @@
 {% extends '::backend.html.twig' %}
 {% block javascripts %}
     {{parent()}}
+    <script type="text/javascript" src="{{ asset('bundles/uahgestoractividades/vendor/zeroclipboard/dist/ZeroClipboard.min.js') }}"></script> 
     {% javascripts 
         '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js'
-        '@UAHGestorActividadesBundle/Resources/public/js/backend/create_activity.js' 
-        '@UAHGestorActividadesBundle/Resources/public/js/backend/admin.js' %}
+        '@UAHGestorActividadesBundle/Resources/public/js/backend/create_activity.js'
+        '@UAHGestorActividadesBundle/Resources/public/js/backend/admin.js'
+    %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets 
@@ -15,11 +18,12 @@
     <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
     {% endstylesheets %}
 {% endblock %}
+
 {% block acciones_datos %}
     <div class="row acciones_datos hidden-print">
         <div class="flex-container">
             <div class="flex-item">
-                <button type="button" class="btn btn-default" title="Copia todos los e-mails al portapapeles" >Copiar e-mails <br>a portapapeles</button>
+                <button type="button" class="btn btn-default" title="Copia todos los e-mails al portapapeles" id="btn_copy" >Copiar e-mails <br>a portapapeles</button>
             </div>
             <div class="flex-item">
                 <button type="button" class="btn btn-default" id="btn_recognize" data-activity-id="{{activity.id}}" title="Reconoce los créditos marcados a las inscripciones seleccionadas">Reconocer créditos <br>a los marcados</button>
@@ -40,9 +44,13 @@
             <div class="flex-item">
                 <button type="button" class="btn btn-default" id="btn_show_pending" data-activity-id="{{activity.id}}" title="Recarga la página con solamente aquellos que estén pendientes de marcar">Mostrar solamente los pendientes</button>
             </div>
+            <div class="flex-item">
+                <button type="button" class="btn btn-default" id="btn_select_all" data-activity-id="{{activity.id}}" title="Marca todos como seleccionados para realizar acciones globales">Marcar todos como seleccionados</button>
+            </div>
         </div>
     </div>
 {% endblock %}
+
 {% block content %}
     <div class="visible-print-block print" style="padding-bottom:20px;margin-bottom: 20px;">
         <div class="col-xs-4">Título de la actividad(Es):</div><div class="col-xs-8">{{activity.name}}<br></div>
@@ -72,7 +80,7 @@
                     <tr data-id-enrollment="{{enrollment.id}}">
                         <td>#{{ loop.index }}</td>
                         <td>{{ enrollment.name ~ " " ~ enrollment.apellido_1 ~ " " ~ enrollment.apellido_2}}</td>
-                        <td class="hidden-print">{{ enrollment.email }}</td>
+                        <td class="hidden-print email">{{ enrollment.email }}</td>
                         <td>{{ enrollment.dateRegistered |date('d/m/Y') }}</td>
                         <td>
                             {% if enrollment.status_degree == "STATUS_RENEWED" %}
@@ -143,4 +151,5 @@
                         </tbody>
                     </table>
                 </div>
+
                 {% endblock %}
