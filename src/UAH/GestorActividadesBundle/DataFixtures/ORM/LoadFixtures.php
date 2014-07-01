@@ -21,6 +21,7 @@ use UAH\GestorActividadesBundle\Entity\Statusactivity as Statusactivity;
 use UAH\GestorActividadesBundle\Entity\Status as Status;
 use UAH\GestorActividadesBundle\Entity\Statusenrollment as Statusenrollment;
 use \UAH\GestorActividadesBundle\Entity\Statusdegree as Statusdegree;
+use UAH\GestorActividadesBundle\Entity\Statusapplication as Statusapplication;
 //use \Faker\Provider;
 use \Faker\Factory as FakerFactory;
 
@@ -37,6 +38,9 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
     public function load(ObjectManager $manager) {
 
         echo "Creando los estados..";
+        /**
+         * ACTIVIDADES
+         */
         $statuses = array();
         $statuses[] = new Statusactivity();
         $statuses[count($statuses) - 1]->setCode("STATUS_PENDIENTE");
@@ -63,6 +67,9 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $statuses[count($statuses) - 1]->setNameEs("Aprobado");
         $statuses[count($statuses) - 1]->setNameEn("Approved");
 
+        /**
+         * INSCRIPCIONES
+         */
         $statuses[] = new Statusenrollment();
         $statuses[count($statuses) - 1]->setCode("STATUS_INSCRITO");
         $statuses[count($statuses) - 1]->setNameEs("Inscrito");
@@ -93,6 +100,9 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $statuses[count($statuses) - 1]->setNameEs("Desinscrito");
         $statuses[count($statuses) - 1]->setNameEn("Unenrolled");
 
+        /**
+         * PLANES DE ESTUDIOS
+         */
         $statuses[] = new Statusdegree();
         $statuses[count($statuses) - 1]->setCode("STATUS_RENEWED");
         $statuses[count($statuses) - 1]->setNameEs("Renovado");
@@ -109,6 +119,24 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $statuses[count($statuses) - 1]->setCode("STATUS_INACTIVE");
         $statuses[count($statuses) - 1]->setNameEs("Inactivo");
         $statuses[count($statuses) - 1]->setNameEn("Inactive");
+
+        /**
+         * JUSTIFICANTES
+         */
+        $statuses[] = new Statusapplication();
+        $statuses[count($statuses) - 1]->setCode("STATUS_CREATED");
+        $statuses[count($statuses) - 1]->setNameEs("Creado");
+        $statuses[count($statuses) - 1]->setNameEn("Created");
+
+        $statuses[] = new Statusapplication();
+        $statuses[count($statuses) - 1]->setCode("STATUS_VERIFIED");
+        $statuses[count($statuses) - 1]->setNameEs("Verificado");
+        $statuses[count($statuses) - 1]->setNameEn("Verified");
+
+        $statuses[] = new Statusapplication();
+        $statuses[count($statuses) - 1]->setCode("STATUS_ARCHIVED");
+        $statuses[count($statuses) - 1]->setNameEs("Archivado");
+        $statuses[count($statuses) - 1]->setNameEn("Archieved");
 
         foreach ($statuses as $status) {
             $manager->persist($status);

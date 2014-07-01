@@ -175,13 +175,6 @@ class Activity {
     private $numberOfPlacesOccupied;
 
     /**
-     * @var boolean
-     *
-     * @Column(name="approvedByComitee", type="boolean")
-     */
-    private $approvedByComitee;
-
-    /**
      * @var float
      *
      * @Column(name="cost", type="float")
@@ -545,27 +538,6 @@ class Activity {
      */
     public function getNumberOfPlacesOccupied() {
         return $this->numberOfPlacesOccupied;
-    }
-
-    /**
-     * Set approved_by_comitee
-     *
-     * @param boolean $approvedByComitee
-     * @return Activity
-     */
-    public function setApprovedByComitee($approvedByComitee) {
-        $this->approvedByComitee = $approvedByComitee;
-
-        return $this;
-    }
-
-    /**
-     * Get approved_by_comitee
-     *
-     * @return boolean 
-     */
-    public function getApprovedByComitee() {
-        return $this->approvedByComitee;
     }
 
     /**

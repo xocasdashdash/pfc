@@ -55,15 +55,17 @@ class Application {
     private $verificationCode;
 
     /**
-     * @var boolean isProcessed
-     * @Column(name="isProcessed", type="boolean")
-     */
-    private $isProcessed;
-    /**
      * @OneToMany(targetEntity="Enrollment", mappedBy="applicationForm")
      * @var type 
      */
     private $enrollments;
+    
+    /**
+     * @var int Estado del registro
+     * @ManyToOne(targetEntity="Statusapplication")
+     * @JoinColumn(name="status", referencedColumnName="id")
+     */
+    private $status;
 
     /**
      * Get id
@@ -159,27 +161,6 @@ class Application {
     }
 
     /**
-     * Set isProcessed
-     *
-     * @param boolean $isProcessed
-     * @return Application
-     */
-    public function setIsProcessed($isProcessed) {
-        $this->isProcessed = $isProcessed;
-
-        return $this;
-    }
-
-    /**
-     * Get isProcessed
-     *
-     * @return boolean 
-     */
-    public function getIsProcessed() {
-        return $this->isProcessed;
-    }
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -218,5 +199,28 @@ class Application {
     public function getEnrollments()
     {
         return $this->enrollments;
+    }
+
+    /**
+     * Set status
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Statusapplication $status
+     * @return Application
+     */
+    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusapplication $status = null)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return \UAH\GestorActividadesBundle\Entity\Statusapplication 
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 }
