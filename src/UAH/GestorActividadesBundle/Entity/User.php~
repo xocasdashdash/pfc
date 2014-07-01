@@ -94,7 +94,7 @@ class User implements UserInterface {
     /**
      * @var integer 
      * @ManyToOne(targetEntity="Degree", inversedBy="degree_students")
-     * @JoinColumn(name="degree_id", referencedColumnName="id", nullable=true)
+     * @JoinColumn(name="degree_id", referencedColumnName="id", nullable=true,onDelete="SET NULL")
      */
     private $degree_id;
 

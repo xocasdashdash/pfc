@@ -58,13 +58,7 @@ class Degree {
      */
     private $status;
     
-    /**
-     *
-     * @var string Tipo de plan de estudios, 2 valores NO_RENOVADO o RENOVADO
-     * @Column(type="string", length=32, nullable=false)
-     */
-    private $type_of_plan = "RENOVADO";
-    
+       
     /**
      * @OneToMany(targetEntity="User", mappedBy="degree_id")
      */
