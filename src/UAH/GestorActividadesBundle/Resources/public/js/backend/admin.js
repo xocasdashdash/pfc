@@ -6,6 +6,31 @@
 
 
 $(document).ready(function() {
+    $('#notification').bind('close.bs.alert', function(evt) {
+        evt.preventDefault();
+        $('#notification').addClass('hide');
+        $('#notification').removeClass('alert-info alert-warning alert-danger alert-success');
+    });
+    var client = new ZeroClipboard($("#btn_copy"));
+    client.on('ready', function(event) {
+        client.on('copy', function(event) {
+            event.clipboardData.setData('text/plain', $(".email").map(function() {
+                return $(this).text();
+            }).get().join(';'));
+        });
+        client.on('aftercopy', function(event) {
+            $('#notification').removeClass('hide');
+            $('#notification').addClass('alert-success');
+            $('#notification #type').text('Éxito');
+            $('#notification #message').html('Emails copiados al portapapeles. Pégalo con Ctrl+V');
+            setTimeout(function() {
+                $("#notification").alert('close');
+            }, 4000);
+        });
+    });
+    client.on('error', function(event) {
+        ZeroClipboard.destroy();
+    });
     function getSelectedIds(type) {
         var $checked_rows = [];
         $filas_seleccionadas = $('#tbl_enrolled ' + type + ' input[type=checkbox]:checked').closest('tr');
@@ -49,20 +74,21 @@ $(document).ready(function() {
         window.print();
     });
 
+    $('#btn_select_all').on('click', function(evt) {
+        $("#tbl_enrolled tr input[type=checkbox]").prop('checked', true);
+    });
+
     $('#btn_show_pending').on('click', function(evt) {
         var url = window.location.href;
         var paramName = "show";
         var paramValue = "pending";
-        if (url.indexOf(paramName + "=") >= 0)
-        {
+        if (url.indexOf(paramName + "=") >= 0) {
             var prefix = url.substring(0, url.indexOf(paramName));
             var suffix = url.substring(url.indexOf(paramName));
             suffix = suffix.substring(suffix.indexOf("=") + 1);
             suffix = (suffix.indexOf("&") >= 0) ? suffix.substring(suffix.indexOf("&")) : "";
             url = prefix + paramName + "=" + paramValue + suffix;
-        }
-        else
-        {
+        } else {
             if (url.indexOf("?") < 0)
                 url += "?" + paramName + "=" + paramValue;
             else
@@ -95,7 +121,7 @@ $(document).ready(function() {
                         },
                         403: function(data) {
                             bootbox.alert("No se ha podido ejecutar la solicitud.");
-                        }
+                        },
                     }
                 });
             }
@@ -126,7 +152,7 @@ $(document).ready(function() {
                                 bootbox.alert("No se ha podido ejecutar la solicitud.");
                             }
                         }
-                    })
+                    });
                 }
             });
         }
@@ -171,41 +197,14 @@ $(document).ready(function() {
                                 window.location.href = window.location.href.split("?")[0];
                             },
                             401: function(data) {
-                                /*
-                                 $('#notification').removeClass('hide');
-                                 $('#notification').addClass('alert-info');
-                                 $('#notification #type').text('Atención');
-                                 $('#notification #message').html('Tienes que hacer  <a href="login" class="alert-link">login</a>!');
-                                 $boton.html('<span class="texto">Inscribete!</span><span class="glyphicon glyphicon-pencil"></span>');
-                                 */
+                                bootbox.alert('No estás logueado. Entra en <a href="login" class="alert-link">login</a>', function() {
+                                    window.location.href = '/';
+                                });
                             },
                             403: function(data) {
-                                console.log('Error al inscribirse');
-//                    $boton.html('<span class="texto">Inscribete!</span><span class="glyphicon glyphicon-pencil"></span>');
-//
-//                    $('#notification').removeClass('hide');
-//                    switch (data.responseJSON.type) {
-//                        case 'notice':
-//                            $('#notification').addClass('alert-info');
-//                            $type = 'Notificación';
-//                            break;
-//                        case 'warning':
-//                            $('#notification').addClass('alert-warning');
-//                            $type = 'Atención';
-//                            break;
-//                        case 'error':
-//                            $('#notification').addClass('alert-danger');
-//                            $type = 'Error';
-//                            break;
-//                        default:
-//                            if (data.status === 401)
-//                                $('#notification').addClass('alert-danger');
-//                            $type = 'Error';
-//
-//                            break;
-//                    }
-//                    $('#notification #type').text($type);
-//                    $('#notification #message').text(data.responseJSON.message);
+                                bootbox.alert('No tienes permiso para realizar esta acción.', function() {
+                                    window.location.href = '/';
+                                });
                             }
                         }
                     }
