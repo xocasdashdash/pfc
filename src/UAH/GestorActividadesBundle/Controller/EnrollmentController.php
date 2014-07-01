@@ -104,7 +104,7 @@ class EnrollmentController extends Controller {
             $recognizements = json_decode($request->getContent());
             $em = $this->getDoctrine()->getManager();
             $enrollment_repository = $em->getRepository('UAHGestorActividadesBundle:Enrollment');
-            $status_recognized = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getRecognized();
+            $status_recognized = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getRecognizedStatus();
             $respuesta_json = array();
             foreach ($recognizements as $recognizement) {
                 $respuesta = array();
@@ -194,7 +194,6 @@ class EnrollmentController extends Controller {
                 $this->get('form.csrf_provider')->isCsrfTokenValid('administracion', $request->headers->get('X-CSRFToken'))) {
             $id_unrecognizements = json_decode($request->getContent());
             $em = $this->getDoctrine()->getManager();
-
             $enrollments = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrollmentsByID($id_unrecognizements);
             foreach ($enrollments as $enrollment) {
                 if ($enrollment->getActivity() === $activity) {
@@ -209,11 +208,11 @@ class EnrollmentController extends Controller {
         } else {
             $response = array();
             $response['code'] = self::RECOGNIZEMENT_ERROR_CSRF_TOKEN_INVALID;
-            $response['message'] = 'El token CSRF no es válido. Intentalo de nuevo';
+            $response['message'] = 'El token CSRF no es válido. Recarga la página e inténtalo de nuevo';
             $response['type'] = 'error';
             $json_response = new JsonResponse($response, 403);
-            $cookie = new Cookie('X-CSRFToken', $this->get('form.csrf_provider')->generateCsrfToken('administracion'), 0, '/', null, false, false);
-            $json_response->headers->setCookie($cookie);
+            //$cookie = new Cookie('X-CSRFToken', $this->get('form.csrf_provider')->generateCsrfToken('administracion'), 0, '/', null, false, false);
+            //$json_response->headers->setCookie($cookie);
             return $json_response;
         }
     }

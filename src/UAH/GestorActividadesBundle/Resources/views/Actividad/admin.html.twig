@@ -16,115 +16,116 @@
     {% endstylesheets %}
 {% endblock %}
 {% block acciones_datos %}
-    <div class="row acciones_datos flex-container">
-        <div class="flex-item">
-            <button type="button" class="btn btn-default" title="Copia todos los e-mails al portapapeles" >Copiar e-mails <br>a portapapeles</button>
-        </div>
-        <div class="flex-item">
-            <button type="button" class="btn btn-default" id="btn_reconocer" data-activity-id="{{activity.id}}" title="Reconoce los créditos marcados a las inscripciones seleccionadas">Reconocer créditos <br>a los marcados</button>
-        </div>
-        <div class="flex-item">
-            <button type="button" class="btn btn-default" id="btn_unrecognize" data-activity-id="{{activity.id}}" title="Marca los inscritos a los que desees quitar el reconocimiento de los créditos">Eliminar reconocimiento</button>
-        </div>
-        <div class="flex-item">
-            <button type="button" class="btn btn-default" id="btn_not_present" data-activity-id="{{activity.id}}" title="Marca los inscritos a los que quieras marcar como no asistentes">Marcar como no asistente</button>
-        </div>
-        <div class="flex-item">
-            <button type="button" class="btn btn-default" id="btn_present" data-activity-id="{{activity.id}}" title="Si te has equivocado y quieres marcar a alguien como inscrito de nuevo para reconocerle créditos usa esta opción" >Marcar como asistente</button>
-        </div>
-        <div class="flex-item">
-            <button type="button" class="btn btn-default" id="btn_close_activity" data-activity-id="{{activity.id}}" title="Cierra la actividad. Si ya has marcado todos los reconocimientos y no quieres hacer más modificaciones, usa esta opción">Cerrar actividad</button>
-        </div>
-        <div class="flex-item">
-            <button type="button" class="btn btn-default" id="btn_print_report" data-activity-id="{{activity.id}}" title="Descarga un PDF con el listado de asistentes al evento">Imprimir listado de asistentes</button>
-        </div>
-        
-        <div class="flex-item">
-            <button type="button" class="btn btn-default" id="btn_print_report" data-activity-id="{{activity.id}}" title="Recarga la página con solamente aquellos que estén pendientes de marcar">Mostrar solamente los pendientes</button>
+    <div class="row acciones_datos">
+        <div class="flex-container">
+            <div class="flex-item">
+                <button type="button" class="btn btn-default" title="Copia todos los e-mails al portapapeles" >Copiar e-mails <br>a portapapeles</button>
+            </div>
+            <div class="flex-item">
+                <button type="button" class="btn btn-default" id="btn_reconocer" data-activity-id="{{activity.id}}" title="Reconoce los créditos marcados a las inscripciones seleccionadas">Reconocer créditos <br>a los marcados</button>
+            </div>
+            <div class="flex-item">
+                <button type="button" class="btn btn-default" id="btn_unrecognize" data-activity-id="{{activity.id}}" title="Marca los inscritos a los que desees quitar el reconocimiento de los créditos">Eliminar reconocimiento</button>
+            </div>
+            <div class="flex-item">
+                <button type="button" class="btn btn-default" id="btn_present" data-activity-id="{{activity.id}}" title="Si te has equivocado y quieres marcar a alguien como inscrito de nuevo para reconocerle créditos usa esta opción" >Marcar como asistente</button>
+            </div>
+            <div class="flex-item">
+                <button type="button" class="btn btn-default" id="btn_close_activity" data-activity-id="{{activity.id}}" title="Cierra la actividad. Si ya has marcado todos los reconocimientos y no quieres hacer más modificaciones, usa esta opción">Cerrar actividad</button>
+            </div>
+            <div class="flex-item">
+                <button type="button" class="btn btn-default" id="btn_print_report" data-activity-id="{{activity.id}}" title="Descarga un PDF con el listado de asistentes al evento">Imprimir listado de asistentes</button>
+            </div>
+
+            <div class="flex-item">
+                <button type="button" class="btn btn-default" id="btn_print_report" data-activity-id="{{activity.id}}" title="Recarga la página con solamente aquellos que estén pendientes de marcar">Mostrar solamente los pendientes</button>
+            </div>
         </div>
     </div>
 {% endblock %}
 {% block content %}
-    <table class="table table-bordered" id="tbl_enrolled">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th class="nombre-actividad">Nombre y apellidos</th>
-                <th>E-mail</th>
-                <th>Fecha Inscripción</th>
-                <th>Tipo de plan de estudios</th>
-                <th>Acción</th>
-                <th>Créditos a reconocer</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for enrollment in enrollments %}
-                <tr data-id-enrollment="{{enrollment.id}}">
-                    <td>#{{ loop.index }}</td>
-                    <td>{{ enrollment.name ~ " " ~ enrollment.apellido_1 ~ " " ~ enrollment.apellido_2}}</td>
-                    <td>{{ enrollment.email }}</td>
-                    <td>{{ enrollment.dateRegistered |date('d/m/Y') }}</td>
-                    <td>
-                        {% if enrollment.status_degree == "STATUS_RENEWED" %}
-                            Plan renovado
-                        {% elseif enrollment.status_degree == "STATUS_NON_RENEWED" %}
-                            Plan no renovado
-                        {% else %}
-                            plan no reconocido
-                        {% endif %}
-
-                    </td>
-                    {% set min_step_credits = 0.05 %}
-                    {% if enrollment.status_enrollment == "STATUS_INSCRITO" %}      
-                        {% if enrollment.status_degree is defined %}
-                            {# Aquí configuro el numero mínimo y máximo de créditos para la validación automática html #}
-                            {% if enrollment.status_degree == "STATUS_RENEWED" %}
-                                {%  set max_credits = activity.numberOfECTSCreditsMax %}
-                                {%  set min_credits = activity.numberOfECTSCreditsMin %}
-                            {% elseif enrollment.status_degree == "STATUS_NON_RENEWED" %}
-                                {%  set max_credits = activity.numberOfCreditsMax %}
-                                {%  set min_credits = activity.numberOfCreditsMin %}
-                            {% endif %}
-                        {% else %}
-                            {% set max_creditos = 0 %}
-                            {% set min_creditos = 0 %}
-                        {% endif %}
-
-                        <td class="reconocer"><input type="checkbox" class="check_reconocer" value="{{enrollment.id}}"> </td>
-                            {# Alternativa para reconocimiento de numeros ^[0-9]{1,2}\,[0-9]{1}[0,5]{1}$|^[0-9]{1,2}\.[0-9]{1}[0,5]{1}$ #}
-                        <td class="reconocer"><input type="number" step="{{ min_step_credits }}"  pattern="[0-9]+([\.|,][0-9]+)?"
-                                                     min="{{ min_credits}}" 
-                                                     max="{{ max_credits }}" 
-                                                     class="numero_de_creditos" 
-                                                     placeholder="Número de créditos"
-                                                     tabindex="{{loop.index}}">
-                            <div class="ayuda"><span> Minimo: {{min_credits}} | Máximo: {{max_credits}}</span></div></td>
-                        {% elseif enrollment.status_enrollment =="STATUS_RECONOCIDO" %}                            
-                        <td class="unrecognize"><input type="checkbox" class="check_unrecognize" value="{{enrollment.id}}"></td>
-                        <td class="unrecognize"><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled value="{{enrollment.recognizedCredits}}"></td>
-                        {% elseif enrollment.status_enrollment == "STATUS_NO_RECONOCIDO" %}
-                        <td class="not-present"><input type="checkbox" value="{{enrollment.id}}"></td>
-                        <td class="not-present"><input type="text" disabled value="0"></td>
-                    {% elseif enrollment.status_enrollment == "STATUS_PENDIENTE_VERIFICACION" %}
-                        <td><input type="checkbox" class="check_reconocer" disabled checked> </td>
-                        <td><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
-                        {% elseif enrollment.status_enrollment == "STATUS_VERIFICADO" %}
-                        <td><input type="checkbox" class="check_reconocer"  disabled checked> </td>
-                        <td><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
-                        {% endif %}
-                    <td>
-                        {{ enrollment.status_enrollment}}
-                    </td>
+    <div class="row">
+        <table class="table table-bordered" id="tbl_enrolled">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="nombre-actividad">Nombre y apellidos</th>
+                    <th>E-mail</th>
+                    <th>Fecha Inscripción</th>
+                    <th class="no-print">Tipo de plan de estudios</th>
+                    <th class="no-print">Acción</th>
+                    <th class="no-print">Créditos a reconocer</th>
                 </tr>
-                {% else %}
+            </thead>
+            <tbody>
+                {% for enrollment in enrollments %}
+                    <tr data-id-enrollment="{{enrollment.id}}">
+                        <td>#{{ loop.index }}</td>
+                        <td>{{ enrollment.name ~ " " ~ enrollment.apellido_1 ~ " " ~ enrollment.apellido_2}}</td>
+                        <td>{{ enrollment.email }}</td>
+                        <td>{{ enrollment.dateRegistered |date('d/m/Y') }}</td>
+                        <td class="no-print">
+                            {% if enrollment.status_degree == "STATUS_RENEWED" %}
+                                Plan renovado
+                            {% elseif enrollment.status_degree == "STATUS_NON_RENEWED" %}
+                                Plan no renovado
+                            {% else %}
+                                plan no reconocido
+                            {% endif %}
 
-                    <tr>
-                        <td colspan="6" class="text-center">
-                            No hemos encontrado ningún usuario inscrito en la actividad.
+                        </td>
+                        {% set min_step_credits = 0.05 %}
+                        {% if enrollment.status_enrollment == "STATUS_INSCRITO" %}      
+                            {% if enrollment.status_degree is defined %}
+                                {# Aquí configuro el numero mínimo y máximo de créditos para la validación automática html #}
+                                {% if enrollment.status_degree == "STATUS_RENEWED" %}
+                                    {%  set max_credits = activity.numberOfECTSCreditsMax %}
+                                    {%  set min_credits = activity.numberOfECTSCreditsMin %}
+                                {% elseif enrollment.status_degree == "STATUS_NON_RENEWED" %}
+                                    {%  set max_credits = activity.numberOfCreditsMax %}
+                                    {%  set min_credits = activity.numberOfCreditsMin %}
+                                {% endif %}
+                            {% else %}
+                                {% set max_creditos = 0 %}
+                                {% set min_creditos = 0 %}
+                            {% endif %}
+
+                            <td class="reconocer"><input type="checkbox" class="check_reconocer" value="{{enrollment.id}}"> </td>
+                                {# Alternativa para reconocimiento de numeros ^[0-9]{1,2}\,[0-9]{1}[0,5]{1}$|^[0-9]{1,2}\.[0-9]{1}[0,5]{1}$ #}
+                            <td class="reconocer"><input type="number" step="{{ min_step_credits }}"  pattern="[0-9]+([\.|,][0-9]+)?"
+                                                         min="{{ min_credits}}" 
+                                                         max="{{ max_credits }}" 
+                                                         class="numero_de_creditos" 
+                                                         placeholder="Número de créditos"
+                                                         tabindex="{{loop.index}}">
+                                <div class="ayuda"><span> Minimo: {{min_credits}} | Máximo: {{max_credits}}</span></div></td>
+                            {% elseif enrollment.status_enrollment =="STATUS_RECONOCIDO" %}                            
+                            <td class="unrecognize"><input type="checkbox" class="check_unrecognize" value="{{enrollment.id}}"></td>
+                            <td class="unrecognize"><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled value="{{enrollment.recognizedCredits}}"></td>
+                            {% elseif enrollment.status_enrollment == "STATUS_NO_RECONOCIDO" %}
+                            <td class="not-present"><input type="checkbox" value="{{enrollment.id}}"></td>
+                            <td class="not-present"><input type="text" disabled value="0"></td>
+                            {% elseif enrollment.status_enrollment == "STATUS_PENDIENTE_VERIFICACION" %}
+                            <td><input type="checkbox" class="check_reconocer" disabled checked> </td>
+                            <td><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
+                            {% elseif enrollment.status_enrollment == "STATUS_VERIFICADO" %}
+                            <td><input type="checkbox" class="check_reconocer"  disabled checked> </td>
+                            <td><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
+                            {% endif %}
+                        <td>
+                            {{ enrollment.status_enrollment}}
                         </td>
                     </tr>
+                    {% else %}
 
-                    {% endfor %}
-                    </tbody>
-                </table>
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                No hemos encontrado ningún usuario inscrito en la actividad.
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
                 {% endblock %}

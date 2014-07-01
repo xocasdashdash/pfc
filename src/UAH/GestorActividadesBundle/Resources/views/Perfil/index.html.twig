@@ -71,7 +71,7 @@
                     <th>#</th>
                     <th class="nombre-actividad">Nombre</th>
                     <th>Fecha inscripción</th>
-                    <th>Asistencia verificada</th>
+                    <th>Asistencia reconocida</th>
 
                     <th>Fecha inicio</th>
                     <th>Créditos reconocidos</th>
@@ -85,7 +85,7 @@
                         <td>#{{loop.index}}</td>
                         <td>{{ enrolled_activity.name }}</td>
                         <td>{{ enrolled_activity.dateRegistered |date('d/m/Y')}}</td>
-                        <td>{{ enrolled_activity.isProcessed? 'Si':'No' }}</td>
+                        <td>{{ (enrolled_activity.code== "STATUS_RECONOCIDO")? 'Si':'No' }}</td>
                         {#                        <td>{{ enrolled_activity.isRecognized? 'Si':'No' }}</td>
                         #}                        {#TODO:Meter que según el estado muestre un campo diferente con acciones diferentes
                                                     - Si estoy marcado como asistente -> Pedir justificante

@@ -34,7 +34,7 @@ $(document).ready(function() {
         //style: {classes: 'qtip-light'},
         adjust: {
             x: 10,
-            y: 1000
+            y: 10
         }
 
     });
@@ -42,25 +42,24 @@ $(document).ready(function() {
     $('#btn_not_present').on('click', function(evt) {
         $activity_id = $(this).data('activity-id');
         $checked_rows = getSelectedIds('.reconocer');
+        
     });
 
-    $('#btn_not_present').on('click', function(evt) {
+    $('#btn_close_activity').on('click', function(evt) {
         $activity_id = $(this).data('activity-id');
-        $checked_rows = getSelectedIds('.reconocer');
-    });
-
-    $('#btn_unrecognize').on('click', function(evt) {
-        $activity_id = $(this).data('activity-id');
-        $checked_rows = getSelectedIds('.unrecognize');
-        bootbox.confirm("¿Estás seguro que quieres eliminar estos reconocimientos?", function(result) {
+        bootbox.confirm("¿Estás seguro que quieres cerrar esta actividad?", function(result) {
             if (result) {
                 $.ajax({
                     type: "POST",
-                    url: Routing.generate('uah_gestoractividades_enrollment_unrecognize', {activity_id: $activity_id}),
-                    data: JSON.stringify($checked_rows),
+                    url: Routing.generate('uah_gestoractividades_actividad_close', {activity_id: $activity_id}),
                     statusCode: {
                         200: function(data) {
-                            bootbox.alert("Reconocimiento eliminado", function() {
+                            bootbox.alert("Actividad cerrada", function() {
+                                location.replace(Routing.generate("uah_gestoractividades_default_index"));
+                            });
+                        },
+                        404: function(data) {
+                            bootbox.alert("Actividad no encontrada", function() {
                                 location.reload(true);
                             });
                         },
@@ -73,9 +72,39 @@ $(document).ready(function() {
                             bootbox.alert("No se ha podido ejecutar la solicitud.");
                         }
                     }
-                })
+                });
             }
         });
+    });
+    $('#btn_unrecognize').on('click', function(evt) {
+        $activity_id = $(this).data('activity-id');
+        $checked_rows = getSelectedIds('.unrecognize');
+        if ($checked_rows.length > 0) {
+            bootbox.confirm("¿Estás seguro que quieres eliminar estos reconocimientos?", function(result) {
+                if (result) {
+                    $.ajax({
+                        type: "POST",
+                        url: Routing.generate('uah_gestoractividades_enrollment_unrecognize', {activity_id: $activity_id}),
+                        data: JSON.stringify($checked_rows),
+                        statusCode: {
+                            200: function(data) {
+                                bootbox.alert("Reconocimiento eliminado", function() {
+                                    location.reload(true);
+                                });
+                            },
+                            401: function(data) {
+                                bootbox.alert("No tienes permiso para realizar esta acción", function() {
+                                    location.reload(true);
+                                });
+                            },
+                            403: function(data) {
+                                bootbox.alert("No se ha podido ejecutar la solicitud.");
+                            }
+                        }
+                    })
+                }
+            });
+        }
     });
 
     $('#btn_reconocer').on('click', function(evt) {

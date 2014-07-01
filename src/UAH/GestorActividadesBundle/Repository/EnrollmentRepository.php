@@ -29,12 +29,11 @@ class EnrollmentRepository extends EntityRepository {
     /**
      * 
      * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
-     * @return boolean si está o no inscrito
+     * @return boolean si puede o no inscribirse según el estado de la actividad
      */
     public function canEnroll(Activity $activity) {
-        $valid_statuses = $this->getEntityManager()->getRepository('UAHGestorActividadesBundle:Statusactivity')->getValidStatus();
-        $valid_statuses_ids = \array_map('current', $valid_statuses);
-        return \in_array($activity->getStatus()->getId(), $valid_statuses_ids);
+        $valid_status = $this->getEntityManager()->getRepository('UAHGestorActividadesBundle:Statusactivity')->getValidStatus();
+        return $activity->getStatus() === $valid_status;
     }
 
     /**
