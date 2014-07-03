@@ -6,9 +6,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
@@ -35,21 +33,15 @@ class Enrollment {
 
     /**
      * @var datetime
-     * @Column(name="dateProcessed", type="datetime",nullable=true)
+     * @Column(name="dateRecognized", type="datetime",nullable=true)
      */
-    private $dateProcessed;
+    private $dateRecognized;
 
     /**
      * @var datetime
      * @Column(name="dateRegistered", type="datetime")
      */
     private $dateRegistered;
-
-    /**
-     * @var boolean
-     * @Column(name="isProcessed", type="boolean")
-     */
-    private $isProcessed;
 
     /**
      *
@@ -105,24 +97,24 @@ class Enrollment {
     }
 
     /**
-     * Set dateProcessed
+     * Set dateRecognized
      *
-     * @param \DateTime $dateProcessed
+     * @param \DateTime $dateRecognized
      * @return Enrollment
      */
-    public function setDateProcessed($dateProcessed) {
-        $this->dateProcessed = $dateProcessed;
+    public function setDateProcessed($dateRecognized) {
+        $this->dateRecognized = $dateRecognized;
 
         return $this;
     }
 
     /**
-     * Get dateProcessed
+     * Get dateRecognized
      *
      * @return \DateTime 
      */
     public function getDateProcessed() {
-        return $this->dateProcessed;
+        return $this->dateRecognized;
     }
 
     /**
@@ -143,27 +135,6 @@ class Enrollment {
      */
     public function getDateRegistered() {
         return $this->dateRegistered;
-    }
-
-    /**
-     * Set isProcessed
-     *
-     * @param boolean $isProcessed
-     * @return Enrollment
-     */
-    public function setIsProcessed($isProcessed) {
-        $this->isProcessed = $isProcessed;
-
-        return $this;
-    }
-
-    /**
-     * Get isProcessed
-     *
-     * @return boolean 
-     */
-    public function getIsProcessed() {
-        return $this->isProcessed;
     }
 
     /**
@@ -304,7 +275,6 @@ class Enrollment {
             $default_status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getDefault();
             $this->setStatus($default_status);
         }
-        $this->setIsProcessed(false);
     }
 
     /**
@@ -315,7 +285,7 @@ class Enrollment {
 //        if ($event->hasChangedField('status')) {
 //            $em = $event->getEntityManager();
 //            if ($this->getStatus() === $em->
-//                            getRepository('UAHGestorActividadesBundle:Statusenrollment')->getRecognized()) {
+//                            getRepository('UAHGestorActividadesBundle:Statusenrollment')->getRecognizedStatus()) {
 //                $this->setDateProcessed(new \DateTime("now"));
 //            } elseif ($this->getStatus() === $em->
 //                            getRepository('UAHGestorActividadesBundle:Statusenrollment')->getDefault()) {
@@ -324,4 +294,27 @@ class Enrollment {
 //            }
 //        }
 //    }
+
+    /**
+     * Set dateRecognized
+     *
+     * @param \DateTime $dateRecognized
+     * @return Enrollment
+     */
+    public function setDateRecognized($dateRecognized)
+    {
+        $this->dateRecognized = $dateRecognized;
+
+        return $this;
+    }
+
+    /**
+     * Get dateRecognized
+     *
+     * @return \DateTime 
+     */
+    public function getDateRecognized()
+    {
+        return $this->dateRecognized;
+    }
 }

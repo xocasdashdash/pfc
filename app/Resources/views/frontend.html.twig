@@ -15,10 +15,9 @@
     {% block navbar %}
         {{ parent() }}
     {% endblock %}
-    {% block flashmessages %}
-        {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
-    {% endblock %}
+
     {% block notifications %}
+        {{ parent() }}
     {% endblock %}
 
 {% block content %}{% endblock %}

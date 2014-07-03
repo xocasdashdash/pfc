@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use UAH\GestorActividadesBundle\Form\ActivityType as ActivityType;
 use UAH\GestorActividadesBundle\Entity\Activity;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,15 +39,12 @@ class ActividadController extends Controller {
         $activity = new \UAH\GestorActividadesBundle\Entity\Activity();
         $form = $this->createForm(new ActivityType(), $activity);
         $form->handleRequest($request);
-
         if ($form->isValid()) {
             $activity = $form->getData();
+            $activity->setPublicityStartDate(\DateTime::createFromFormat('d/m/Y', $form->get('myExtraField')->getData()));
             $em = $this->getDoctrine()->getManager();
             $activity->setOrganizer($this->getUser());
-            $activity->setIsPublic(true);
             $activity->setNumberOfPlacesOccupied(0);
-            $activity->setApprovedByComitee(0);
-            $activity->setIsActive(true);
             $em->persist($activity);
             $em->flush();
             return $this->redirect($this->generateUrl("uah_gestoractividades_default_index"));
@@ -68,13 +66,10 @@ class ActividadController extends Controller {
                 , array(
             'edit' => true
         ));
-
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $activity->setOrganizer($this->getUser());
-            $activity->setNumberOfPlacesOccupied(0);
-            $activity->setApprovedByComitee(0);
             $em->persist($activity);
             $em->flush();
             return $this->redirect($this->generateUrl("uah_gestoractividades_actividad_index", array('activity_id' => $activity->getId(), 'slug' => $activity->getSlug())));
@@ -112,7 +107,13 @@ class ActividadController extends Controller {
     public function adminAction(Activity $activity, Request $request) {
 
         $em = $this->getDoctrine()->getManager();
-        $enrollments = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrolledInActivity($activity);
+        $repository = $em->getRepository('UAHGestorActividadesBundle:Enrollment');
+        if ($request->query->get('show')) {
+            $filter = "enrolled";
+        } else {
+            $filter = "all";
+        }
+        $enrollments = $repository->getEnrolledInActivity($activity, $filter);
         $response = $this->render('UAHGestorActividadesBundle:Actividad:admin.html.twig', array(
             'enrollments' => $enrollments,
             'activity' => $activity));
@@ -148,6 +149,42 @@ class ActividadController extends Controller {
      */
     public function enrollAction($id) {
         
+    }
+
+    /**
+     * 
+     * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @Route("/actividad/close/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1}, options={"expose"=true})
+     * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
+     * @Security("(is_granted('edit_activity',activity) && has_role('ROLE_UAH_STAFF_PDI')) || has_role('ROLE_UAH_ADMIN')")
+     */
+    public function closeAction(Activity $activity, Request $request) {
+        if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
+                $this->get('form.csrf_provider')->isCsrfTokenValid('administracion', $request->headers->get('X-CSRFToken'))) {
+            $em = $this->getDoctrine()->getManager();
+            $enrollments = $activity->getEnrollees();
+            $status_enrolled = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getEnrolledStatus();
+            $status_not_recognized = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getNotRecognizedStatus();
+
+            foreach ($enrollments as $enrollment) {
+                if ($enrollment->getStatus() === $status_enrolled) {
+                    $enrollment->setStatus($status_not_recognized);
+                    $em->persist($enrollment);
+                }
+            }
+            $activity->setStatus($em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getClosedStatus());
+            $em->persist($activity);
+            $em->flush();
+            return new JsonResponse("OK", 200);
+        } else {
+            $response = array();
+            $response['code'] = self::RECOGNIZEMENT_ERROR_CSRF_TOKEN_INVALID;
+            $response['message'] = 'El token CSRF no es válido. Recarga la página e inténtalo de nuevo';
+            $response['type'] = 'error';
+            $json_response = new JsonResponse($response, 403);
+            return $json_response;
+        }
     }
 
 }

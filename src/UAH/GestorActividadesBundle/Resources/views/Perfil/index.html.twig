@@ -6,6 +6,12 @@
     {% endjavascripts %}
 
 {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/profile/*.less' %}
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
+    {% endstylesheets %}
+{% endblock %}
 {% block acciones_datos %}
     <div class="row">
         <div class="col-lg-9" style="text-align:center">
@@ -46,16 +52,19 @@
         </div>
         <div class="col-lg-3 col-xs-3 children" id="right-block">                
             <div class="pull-right " >
-                <a href="#" class="btn btn-default btn-primary btn-block">Mis certificados </a>
-                <a href="#" class="btn btn-default btn-primary btn-block">Generar un certificado</a>
-                <a href="{{path('uah_gestoractividades_actividad_create_form')}}" class="btn btn-default btn-primary btn-block">Crear un curso</a>
+                <a href="#" class="btn btn-default btn-primary btn-block" id="btn_my_receipts">Mis certificados </a>
+                <a href="#" class="btn btn-default btn-primary btn-block" id="btn_generate_receipt">Generar un certificado</a>
+                {% if is_granted('ROLE_UAH_STAFF_PDI') %}
+                    <a href="{{path('uah_gestoractividades_actividad_create_form')}}" class="btn btn-default btn-primary btn-block" >Crear un curso</a>
+                {% endif %}
                 {% if is_granted('ROLE_UAH_STAFF_PAS') %}
-                    <a href="#" class="btn btn-default btn-primary btn-block">Verificar un certificado</a>
+                    <a href="#" class="btn btn-default btn-primary btn-block" id="btn_validate_receipt">Validar un justificante</a>
                 {% endif %}
                 {% if is_granted('ROLE_UAH_ADMIN') %}
-                    <a href="#" class="btn btn-default btn-primary btn-block">Gestionar users</a>
+                    <a href="#" class="btn btn-default btn-primary btn-block" id="btn_manage_users">Gestionar users</a>
                 {% endif %} 
-                <a href="#" class="btn btn-default btn-primary btn-block">Actualizar datos</a>
+                <a href="#" class="btn btn-default btn-primary btn-block" id="btn_update_data">Actualizar datos</a>
+                <a href="#" class="btn btn-default btn-primary btn-block" id="btn_unenroll">Desinscribirse</a>
 
             </div>
         </div>
@@ -64,14 +73,14 @@
 
 {% block content %}
     <div class="row zona-tabla">
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="tbl_activities">
             <thead>
                 <tr>
                     {% set headers = ['#', 'Nombre', 'Fecha inscripción', 'Asistencia verificada', 'Creditos reconocidos', 'Solicitar verificación'] %} 
                     <th>#</th>
                     <th class="nombre-actividad">Nombre</th>
                     <th>Fecha inscripción</th>
-                    <th>Asistencia verificada</th>
+                    <th>Asistencia reconocida</th>
 
                     <th>Fecha inicio</th>
                     <th>Créditos reconocidos</th>
@@ -82,32 +91,32 @@
             <tbody>
                 {% for enrolled_activity in enrolled_activities %}
                     <tr>
-                        <td>#{{loop.index}}</td>
+                        <td class="centrar-texto-col">#{{loop.index}}</td>
                         <td>{{ enrolled_activity.name }}</td>
-                        <td>{{ enrolled_activity.dateRegistered |date('d/m/Y')}}</td>
-                        <td>{{ enrolled_activity.isProcessed? 'Si':'No' }}</td>
+                        <td class="centrar-texto-col">{{ enrolled_activity.dateRegistered |date('d/m/Y')}}</td>
+                        <td class="centrar-texto-col">{{ (enrolled_activity.code== "STATUS_RECOGNIZED")? 'Si':'No' }}</td>
                         {#                        <td>{{ enrolled_activity.isRecognized? 'Si':'No' }}</td>
                         #}                        {#TODO:Meter que según el estado muestre un campo diferente con acciones diferentes
                                                     - Si estoy marcado como asistente -> Pedir justificante
                                                     - Si estoy marcado como pendiente de asistir (start_date < now) -> Dar de baja
                                                     - Si estoy marcado como justificante -> Ocultar #}        
-                        <td>{{ date(enrolled_activity.start_date)|date("d/m/Y") }} </td>
-                        <td>{{ enrolled_activity.recognizedCredits }}</td>
-                        {% if  date(enrolled_activity.start_date) > "now"|date("d/m/Y") and  enrolled_activity.code=="STATUS_INSCRITO"%}
-                            <td>darme de baja </td>
-                        {% elseif enrolled_activity.code == "STATUS_RECONOCIDO" %}
-                            <td><input type="checkbox" />Añadir a certificado</td>
-                            {% elseif enrolled_activity.code == "STATUS_PENDIENTE_VERIFICACION" %}
-                            <td><input type="checkbox" />Añadir a certificado</td>
-                            {% elseif enrolled_activity.code == "STATUS_VERIFICADO" %}
-                            <td>Verificado</td>
-                        {% elseif enrolled_activity.code == "STATUS_NO_RECONOCIDO" %}
+                        <td class="centrar-texto-col"> {{ date(enrolled_activity.start_date)|date("d/m/Y") }} </td>
+                        <td class="centrar-texto-col">{{ enrolled_activity.recognizedCredits|default('-') }}</td>
+                        {% if  date(enrolled_activity.start_date) > "now"|date("d/m/Y") and  enrolled_activity.code=="STATUS_ENROLLED"%}
+                            <td class="unenroll centrar-texto-col" data-enrollment-id="{{enrolled_activity.id}}">Darme de baja </td>
+                        {% elseif enrolled_activity.code == "STATUS_RECOGNIZED" %}
+                            <td class="centrar-texto-col"><input type="checkbox" /></td>
+                            {% elseif enrolled_activity.code == "STATUS_PENDING_VERIFICATION" %}
+                            <td class="centrar-texto-col"><input type="checkbox" /></td>
+                            {% elseif enrolled_activity.code == "STATUS_VERIFIED" %}
+                            <td class="centrar-texto-col">Verificado</td>
+                        {% elseif enrolled_activity.code == "STATUS_NOT_RECOGNIZED" %}
 
                             <td>Actividad no reconocida</td>
                         {% else %}                            
                             <td>Estado no reconocido</td>
                         {% endif %}
-                        <td>{{ enrolled_activity.code }}</td>
+                        {#<td>{{ enrolled_activity.code }}</td>#}
 
                     </tr>
                     {% else %}

@@ -54,9 +54,15 @@ class EnrollmentController extends Controller {
 
         //Uso bitmasks para saber que tipo de error hay (si lo hay) 
         $check_enrolled = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->checkEnrolled($user, $activity);
-        $free_places = ($activity->getNumberOfPlacesOccupied() >= $activity->getNumberOfPlacesOffered()) << 1;
-        $can_enroll = ($em->getRepository('UAHGestorActividadesBundle:Enrollment')->canEnroll($activity));
-        $permissions = $check_enrolled | $free_places << 1 | $can_enroll << 2;
+        //Si el numero de plazas ofertadas es null siempre puedo inscribirme por esto
+        $free_places = (is_null($activity->getNumberOfPlacesOffered()) ||  
+                $activity->getNumberOfPlacesOccupied() <= $activity->getNumberOfPlacesOffered()) << 1;
+        $can_enroll = !($em->getRepository('UAHGestorActividadesBundle:Enrollment')->canEnroll($activity)) << 2;
+        $permissions = 0;
+        $permissions |= $check_enrolled;
+        $permissions |= $free_places;
+        $permissions |= $can_enroll;
+        //$permissions = $check_enrolled | $free_places << 1 | $can_enroll << 2;
         $response = array();
 
         if ($permissions & self::ENROLLMENT_ERROR_ALREADY_ENROLLED) {
@@ -104,19 +110,19 @@ class EnrollmentController extends Controller {
             $recognizements = json_decode($request->getContent());
             $em = $this->getDoctrine()->getManager();
             $enrollment_repository = $em->getRepository('UAHGestorActividadesBundle:Enrollment');
-            $status_recognized = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getRecognized();
+            $status_recognized = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getRecognizedStatus();
             $respuesta_json = array();
             foreach ($recognizements as $recognizement) {
                 $respuesta = array();
                 $enrollment = $enrollment_repository->find($recognizement->id);
                 //Compruebo el estado de la inscripcion y que la inscripción se corresponda con mi actividad
                 //Si no paso esta comprobación de seguridad, guardo un error y continuo
-                if (!($enrollment->getStatus()->getCode() === "STATUS_INSCRITO") ||
+                if (!($enrollment->getStatus()->getCode() === "STATUS_ENROLLED") ||
                         !($enrollment->getActivity()->getId() === $activity->getId())) {
                     $respuesta['type'] = 'error';
                     $respuesta['code'] = self::RECOGNIZEMENT_ERROR_BASIC;
                     $respuesta['message'] = 'El estado no es el correcto';
-                    $respuesta_json[id] = $respuesta;
+                    $respuesta_json[$recognizement->id] = $respuesta;
                     continue;
                 }
                 //Compruebo el estado del grado. Grados no activos no pueden calcular sus créditos
@@ -125,7 +131,7 @@ class EnrollmentController extends Controller {
                     $respuesta['type'] = 'error';
                     $respuesta['code'] = self::RECOGNIZEMENT_ERROR_NO_DEGREE;
                     $respuesta['message'] = 'No tiene un plan de estudios valido';
-                    $respuesta_json[id] = $respuesta;
+                    $respuesta_json[$recognizement->id] = $respuesta;
                     continue;
                 }
 
@@ -136,7 +142,7 @@ class EnrollmentController extends Controller {
                     $respuesta['type'] = 'error';
                     $respuesta['code'] = self::RECOGNIZEMENT_ERROR_WRONG_NUMBER_FORMAT;
                     $respuesta['message'] = 'Formato de número incorrecto';
-                    $respuesta_json[id] = $respuesta;
+                    $respuesta_json[$recognizement->id] = $respuesta;
                     continue;
                 }
                 if ($enrollment->getUser()->getDegreeId()->getStatus()->getCode() == "STATUS_RENEWED") {
@@ -161,7 +167,7 @@ class EnrollmentController extends Controller {
                     $respuesta['type'] = 'error';
                     $respuesta['code'] = self::RECOGNIZEMENT_ERROR_WRONG_NUMBER;
                     $respuesta['message'] = 'Número de créditos fuera de rango';
-                    $respuesta_json[id] = $respuesta;
+                    $respuesta_json[$recognizement->id] = $respuesta;
                 }
             }
             if (isset($valid_input) and $valid_input) {
@@ -194,7 +200,6 @@ class EnrollmentController extends Controller {
                 $this->get('form.csrf_provider')->isCsrfTokenValid('administracion', $request->headers->get('X-CSRFToken'))) {
             $id_unrecognizements = json_decode($request->getContent());
             $em = $this->getDoctrine()->getManager();
-
             $enrollments = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrollmentsByID($id_unrecognizements);
             foreach ($enrollments as $enrollment) {
                 if ($enrollment->getActivity() === $activity) {
@@ -209,11 +214,11 @@ class EnrollmentController extends Controller {
         } else {
             $response = array();
             $response['code'] = self::RECOGNIZEMENT_ERROR_CSRF_TOKEN_INVALID;
-            $response['message'] = 'El token CSRF no es válido. Intentalo de nuevo';
+            $response['message'] = 'El token CSRF no es válido. Recarga la página e inténtalo de nuevo';
             $response['type'] = 'error';
             $json_response = new JsonResponse($response, 403);
-            $cookie = new Cookie('X-CSRFToken', $this->get('form.csrf_provider')->generateCsrfToken('administracion'), 0, '/', null, false, false);
-            $json_response->headers->setCookie($cookie);
+            //$cookie = new Cookie('X-CSRFToken', $this->get('form.csrf_provider')->generateCsrfToken('administracion'), 0, '/', null, false, false);
+            //$json_response->headers->setCookie($cookie);
             return $json_response;
         }
     }
