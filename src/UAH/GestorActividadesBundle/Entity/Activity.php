@@ -163,21 +163,21 @@ class Activity {
     /**
      * @var integer
      *
-     * @Column(name="numberOfPlacesOffered", type="integer")
+     * @Column(name="numberOfPlacesOffered", type="integer", nullable=true)
      */
-    private $numberOfPlacesOffered;
+    private $numberOfPlacesOffered = NULL;
 
     /**
      * @var integer
      *
      * @Column(name="numberOfPlacesOccupied", type="integer")
      */
-    private $numberOfPlacesOccupied;
+    private $numberOfPlacesOccupied = 0;
 
     /**
      * @var float
      *
-     * @Column(name="cost", type="float")
+     * @Column(name="cost", type="float", nullable=true)
      */
     private $cost;
 
@@ -239,6 +239,12 @@ class Activity {
      * @var string Columna que utilizo para cargar las fechas de celebración 
      */
     private $celebrationDatesUnencoded;
+
+    /**
+     *
+     * @var string Uso este valor para cargar la fecha de publicidad 
+     */
+    private $publicityStartDateUnencoded;
 
     /**
      * Constructor
@@ -834,7 +840,15 @@ class Activity {
             $this->setStatus($default_status);
         }
         //Modifico la fecha de inicio teniendo en cuenta la primera que se pone como de celebracion
+        //$this->setCelebrationDates(json_encode($this->getCelebrationDatesUnencoded()));
+        if ($this->getPublicityStartDate() === null) {
+            $this->setPublicityStartDate(date("Y-m-d H:i:s"));
+        }
+        if ($this->getNumberOfPlacesOffered() === 0){
+            $this->setNumberOfPlacesOffered(NULL);
+        }
         $fechas = json_decode($this->getCelebrationDates());
+        //$fecha_inicio = \DateTime::createFromFormat("Y-m-d H:i:s", $fechas[0]->date, new \DateTimeZone($fechas[0]->timezone));
         $this->setStartDate(\DateTime::createFromFormat("Y-m-d H:i:s", $fechas[0]->date, new \DateTimeZone($fechas[0]->timezone)));
         //Modifico la fecha de final teniendo en cuenta la última fecha que se pone como de celebracion
         $this->setFinishDate(\DateTime::createFromFormat("Y-m-d H:i:s", $fechas[count($fechas) - 1]->date, new \DateTimeZone($fechas[count($fechas) - 1]->timezone)));
@@ -969,6 +983,12 @@ class Activity {
 
     public function setCelebrationDatesUnencoded($celebrationDatesUnencoded) {
         $this->celebrationDatesUnencoded = $celebrationDatesUnencoded;
+        $fechas = split(",", $celebrationDatesUnencoded);
+        $fechas_encoded = array();
+        foreach ($fechas as $fecha) {
+            $fechas_encoded[] = \DateTime::createFromFormat("d/m/Y", $fecha);
+        }
+        $this->setCelebrationDates(json_encode($fechas_encoded));
         return $this;
     }
 
@@ -977,11 +997,29 @@ class Activity {
         $resultado = '';
         if ($fechas !== null) {
             foreach ($fechas as $fecha) {
-
                 $resultado.=date("d/m/Y", strtotime($fecha->date)) . (($fecha === end($fechas)) ? "" : ",");
             }
         }
         return $resultado;
+    }
+
+    public function setPublicityStartDateUnencoded($publicityStartDateUnencoded) {
+        if ($publicityStartDateUnencoded === null) {
+            $this->setPublicityStartDate(\DateTime::createFromFormat("Y-m-d", date('Y-m-d')));
+        } else {
+            $this->publicityStartDateUnencoded = $publicityStartDateUnencoded;
+            $this->setPublicityStartDate(\DateTime::createFromFormat("d/m/Y", $publicityStartDateUnencoded));
+        }
+        return $this;
+    }
+
+    public function getPublicityStartDateUnencoded() {
+        $fecha = $this->getPublicityStartDate();
+        if ($fecha instanceof \DateTime) {
+            return date("d/m/Y", strtotime($fecha->date));
+        } else {
+            return date("d/m/Y", $fecha);
+        }
     }
 
 }

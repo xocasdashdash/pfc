@@ -19,13 +19,27 @@ $(document).ready(function() {
 
         }).on('show.bs.modal', function() { //subscribe to show method
             var getNombrefromRow = $(event.target).data('id');
-            $('#modal-title').text($(event.target).closest('.actividad').find('.titulo-actividad').text());
-            $('#modal-abstract').text($(event.target).closest('.actividad').find('.abstract-actividad').text());
-            $('#modal-fecha').text($(event.target).closest('.actividad').find('.fecha-publicidad-actividad').text());
-            $('#modal-image').attr("src", $(event.target).closest('.actividad').find('.imagen-actividad').attr("src"));
+            $('#modal-title').html($(event.target).closest('.activity').find('.titulo-actividad').html());
+            $('#modal-abstract').html($(event.target).closest('.activity').find('.abstract-actividad').html());
+            $('#modal-date').html($(event.target).closest('.activity').find('.activity-date').html());
+            $('#modal-image a').attr("href", $(event.target).closest('.activity').find('.img-activity').attr("src"));
+            $('#modal-image a img').attr("src", $(event.target).closest('.activity').find('.img-activity').attr("src"));
+            $('#modal-enrollment-button').html($(event.target).closest('.activity').find('.enrollment-button').html());
+            $('.modal-content.activity').data('activity-id', $(event.target).closest('.activity').data('activity-id'));
+        }).on('hide.bs.modal', function() {
+            if ($('.modal-content.activity').data('enrolled-in')) {
+                var activity_id = $('.modal-content.activity').data('activity-id');
+                $('.activity').each(function(index, value) {
+                    if ($(value).data('activity-id') === activity_id) {
+                        $boton = $(value).find('.enroll-button');
+                        $boton.addClass('btn-success  already-enrolled').removeClass('btn-primary enroll-button');
+                        $boton.html('<span class="texto">Inscrito!</span><span class="fa fa-check fa-2x"></span>');
+                    }
+                });
+            }
         });
     });
-    $('.actividad').on('click', '.enroll-button', function(event) {
+    $('.activity').on('click', '.enroll-button', function(event) {
         var $id = $(event.delegateTarget).data('activity-id');
         var $boton = $(this);
 //        var $width = $boton.width();
@@ -40,7 +54,8 @@ $(document).ready(function() {
                 200: function(data) {
                     console.log('Inscrito en la actividad:' + $id);
                     $boton.addClass('btn-success  already-enrolled').removeClass('btn-primary enroll-button');
-                    $boton.html('<span class="texto">Inscrito!</span><span class="glyphicon glyphicon-ok"></span>');
+                    $boton.html('<span class="texto">Inscrito!</span><span class="fa fa-check fa-2x"></span>');
+                    $(event.delegateTarget).data('enrolled-in', true);
                 },
                 401: function(data) {
                     $('#notification').removeClass('hide');
