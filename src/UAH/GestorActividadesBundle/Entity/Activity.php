@@ -851,8 +851,8 @@ class Activity {
         var_dump($fechas);
         //$fecha_inicio = \DateTime::createFromFormat("Y-m-d H:i:s", $fechas[0]->date, new \DateTimeZone($fechas[0]->timezone));
         try {
-            $this->setStartDate(\DateTime::createFromFormat("Y-m-d H:i:s.u", $fechas[0]->date, new \DateTimeZone($fechas[0]->timezone)));
-            $this->setFinishDate(\DateTime::createFromFormat("Y-m-d H:i:s.u", $fechas[count($fechas) - 1]->date, new \DateTimeZone($fechas[count($fechas) - 1]->timezone)));
+            $this->setStartDate(\DateTime::createFromFormat("Y-m-d H:i:s", date("Y-m-d H:i:s", strtotime($fechas[0]->date)), new \DateTimeZone($fechas[0]->timezone)));
+            $this->setFinishDate(\DateTime::createFromFormat("Y-m-d H:i:s", date("Y-m-d H:i:s", strtotime($fechas[count($fechas) - 1]->date)), new \DateTimeZone($fechas[count($fechas) - 1]->timezone)));
         } catch (Exception $e) {
             var_dump($e);
             var_dump($fechas[0]->date);
