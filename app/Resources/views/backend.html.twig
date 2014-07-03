@@ -11,10 +11,9 @@
 {% block javascripts %}
     {{ parent() }}
 {% endblock %}
-
 {% block body %}
     {% block navbar %}
-        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar navbar-default navbar-fixed-top hidden-print" role="navigation">
             <div class="container">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">      
@@ -33,7 +32,7 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="{{ path('uah_gestoractividades_default_index') }}">Inicio</a></li>
+                        <li><a href="{{ path('uah_gestoractividades_default_index') }}">Inicio</a></li>
                             {% if app.user %}
                             <li><a href="{{ path("uah_gestoractividades_login_logout")}}" >Log out</a></li>
                             {% else %}
@@ -60,6 +59,9 @@
                 </div><!--/.nav-collapse -->
             </div>
         </div>
+    {% endblock %}
+    {% block flashmessages %}
+        {{ parent() }}
     {% endblock %}
     <div class="container">
         {% block acciones_datos %}

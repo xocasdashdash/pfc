@@ -6,9 +6,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
@@ -23,7 +21,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
  * @HasLifecycleCallbacks
  */
 class Enrollment {
-    
+
     /**
      * @var integer
      *
@@ -35,21 +33,15 @@ class Enrollment {
 
     /**
      * @var datetime
-     * @Column(name="dateProcessed", type="datetime",nullable=true)
+     * @Column(name="dateRecognized", type="datetime",nullable=true)
      */
-    private $dateProcessed;
+    private $dateRecognized;
 
     /**
      * @var datetime
      * @Column(name="dateRegistered", type="datetime")
      */
     private $dateRegistered;
-
-    /**
-     * @var boolean
-     * @Column(name="isProcessed", type="boolean")
-     */
-    private $isProcessed;
 
     /**
      *
@@ -64,13 +56,14 @@ class Enrollment {
      * @Column(name="creditsType",type="float", nullable=true)
      */
     private $creditsType;
-    
+
     /**
      * @var int Estado del registro
      * @ManyToOne(targetEntity="Statusenrollment")
      * @JoinColumn(name="status", referencedColumnName="id")
      */
     private $status;
+
     /**
      *
      * @var usuario
@@ -93,7 +86,7 @@ class Enrollment {
      * @JoinColumn(name="application_id", referencedColumnName="id", nullable=true)
      */
     private $applicationForm;
-    
+
     /**
      * Get id
      *
@@ -104,24 +97,24 @@ class Enrollment {
     }
 
     /**
-     * Set dateProcessed
+     * Set dateRecognized
      *
-     * @param \DateTime $dateProcessed
+     * @param \DateTime $dateRecognized
      * @return Enrollment
      */
-    public function setDateProcessed($dateProcessed) {
-        $this->dateProcessed = $dateProcessed;
+    public function setDateProcessed($dateRecognized) {
+        $this->dateRecognized = $dateRecognized;
 
         return $this;
     }
 
     /**
-     * Get dateProcessed
+     * Get dateRecognized
      *
      * @return \DateTime 
      */
     public function getDateProcessed() {
-        return $this->dateProcessed;
+        return $this->dateRecognized;
     }
 
     /**
@@ -142,27 +135,6 @@ class Enrollment {
      */
     public function getDateRegistered() {
         return $this->dateRegistered;
-    }
-
-    /**
-     * Set isProcessed
-     *
-     * @param boolean $isProcessed
-     * @return Enrollment
-     */
-    public function setIsProcessed($isProcessed) {
-        $this->isProcessed = $isProcessed;
-
-        return $this;
-    }
-
-    /**
-     * Get isProcessed
-     *
-     * @return boolean 
-     */
-    public function getIsProcessed() {
-        return $this->isProcessed;
     }
 
     /**
@@ -255,8 +227,7 @@ class Enrollment {
      * @param \UAH\GestorActividadesBundle\Entity\User $user
      * @return Enrollment
      */
-    public function setUser(\UAH\GestorActividadesBundle\Entity\User $user = null)
-    {
+    public function setUser(\UAH\GestorActividadesBundle\Entity\User $user = null) {
         $this->user = $user;
 
         return $this;
@@ -267,8 +238,7 @@ class Enrollment {
      *
      * @return \UAH\GestorActividadesBundle\Entity\User 
      */
-    public function getUser()
-    {
+    public function getUser() {
         return $this->user;
     }
 
@@ -278,8 +248,7 @@ class Enrollment {
      * @param \UAH\GestorActividadesBundle\Entity\Statusenrollment $status
      * @return Enrollment
      */
-    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusenrollment $status = null)
-    {
+    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusenrollment $status = null) {
         $this->status = $status;
 
         return $this;
@@ -290,23 +259,62 @@ class Enrollment {
      *
      * @return \UAH\GestorActividadesBundle\Entity\Statusenrollment 
      */
-    public function getStatus()
-    {
+    public function getStatus() {
         return $this->status;
     }
-    
+
     /**
      * @PrePersist
      */
-    public function prepare(LifecycleEventArgs $event){
-        if(is_null($this->getDateRegistered())){
+    public function prepare(LifecycleEventArgs $event) {
+        if (is_null($this->getDateRegistered())) {
             $this->setDateRegistered(new \DateTime("now"));
         }
-        if(is_null($this->getStatus())){
+        if (is_null($this->getStatus())) {
             $em = $event->getEntityManager();
             $default_status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getDefault();
             $this->setStatus($default_status);
         }
-        $this->setIsProcessed(false);
+    }
+
+    /**
+     * PreUpdate
+     */
+//    public function preupdate(LifecycleEventArgs $event) {
+//
+//        if ($event->hasChangedField('status')) {
+//            $em = $event->getEntityManager();
+//            if ($this->getStatus() === $em->
+//                            getRepository('UAHGestorActividadesBundle:Statusenrollment')->getRecognizedStatus()) {
+//                $this->setDateProcessed(new \DateTime("now"));
+//            } elseif ($this->getStatus() === $em->
+//                            getRepository('UAHGestorActividadesBundle:Statusenrollment')->getDefault()) {
+//                $event->getEntity()->
+//                
+//            }
+//        }
+//    }
+
+    /**
+     * Set dateRecognized
+     *
+     * @param \DateTime $dateRecognized
+     * @return Enrollment
+     */
+    public function setDateRecognized($dateRecognized)
+    {
+        $this->dateRecognized = $dateRecognized;
+
+        return $this;
+    }
+
+    /**
+     * Get dateRecognized
+     *
+     * @return \DateTime 
+     */
+    public function getDateRecognized()
+    {
+        return $this->dateRecognized;
     }
 }

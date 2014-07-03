@@ -14,7 +14,7 @@
 {% endblock %}
 {% block content %}
     <div class="container">
-        {% if activity.organizer == app.user or is_granted('ROLE_UAH_ADMIN') %}        
+        {% if app.user is not null and (activity.organizer == app.user or is_granted('ROLE_UAH_ADMIN')) %}        
             <div class="row">
                 <div class="text-center col-xs-6">
                     <a href="{{path('uah_gestoractividades_actividad_edit',{'activity_id': activity.id})}}">
