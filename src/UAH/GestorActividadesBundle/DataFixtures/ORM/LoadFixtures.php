@@ -229,7 +229,9 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         return $image_route;
     }, 'publicityStartDate' => function() use($faker) {
         return $faker->dateTimeBetween('now', '+2 month');
-    }
+    }, 'status' => function() use($statuses){
+        return $statuses[1];
+    },
         ));
         echo "Actividades creadas!\n";
         echo "Ejecutando el populator...";

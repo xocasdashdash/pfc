@@ -56,7 +56,7 @@ class EnrollmentController extends Controller {
         $check_enrolled = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->checkEnrolled($user, $activity);
         //Si el numero de plazas ofertadas es null siempre puedo inscribirme por esto
         $free_places = (is_null($activity->getNumberOfPlacesOffered()) ||  
-                $activity->getNumberOfPlacesOccupied() <= $activity->getNumberOfPlacesOffered()) << 1;
+                $activity->getNumberOfPlacesOccupied() >= $activity->getNumberOfPlacesOffered()) << 1;
         $can_enroll = !($em->getRepository('UAHGestorActividadesBundle:Enrollment')->canEnroll($activity)) << 2;
         $permissions = 0;
         $permissions |= $check_enrolled;
