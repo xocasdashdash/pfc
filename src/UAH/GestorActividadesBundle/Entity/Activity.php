@@ -848,6 +848,7 @@ class Activity {
             $this->setNumberOfPlacesOffered(NULL);
         }
         $fechas = json_decode($this->getCelebrationDates());
+        var_dump($fechas);
         //$fecha_inicio = \DateTime::createFromFormat("Y-m-d H:i:s", $fechas[0]->date, new \DateTimeZone($fechas[0]->timezone));
         try {
             $this->setStartDate(\DateTime::createFromFormat("Y-m-d H:i:s.u", $fechas[0]->date, new \DateTimeZone($fechas[0]->timezone)));
