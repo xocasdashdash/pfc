@@ -6,6 +6,7 @@
         '@UAHGestorActividadesBundle/Resources/public/js/backend/create_activity.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
+    {{ tinymce_init() }}
 {% endblock %}
 {% block stylesheets %}
     {{parent()}}

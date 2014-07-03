@@ -49,7 +49,7 @@
                 <div class="row">
                     <div class="left-column col-lg-8 col-xs-8 activity-description">
                         <span>
-                            {{activity.description}}
+                            {{activity.description|raw('html')}}
                         </span>
                     </div>
                     <div class="right-column col-lg-4 col-xs-4 ">

@@ -39,15 +39,12 @@ class ActividadController extends Controller {
         $activity = new \UAH\GestorActividadesBundle\Entity\Activity();
         $form = $this->createForm(new ActivityType(), $activity);
         $form->handleRequest($request);
-
         if ($form->isValid()) {
             $activity = $form->getData();
+            $activity->setPublicityStartDate(\DateTime::createFromFormat('d/m/Y', $form->get('myExtraField')->getData()));
             $em = $this->getDoctrine()->getManager();
             $activity->setOrganizer($this->getUser());
-            $activity->setIsPublic(true);
             $activity->setNumberOfPlacesOccupied(0);
-            $activity->setApprovedByComitee(0);
-            $activity->setIsActive(true);
             $em->persist($activity);
             $em->flush();
             return $this->redirect($this->generateUrl("uah_gestoractividades_default_index"));
@@ -69,13 +66,10 @@ class ActividadController extends Controller {
                 , array(
             'edit' => true
         ));
-
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $activity->setOrganizer($this->getUser());
-            $activity->setNumberOfPlacesOccupied(0);
-            $activity->setApprovedByComitee(0);
             $em->persist($activity);
             $em->flush();
             return $this->redirect($this->generateUrl("uah_gestoractividades_actividad_index", array('activity_id' => $activity->getId(), 'slug' => $activity->getSlug())));

@@ -54,9 +54,15 @@ class EnrollmentController extends Controller {
 
         //Uso bitmasks para saber que tipo de error hay (si lo hay) 
         $check_enrolled = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->checkEnrolled($user, $activity);
-        $free_places = ($activity->getNumberOfPlacesOccupied() >= $activity->getNumberOfPlacesOffered()) << 1;
-        $can_enroll = ($em->getRepository('UAHGestorActividadesBundle:Enrollment')->canEnroll($activity));
-        $permissions = $check_enrolled | $free_places << 1 | $can_enroll << 2;
+        //Si el numero de plazas ofertadas es null siempre puedo inscribirme por esto
+        $free_places = (is_null($activity->getNumberOfPlacesOffered()) ||  
+                $activity->getNumberOfPlacesOccupied() <= $activity->getNumberOfPlacesOffered()) << 1;
+        $can_enroll = !($em->getRepository('UAHGestorActividadesBundle:Enrollment')->canEnroll($activity)) << 2;
+        $permissions = 0;
+        $permissions |= $check_enrolled;
+        $permissions |= $free_places;
+        $permissions |= $can_enroll;
+        //$permissions = $check_enrolled | $free_places << 1 | $can_enroll << 2;
         $response = array();
 
         if ($permissions & self::ENROLLMENT_ERROR_ALREADY_ENROLLED) {
