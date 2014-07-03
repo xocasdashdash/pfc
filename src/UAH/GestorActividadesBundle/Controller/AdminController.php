@@ -10,10 +10,10 @@ class AdminController extends Controller
 {    
     /**
      * @Route("/admin")
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_UAH_ADMIN')")
      */
     public function indexAction()
     {
-        
+        return new \Symfony\Component\HttpFoundation\Response("blank");
     }
 }
