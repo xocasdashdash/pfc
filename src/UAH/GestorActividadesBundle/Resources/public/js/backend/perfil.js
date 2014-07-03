@@ -13,4 +13,8 @@ $(document).ready(function() {
         $('#right-block').css('height', $('#left-block').css('height'));
         console.log("Altura:" + $("#right-block").css("height"));
     });
+
+    $("#tbl_activities").on("click", ".unenroll", function() {
+        //enviar ajax a unenroll en el enrollmentController
+    });
 });
