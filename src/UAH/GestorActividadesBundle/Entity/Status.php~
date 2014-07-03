@@ -60,13 +60,13 @@ class Status {
      *
      * @var String Cadena que uso para saber en que clase se usa el estado 
      * Todas los nombres siguen el esquema STATUS_{descripcion sin espacios}
-     * @Column(name="status", type="string", length=255, nullable=true),
+     * @Column(name="code", type="string", length=255, nullable=true),
      * options={
      * "comments"="Cadena que uso para saber en que clase se usa el estado.Todos los nombres siguen el esquema STATUS_{descripcion sin espacios}"
      * })
      * 
      */
-    private $status = 'Estado por defecto';
+    private $code = 'Estado por defecto';
 
     /**
      * Get id
@@ -120,24 +120,24 @@ class Status {
     }
 
     /**
-     * Set status
+     * Set code
      *
-     * @param string $status
+     * @param string $code
      * @return Status
      */
-    public function setStatus($status) {
-        $this->status = $status;
+    public function setCode($code) {
+        $this->code = $code;
 
         return $this;
     }
 
     /**
-     * Get status
+     * Get code
      *
      * @return string 
      */
-    public function getStatus() {
-        return $this->status;
+    public function getCode() {
+        return $this->code;
     }
     
     public function toString(){

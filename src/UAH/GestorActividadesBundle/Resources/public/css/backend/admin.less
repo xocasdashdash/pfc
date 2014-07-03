@@ -28,12 +28,16 @@ and open the template in the editor.
     width: 200px;
     height: 150px;
     margin-top: 10px;
-
     line-height: 150px;
     color: white;
     font-weight: bold;
     font-size: 3em;
     text-align: center;
+    button{
+        width:100%;
+        height: 100%;
+        white-space: normal;
+    }
 }
 .reconocer{
     width: 12em;
@@ -77,5 +81,42 @@ and open the template in the editor.
 .unrecognize{
     input{
         width: 100%;
+    }
+}
+@media screen{
+    .print{
+        display:none;
+    }
+
+    td{
+        width: 40em;
+        
+    }
+
+    th{
+        width: 40em;
+    }
+}  
+ 
+@media print{
+    .no-print{
+        display:none;
+    }
+    tr{
+        height: 30px;
+    }
+    td{
+        min-width: 50px;
+        min-height: 40px;
+    }
+    th{
+        min-width: 50px;
+        min-height: 40px;
+    }
+    td.print{
+       width: 170px;
+    }
+    th.print{
+        width: 170px;
     }
 }
