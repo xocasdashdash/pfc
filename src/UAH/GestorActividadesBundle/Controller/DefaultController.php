@@ -5,12 +5,11 @@ namespace UAH\GestorActividadesBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use UAH\GestorActividadesBundle\Entity\Task;
 
 class DefaultController extends Controller {
 
     /**
-     * @Route("/{pagina}", requirements={"pagina" = "\d+"}, defaults={"pagina" = 1})
+     * @Route("/{pagina}", requirements={"pagina" = "\d+"}, defaults={"pagina" = 1},options={"expose"=true}))
      * @Route("/pag/{pagina}", requirements={"pagina" = "\d+"}, defaults={"pagina" = 1})
      */
     public function indexAction($pagina, Request $request) {

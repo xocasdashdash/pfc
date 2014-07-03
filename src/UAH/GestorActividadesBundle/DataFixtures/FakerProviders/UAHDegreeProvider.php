@@ -24,8 +24,13 @@ class UAHDegreeProvider extends \Faker\Provider\Base {
 
         return str_replace($from, $to, $string);
     }
-    public function knowledge_areas(){
+
+    public function knowledge_areas() {
         return static::randomElement(static::$knowledge_areas);
+    }
+
+    public function statusDegree($array_of_statuses) {
+        return static::randomElement($array_of_statuses);
     }
 
 }

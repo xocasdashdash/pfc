@@ -15,9 +15,9 @@
     {% block navbar %}
         {{ parent() }}
     {% endblock %}
-    {% block flashmessages %}
-    {% endblock %}
+
     {% block notifications %}
+        {{ parent() }}
     {% endblock %}
 
 {% block content %}{% endblock %}
