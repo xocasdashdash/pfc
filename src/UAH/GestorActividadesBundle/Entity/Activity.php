@@ -844,14 +844,19 @@ class Activity {
         if ($this->getPublicityStartDate() === null) {
             $this->setPublicityStartDate(date("Y-m-d H:i:s"));
         }
-        if ($this->getNumberOfPlacesOffered() === 0){
+        if ($this->getNumberOfPlacesOffered() === 0) {
             $this->setNumberOfPlacesOffered(NULL);
         }
         $fechas = json_decode($this->getCelebrationDates());
         //$fecha_inicio = \DateTime::createFromFormat("Y-m-d H:i:s", $fechas[0]->date, new \DateTimeZone($fechas[0]->timezone));
-        $this->setStartDate(\DateTime::createFromFormat("Y-m-d H:i:s.u", $fechas[0]->date, new \DateTimeZone($fechas[0]->timezone)));
+        try {
+            $this->setStartDate(\DateTime::createFromFormat("Y-m-d H:i:s.u", $fechas[0]->date, new \DateTimeZone($fechas[0]->timezone)));
+            $this->setFinishDate(\DateTime::createFromFormat("Y-m-d H:i:s.u", $fechas[count($fechas) - 1]->date, new \DateTimeZone($fechas[count($fechas) - 1]->timezone)));
+        } catch (Exception $e) {
+            var_dump($e);
+            var_dump($fechas[0]->date);
+        }
         //Modifico la fecha de final teniendo en cuenta la última fecha que se pone como de celebracion
-        $this->setFinishDate(\DateTime::createFromFormat("Y-m-d H:i:s.u", $fechas[count($fechas) - 1]->date, new \DateTimeZone($fechas[count($fechas) - 1]->timezone)));
     }
 
     /**
