@@ -29,10 +29,18 @@
                             <a class="leer-mas" href="#" data-toggle="modal" data-target="#actividadModalPrincipal">Leer mas</a>
                         </div>
                         <div class="col-md-4 center-block collapse right-column">
-                            <h3 class="fecha-publicidad-actividad activity-date">{{activity.publicityStartDate|date("d/m/Y")}}</h3>
-                            <a href="{{path('uah_gestoractividades_actividad_index',{'activity_id': activity.id,'slug':activity.slug})}}">
+                            <h3 class="fecha-publicidad-actividad activity-date">{{activity.startdate|date("d/m/Y")}}</h3>
+                            <ahref="{{path('uah_gestoractividades_actividad_index',{'activity_id': activity.id,'slug':activity.slug})}}">
                                 <img class="center-block img-rounded img-activity img-small" data-img-src="{{asset(activity.imagepath)}}" src="{{asset(activity.imagepath)}}" data-toggle="modal" data-target="#img-modal" >                                         
                             </a>
+                            <div class="credits-index text-center">
+                                Créditos: <span class="badge">{% if activity.numberOfCreditsMax != 0 or activity.numberOfECTSCreditsMax != 0 %}
+                                    Si
+                                    {% else %}
+                                        No
+                                        {% endif %}
+                                        </span>
+                            </div>
                             <div class="enrollment-button">
                                 {% if activity.id in enrollments %}
                                     <button class="btn btn-default center-block btn-success already-enrolled">
@@ -46,7 +54,6 @@
                                     </button>
                                 {%endif%}
                             </div>
-
                         </div>
                     </div>
                 </div>

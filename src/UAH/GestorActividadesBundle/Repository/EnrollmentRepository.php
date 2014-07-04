@@ -112,7 +112,7 @@ class EnrollmentRepository extends EntityRepository {
                 " WITH d.status = sd.id " .
                 " WHERE e.activity = :activity ";
         if ($filter !== "all") {
-            $dql .= " and e.status = :status ";
+            $dql .= " and e.status = :status ORDER BY e.dateRegistered DESC";
             if ($filter === "enrolled") {
                 $status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getEnrolledStatus();
             } else if ($filter === "recognized") {
@@ -120,6 +120,8 @@ class EnrollmentRepository extends EntityRepository {
             } else if ($filter === "not_recognized") {
                 $status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getNotRecognizedStatus();
             }
+        }else  {
+            $dql .= " ORDER BY e.dateRegistered DESC ";
         }
         $consulta = $em->createQuery($dql);
         if ($filter !== "all") {
