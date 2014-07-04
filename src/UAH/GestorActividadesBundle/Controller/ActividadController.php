@@ -24,8 +24,30 @@ class ActividadController extends Controller {
         if ($request->isXmlHttpRequest()) {
             return new JSONResponse($activity);
         } else {
+            $em = $this->getDoctrine()->getManager();
+            $user = $this->getUser();
+            //Uso bitmasks para saber que tipo de error hay (si lo hay)
+            if ($user &&  $activity) {
+                $check_enrolled = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->checkEnrolled($user, $activity);
+            } else {
+                $check_enrolled = 1;
+            }
+            //Si el numero de plazas ofertadas es null siempre puedo inscribirme por esto
+            $free_places = (is_null($activity->getNumberOfPlacesOffered()) ||
+                    $activity->getNumberOfPlacesOccupied() >= $activity->getNumberOfPlacesOffered()) << 1;
+            $can_enroll = !($em->getRepository('UAHGestorActividadesBundle:Enrollment')->canEnroll($activity)) << 2;
+            $permissions = 0;
+            $permissions |= $check_enrolled;
+            $permissions |= $free_places;
+            $permissions |= $can_enroll;
+            if ($permissions != 0) {
+                $show_enrollment = 0;
+            } else {
+                $show_enrollment = 1;
+            }
             return $this->render('UAHGestorActividadesBundle:Actividad:index.html.twig', array(
-                        'activity' => $activity
+                        'activity' => $activity,
+                        'show_enrollment' => $show_enrollment
             ));
         }
     }
