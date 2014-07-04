@@ -93,6 +93,10 @@
             '@UAHGestorActividadesBundle/Resources/public/vendor/qTip2/jquery.qtip.min.js' %}                
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
+        {% javascripts    '@UAHGestorActividadesBundle/Resources/public/js/enroll.js'%}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
         <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/jquery.qtip.min.js"></script>
