@@ -288,7 +288,11 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $defaultpermits[] = new DefaultPermit();
         $defaultpermits[count($defaultpermits) - 1]->addRole($roles[2]);
         $defaultpermits[count($defaultpermits) - 1]->setIdUsuldap("http://yo.rediris.es/soy/joaquin.fernandez@uah.es/");
-
+        
+        $defaultpermits[] = new DefaultPermit();
+        $defaultpermits[count($defaultpermits) - 1]->addRole($roles[2]);
+        $defaultpermits[count($defaultpermits) - 1]->setIdUsuldap("http://yo.rediris.es/soy/maitane.fatoorehchi@uah.es/");
+        
         $defaultpermits[] = new DefaultPermit();
         $defaultpermits[count($defaultpermits) - 1]->addRole($roles[4]);
         $defaultpermits[count($defaultpermits) - 1]->setIdUsuldap("http://yo.rediris.es/soy/adrian.bolonio@uah.es/");
