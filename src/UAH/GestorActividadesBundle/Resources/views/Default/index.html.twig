@@ -19,19 +19,28 @@
     <div class="container">
         <div class="row" id="cont-basico">
             {% for activity in activities %}
-                <div class="col-lg-8 col-md-8 col-lg-offset-4 col-md-offset-4 actividad" data-activity-id="{{activity.id}}">
-                    <div class="row"><div class="col-md-8">
+                <div class="col-lg-8 col-md-8 col-xs-8 col-xs-offset-4 col-lg-offset-4 col-md-offset-4 activity" data-activity-id="{{activity.id}}">
+                    <div class="row">
+                        <div class="col-md-8 col-xs-8">
                             <h3 class="titulo-actividad"><a href="{{path('uah_gestoractividades_actividad_index',{'activity_id': activity.id,'slug':activity.slug})}}">{{activity.name}}</a></h3>
                             <div class="abstract-actividad ocultado-vertical">
-                                {{activity.description}}
+                                {{activity.description|raw('html')}}
                             </div>
                             <a class="leer-mas" href="#" data-toggle="modal" data-target="#actividadModalPrincipal">Leer mas</a>
                         </div>
-                        <div class="col-md-4 center-block collapse right-column">
-                            <h3 class="fecha-publicidad-actividad">{{activity.publicityStartDate|date("d/m/Y")}}</h3>
+                        <div class="col-md-4 col-xs-4 center-block collapse right-column">
+                            <h3 class="fecha-publicidad-actividad activity-date">{{activity.startdate|date("d/m/Y")}}</h3>
                             <a href="{{path('uah_gestoractividades_actividad_index',{'activity_id': activity.id,'slug':activity.slug})}}">
                                 <img class="center-block img-rounded img-activity img-small" data-img-src="{{asset(activity.imagepath)}}" src="{{asset(activity.imagepath)}}" data-toggle="modal" data-target="#img-modal" >                                         
                             </a>
+                            <div class="credits-index text-center">
+                                Créditos: <span class="badge">{% if activity.numberOfCreditsMax != 0 or activity.numberOfECTSCreditsMax != 0 %}
+                                    Si
+                                    {% else %}
+                                        No
+                                        {% endif %}
+                                        </span>
+                            </div>
                             <div class="enrollment-button">
                                 {% if activity.id in enrollments %}
                                     <button class="btn btn-default center-block btn-success already-enrolled">
@@ -45,7 +54,6 @@
                                     </button>
                                 {%endif%}
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -57,10 +65,10 @@
 {% block modal %}
     <div class="modal fade" id="actividadModalPrincipal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content activity">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="modal-title">$NOMBRE</h4>
+                    <h4 class="modal-title" id="modal-title"></h4>
                 </div>
                 <div class="row">
                     <div class="modal-body" >
@@ -70,12 +78,14 @@
                             </div>
                         </div>
                         <div class="col-lg-4 center-block collapse">
-                            <h3 id="modal-fecha"></h3>
-                            <a href="">
-                                <img class="center-block img-rounded img-activity img-big" src="" >                                         
-                            </a>
-                            <button class="btn btn-default btn-primary center-block">
-                                <span class="glyphicon glyphicon-pencil"></span>Inscribete!</button>
+                            <h3 id="modal-date"></h3>
+                            <div id="modal-image">
+                                <a href="">
+                                    <img class="center-block img-rounded img-activity img-small" src="" >
+                                </a>
+                            </div>
+                            <div id="modal-enrollment-button">                                
+                            </div>
                         </div>
                     </div>
                 </div>

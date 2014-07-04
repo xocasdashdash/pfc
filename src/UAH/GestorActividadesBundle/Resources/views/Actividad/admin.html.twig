@@ -52,17 +52,28 @@
 {% endblock %}
 
 {% block content %}
-    <div class="visible-print-block print" style="padding-bottom:20px;margin-bottom: 20px;">
-        <div class="col-xs-4">Título de la actividad(Es):</div><div class="col-xs-8">{{activity.name}}<br></div>
-        <div class="col-xs-4">Título de la actividad(En):</div><div class="col-xs-8">{{activity.englishName|default('-')}}<br></div>
-        <div class="col-xs-4">Días de celebración:</div><div class="col-xs-8">{{activity.celebrationDatesUnencoded()}}<br></div>
-        <div class="col-xs-4">Primer día:</div><div class="col-xs-8">{{activity.startDate |date('d/m/Y')}}<br></div>
-        <div class="col-xs-4">Último día:</div><div class="col-xs-8">{{activity.finishDate |date('d/m/Y')}}<br></div>
+    <div class="visible-print-block print header-print">
+        <div class="row">
+            <div class="col-xs-4">Título de la actividad(Es):</div><div class="col-xs-8">{{activity.name}}<br></div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4">Título de la actividad(En):</div><div class="col-xs-8">{{activity.englishName|default('-')}}<br></div></div>
+        <div class="row">
+            <div class="col-xs-4">Días de celebración:</div><div class="col-xs-8">{{activity.celebrationDatesUnencoded()}}<br></div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4">Primer día:</div><div class="col-xs-8">{{activity.startDate |date('d/m/Y')}}<br></div>
+        </div>
+        <div class="row">
+            <div class="col-xs-4">Último día:</div><div class="col-xs-8">{{activity.finishDate |date('d/m/Y')}}<br></div>
+        </div>
 
     </div>
     <div class="col-xs-12 visible-print-block print" style="height:20px;"></div>
     <div class="row" style="padding-top:20px;">
-        <table class="table table-bordered" id="tbl_enrolled">
+        <div class="page-break"></div>
+
+        <table class="table table-bordered tbl_enrolled">
             <thead>
                 <tr>
                     <th>#</th>
@@ -76,7 +87,27 @@
                 </tr>
             </thead>
             <tbody>
+
                 {% for enrollment in enrollments %}
+                    {% if loop.index % 13 == 0%}
+                </table>
+                <div class="page-break"></div>
+
+                <table class="table table-bordered tbl_enrolled">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th class="nombre-actividad">Nombre y apellidos</th>
+                            <th class="hidden-print">E-mail</th>
+                            <th>Fecha Inscripción</th>
+                            <th>Tipo de plan de estudios</th>
+                            <th class="hidden-print">Acción</th>
+                            <th class="hidden-print">Créditos a reconocer</th>
+                            <th class="visible-print print" >Firma</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% endif %}
                     <tr data-id-enrollment="{{enrollment.id}}">
                         <td>#{{ loop.index }}</td>
                         <td>{{ enrollment.name ~ " " ~ enrollment.apellido_1 ~ " " ~ enrollment.apellido_2}}</td>

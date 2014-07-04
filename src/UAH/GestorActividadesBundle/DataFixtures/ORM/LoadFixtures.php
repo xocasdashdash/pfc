@@ -196,6 +196,7 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         foreach (range(0, rand(1, 3)) as $i) {
             $fechas[] = $faker->dateTimeBetween('now', '+1 year'); //d-m-Y', '31/12/2014');
         }
+        sort($fechas);
         return json_encode($fechas);
     }, 'url' => function() use($faker) {
         return $faker->url;
@@ -229,9 +230,25 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         return $image_route;
     }, 'publicityStartDate' => function() use($faker) {
         return $faker->dateTimeBetween('now', '+2 month');
+    }, 'status' => function() use($statuses) {
+        return $statuses[1];
+    }, 'organizer_name' => function() use($faker) {
+        return $faker->company;
     }
         ));
+
         echo "Actividades creadas!\n";
+        echo "Añadiendo inscripciones...";
+        $populator->addEntity('UAHGestorActividadesBundle:Enrollment', 400, array(
+            'dateRecognized' => function() {
+        return null;
+    }, 'recognizedCredits' => function() {
+        return null;
+    }, 'creditsType' => function() {
+        return null;
+    }
+        ));
+        echo "inscripciones añadidas!\n";
         echo "Ejecutando el populator...";
         $populator->execute();
         echo "Populator ejecutado\n";

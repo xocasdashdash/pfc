@@ -29,7 +29,8 @@
         "oyejorge/less.php": "~1.5",
         "doctrine/migrations": "dev-master",
         "doctrine/doctrine-migrations-bundle": "dev-master",
-        "friendsofsymfony/jsrouting-bundle": "1.5.*"
+        "friendsofsymfony/jsrouting-bundle": "1.5.*",
+        "stfalcon/tinymce-bundle": "dev-master"
 
     },
     "scripts": {
