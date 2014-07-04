@@ -90,14 +90,20 @@ and open the template in the editor.
 
     td{
         width: 40em;
-        
+
     }
 
     th{
         width: 40em;
     }
 }  
- 
+@media all {
+	.page-break	{ display: none; }
+}
+
+@media print {
+	.page-break	{ display: block; page-break-before: always; }
+}
 @media print{
     .no-print{
         display:none;
@@ -114,9 +120,14 @@ and open the template in the editor.
         min-height: 40px;
     }
     td.print{
-       width: 170px;
+        width: 170px;
     }
     th.print{
         width: 170px;
+    }
+
+    .header-print{
+        padding-bottom:20px;
+        margin-bottom: 20px;
     }
 }

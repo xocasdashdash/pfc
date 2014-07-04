@@ -33,7 +33,7 @@ $(document).ready(function() {
     });
     function getSelectedIds(type) {
         var $checked_rows = [];
-        $filas_seleccionadas = $('#tbl_enrolled ' + type + ' input[type=checkbox]:checked').closest('tr');
+        $filas_seleccionadas = $('.tbl_enrolled ' + type + ' input[type=checkbox]:checked').closest('tr');
         $filas_seleccionadas.map(function(index, value) {
             $id_enrollment = $(value).find("input[type=checkbox]").val();
             $checked_rows.push($id_enrollment);
@@ -75,7 +75,7 @@ $(document).ready(function() {
     });
 
     $('#btn_select_all').on('click', function(evt) {
-        $("#tbl_enrolled tr input[type=checkbox]").prop('checked', true);
+        $(".tbl_enrolled tr input[type=checkbox]").prop('checked', true);
     });
 
     $('#btn_show_pending').on('click', function(evt) {
@@ -159,12 +159,12 @@ $(document).ready(function() {
     });
 
     $('#btn_recognize').on('click', function(evt) {
-        $filas_seleccionadas = $('#tbl_enrolled :checked:enabled').closest('tr');
+        $filas_seleccionadas = $('.tbl_enrolled :checked:enabled').closest('tr');
         $checked_rows = [];
         var valid_data = true;
         $filas_seleccionadas.map(function(index, value) {
             if ($(value).find("input[type=number]:invalid").length !== 0 ||
-                    $(value).find("input[type=number]").val().length === 0) {
+                    ($(value).find("input[type=number]").length && $(value).find("input[type=number]").val().length === 0)) {
                 valid_data = false;
                 return false;
             } else {

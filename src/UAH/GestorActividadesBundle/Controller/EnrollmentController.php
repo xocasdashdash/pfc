@@ -54,9 +54,15 @@ class EnrollmentController extends Controller {
 
         //Uso bitmasks para saber que tipo de error hay (si lo hay) 
         $check_enrolled = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->checkEnrolled($user, $activity);
-        $free_places = ($activity->getNumberOfPlacesOccupied() >= $activity->getNumberOfPlacesOffered()) << 1;
-        $can_enroll = ($em->getRepository('UAHGestorActividadesBundle:Enrollment')->canEnroll($activity));
-        $permissions = $check_enrolled | $free_places << 1 | $can_enroll << 2;
+        //Si el numero de plazas ofertadas es null siempre puedo inscribirme por esto
+        $free_places = (is_null($activity->getNumberOfPlacesOffered()) ||
+                $activity->getNumberOfPlacesOccupied() >= $activity->getNumberOfPlacesOffered()) << 1;
+        $can_enroll = !($em->getRepository('UAHGestorActividadesBundle:Enrollment')->canEnroll($activity)) << 2;
+        $permissions = 0;
+        $permissions |= $check_enrolled;
+        $permissions |= $free_places;
+        $permissions |= $can_enroll;
+        //$permissions = $check_enrolled | $free_places << 1 | $can_enroll << 2;
         $response = array();
 
         if ($permissions & self::ENROLLMENT_ERROR_ALREADY_ENROLLED) {
@@ -133,11 +139,15 @@ class EnrollmentController extends Controller {
                 $num_credits = $num_formatter->parse($recognizement->number_of_credits);
 
                 if (!$num_credits) {
-                    $respuesta['type'] = 'error';
-                    $respuesta['code'] = self::RECOGNIZEMENT_ERROR_WRONG_NUMBER_FORMAT;
-                    $respuesta['message'] = 'Formato de número incorrecto';
-                    $respuesta_json[$recognizement->id] = $respuesta;
-                    continue;
+                    $num_formatter = new \NumberFormatter('en_US', NumberFormatter::DECIMAL);
+                    $num_credits = $num_formatter->parse($recognizement->number_of_credits);
+                    if (!$num_credits) {
+                        $respuesta['type'] = 'error';
+                        $respuesta['code'] = self::RECOGNIZEMENT_ERROR_WRONG_NUMBER_FORMAT;
+                        $respuesta['message'] = 'Formato de número incorrecto';
+                        $respuesta_json[$recognizement->id] = $respuesta;
+                        continue;
+                    }
                 }
                 if ($enrollment->getUser()->getDegreeId()->getStatus()->getCode() == "STATUS_RENEWED") {
                     $num_credits_min = $activity->getNumberOfECTSCreditsMin();
