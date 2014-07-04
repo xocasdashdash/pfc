@@ -8,7 +8,8 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/index.js' %}
+    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/index.js'
+    '@UAHGestorActividadesBundle/Resources/public/js/enroll.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
@@ -30,7 +31,7 @@
             </div>
         {% endif %}
         <div class="row">
-            <div class="actividad">
+            <div class="activity" data-activity-id="{{activity.id}}">
                 <div class="row">
                     <div class ="title text-center">
                         <h1>{{ activity.name}}</h1>
@@ -57,20 +58,49 @@
                         <div class="row img-small photo">
                             <img  class="center-block img-rounded img-activity img-big"  data-img-src="{{asset(activity.imagepath)}}"  data-toggle="modal" data-target="#imgmodal" src="{{asset(activity.imagepath)}}" title="Haz click para verla a tamaño real!">
                         </div>
-                        <div class="enrollment-button row">
-
-                            <button class="btn btn-default btn-primary center-block enroll-button">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span>Inscribete!</span>
-                            </button>
-                        </div>
-                        <div class="credits row">
-                            <div class="col-xs-12">Créditos (min-max)</div>
-                            <div class="col-xs-12">
-                                <div class="col-xs-4 text-left">Libre</div><div class="col-xs-6 col-xs-offset-2"> {{activity.numberOfCreditsMin}} - {{activity.numberOfCreditsMax}}</div>
+                        {% if show_enrollment != 0 %}
+                            <div class="separator-row row center-block"></div>
+                            <div class="enrollment-button row">
+                                <button class="btn btn-default center-block btn-primary enroll-button">
+                                    <span class="texto">Inscribete!</span>
+                                    <i class="fa fa-pencil-square-o fa-2x"></i>
+                                </button>
                             </div>
-                            <div class="col-xs-12">
-                                <div class="col-xs-4 text-left">ECTS</div><div class="col-xs-6 col-xs-offset-2"> {{activity.numberOfECTSCreditsMin}} - {{activity.numberOfECTSCreditsMax}}</div>
+                        {%endif%}
+                        {% if activity.numberOfCreditsMax != 0 or activity.numberOfECTSCreditsMax != 0 %}
+                            <div class="separator-row row center-block"></div>
+                            <div class="credits row">
+                                <div class="col-xs-12">Créditos (min-max)</div>
+                                <div class="col-xs-12">
+                                    <div class="col-xs-4 text-left">Libre</div><div class="col-xs-6 col-xs-offset-2"> {{activity.numberOfCreditsMin}} - {{activity.numberOfCreditsMax}}</div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="col-xs-4 text-left">ECTS</div><div class="col-xs-6 col-xs-offset-2"> {{activity.numberOfECTSCreditsMin}} - {{activity.numberOfECTSCreditsMax}}</div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="separator-row row center-block"></div>
+                        <div class="workload row">
+                            <div class="col-xs-4 text-left">Trabajo adicional</div>
+                            <div class="col-xs-6 col-xs-offset-2">
+                                <span class="fa-stack">
+                                    <i class="fa fa-square-o fa-stack-2x"></i>
+                                    {% if activity.hasAdditionalWorkload %}
+                                        <i class="fa fa-check fa-stack-1x"></i>
+                                    {% else %}
+                                        <i class="fa fa-times fa-stack-1x"></i>
+                                    {% endif %}
+                                </span>                                
+
+                            </div>
+
+
+                        </div>
+                        <div class="separator-row row center-block"></div>
+                        <div class="hours row">
+                            <div class="col-xs-12 text-left">
+                                <div class="col-xs-4 text-left">Horas</div>
+                                <div class="col-xs-6 col-xs-offset-2 text-center"> {{activity.numberOfHours}} </div>
                             </div>
                         </div>
                     </div>

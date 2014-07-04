@@ -17,15 +17,15 @@ $(document).ready(function() {
             backdrop: "static",
             show: false
 
-        }).on('show.bs.modal', function() { //subscribe to show method
-            var getNombrefromRow = $(event.target).data('id');
-            $('#modal-title').html($(event.target).closest('.activity').find('.titulo-actividad').html());
-            $('#modal-abstract').html($(event.target).closest('.activity').find('.abstract-actividad').html());
-            $('#modal-date').html($(event.target).closest('.activity').find('.activity-date').html());
-            $('#modal-image a').attr("href", $(event.target).closest('.activity').find('.right-column a').attr("href"));
-            $('#modal-image a img').attr("src", $(event.target).closest('.activity').find('.img-activity').attr("src"));
-            $('#modal-enrollment-button').html($(event.target).closest('.activity').find('.enrollment-button').html());
-            $('.modal-content.activity').data('activity-id', $(event.target).closest('.activity').data('activity-id'));
+        }).on('show.bs.modal', function(event) { //subscribe to show method
+            var getNombrefromRow = $(event.relatedtarget).data('id');
+            $('#modal-title').html($(event.relatedTarget).closest('.activity').find('.titulo-actividad').html());
+            $('#modal-abstract').html($(event.relatedTarget).closest('.activity').find('.abstract-actividad').html());
+            $('#modal-date').html($(event.relatedTarget).closest('.activity').find('.activity-date').html());
+            $('#modal-image a').attr("href", $(event.relatedTarget).closest('.activity').find('.right-column a').attr("href"));
+            $('#modal-image a img').attr("src", $(event.relatedTarget).closest('.activity').find('.img-activity').attr("src"));
+            $('#modal-enrollment-button').html($(event.relatedTarget).closest('.activity').find('.enrollment-button').html());
+            $('.modal-content.activity').data('activity-id', $(event.relatedTarget).closest('.activity').data('activity-id'));
         }).on('hide.bs.modal', function() {
             if ($('.modal-content.activity').data('enrolled-in')) {
                 var activity_id = $('.modal-content.activity').data('activity-id');
