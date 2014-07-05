@@ -848,9 +848,15 @@ class Activity {
             $this->setNumberOfPlacesOffered(NULL);
         }
         $fechas = json_decode($this->getCelebrationDates());
+        sort($fechas);
+        
+        //$fechas = array_reverse($fechas);
         try {
-            $this->setStartDate(\DateTime::createFromFormat("Y-m-d H:i:s", date("Y-m-d H:i:s", strtotime($fechas[0]->date)), new \DateTimeZone($fechas[0]->timezone)));
-            $this->setFinishDate(\DateTime::createFromFormat("Y-m-d H:i:s", date("Y-m-d H:i:s", strtotime($fechas[count($fechas) - 1]->date)), new \DateTimeZone($fechas[count($fechas) - 1]->timezone)));
+            var_dump($fechas);
+            $this->setStartDate(\DateTime::createFromFormat("Y-m-d H:i:s.u", $fechas[0]->date));
+//\DateTime::createFromFormat("Y-m-d H:i:s", date("Y-m-d H:i:s", strtotime($fechas[0]->date)), new \DateTimeZone($fechas[0]->timezone)));
+            $this->setFinishDate(\DateTime::createFromFormat("Y-m-d H:i:s.u", end($fechas)->date));
+            //\DateTime::createFromFormat("Y-m-d H:i:s", date("Y-m-d H:i:s", strtotime($fechas[count($fechas) - 1]->date)), new \DateTimeZone($fechas[count($fechas) - 1]->timezone)));
         } catch (Exception $e) {
             var_dump($e);
             var_dump($fechas[0]->date);
@@ -1020,7 +1026,7 @@ class Activity {
     public function getPublicityStartDateUnencoded() {
         $fecha = $this->getPublicityStartDate();
         if ($fecha instanceof \DateTime) {
-            return date("d/m/Y", strtotime($fecha->date));
+            return $fecha->format("d/m/Y"); //, strtotime($this->getPublicityStartDate()->date));
         } else {
             return date("d/m/Y", $fecha);
         }
