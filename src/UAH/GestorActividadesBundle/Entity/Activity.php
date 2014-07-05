@@ -995,14 +995,15 @@ class Activity {
         $fechas = split(",", $celebrationDatesUnencoded);
         $fechas_encoded = array();
         foreach ($fechas as $fecha) {
-            $fechas_encoded[] = \DateTime::createFromFormat("d/m/Y", $fecha);
+            $fechas_encoded[] = \DateTime::createFromFormat("d/m/Y", $fecha)->getTimeStamp();
         }
-        $this->setCelebrationDates(json_encode($fechas_encoded));
+        $this->setCelebrationDates($fechas_encoded);
         return $this;
     }
 
     public function getCelebrationDatesUnencoded() {
-        $fechas = ($this->getCelebrationDates());
+        
+        $fechas = $this->getCelebrationDates();        
         $resultado = '';
         if ($fechas !== null) {
             foreach ($fechas as $fecha) {
