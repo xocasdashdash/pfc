@@ -63,8 +63,6 @@ class ActividadController extends Controller {
         $form->handleRequest($request);
         if ($form->isValid()) {
             $activity = $form->getData();
-            //TODO: FIX ESTO
-            //$activity->setPublicityStartDate(\DateTime::createFromFormat('d/m/Y', $form->get('myExtraField')->getData()));
             $em = $this->getDoctrine()->getManager();
             $activity->setOrganizer($this->getUser());
             $activity->setNumberOfPlacesOccupied(0);

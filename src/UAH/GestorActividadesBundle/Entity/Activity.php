@@ -128,7 +128,7 @@ class Activity {
 
     /**
      * @var date
-     * @Column(name="publicityStartDate", type="datetime", nullable=true)
+     * @Column(name="publicityStartDate", type="datetime", nullable=false)
      */
     private $publicityStartDate;
 
@@ -845,16 +845,12 @@ class Activity {
         }
         $fechas = ($this->getCelebrationDates());
         sort($fechas);
+        $this->setStartDate(new \DateTime(date("c", $fechas[0])));
+        $this->setFinishDate(new \DateTime(date("c", end($fechas))));
 
-        //$fechas = array_reverse($fechas);
-        try {
-            $this->setStartDate(new \DateTime(date("c", $fechas[0])));
-            $this->setFinishDate(new \DateTime(date("c", end($fechas))));
-        } catch (Exception $e) {
-            var_dump($e);
-            var_dump($fechas[0]->date);
+        if ($this->getPublicityStartDate() === null) {
+            $this->setPublicityStartDate(new \DateTime(date("c", time())));
         }
-        //Modifico la fecha de final teniendo en cuenta la última fecha que se pone como de celebracion
     }
 
     /**
@@ -1021,7 +1017,7 @@ class Activity {
         $fecha = $this->getPublicityStartDate();
         if ($fecha instanceof \DateTime) {
             return $fecha->format("d/m/Y");
-        } else {
+        } else if ($fecha != null) {
             return date("d/m/Y", $fecha);
         }
     }
