@@ -406,8 +406,7 @@ class Activity {
      * @param \DateTime $publicityStartDate
      * @return Activity
      */
-    public function setPublicityStartDate(\DateTime $publicityStartDate = null) {
-        //Guardo el tiempo con un entero de unix
+    public function setPublicityStartDate(\DateTime $publicityStartDate) {
         $this->publicityStartDate = $publicityStartDate;
         return $this;
     }
@@ -841,9 +840,6 @@ class Activity {
         }
         //Modifico la fecha de inicio teniendo en cuenta la primera que se pone como de celebracion
         //$this->setCelebrationDates(json_encode($this->getCelebrationDatesUnencoded()));
-        if ($this->getPublicityStartDate() === null) {
-            $this->setPublicityStartDate();
-        }
         if ($this->getNumberOfPlacesOffered() === 0) {
             $this->setNumberOfPlacesOffered(NULL);
         }
@@ -989,8 +985,6 @@ class Activity {
     }
 
     public function setCelebrationDatesUnencoded($celebrationDatesUnencoded) {
-        echo "HOLA";
-        var_dump($celebrationDatesUnencoded);
         $this->celebrationDatesUnencoded = $celebrationDatesUnencoded;
         $fechas = split(",", $celebrationDatesUnencoded);
         $fechas_encoded = array();
@@ -1002,8 +996,8 @@ class Activity {
     }
 
     public function getCelebrationDatesUnencoded() {
-        
-        $fechas = $this->getCelebrationDates();        
+
+        $fechas = $this->getCelebrationDates();
         $resultado = '';
         if ($fechas !== null) {
             foreach ($fechas as $fecha) {
@@ -1015,7 +1009,7 @@ class Activity {
 
     public function setPublicityStartDateUnencoded($publicityStartDateUnencoded) {
         if ($publicityStartDateUnencoded === null) {
-            $this->setPublicityStartDate(\DateTime::createFromFormat("Y-m-d", date('Y-m-d')));
+            $this->setPublicityStartDate(new \DateTime(date("c", time())));
         } else {
             $this->publicityStartDateUnencoded = $publicityStartDateUnencoded;
             $this->setPublicityStartDate(\DateTime::createFromFormat("d/m/Y", $publicityStartDateUnencoded));
@@ -1026,7 +1020,7 @@ class Activity {
     public function getPublicityStartDateUnencoded() {
         $fecha = $this->getPublicityStartDate();
         if ($fecha instanceof \DateTime) {
-            return $fecha->format("d/m/Y"); //, strtotime($this->getPublicityStartDate()->date));
+            return $fecha->format("d/m/Y");
         } else {
             return date("d/m/Y", $fecha);
         }
