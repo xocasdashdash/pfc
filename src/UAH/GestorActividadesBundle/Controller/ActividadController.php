@@ -49,6 +49,7 @@ class ActividadController extends Controller {
             } else if ($permissions === 4) {
                 $permissions = "NOT_ENROLLABLE";
             }
+            var_dump($permissions);
             return $this->render('UAHGestorActividadesBundle:Actividad:index.html.twig', array(
                         'activity' => $activity,
                         'permissions' => $permissions
