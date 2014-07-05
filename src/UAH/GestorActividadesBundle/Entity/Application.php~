@@ -200,4 +200,27 @@ class Application {
     {
         return $this->enrollments;
     }
+
+    /**
+     * Set status
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Statusapplication $status
+     * @return Application
+     */
+    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusapplication $status = null)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return \UAH\GestorActividadesBundle\Entity\Statusapplication 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
 }

@@ -128,23 +128,10 @@ class Activity {
 
     /**
      * @var date
-     * @Column(name="publicityStartDate", type="datetime", nullable=true)
+     * @Column(name="publicityStartDate", type="datetime", nullable=false)
      */
     private $publicityStartDate;
 
-    /**
-     * @var boolean
-     *
-     * @Column(name="registrationManagement", type="boolean", nullable=true)
-     */
-    private $registrationManagement;
-
-    /**
-     * @var boolean
-     *
-     * @Column(name="extraInformationFile", type="blob",nullable=true)
-     */
-    private $extraInformationFile;
 
     /**
      * @var string
@@ -163,21 +150,21 @@ class Activity {
     /**
      * @var integer
      *
-     * @Column(name="numberOfPlacesOffered", type="integer")
+     * @Column(name="numberOfPlacesOffered", type="integer", nullable=true)
      */
-    private $numberOfPlacesOffered;
+    private $numberOfPlacesOffered = NULL;
 
     /**
      * @var integer
      *
      * @Column(name="numberOfPlacesOccupied", type="integer")
      */
-    private $numberOfPlacesOccupied;
+    private $numberOfPlacesOccupied = 0;
 
     /**
      * @var float
      *
-     * @Column(name="cost", type="float")
+     * @Column(name="cost", type="float", nullable=true)
      */
     private $cost;
 
@@ -240,6 +227,17 @@ class Activity {
      */
     private $celebrationDatesUnencoded;
 
+    /**
+     *
+     * @var string Uso este valor para cargar la fecha de publicidad 
+     */
+    private $publicityStartDateUnencoded;
+
+    /**
+     * @var string Mensaje que queremos difundir por las redes sociales
+     * @Column(type="string", length=140, nullable=true)
+     */
+    private $socialMessage = "He encontrado esta actividad!";
     /**
      * Constructor
      */
@@ -401,7 +399,6 @@ class Activity {
      * @return Activity
      */
     public function setPublicityStartDate(\DateTime $publicityStartDate) {
-        //Guardo el tiempo con un entero de unix
         $this->publicityStartDate = $publicityStartDate;
         return $this;
     }
@@ -413,47 +410,6 @@ class Activity {
      */
     public function getPublicityStartDate() {
         return $this->publicityStartDate;
-    }
-
-    /**
-     * Set registrationManagement
-     *
-     * @param boolean $registrationManagement
-     * @return Activity
-     */
-    public function setRegistrationManagement($registrationManagement) {
-        $this->registrationManagement = $registrationManagement;
-        return $this;
-    }
-
-    /**
-     * Get registrationManagement
-     *
-     * @return boolean 
-     */
-    public function getRegistrationManagement() {
-        return $this->registrationManagement;
-    }
-
-    /**
-     * Set extraInformationFile
-     *
-     * @param string $extraInformationFile
-     * @return Activity
-     */
-    public function setExtraInformationFile($extraInformationFile) {
-        $this->extraInformationFile = $extraInformationFile;
-
-        return $this;
-    }
-
-    /**
-     * Get extraInformationFile
-     *
-     * @return string 
-     */
-    public function getExtraInformationFile() {
-        return $this->extraInformationFile;
     }
 
     /**
@@ -834,10 +790,18 @@ class Activity {
             $this->setStatus($default_status);
         }
         //Modifico la fecha de inicio teniendo en cuenta la primera que se pone como de celebracion
-        $fechas = json_decode($this->getCelebrationDates());
-        $this->setStartDate(\DateTime::createFromFormat("Y-m-d H:i:s", $fechas[0]->date, new \DateTimeZone($fechas[0]->timezone)));
-        //Modifico la fecha de final teniendo en cuenta la última fecha que se pone como de celebracion
-        $this->setFinishDate(\DateTime::createFromFormat("Y-m-d H:i:s", $fechas[count($fechas) - 1]->date, new \DateTimeZone($fechas[count($fechas) - 1]->timezone)));
+        //$this->setCelebrationDates(json_encode($this->getCelebrationDatesUnencoded()));
+        if ($this->getNumberOfPlacesOffered() === 0) {
+            $this->setNumberOfPlacesOffered(NULL);
+        }
+        $fechas = ($this->getCelebrationDates());
+        sort($fechas);
+        $this->setStartDate(new \DateTime(date("c", $fechas[0])));
+        $this->setFinishDate(new \DateTime(date("c", end($fechas))));
+
+        if ($this->getPublicityStartDate() === null) {
+            $this->setPublicityStartDate(new \DateTime(date("c", time())));
+        }
     }
 
     /**
@@ -969,19 +933,44 @@ class Activity {
 
     public function setCelebrationDatesUnencoded($celebrationDatesUnencoded) {
         $this->celebrationDatesUnencoded = $celebrationDatesUnencoded;
+        $fechas = split(",", $celebrationDatesUnencoded);
+        $fechas_encoded = array();
+        foreach ($fechas as $fecha) {
+            $fechas_encoded[] = \DateTime::createFromFormat("d/m/Y", $fecha)->getTimeStamp();
+        }
+        $this->setCelebrationDates($fechas_encoded);
         return $this;
     }
 
     public function getCelebrationDatesUnencoded() {
-        $fechas = json_decode($this->getCelebrationDates());
+
+        $fechas = $this->getCelebrationDates();
         $resultado = '';
         if ($fechas !== null) {
             foreach ($fechas as $fecha) {
-
-                $resultado.=date("d/m/Y", strtotime($fecha->date)) . (($fecha === end($fechas)) ? "" : ",");
+                $resultado.=date("d/m/Y", $fecha) . (($fecha === end($fechas)) ? "" : ",");
             }
         }
         return $resultado;
+    }
+
+    public function setPublicityStartDateUnencoded($publicityStartDateUnencoded) {
+        if ($publicityStartDateUnencoded === null) {
+            $this->setPublicityStartDate(new \DateTime(date("c", time())));
+        } else {
+            $this->publicityStartDateUnencoded = $publicityStartDateUnencoded;
+            $this->setPublicityStartDate(\DateTime::createFromFormat("d/m/Y", $publicityStartDateUnencoded));
+        }
+        return $this;
+    }
+
+    public function getPublicityStartDateUnencoded() {
+        $fecha = $this->getPublicityStartDate();
+        if ($fecha instanceof \DateTime) {
+            return $fecha->format("d/m/Y");
+        } else if ($fecha != null) {
+            return date("d/m/Y", $fecha);
+        }
     }
 
 }
