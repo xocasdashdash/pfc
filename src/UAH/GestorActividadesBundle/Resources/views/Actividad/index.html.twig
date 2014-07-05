@@ -82,7 +82,7 @@
                                     <i class="fa fa-pencil-square-o fa-2x"></i>
                                 </button>
                             </div>
-                        {% elseif permissions == "ENROLLED" %}
+                        {% elseif permissions == "ENROLLED" and app.user is not null %}
                             <div class="separator-row row center-block"></div>
                             <div class="enrollment-button row">
                                 <button class="btn btn-default center-block btn-success already-enrolled">
