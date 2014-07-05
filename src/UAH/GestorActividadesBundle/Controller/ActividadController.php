@@ -27,7 +27,7 @@ class ActividadController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $user = $this->getUser();
             //Uso bitmasks para saber que tipo de error hay (si lo hay)
-            if ($user &&  $activity) {
+            if ($user && $activity) {
                 $check_enrolled = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->checkEnrolled($user, $activity);
             } else {
                 $check_enrolled = 1;
@@ -40,14 +40,18 @@ class ActividadController extends Controller {
             $permissions |= $check_enrolled;
             $permissions |= $free_places;
             $permissions |= $can_enroll;
-            if ($permissions != 0) {
-                $show_enrollment = 0;
-            } else {
-                $show_enrollment = 1;
+            if ($permissions === 0) {
+                $permissions = "ENROLLABLE";
+            } else if ($permissions === 1) {
+                $permissions = "ENROLLED";
+            } else if ($permissions === 2) {
+                $permissions = "NO_PLACES";
+            } else if ($permissions === 4) {
+                $permissions = "NOT_ENROLLABLE";
             }
             return $this->render('UAHGestorActividadesBundle:Actividad:index.html.twig', array(
                         'activity' => $activity,
-                        'show_enrollment' => $show_enrollment
+                        'permissions' => $permissions
             ));
         }
     }
