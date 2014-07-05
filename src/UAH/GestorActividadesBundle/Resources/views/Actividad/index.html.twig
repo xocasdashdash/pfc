@@ -74,7 +74,7 @@
                         <div class="row img-small photo">
                             <img  class="center-block img-rounded img-activity img-big"  data-img-src="{{asset(activity.imagepath)}}"  data-toggle="modal" data-target="#imgmodal" src="{{asset(activity.imagepath)}}" title="Haz click para verla a tamaño real!">
                         </div>
-                        {% if permissions == "ENROLLABLE" != 0 %}
+                        {% if permissions == "ENROLLABLE" %}
                             <div class="separator-row row center-block"></div>
                             <div class="enrollment-button row">
                                 <button class="btn btn-default center-block btn-primary enroll-button">
