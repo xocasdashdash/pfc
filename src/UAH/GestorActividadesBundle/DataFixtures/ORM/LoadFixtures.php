@@ -194,10 +194,11 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
     }, 'celebrationDates' => function() use($faker) {
         $fechas = array();
         foreach (range(0, rand(1, 3)) as $i) {
-            $fechas[] = $faker->dateTimeBetween('now', '+1 year'); //d-m-Y', '31/12/2014');
+            $fechas[] = strtotime($faker->dateTimeBetween('now', '+1 year')->format("Y-m-d")); //d-m-Y', '31/12/2014');
         }
         sort($fechas);
-        return json_encode($fechas);
+        //var_dump("FECHAS CREADAS\n".print_r($fechas,true));
+        return ($fechas);
     }, 'url' => function() use($faker) {
         return $faker->url;
     }, 'slug' => function() use($faker) {
