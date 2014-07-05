@@ -132,19 +132,6 @@ class Activity {
      */
     private $publicityStartDate;
 
-    /**
-     * @var boolean
-     *
-     * @Column(name="registrationManagement", type="boolean", nullable=true)
-     */
-    private $registrationManagement;
-
-    /**
-     * @var boolean
-     *
-     * @Column(name="extraInformationFile", type="blob",nullable=true)
-     */
-    private $extraInformationFile;
 
     /**
      * @var string
@@ -246,6 +233,11 @@ class Activity {
      */
     private $publicityStartDateUnencoded;
 
+    /**
+     * @var string Mensaje que queremos difundir por las redes sociales
+     * @Column(type="string", length=140, nullable=true)
+     */
+    private $socialMessage = "He encontrado esta actividad!";
     /**
      * Constructor
      */
@@ -418,47 +410,6 @@ class Activity {
      */
     public function getPublicityStartDate() {
         return $this->publicityStartDate;
-    }
-
-    /**
-     * Set registrationManagement
-     *
-     * @param boolean $registrationManagement
-     * @return Activity
-     */
-    public function setRegistrationManagement($registrationManagement) {
-        $this->registrationManagement = $registrationManagement;
-        return $this;
-    }
-
-    /**
-     * Get registrationManagement
-     *
-     * @return boolean 
-     */
-    public function getRegistrationManagement() {
-        return $this->registrationManagement;
-    }
-
-    /**
-     * Set extraInformationFile
-     *
-     * @param string $extraInformationFile
-     * @return Activity
-     */
-    public function setExtraInformationFile($extraInformationFile) {
-        $this->extraInformationFile = $extraInformationFile;
-
-        return $this;
-    }
-
-    /**
-     * Get extraInformationFile
-     *
-     * @return string 
-     */
-    public function getExtraInformationFile() {
-        return $this->extraInformationFile;
     }
 
     /**
@@ -1022,4 +973,27 @@ class Activity {
         }
     }
 
+
+    /**
+     * Set socialMessage
+     *
+     * @param string $socialMessage
+     * @return Activity
+     */
+    public function setSocialMessage($socialMessage)
+    {
+        $this->socialMessage = $socialMessage;
+
+        return $this;
+    }
+
+    /**
+     * Get socialMessage
+     *
+     * @return string 
+     */
+    public function getSocialMessage()
+    {
+        return $this->socialMessage;
+    }
 }
