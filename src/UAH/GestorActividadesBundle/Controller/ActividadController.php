@@ -82,9 +82,9 @@ class ActividadController extends Controller {
      * @Security("(is_granted('edit_activity',activity) && has_role('ROLE_UAH_STAFF_PDI')) || has_role('ROLE_UAH_ADMIN')")
      */
     public function editAction(Activity $activity, Request $request) {
-        if (false === $this->get('security.context')->isGranted('edit_activity', $activity)) {
-            throw new AccessDeniedException('Unauthorised access!');
-        }
+//        if (false === $this->get('security.context')->isGranted('edit_activity', $activity)) {
+//            throw new AccessDeniedException('Unauthorised access!');
+//        }
         $form = $this->createForm(new ActivityType(), $activity
                 , array(
             'edit' => true
