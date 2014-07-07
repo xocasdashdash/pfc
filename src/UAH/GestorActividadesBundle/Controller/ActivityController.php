@@ -13,10 +13,10 @@ use UAH\GestorActividadesBundle\Entity\Activity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Cookie;
 
-class ActividadController extends Controller {
+class ActivityController extends Controller {
 
     /**
-     * @Route("/actividad/{activity_id}-{slug}",requirements={"activity_id" = "\d+"}, defaults={"slug" = ""}, options={"expose"=true}))
+     * @Route("/activity/{activity_id}-{slug}",requirements={"activity_id" = "\d+"}, defaults={"slug" = ""}, options={"expose"=true}))
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Method({"GET"})
      */
@@ -57,7 +57,7 @@ class ActividadController extends Controller {
     }
 
     /**
-     * @Route("/actividad/create", name="uah_gestoractividades_actividad_create_form")
+     * @Route("/activity/create", name="uah_gestoractividades_actividad_create_form")
      * @Method({"GET","POST"})
      * @Security("has_role('ROLE_UAH_STAFF_PDI')")
      */
@@ -79,7 +79,7 @@ class ActividadController extends Controller {
     }
 
     /**
-     * @Route("/actividad/edit/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1})
+     * @Route("/activity/edit/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("(is_granted('edit_activity',activity) && has_role('ROLE_UAH_STAFF_PDI')) || has_role('ROLE_UAH_ADMIN')")
      */
@@ -105,7 +105,7 @@ class ActividadController extends Controller {
     }
 
     /**
-     * @Route("/actividad/update/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1})
+     * @Route("/activity/update/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("(is_granted('edit_activity',activity) && has_role('ROLE_UAH_STAFF_PDI')) || has_role('ROLE_UAH_ADMIN')")
      */
@@ -125,7 +125,7 @@ class ActividadController extends Controller {
     }
 
     /**
-     * @Route("/actividad/admin/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1})
+     * @Route("/activity/admin/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("(is_granted('edit_activity',activity) && has_role('ROLE_UAH_STAFF_PDI')) || has_role('ROLE_UAH_ADMIN')")
      */
@@ -149,7 +149,7 @@ class ActividadController extends Controller {
     }
 
     /**
-     * @Route("/actividad/{id}/{slug}", requirements={"id" = "\d+"}, defaults={"id"=-1, "slug"="none"})
+     * @Route("/activity/{id}/{slug}", requirements={"id" = "\d+"}, defaults={"id"=-1, "slug"="none"})
      * @Method({"GET"})
      * @param type $id
      * @param type $slug
@@ -159,7 +159,7 @@ class ActividadController extends Controller {
     }
 
     /**
-     * @Route("/actividad/manage/{id}", requirements={"id" = "\d+"}, defaults={"id"=-1})
+     * @Route("/activity/manage/{id}", requirements={"id" = "\d+"}, defaults={"id"=-1})
      * @Method({"POST,GET"})
      * @Security("has_role=('ROLE_ORGANIZER')")
      */
@@ -168,7 +168,7 @@ class ActividadController extends Controller {
     }
 
     /**
-     * @Route("/actividad/enroll/{id}", requirements={"id" = "\d+"}, defaults={"id"=-1})
+     * @Route("/activity/enroll/{id}", requirements={"id" = "\d+"}, defaults={"id"=-1})
      * @Method({"POST"})
      * @Security("has_role=('ROLE_USER')")
      */
@@ -180,7 +180,7 @@ class ActividadController extends Controller {
      * 
      * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @Route("/actividad/close/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1}, options={"expose"=true})
+     * @Route("/activity/close/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1}, options={"expose"=true})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("(is_granted('edit_activity',activity) && has_role('ROLE_UAH_STAFF_PDI')) || has_role('ROLE_UAH_ADMIN')")
      */

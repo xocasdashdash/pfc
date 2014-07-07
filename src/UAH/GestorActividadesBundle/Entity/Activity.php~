@@ -973,4 +973,27 @@ class Activity {
         }
     }
 
+
+    /**
+     * Set socialMessage
+     *
+     * @param string $socialMessage
+     * @return Activity
+     */
+    public function setSocialMessage($socialMessage)
+    {
+        $this->socialMessage = $socialMessage;
+
+        return $this;
+    }
+
+    /**
+     * Get socialMessage
+     *
+     * @return string 
+     */
+    public function getSocialMessage()
+    {
+        return $this->socialMessage;
+    }
 }
