@@ -47,7 +47,7 @@
                                     {% else %}
                                     <li><a href="{{ path("uah_gestoractividades_login_login")}}" >Log in</a></li>
                                     {% endif %}
-                                <li><a href="{{ path('uah_gestoractividades_perfil_index') }}">Perfil</a></li>
+                                <li><a href="{{ path('uah_gestoractividades_profile_index') }}">Perfil</a></li>
                                     {% if user is defined and user.type == 'admin' %}
                                     <li><a href="{{ path('uah_gestoractividades_admin_index') }}">Administrar</a></li>
                                     {% endif %}

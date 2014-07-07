@@ -8,10 +8,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use UAH\GestorActividadesBundle\Entity\User as User;
 
-class PerfilController extends Controller {
+class ProfileController extends Controller {
 
     /**
-     * @Route("/perfil")
+     * @Route("/profile")
      * @Method({"GET"})
      * @Security("is_fully_authenticated()")
      */
@@ -32,7 +32,7 @@ class PerfilController extends Controller {
     }
 
     /**
-     * @Route("/perfil")
+     * @Route("/profile")
      * @Method({"POST"})
      */
     public function editAction() {
