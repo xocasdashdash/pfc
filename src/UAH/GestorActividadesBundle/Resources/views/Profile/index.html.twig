@@ -1,7 +1,7 @@
 {% extends '::backend.html.twig' %}
 {% block javascripts %}
     {{parent()}}
-    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/backend/*.js' %}
+    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/backend/perfil.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
@@ -52,13 +52,13 @@
         </div>
         <div class="col-lg-3 col-xs-3 children" id="right-block">                
             <div class="pull-right " >
-                <a href="#" class="btn btn-default btn-primary btn-block" id="btn_my_receipts">Mis certificados </a>
-                <a href="#" class="btn btn-default btn-primary btn-block" id="btn_generate_receipt">Generar un certificado</a>
+                <a href="#" class="btn btn-default btn-primary btn-block" id="btn_my_applications">Mis certificados </a>
+                <a href="#" class="btn btn-default btn-primary btn-block" id="btn_generate_application">Generar un certificado</a>
                 {% if is_granted('ROLE_UAH_STAFF_PDI') %}
-                    <a href="{{path('uah_gestoractividades_actividad_create_form')}}" class="btn btn-default btn-primary btn-block" >Crear un curso</a>
+                    <a href="{{path('uah_gestoractividades_actividad_create_form')}}" class="btn btn-default btn-primary btn-block" id="btn_create" >Crear un curso</a>
                 {% endif %}
                 {% if is_granted('ROLE_UAH_STAFF_PAS') %}
-                    <a href="#" class="btn btn-default btn-primary btn-block" id="btn_validate_receipt">Validar un justificante</a>
+                    <a href="#" class="btn btn-default btn-primary btn-block" id="btn_validate_application">Validar un justificante</a>
                 {% endif %}
                 {% if is_granted('ROLE_UAH_ADMIN') %}
                     <a href="#" class="btn btn-default btn-primary btn-block" id="btn_manage_users">Gestionar users</a>
@@ -73,7 +73,7 @@
 
 {% block content %}
     <div class="row zona-tabla">
-        <table class="table table-bordered" id="tbl_activities">
+        <table class="table table-bordered tbl_activities">
             <thead>
                 <tr>
                     {% set headers = ['#', 'Nombre', 'Fecha inscripción', 'Asistencia verificada', 'Creditos reconocidos', 'Solicitar verificación'] %} 
@@ -92,7 +92,7 @@
                 {% for enrolled_activity in enrolled_activities %}
                     <tr>
                         <td class="centrar-texto-col">#{{loop.index}}</td>
-                        <td>{{ enrolled_activity.name }}</td>
+                        <td><a href="{{ path("uah_gestoractividades_activity_index",{"activity_id": enrolled_activity.id})}}">{{ enrolled_activity.name }}</a></td>
                         <td class="centrar-texto-col">{{ enrolled_activity.dateRegistered |date('d/m/Y')}}</td>
                         <td class="centrar-texto-col">{{ (enrolled_activity.code== "STATUS_RECOGNIZED")? 'Si':'No' }}</td>
                         {#                        <td>{{ enrolled_activity.isRecognized? 'Si':'No' }}</td>
@@ -105,7 +105,7 @@
                         {% if  date(enrolled_activity.start_date) > "now"|date("d/m/Y") and  enrolled_activity.code=="STATUS_ENROLLED"%}
                             <td class="unenroll centrar-texto-col" data-enrollment-id="{{enrolled_activity.id}}">Darme de baja </td>
                         {% elseif enrolled_activity.code == "STATUS_RECOGNIZED" %}
-                            <td class="centrar-texto-col"><input type="checkbox" /></td>
+                            <td class="centrar-texto-col"><input type="checkbox" value="{{enrolled_activity.id_enrollment}}"/></td>
                             {% elseif enrolled_activity.code == "STATUS_PENDING_VERIFICATION" %}
                             <td class="centrar-texto-col"><input type="checkbox" /></td>
                             {% elseif enrolled_activity.code == "STATUS_VERIFIED" %}

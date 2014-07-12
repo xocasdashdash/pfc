@@ -38,13 +38,19 @@ class Application {
 
     /**
      * @var date applicationDate
-     * @Column(name="applicationDate", type="datetime")
+     * @Column(name="applicationDateCreated", type="datetime")
      */
-    private $applicationDate;
+    private $applicationDateCreated;
+    
+    /**
+     * @var date applicationDate
+     * @Column(name="applicationDateVerified", type="datetime", nullable=true)
+     */
+    private $applicationDateVerified;
 
     /**
      * @var blob application_file
-     * @Column(name="applicationFile", type="blob")
+     * @Column(name="applicationFile", type="blob", nullable=true)
      */
     private $applicationFile;
 
@@ -100,11 +106,11 @@ class Application {
     /**
      * Set applicationDate
      *
-     * @param \DateTime $applicationDate
+     * @param \DateTime $applicationDateCreated
      * @return Application
      */
-    public function setApplicationDate($applicationDate) {
-        $this->applicationDate = $applicationDate;
+    public function setApplicationDate($applicationDateCreated) {
+        $this->applicationDateCreated = $applicationDateCreated;
 
         return $this;
     }
@@ -115,7 +121,7 @@ class Application {
      * @return \DateTime 
      */
     public function getApplicationDate() {
-        return $this->applicationDate;
+        return $this->applicationDateCreated;
     }
 
     /**

@@ -71,6 +71,16 @@ class StatusEnrollmentRepository extends EntityRepository {
             'code' => 'STATUS_ENROLLED'));
         return $resultado;
     }
+    /**
+     * 
+     * @return Esta funcion devuelve el valor por defecto que tienen los enrollment reconocidos.
+     */
+    public function getPendingVerificationStatus() {
+
+        $resultado = $this->findOneBy(array(
+            'code' => 'STATUS_PENDING_VERIFICATION'));
+        return $resultado;
+    }
     
     /**
      * 
