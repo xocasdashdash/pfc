@@ -7,11 +7,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use UAH\GestorActividadesBundle\Form\ActivityType as ActivityType;
 use UAH\GestorActividadesBundle\Entity\Activity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ActivityController extends Controller {
 
@@ -49,7 +49,7 @@ class ActivityController extends Controller {
             } else if ($permissions === 4) {
                 $permissions = "NOT_ENROLLABLE";
             }
-            return $this->render('UAHGestorActividadesBundle:Actividad:index.html.twig', array(
+            return $this->render('UAHGestorActividadesBundle:Activity:index.html.twig', array(
                         'activity' => $activity,
                         'permissions' => $permissions
             ));
@@ -74,7 +74,7 @@ class ActivityController extends Controller {
             $em->flush();
             return $this->redirect($this->generateUrl("uah_gestoractividades_default_index"));
         }
-        return $this->render('UAHGestorActividadesBundle:Actividad:create.html.twig', array(
+        return $this->render('UAHGestorActividadesBundle:Activity:create.html.twig', array(
                     'form' => $form->createView()));
     }
 
@@ -99,7 +99,7 @@ class ActivityController extends Controller {
             $em->flush();
             return $this->redirect($this->generateUrl("uah_gestoractividades_actividad_index", array('activity_id' => $activity->getId(), 'slug' => $activity->getSlug())));
         }
-        return $this->render('UAHGestorActividadesBundle:Actividad:edit.html.twig', array(
+        return $this->render('UAHGestorActividadesBundle:Activity:edit.html.twig', array(
                     'form' => $form->createView(),
                     'activity' => $activity));
     }
@@ -119,7 +119,7 @@ class ActivityController extends Controller {
             $em->flush();
             return $this->redirect($this->generateUrl("uah_gestoractividades_actividad_index", array('activity_id' => $activity->getId())));
         } else {
-            return $this->render('UAHGestorActividadesBundle:Actividad:edit.html.twig', array(
+            return $this->render('UAHGestorActividadesBundle:Activity:edit.html.twig', array(
                         'form' => $editForm->createView()));
         }
     }
@@ -139,7 +139,7 @@ class ActivityController extends Controller {
             $filter = "all";
         }
         $enrollments = $repository->getEnrolledInActivity($activity, $filter);
-        $response = $this->render('UAHGestorActividadesBundle:Actividad:admin.html.twig', array(
+        $response = $this->render('UAHGestorActividadesBundle:Activity:admin.html.twig', array(
             'enrollments' => $enrollments,
             'activity' => $activity));
         $token = $this->get('form.csrf_provider')->generateCsrfToken('administracion');

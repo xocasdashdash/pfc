@@ -40,13 +40,6 @@ $(document).ready(function() {
         });
         return $checked_rows;
     }
-//    var config = {
-//        id: 'sampletooltip',
-//        content: {
-//            text: 'Hi. I am a sample tooltip!',
-//            title: 'Sample tooltip'
-//        }
-//    };
     $('[title!=""]').qtip({
         content: {
             title: 'Para que sirve'

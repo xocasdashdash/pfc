@@ -30,11 +30,11 @@ class Application {
     private $id;
 
     /**
-     * @var integer userId;
+     * @var integer user;
      * @ManyToOne(targetEntity="User",fetch="EAGER",inversedBy="applications")
      * @JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $userId;
+    private $user;
 
     /**
      * @var date applicationDate
@@ -83,24 +83,24 @@ class Application {
     }
 
     /**
-     * Set userId
+     * Set user
      *
-     * @param integer $userId
+     * @param integer $user
      * @return Application
      */
-    public function setUserId($userId) {
-        $this->userId = $userId;
+    public function setUser($user) {
+        $this->user= $user;
 
         return $this;
     }
 
     /**
-     * Get userId
+     * Get user
      *
      * @return integer 
      */
-    public function getUserId() {
-        return $this->userId;
+    public function getUser() {
+        return $this->user;
     }
 
     /**
