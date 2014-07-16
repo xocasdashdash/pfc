@@ -61,7 +61,7 @@ class Application {
     private $verificationCode;
 
     /**
-     * @OneToMany(targetEntity="Enrollment", mappedBy="applicationForm")
+     * @OneToMany(targetEntity="Enrollment", fetch="EAGER", mappedBy="application")
      * @var type 
      */
     private $enrollments;
@@ -89,7 +89,7 @@ class Application {
      * @return Application
      */
     public function setUser($user) {
-        $this->user= $user;
+        $this->user = $user;
 
         return $this;
     }
@@ -243,6 +243,16 @@ class Application {
      */
     public function getApplicationDateVerified() {
         return $this->applicationDateVerified;
+    }
+
+    public function getNumberOfCredits() {
+        $resultado = 0;
+        
+        $this->getEnrollments()->map(function($entity) use (&$resultado) {
+            $resultado +=$entity->getRecognizedCredits();            
+        });
+
+        return $resultado;
     }
 
 }

@@ -5,13 +5,9 @@
  */
 
 $(document).ready(function() {
-    console.log("Altura:" + $("#right-block").css("height"));
     $('#right-block').css('height', $('#left-block').css('height'));
-    console.log("Altura:" + $("#right-block").css("height"));
     $(window).resize(function() {
-        console.log("Altura:" + $("#right-block").css("height"));
         $('#right-block').css('height', $('#left-block').css('height'));
-        console.log("Altura:" + $("#right-block").css("height"));
     });
 
     $("#tbl_activities").on("click", ".unenroll", function() {
@@ -33,7 +29,7 @@ $(document).ready(function() {
                                 });
                             },
                             400: function(data) {
-                                bootbox.alert("Error al generar el justificante", function() {
+                                bootbox.alert("Error al generar el justificante: <br>" + data.responseJSON.message, function() {
                                     location.reload(true);
                                 });
                             },

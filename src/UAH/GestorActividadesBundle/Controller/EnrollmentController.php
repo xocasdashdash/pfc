@@ -162,7 +162,7 @@ class EnrollmentController extends Controller {
                         $num_credits <= $num_credits_max) {
                     //Pasa todos los checks, actualizo el registro enrollment con los valores correspondientes
                     $enrollment->setRecognizedCredits($num_credits);
-
+                    $enrollment->setDateRecognized(new \DateTime(date("c", time())));
                     $enrollment->setStatus($status_recognized);
 
                     $em->persist($enrollment);

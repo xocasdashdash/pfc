@@ -122,7 +122,7 @@ class User implements UserInterface {
     private $activities;
     
     /**
-     * @OneToMany(targetEntity="Application", mappedBy="userId")
+     * @OneToMany(targetEntity="Application", mappedBy="user")
      * @var type 
      */
     private $applications;
