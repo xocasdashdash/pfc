@@ -50,9 +50,11 @@ class ApplicationController extends Controller {
      */
     public function showAction(Application $application) {
         $enrollments = $application->getEnrollments();
+        $typeOfCredits = $enrollments[0]->getCreditsType();
         return $this->render('UAHGestorActividadesBundle:Application:show.html.twig', array(
                     'application' => $application,
-                    'enrollments' => $enrollments
+                    'enrollments' => $enrollments,
+                    'typeOfCredits' => $typeOfCredits
         ));
     }
 

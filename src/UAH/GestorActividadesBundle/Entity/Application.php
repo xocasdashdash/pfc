@@ -146,6 +146,24 @@ class Application {
     }
 
     /**
+     * Get verificationCode separated by a space
+     *
+     * @return string 
+     */
+    public function getVerificationCodeSeparado() {
+        $code_length = 5;
+        $separador = "<br>";
+        $arr_resultado = str_split($this->verificationCode, $code_length);
+        $resultado = "";
+        end($arr_resultado);
+        $end_key = key($arr_resultado);
+        foreach ($arr_resultado as $key => $arr) {
+            $resultado .=$arr . ($key === $end_key ? "" : $separador);
+        }
+        return $resultado;
+    }
+
+    /**
      * Constructor
      */
     public function __construct() {
@@ -247,9 +265,9 @@ class Application {
 
     public function getNumberOfCredits() {
         $resultado = 0;
-        
+
         $this->getEnrollments()->map(function($entity) use (&$resultado) {
-            $resultado +=$entity->getRecognizedCredits();            
+            $resultado +=$entity->getRecognizedCredits();
         });
 
         return $resultado;
