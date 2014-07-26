@@ -30,21 +30,27 @@ class Application {
     private $id;
 
     /**
-     * @var integer userId;
+     * @var integer user;
      * @ManyToOne(targetEntity="User",fetch="EAGER",inversedBy="applications")
      * @JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $userId;
+    private $user;
 
     /**
      * @var date applicationDate
-     * @Column(name="applicationDate", type="datetime")
+     * @Column(name="applicationDateCreated", type="datetime")
      */
-    private $applicationDate;
+    private $applicationDateCreated;
+
+    /**
+     * @var date applicationDate
+     * @Column(name="applicationDateVerified", type="datetime", nullable=true)
+     */
+    private $applicationDateVerified;
 
     /**
      * @var blob application_file
-     * @Column(name="applicationFile", type="blob")
+     * @Column(name="applicationFile", type="blob", nullable=true)
      */
     private $applicationFile;
 
@@ -55,11 +61,11 @@ class Application {
     private $verificationCode;
 
     /**
-     * @OneToMany(targetEntity="Enrollment", mappedBy="applicationForm")
+     * @OneToMany(targetEntity="Enrollment", fetch="EAGER", mappedBy="application")
      * @var type 
      */
     private $enrollments;
-    
+
     /**
      * @var int Estado del registro
      * @ManyToOne(targetEntity="Statusapplication")
@@ -77,45 +83,24 @@ class Application {
     }
 
     /**
-     * Set userId
+     * Set user
      *
-     * @param integer $userId
+     * @param integer $user
      * @return Application
      */
-    public function setUserId($userId) {
-        $this->userId = $userId;
+    public function setUser($user) {
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get userId
+     * Get user
      *
      * @return integer 
      */
-    public function getUserId() {
-        return $this->userId;
-    }
-
-    /**
-     * Set applicationDate
-     *
-     * @param \DateTime $applicationDate
-     * @return Application
-     */
-    public function setApplicationDate($applicationDate) {
-        $this->applicationDate = $applicationDate;
-
-        return $this;
-    }
-
-    /**
-     * Get applicationDate
-     *
-     * @return \DateTime 
-     */
-    public function getApplicationDate() {
-        return $this->applicationDate;
+    public function getUser() {
+        return $this->user;
     }
 
     /**
@@ -161,10 +146,27 @@ class Application {
     }
 
     /**
+     * Get verificationCode separated by a space
+     *
+     * @return string 
+     */
+    public function getVerificationCodeSeparado() {
+        $code_length = 5;
+        $separador = "<br>";
+        $arr_resultado = str_split($this->verificationCode, $code_length);
+        $resultado = "";
+        end($arr_resultado);
+        $end_key = key($arr_resultado);
+        foreach ($arr_resultado as $key => $arr) {
+            $resultado .=$arr . ($key === $end_key ? "" : $separador);
+        }
+        return $resultado;
+    }
+
+    /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->enrollments = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -174,8 +176,7 @@ class Application {
      * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollments
      * @return Application
      */
-    public function addEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments)
-    {
+    public function addEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments) {
         $this->enrollments[] = $enrollments;
 
         return $this;
@@ -186,8 +187,7 @@ class Application {
      *
      * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollments
      */
-    public function removeEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments)
-    {
+    public function removeEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments) {
         $this->enrollments->removeElement($enrollments);
     }
 
@@ -196,8 +196,7 @@ class Application {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getEnrollments()
-    {
+    public function getEnrollments() {
         return $this->enrollments;
     }
 
@@ -207,8 +206,7 @@ class Application {
      * @param \UAH\GestorActividadesBundle\Entity\Statusapplication $status
      * @return Application
      */
-    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusapplication $status = null)
-    {
+    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusapplication $status = null) {
         $this->status = $status;
 
         return $this;
@@ -219,8 +217,60 @@ class Application {
      *
      * @return \UAH\GestorActividadesBundle\Entity\Statusapplication 
      */
-    public function getStatus()
-    {
+    public function getStatus() {
         return $this->status;
     }
+
+    /**
+     * Set applicationDateCreated
+     *
+     * @param \DateTime $applicationDateCreated
+     * @return Application
+     */
+    public function setApplicationDateCreated(\DateTime $applicationDateCreated) {
+        $this->applicationDateCreated = $applicationDateCreated;
+
+        return $this;
+    }
+
+    /**
+     * Get applicationDateCreated
+     *
+     * @return \DateTime 
+     */
+    public function getApplicationDateCreated() {
+        return $this->applicationDateCreated;
+    }
+
+    /**
+     * Set applicationDateVerified
+     *
+     * @param \DateTime $applicationDateVerified
+     * @return Application
+     */
+    public function setApplicationDateVerified(\DateTime $applicationDateVerified) {
+        $this->applicationDateVerified = $applicationDateVerified;
+
+        return $this;
+    }
+
+    /**
+     * Get applicationDateVerified
+     *
+     * @return \DateTime 
+     */
+    public function getApplicationDateVerified() {
+        return $this->applicationDateVerified;
+    }
+
+    public function getNumberOfCredits() {
+        $resultado = 0;
+
+        $this->getEnrollments()->map(function($entity) use (&$resultado) {
+            $resultado +=$entity->getRecognizedCredits();
+        });
+
+        return $resultado;
+    }
+
 }

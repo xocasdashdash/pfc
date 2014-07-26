@@ -122,4 +122,4 @@ braincrafted_bootstrap:
         bootstrap_template: BraincraftedBootstrapBundle:Bootstrap:bootstrap.less.twig
 fp_open_id:
     db_driver: orm
-    identity_class: UAH\GestorActividadesBundle\Entity\OpenIdIdentity  
+    identity_class: UAH\GestorActividadesBundle\Entity\OpenIdIdentity     
