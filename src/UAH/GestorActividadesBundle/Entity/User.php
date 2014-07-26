@@ -120,13 +120,13 @@ class User implements UserInterface {
      * @var type 
      */
     private $activities;
-    
+
     /**
      * @OneToMany(targetEntity="Application", mappedBy="user")
      * @var type 
      */
     private $applications;
-    
+
     /**
      * @OneToMany(targetEntity="Enrollment", mappedBy="user")
      * @var type 
@@ -429,15 +429,13 @@ class User implements UserInterface {
         return $this->tipo_documento_identidad;
     }
 
-
     /**
      * Add activities
      *
      * @param \UAH\GestorActividadesBundle\Entity\Activity $activities
      * @return User
      */
-    public function addActivity(\UAH\GestorActividadesBundle\Entity\Activity $activities)
-    {
+    public function addActivity(\UAH\GestorActividadesBundle\Entity\Activity $activities) {
         $this->activities[] = $activities;
 
         return $this;
@@ -448,8 +446,7 @@ class User implements UserInterface {
      *
      * @param \UAH\GestorActividadesBundle\Entity\Activity $activities
      */
-    public function removeActivity(\UAH\GestorActividadesBundle\Entity\Activity $activities)
-    {
+    public function removeActivity(\UAH\GestorActividadesBundle\Entity\Activity $activities) {
         $this->activities->removeElement($activities);
     }
 
@@ -458,8 +455,7 @@ class User implements UserInterface {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getActivities()
-    {
+    public function getActivities() {
         return $this->activities;
     }
 
@@ -469,8 +465,7 @@ class User implements UserInterface {
      * @param \UAH\GestorActividadesBundle\Entity\Application $applications
      * @return User
      */
-    public function addApplication(\UAH\GestorActividadesBundle\Entity\Application $applications)
-    {
+    public function addApplication(\UAH\GestorActividadesBundle\Entity\Application $applications) {
         $this->applications[] = $applications;
 
         return $this;
@@ -481,8 +476,7 @@ class User implements UserInterface {
      *
      * @param \UAH\GestorActividadesBundle\Entity\Application $applications
      */
-    public function removeApplication(\UAH\GestorActividadesBundle\Entity\Application $applications)
-    {
+    public function removeApplication(\UAH\GestorActividadesBundle\Entity\Application $applications) {
         $this->applications->removeElement($applications);
     }
 
@@ -491,8 +485,7 @@ class User implements UserInterface {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getApplications()
-    {
+    public function getApplications() {
         return $this->applications;
     }
 
@@ -502,8 +495,7 @@ class User implements UserInterface {
      * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollments
      * @return User
      */
-    public function addEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments)
-    {
+    public function addEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments) {
         $this->enrollments[] = $enrollments;
 
         return $this;
@@ -514,8 +506,7 @@ class User implements UserInterface {
      *
      * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollments
      */
-    public function removeEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments)
-    {
+    public function removeEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments) {
         $this->enrollments->removeElement($enrollments);
     }
 
@@ -524,8 +515,16 @@ class User implements UserInterface {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getEnrollments()
-    {
+    public function getEnrollments() {
         return $this->enrollments;
     }
+
+    /**
+     * Get type of credits ECTS or Libre
+     */
+//    public function getTypeOfCredits() {
+//        $degree_status = $this->getDegreeId()->getStatus();
+//        if($degree_status == )
+//    }
+
 }

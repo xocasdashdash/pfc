@@ -53,7 +53,7 @@ class Enrollment {
     /**
      *
      * @var float
-     * @Column(name="creditsType",type="float", nullable=true)
+     * @Column(name="creditsType",type="string", nullable=true)
      */
     private $creditsType;
 
@@ -161,7 +161,7 @@ class Enrollment {
     /**
      * Set creditsType
      *
-     * @param float $creditsType
+     * @param string $creditsType
      * @return Enrollment
      */
     public function setCreditsType($creditsType) {
