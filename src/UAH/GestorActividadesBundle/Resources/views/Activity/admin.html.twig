@@ -156,10 +156,10 @@
                             <td class="not-present hidden-print"><input type="text" disabled value="0"></td>
                             {% elseif enrollment.status_enrollment == "STATUS_PENDING_VERIFICATION" %}
                             <td><input type="checkbox" class="check_reconocer" disabled checked> </td>
-                            <td><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
+                            <td class="unrecognize hidden-print"><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled value="{{enrollment.recognizedCredits}}"></td>
                             {% elseif enrollment.status_enrollment == "STATUS_VERIFIED" %}
                             <td class="hidden-print"><input type="checkbox" class="check_reconocer"  disabled checked> </td>
-                            <td class="hidden-print"><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled>{{enrollment.recognizedCredits}} </td>
+                            <td class="unrecognize hidden-print"><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled value="{{enrollment.recognizedCredits}}"></td>
                             {% endif %}
                         <td class="visible-print-block print"></td>
 
