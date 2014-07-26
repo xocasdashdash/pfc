@@ -1,0 +1,56 @@
+{% extends '::backend.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets 
+        '@UAHGestorActividadesBundle/Resources/public/css/backend/application.less'%}
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
+    {% endstylesheets %}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/backend/applications.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block acciones_datos %}
+    <div class="row acciones_datos hidden-print">
+        <div class="flex-container">
+            <div class="flex-item">
+                <button type="button" class="btn btn-default" title="Archiva el justificante marcado" id="btn_archive" >Archivar justificante</button>
+            </div>
+            <div class="flex-item">
+                <button type="button" class="btn btn-default" id="btn_erase" title="Quita estos reconocimientos de este justificante. Pueden volverse a usar">Eliminar justificante</button>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="row" style="padding-top:20px;">
+        <div class="page-break"></div>
+
+        <table class="table table-bordered tbl_applications">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Justificante...</th>
+                    <th>Número de cŕeditos del justificante</th>
+                    <th>Fecha de creación</th>                    
+                    <th>Seleccionar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for application in applications %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td><a href="{{path("uah_gestoractividades_application_show",{"id": application.id})}}">{{ application.Enrollments|length }} Actividad{% if application.enrollments|length > 1 %}es{%endif%}</a></td>
+                        <td>{{application.getNumberOfCredits}}</td>
+                        <td>{{ application.ApplicationDateCreated|date('d/m/y') }}</td>
+                        <td>{% if application.status.code == "STATUS_CREATED" %}<input type="checkbox" value="{{application.id}}">{%endif%}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

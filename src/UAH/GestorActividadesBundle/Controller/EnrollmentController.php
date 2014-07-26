@@ -33,6 +33,9 @@ class EnrollmentController extends Controller {
     const RECOGNIZEMENT_ERROR_CSRF_TOKEN_INVALID = 1;
     const RECOGNIZEMENT_ERROR_BASIC = 2;
     const RECOGNIZEMENT_ERROR_NO_DEGREE = 3;
+    //Tipos de creditos
+    const ENROLLMENT_ECTS_CREDITS = "ECTS";
+    const ENROLLMENT_LIBRE_CREDITS = "LIBRE";
 
     /**
      * @Route("/enroll/{activity_id}",requirements={"pagina" = "\d+"}, options={"expose"=true})
@@ -152,9 +155,11 @@ class EnrollmentController extends Controller {
                 if ($enrollment->getUser()->getDegreeId()->getStatus()->getCode() == "STATUS_RENEWED") {
                     $num_credits_min = $activity->getNumberOfECTSCreditsMin();
                     $num_credits_max = $activity->getNumberOfECTSCreditsMax();
+                    $creditsType = self::ENROLLMENT_ECTS_CREDITS;
                 } else {
                     $num_credits_min = $activity->getNumberOfCreditsMin();
                     $num_credits_max = $activity->getNumberOfCreditsMax();
+                    $creditsType = self::ENROLLMENT_LIBRE_CREDITS;
                 }
 
                 //Check del número de créditos se corresponde con los rangos válidos
@@ -162,8 +167,9 @@ class EnrollmentController extends Controller {
                         $num_credits <= $num_credits_max) {
                     //Pasa todos los checks, actualizo el registro enrollment con los valores correspondientes
                     $enrollment->setRecognizedCredits($num_credits);
-
+                    $enrollment->setDateRecognized(new \DateTime(date("c", time())));
                     $enrollment->setStatus($status_recognized);
+                    $enrollment->setCreditsType($creditsType);
 
                     $em->persist($enrollment);
                     $valid_input = true;

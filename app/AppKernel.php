@@ -22,6 +22,9 @@ class AppKernel extends Kernel {
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
+            new Endroid\Bundle\QrCodeBundle\EndroidQrCodeBundle(),
+            new Avalanche\Bundle\ImagineBundle\AvalancheImagineBundle(),
+            new Mopa\Bundle\BarcodeBundle\MopaBarcodeBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
