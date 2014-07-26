@@ -51,7 +51,8 @@
             "echo 'drop hecho\n'",
             "php app/console doctrine:schema:create",
             "echo 'Esquema creado\n'",
-            "php app/console doctrine:fixtures:load"
+            "php app/console doctrine:fixtures:load",
+            "mkdir -p web/cache/barcode/code128"
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
