@@ -78,7 +78,7 @@ class EnrollmentRepository extends EntityRepository {
         $em = $this->getEntityManager();
 
 
-        $consulta = $em->createQuery('SELECT a.id,a.name,a.englishName,e.dateRegistered,e.recognizedCredits,a.start_date,se.code, e.id as id_enrollment ' .
+        $consulta = $em->createQuery('SELECT a.id,a.name,a.englishName,e.dateRegistered,e.recognizedCredits,a.start_date,se.code, e.id as id_enrollment, IDENTITY(e.application) as application' .
                 ' FROM UAHGestorActividadesBundle:Activity a ' .
                 'JOIN UAHGestorActividadesBundle:Enrollment e' .
                 ' WITH a.id = e.activity ' .

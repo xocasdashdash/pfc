@@ -61,7 +61,7 @@ class Application {
     private $verificationCode;
 
     /**
-     * @OneToMany(targetEntity="Enrollment", mappedBy="applicationForm")
+     * @OneToMany(targetEntity="Enrollment", fetch="EAGER", mappedBy="application")
      * @var type 
      */
     private $enrollments;
@@ -89,7 +89,7 @@ class Application {
      * @return Application
      */
     public function setUser($user) {
-        $this->user= $user;
+        $this->user = $user;
 
         return $this;
     }
@@ -143,6 +143,24 @@ class Application {
      */
     public function getVerificationCode() {
         return $this->verificationCode;
+    }
+
+    /**
+     * Get verificationCode separated by a space
+     *
+     * @return string 
+     */
+    public function getVerificationCodeSeparado() {
+        $code_length = 5;
+        $separador = "<br>";
+        $arr_resultado = str_split($this->verificationCode, $code_length);
+        $resultado = "";
+        end($arr_resultado);
+        $end_key = key($arr_resultado);
+        foreach ($arr_resultado as $key => $arr) {
+            $resultado .=$arr . ($key === $end_key ? "" : $separador);
+        }
+        return $resultado;
     }
 
     /**
@@ -243,6 +261,16 @@ class Application {
      */
     public function getApplicationDateVerified() {
         return $this->applicationDateVerified;
+    }
+
+    public function getNumberOfCredits() {
+        $resultado = 0;
+
+        $this->getEnrollments()->map(function($entity) use (&$resultado) {
+            $resultado +=$entity->getRecognizedCredits();
+        });
+
+        return $resultado;
     }
 
 }

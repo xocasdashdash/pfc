@@ -53,7 +53,7 @@ class Enrollment {
     /**
      *
      * @var float
-     * @Column(name="creditsType",type="float", nullable=true)
+     * @Column(name="creditsType",type="string", nullable=true)
      */
     private $creditsType;
 
@@ -85,7 +85,7 @@ class Enrollment {
      * @ManyToOne(targetEntity="Application", inversedBy="enrollments")
      * @JoinColumn(name="application_id", referencedColumnName="id", nullable=true)
      */
-    private $applicationForm;
+    private $application;
 
     /**
      * Get id
@@ -161,7 +161,7 @@ class Enrollment {
     /**
      * Set creditsType
      *
-     * @param float $creditsType
+     * @param string $creditsType
      * @return Enrollment
      */
     public function setCreditsType($creditsType) {
@@ -201,24 +201,24 @@ class Enrollment {
     }
 
     /**
-     * Set applicationForm
+     * Set application
      *
-     * @param \UAH\GestorActividadesBundle\Entity\Application $applicationForm
+     * @param \UAH\GestorActividadesBundle\Entity\Application $application
      * @return Enrollment
      */
-    public function setApplicationForm(\UAH\GestorActividadesBundle\Entity\Application $applicationForm = null) {
-        $this->applicationForm = $applicationForm;
+    public function setApplication(\UAH\GestorActividadesBundle\Entity\Application $application = null) {
+        $this->application = $application;
 
         return $this;
     }
 
     /**
-     * Get applicationForm
+     * Get application
      *
      * @return \UAH\GestorActividadesBundle\Entity\Application 
      */
-    public function getApplicationForm() {
-        return $this->applicationForm;
+    public function getApplication() {
+        return $this->application;
     }
 
     /**
