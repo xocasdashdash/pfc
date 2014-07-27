@@ -134,6 +134,11 @@ class User implements UserInterface {
     private $enrollments;
 
     /**
+     * @OneToMany(targetEntity="Application", mappedBy="verifiedByUser")
+     * @var Applications
+     */
+    private $verifiedApplications;
+    /**
      * Get id
      *
      * @return integer 
@@ -527,4 +532,37 @@ class User implements UserInterface {
 //        if($degree_status == )
 //    }
 
+
+    /**
+     * Add verifiedApplications
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Application $verifiedApplications
+     * @return User
+     */
+    public function addVerifiedApplication(\UAH\GestorActividadesBundle\Entity\Application $verifiedApplications)
+    {
+        $this->verifiedApplications[] = $verifiedApplications;
+
+        return $this;
+    }
+
+    /**
+     * Remove verifiedApplications
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Application $verifiedApplications
+     */
+    public function removeVerifiedApplication(\UAH\GestorActividadesBundle\Entity\Application $verifiedApplications)
+    {
+        $this->verifiedApplications->removeElement($verifiedApplications);
+    }
+
+    /**
+     * Get verifiedApplications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getVerifiedApplications()
+    {
+        return $this->verifiedApplications;
+    }
 }

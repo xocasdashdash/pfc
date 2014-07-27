@@ -5,6 +5,12 @@
  */
 
 $(document).ready(function() {
+    $('#btn_show_all').on('click', function() {
+        window.location.href = Routing.generate('uah_gestoractividades_application_index', {filter: 'all'});
+    });
+    $('#btn_show_pending').on('click', function() {
+        window.location.href = Routing.generate('uah_gestoractividades_application_index');
+    });
     $('#btn_erase').on('click', function(evt) {
         $id = getSelectedIds();
         if ($id.length === 1) {
@@ -44,12 +50,12 @@ $(document).ready(function() {
                         statusCode: {
                             200: function(data) {
                                 bootbox.alert("Justificante archivado!", function() {
-                                    //location.reload(true);
+                                    location.reload(true);
                                 });
                             },
                             400: function(data) {
                                 bootbox.alert("Error al archivar el justificante: <br>" + data.responseJSON.message, function() {
-                                    //location.reload(true);
+                                    location.reload(true);
                                 });
                             },
                         }
