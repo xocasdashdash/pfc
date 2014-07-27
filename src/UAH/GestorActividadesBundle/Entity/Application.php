@@ -16,7 +16,7 @@ use Doctrine\ORM\Mapping\Entity;
  * Description of Application
  *
  * @Table(name="UAH_GAT_Application")
- * @Entity()
+ * @Entity(repositoryClass="UAH\GestorActividadesBundle\Repository\ApplicationRepository")
  */
 class Application {
 
@@ -74,6 +74,13 @@ class Application {
     private $status;
 
     /**
+     * @var User verifiedByUser
+     * @ManyToOne(targetEntity="User", inversedBy="verifiedApplications")
+     * @JoinColumn(name="verified_by_id", referencedColumnName="id", nullable=true,onDelete="SET NULL")     
+     */
+    private $verifiedByUser;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -104,27 +111,6 @@ class Application {
     }
 
     /**
-     * Set applicationFile
-     *
-     * @param string $applicationFile
-     * @return Application
-     */
-    public function setApplicationFile($applicationFile) {
-        $this->applicationFile = $applicationFile;
-
-        return $this;
-    }
-
-    /**
-     * Get applicationFile
-     *
-     * @return string 
-     */
-    public function getApplicationFile() {
-        return $this->applicationFile;
-    }
-
-    /**
      * Set verificationCode
      *
      * @param string $verificationCode
@@ -150,9 +136,7 @@ class Application {
      *
      * @return string 
      */
-    public function getVerificationCodeSeparado() {
-        $code_length = 5;
-        $separador = "<br>";
+    public function getVerificationCodeSeparado($code_length = 5, $separador = "<br>") {
         $arr_resultado = str_split($this->verificationCode, $code_length);
         $resultado = "";
         end($arr_resultado);
@@ -271,6 +255,27 @@ class Application {
         });
 
         return $resultado;
+    }
+
+    /**
+     * Set verifiedByUser
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\User $verifiedByUser
+     * @return Application
+     */
+    public function setVerifiedByUser(\UAH\GestorActividadesBundle\Entity\User $verifiedByUser = null) {
+        $this->verifiedByUser = $verifiedByUser;
+
+        return $this;
+    }
+
+    /**
+     * Get verifiedByUser
+     *
+     * @return \UAH\GestorActividadesBundle\Entity\User 
+     */
+    public function getVerifiedByUser() {
+        return $this->verifiedByUser;
     }
 
 }

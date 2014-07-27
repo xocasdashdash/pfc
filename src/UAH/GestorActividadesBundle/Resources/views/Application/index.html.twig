@@ -22,6 +22,12 @@
             <div class="flex-item">
                 <button type="button" class="btn btn-default" id="btn_erase" title="Quita estos reconocimientos de este justificante. Pueden volverse a usar">Eliminar justificante</button>
             </div>
+            <div class="flex-item">
+                <button type="button" class="btn btn-default" id="btn_show_all" title="Muestra también los justificantes archivados">Ver todos</button>
+            </div>
+            <div class="flex-item">
+                <button type="button" class="btn btn-default" id="btn_show_pending" title="Muestra los justificantes pendientes de usar">Ver pendientes</button>
+            </div>
 
         </div>
     </div>
@@ -37,6 +43,7 @@
                     <th>Justificante...</th>
                     <th>Número de cŕeditos del justificante</th>
                     <th>Fecha de creación</th>                    
+                    <th>Fecha de verificación</th>                    
                     <th>Seleccionar</th>
                 </tr>
             </thead>
@@ -47,10 +54,12 @@
                         <td><a href="{{path("uah_gestoractividades_application_show",{"id": application.id})}}">{{ application.Enrollments|length }} Actividad{% if application.enrollments|length > 1 %}es{%endif%}</a></td>
                         <td>{{application.getNumberOfCredits}}</td>
                         <td>{{ application.ApplicationDateCreated|date('d/m/y') }}</td>
-                        <td>{% if application.status.code == "STATUS_CREATED" %}<input type="checkbox" value="{{application.id}}">{%endif%}</td>
+                        <td>{{ application.ApplicationDateVerified ? application.ApplicationDateVerified|date('d/m/y') : '-' }}</td>
+                        <td>{% if application.status.code == "STATUS_CREATED" or application.status.code == "STATUS_VERIFIED"  %}<input type="checkbox" value="{{application.id}}">{% elseif application.status.code == "STATUS_ARCHIVED" %}Archivado{%endif%}</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+
     </div>
 {% endblock %}

@@ -92,5 +92,15 @@ class StatusEnrollmentRepository extends EntityRepository {
             'code' => 'STATUS_NOT_RECOGNIZED'));
         return $resultado;
     }
+    /**
+     * 
+     * @return Esta funcion devuelve el valor por defecto que tienen los enrollment verificados.
+     */
+    public function getVerified() {
+
+        $resultado = $this->findOneBy(array(
+            'code' => 'STATUS_VERIFIED'));
+        return $resultado;
+    }
 
 }
