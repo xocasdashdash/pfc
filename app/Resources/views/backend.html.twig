@@ -42,7 +42,7 @@
                         {# fp_openid_security_check", {'openid_identifier': 'http://yo.rediris.es/','_target_path': "/"}) }}"#}
 
                         <li><a href="{{ path('uah_gestoractividades_profile_index') }}">Perfil</a></li>
-                            {% if user is defined and user.type == 'admin' %}
+                            {% if is_granted('ROLE_UAH_ADMIN') %}
                             <li><a href="{{ path('uah_gestoractividades_admin_index') }}">Administrar</a></li>
                             {% endif %}
                         <li>
