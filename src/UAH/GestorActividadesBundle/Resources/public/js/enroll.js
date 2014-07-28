@@ -47,7 +47,7 @@ $(document).ready(function() {
                             break;
                     }
                     $('#notification #type').text($type);
-                    $('#notification #message').text(data.responseJSON.message);
+                    $('#notification #message').html(data.responseJSON.message);
                 }
             }
         }

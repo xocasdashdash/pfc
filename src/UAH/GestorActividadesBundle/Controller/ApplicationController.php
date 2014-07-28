@@ -27,13 +27,17 @@ class ApplicationController extends Controller {
     const APPLICATION_ERROR_NOT_DELETED = 4;
     const APPLICATION_ERROR_ALREADY_USED = 6;
     const APPLICATION_ERROR_NOT_ARCHIVED = 8;
+    const APPLICATION_ERROR_MIXED_TYPE_OF_CREDITS = 8;
 
     /**
-     * @Route("/applications")
-     * 
+     * @Route("/applications", options={"expose"=true})
+     * @Security("is_fully_authenticated()")
      */
-    public function indexAction() {
-        $applications = $this->getUser()->getApplications();
+    public function indexAction(Request $request) {
+        $filter = $request->query->get('filter', 'not_archived');
+        $applications = $this->getDoctrine()
+                ->getManager()->getRepository('UAHGestorActividadesBundle:Application')
+                ->getUserApplications($this->getUser(), $filter);
 
         $response = $this->render('UAHGestorActividadesBundle:Application:index.html.twig', array(
             'applications' => $applications));
@@ -51,10 +55,20 @@ class ApplicationController extends Controller {
     public function showAction(Application $application) {
         $enrollments = $application->getEnrollments();
         $typeOfCredits = $enrollments[0]->getCreditsType();
+        $name = $this->getUser()->getName();
+        $apellido1 = $this->getUser()->getApellido1();
+        $apellido2 = $this->getUser()->getApellido2();
+        $degree = $this->getUser()->getDegreeId()->getName();
+        $show_verify = ($this->get('security.context')->isGranted('ROLE_UAH_STAFF_PAS') && $application->getStatus() === $this->getDoctrine()->getManager()->getRepository('UAHGestorActividadesBundle:Statusapplication')->getDefault());
         return $this->render('UAHGestorActividadesBundle:Application:show.html.twig', array(
                     'application' => $application,
                     'enrollments' => $enrollments,
-                    'typeOfCredits' => $typeOfCredits
+                    'typeOfCredits' => $typeOfCredits,
+                    'name' => $name,
+                    'apellido1' => $apellido1,
+                    'apellido2' => $apellido2,
+                    'degree' => $degree,
+                    'show_verify' => $show_verify
         ));
     }
 
@@ -62,7 +76,7 @@ class ApplicationController extends Controller {
      * 
      * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
      * @Route("/application/create/",options={"expose"=true})
-     * @Security("has_role('ROLE_UAH_STUDENT')")
+     * @Security("is_granted('ROLE_UAH_STUDENT')")
      */
     public function createAction(Request $request) {
         //Comprobación CSRF
@@ -78,51 +92,62 @@ class ApplicationController extends Controller {
             $valid_enrollment = true;
             $status_pending_verification = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')
                     ->getPendingVerificationStatus();
+            $user = $this->getUser();
             foreach ($enrollments as $enrollment) {
-                $enrollment = $enrollment_repository->find($enrollment);
-                //Compruebo el estado de la inscripcion y que la inscripción se corresponda con una inscripción del usuario
-                //Si no paso esta comprobación de seguridad, guardo un error y continuo con otro
-                if ($enrollment->getStatus() !== $status_recognized) {
+                if ($user->getCreditsType() !== $enrollment->getCreditsType()) {
                     $respuesta_json['type'] = 'error';
-                    $respuesta_json['code'] = self::APPLICATION_ERROR_NOT_RECOGNIZED;
-                    $respuesta_json['message'] = 'El estado no es el correcto';
+                    $respuesta_json['code'] = self::APPLICATION_ERROR_MIXED_TYPE_OF_CREDITS;
+                    $respuesta_json['message'] = 'Hay una mezcla entre créditos de libre y créditos ECTS. <br> Ponte en contacto con el administrador';
                     $valid_enrollment = false;
-                    break;
                 }
-                //Compruebo que el usuario es el del enrollment
-                if ($enrollment->getUser() != $this->getUser()) {
-                    $respuesta_json['type'] = 'error';
-                    $respuesta_json['code'] = self::APPLICATION_ERROR_NOT_YOUR_OWN;
-                    $respuesta_json['message'] = 'No es el tuyo';
-                    $valid_enrollment = false;
-                    break;
-                }
-                if (false === is_null($enrollment->getApplication())) {
-                    $respuesta_json['type'] = 'error';
-                    $respuesta_json['code'] = self::APPLICATION_ERROR_ALREADY_USED;
-                    $respuesta_json['message'] = 'Alguna de las inscripciones esta ya en otro justificante';
-                    $valid_enrollment = false;
-                    break;
-                }
-                $enrollment->setApplication($application); //addEnrollment($enrollment);
-                $enrollment->setStatus($status_pending_verification);
-                $em->persist($enrollment);
             }
-
             if ($valid_enrollment) {
-                $application->setStatus($em->getRepository('UAHGestorActividadesBundle:Statusapplication')->getDefault());
-                $application->setApplicationDateCreated(new \DateTime(date("c", time())));
-                $sr = new SecureRandom();
-                $code = bin2hex($sr->nextBytes(10));
-                $application->setVerificationCode($code);
-                $application->setUser($this->getUser());
+                foreach ($enrollments as $enrollment) {
+                    $enrollment = $enrollment_repository->find($enrollment);
+                    //Compruebo el estado de la inscripcion y que la inscripción se corresponda con una inscripción del usuario
+                    //Si no paso esta comprobación de seguridad, guardo un error y continuo con otro
+                    if ($enrollment->getStatus() !== $status_recognized) {
+                        $respuesta_json['type'] = 'error';
+                        $respuesta_json['code'] = self::APPLICATION_ERROR_NOT_RECOGNIZED;
+                        $respuesta_json['message'] = 'El estado no es el correcto';
+                        $valid_enrollment = false;
+                        break;
+                    }
+                    //Compruebo que el usuario es el del enrollment
+                    if ($enrollment->getUser() != $user) {
+                        $respuesta_json['type'] = 'error';
+                        $respuesta_json['code'] = self::APPLICATION_ERROR_NOT_YOUR_OWN;
+                        $respuesta_json['message'] = 'No es el tuyo';
+                        $valid_enrollment = false;
+                        break;
+                    }
+                    if (false === is_null($enrollment->getApplication())) {
+                        $respuesta_json['type'] = 'error';
+                        $respuesta_json['code'] = self::APPLICATION_ERROR_ALREADY_USED;
+                        $respuesta_json['message'] = 'Alguna de las inscripciones esta ya en otro justificante';
+                        $valid_enrollment = false;
+                        break;
+                    }
+                    $enrollment->setApplication($application); //addEnrollment($enrollment);
+                    $enrollment->setStatus($status_pending_verification);
+                    $em->persist($enrollment);
+                }
 
-                $em->persist($application);
-                $em->flush();
-                $respuesta_json['type'] = 'success';
-                $respuesta_json['code'] = self::APPLICATION_SUCCESS_CREATED;
-                $respuesta_json['message'] = $application->getId();
-                return new JsonResponse($respuesta_json, 200);
+                if ($valid_enrollment) {
+                    $application->setStatus($em->getRepository('UAHGestorActividadesBundle:Statusapplication')->getDefault());
+                    $application->setApplicationDateCreated(new \DateTime(date("c", time())));
+                    $sr = new SecureRandom();
+                    $code = bin2hex($sr->nextBytes(10));
+                    $application->setVerificationCode($code);
+                    $application->setUser($this->getUser());
+
+                    $em->persist($application);
+                    $em->flush();
+                    $respuesta_json['type'] = 'success';
+                    $respuesta_json['code'] = self::APPLICATION_SUCCESS_CREATED;
+                    $respuesta_json['message'] = $application->getId();
+                    return new JsonResponse($respuesta_json, 200);
+                }
             }
             return new JsonResponse($respuesta_json, 400);
         } else {
@@ -202,9 +227,7 @@ class ApplicationController extends Controller {
             $response = array();
 
             if ($application->getStatus() === $status_verified) {
-                $enrollment = $application->getEnrollments();
-                $enrollment = $enrollment[0];
-                if ($enrollment->getUser() === $this->getUser()) {
+                if ($application->getUser() === $this->getUser()) {
                     $application->setStatus($status_archived);
                     $em->persist($application);
                     $em->flush();
@@ -218,7 +241,11 @@ class ApplicationController extends Controller {
                 }
             } else {
                 $response['code'] = self::APPLICATION_ERROR_NOT_ARCHIVED;
-                $response['message'] = 'Justificante NO archivado. <br>Pendiente de verificación!';
+                if ($application->getStatus() === $status_archived) {
+                    $response['message'] = 'Justificante ya archivado anteriormente.';
+                } else {
+                    $response['message'] = 'Justificante NO archivado. <br>Pendiente de verificación!';
+                }
                 $response['type'] = 'error';
             }
             if ($response['type'] === 'success') {
@@ -228,6 +255,64 @@ class ApplicationController extends Controller {
             }
             return new JSONResponse($response, $response_code);
         }
+    }
+
+    /**
+     * @Route("/application/check_code/{applicationCode}", defaults={"applicationCode" = -1}, options={"expose"=true}))
+     * @Security("is_granted('ROLE_UAH_STAFF_PAS')")
+     */
+    public function checkCodeAction($applicationCode) {
+        $em = $this->getDoctrine()->getManager();
+        $app_repository = $em->getRepository('UAHGestorActividadesBundle:Application');
+        $app_default_status = $em->getRepository('UAHGestorActividadesBundle:Statusapplication')->getDefault();
+        $app = $app_repository->findOneBy(array('verificationCode' => $applicationCode,
+            'status' => $app_default_status));
+        $response = array();
+        if ($app) {
+            $response['code'] = 200;
+            $response['message'] = $this->generateUrl(
+                    'uah_gestoractividades_application_show', array('id' => $app->getId())
+            );
+            $response['type'] = 'success';
+        } else {
+            $response['code'] = 400;
+            $response['message'] = 'Justificante no encontrado';
+            $response['type'] = 'error';
+        }
+        return new JsonResponse($response, $response['code']);
+    }
+
+    /**
+     * @Route("/application/verify/{id}", requirements={"id" = "\d+"}, defaults={"id" = -1}, options={"expose"=true}))
+     * @ParamConverter("application", class="UAHGestorActividadesBundle:Application",options={"id" = "application_id"})
+     * @Security("is_granted('ROLE_UAH_STAFF_PAS')")
+     */
+    public function verifyAppAction(Application $application) {
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        $verifiedApplicationStatus = $em->getRepository('UAHGestorActividadesBundle:Statusapplication')->getVerified();
+        $verifiedEnrollmentStatus = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getVerified();
+        $defaultStatus = $em->getRepository('UAHGestorActividadesBundle:Statusapplication')->getDefault();
+        $response = array();
+        if ($application->getStatus() === $defaultStatus) {
+            $application->setStatus($verifiedApplicationStatus);
+            $application->setVerifiedByUser($user);
+            $application->setApplicationDateVerified(new \DateTime());
+            foreach ($application->getEnrollments() as $enrollment) {
+                $enrollment->setStatus($verifiedEnrollmentStatus);
+                $em->persist($enrollment);
+            }
+            $em->persist($application);
+            $em->flush();
+            $response['code'] = 200;
+            $response['message'] = 'Justificante verificado';
+            $response['type'] = 'success';
+        } else {
+            $response['code'] = 400;
+            $response['message'] = 'Justificante no válido';
+            $response['type'] = 'error';
+        }
+        return new JsonResponse($response, $response['code']);
     }
 
 }
