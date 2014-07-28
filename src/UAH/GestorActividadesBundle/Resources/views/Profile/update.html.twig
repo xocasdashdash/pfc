@@ -1,0 +1,16 @@
+{% extends '::backend.html.twig' %}
+{% block javascripts %}
+    {{parent()}}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/profile/*.less' %}
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
+    {% endstylesheets %}
+{% endblock %}
+{% block acciones_datos %}
+    {{ form(form, { 'style': 'horizontal' }) }}
+    {{ form_start(form)}}
+    {{ form_rest(form) }}
+    {{ form_end(form) }}     
+{% endblock %}

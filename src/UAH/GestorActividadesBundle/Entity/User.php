@@ -134,6 +134,12 @@ class User implements UserInterface {
     private $enrollments;
 
     /**
+     * @OneToMany(targetEntity="Application", mappedBy="verifiedByUser")
+     * @var Applications
+     */
+    private $verifiedApplications;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -182,27 +188,6 @@ class User implements UserInterface {
      */
     public function getEmail() {
         return $this->email;
-    }
-
-    /**
-     * Set type
-     *
-     * @param integer $type
-     * @return User
-     */
-    public function setType($type) {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @return integer 
-     */
-    public function getType() {
-        return $this->type;
     }
 
     /**
@@ -520,11 +505,58 @@ class User implements UserInterface {
     }
 
     /**
-     * Get type of credits ECTS or Libre
+     * Add verifiedApplications
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Application $verifiedApplications
+     * @return User
      */
-//    public function getTypeOfCredits() {
-//        $degree_status = $this->getDegreeId()->getStatus();
-//        if($degree_status == )
-//    }
+    public function addVerifiedApplication(\UAH\GestorActividadesBundle\Entity\Application $verifiedApplications) {
+        $this->verifiedApplications[] = $verifiedApplications;
+
+        return $this;
+    }
+
+    /**
+     * Remove verifiedApplications
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Application $verifiedApplications
+     */
+    public function removeVerifiedApplication(\UAH\GestorActividadesBundle\Entity\Application $verifiedApplications) {
+        $this->verifiedApplications->removeElement($verifiedApplications);
+    }
+
+    /**
+     * Get verifiedApplications
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getVerifiedApplications() {
+        return $this->verifiedApplications;
+    }
+
+    public function isProfileComplete() {
+        $resultado = true;
+        $resultado &= strlen($this->getName()) > 0;
+        $resultado &= strlen($this->getApellido1()) > 0;
+        $resultado &= strlen($this->getDocumentoIdentidad()) > 0;
+        $resultado &= strlen($this->getEmail()) > 0;
+        $resultado &= (is_null($this->getDegreeId()) === false);
+        $resultado &= strlen($this->getTipoDocumentoIdentidad()) > 0;
+        return $resultado;
+    }
+
+    public function getCreditsType() {
+        $degree = $this->getDegreeId();
+        if (!is_null($degree)) {
+            if ($degree->getStatus()->getCode() === 'STATUS_RENEWED') {
+                return 'ECTS';
+            }
+            if ($degree->getStatus()->getCode() === 'STATUS_NON_RENEWED') {
+                return 'LIBRE';
+            }
+        } else {
+            return null;
+        }
+    }
 
 }
