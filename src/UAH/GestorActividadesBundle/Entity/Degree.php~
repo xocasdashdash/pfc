@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping\Entity;
  * Degree
  *
  * @Table(name="UAH_GAT_Degree")
- * @Entity
+ * @Entity(repositoryClass="UAH\GestorActividadesBundle\Repository\DegreeRepository")
  */
 class Degree {
 
@@ -50,19 +50,19 @@ class Degree {
      * @Column(name="academicCode", type="string", length=255)
      */
     private $academicCode;
-    
+
     /**
      * @var int Estado del registro
      * @ManyToOne(targetEntity="Statusdegree")
      * @JoinColumn(name="status_degree", referencedColumnName="id")
      */
     private $status;
-    
-       
+
     /**
      * @OneToMany(targetEntity="User", mappedBy="degree_id")
      */
     private $degree_students;
+
     /**
      * Get id
      *
@@ -135,15 +135,13 @@ class Degree {
         return $this->academicCode;
     }
 
-
     /**
      * Set status
      *
      * @param \UAH\GestorActividadesBundle\Entity\Statusdegree $status
      * @return Degree
      */
-    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusdegree $status = null)
-    {
+    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusdegree $status = null) {
         $this->status = $status;
 
         return $this;
@@ -154,15 +152,14 @@ class Degree {
      *
      * @return \UAH\GestorActividadesBundle\Entity\Statusdegree 
      */
-    public function getStatus()
-    {
+    public function getStatus() {
         return $this->status;
     }
+
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->degree_students = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -172,8 +169,7 @@ class Degree {
      * @param \UAH\GestorActividadesBundle\Entity\User $degreeStudents
      * @return Degree
      */
-    public function addDegreeStudent(\UAH\GestorActividadesBundle\Entity\User $degreeStudents)
-    {
+    public function addDegreeStudent(\UAH\GestorActividadesBundle\Entity\User $degreeStudents) {
         $this->degree_students[] = $degreeStudents;
 
         return $this;
@@ -184,8 +180,7 @@ class Degree {
      *
      * @param \UAH\GestorActividadesBundle\Entity\User $degreeStudents
      */
-    public function removeDegreeStudent(\UAH\GestorActividadesBundle\Entity\User $degreeStudents)
-    {
+    public function removeDegreeStudent(\UAH\GestorActividadesBundle\Entity\User $degreeStudents) {
         $this->degree_students->removeElement($degreeStudents);
     }
 
@@ -194,8 +189,8 @@ class Degree {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getDegreeStudents()
-    {
+    public function getDegreeStudents() {
         return $this->degree_students;
     }
+
 }
