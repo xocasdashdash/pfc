@@ -27,16 +27,17 @@ class ApplicationController extends Controller {
     const APPLICATION_ERROR_NOT_DELETED = 4;
     const APPLICATION_ERROR_ALREADY_USED = 6;
     const APPLICATION_ERROR_NOT_ARCHIVED = 8;
+    const APPLICATION_ERROR_MIXED_TYPE_OF_CREDITS = 8;
 
     /**
      * @Route("/applications", options={"expose"=true})
      * @Security("is_fully_authenticated()")
      */
     public function indexAction(Request $request) {
-        $filter = $request->query->get('filter','not_archived');
+        $filter = $request->query->get('filter', 'not_archived');
         $applications = $this->getDoctrine()
                 ->getManager()->getRepository('UAHGestorActividadesBundle:Application')
-                ->getUserApplications($this->getUser(),$filter);
+                ->getUserApplications($this->getUser(), $filter);
 
         $response = $this->render('UAHGestorActividadesBundle:Application:index.html.twig', array(
             'applications' => $applications));
@@ -91,51 +92,62 @@ class ApplicationController extends Controller {
             $valid_enrollment = true;
             $status_pending_verification = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')
                     ->getPendingVerificationStatus();
+            $user = $this->getUser();
             foreach ($enrollments as $enrollment) {
-                $enrollment = $enrollment_repository->find($enrollment);
-                //Compruebo el estado de la inscripcion y que la inscripción se corresponda con una inscripción del usuario
-                //Si no paso esta comprobación de seguridad, guardo un error y continuo con otro
-                if ($enrollment->getStatus() !== $status_recognized) {
+                if ($user->getCreditsType() !== $enrollment->getCreditsType()) {
                     $respuesta_json['type'] = 'error';
-                    $respuesta_json['code'] = self::APPLICATION_ERROR_NOT_RECOGNIZED;
-                    $respuesta_json['message'] = 'El estado no es el correcto';
+                    $respuesta_json['code'] = self::APPLICATION_ERROR_MIXED_TYPE_OF_CREDITS;
+                    $respuesta_json['message'] = 'Hay una mezcla entre créditos de libre y créditos ECTS. <br> Ponte en contacto con el administrador';
                     $valid_enrollment = false;
-                    break;
                 }
-                //Compruebo que el usuario es el del enrollment
-                if ($enrollment->getUser() != $this->getUser()) {
-                    $respuesta_json['type'] = 'error';
-                    $respuesta_json['code'] = self::APPLICATION_ERROR_NOT_YOUR_OWN;
-                    $respuesta_json['message'] = 'No es el tuyo';
-                    $valid_enrollment = false;
-                    break;
-                }
-                if (false === is_null($enrollment->getApplication())) {
-                    $respuesta_json['type'] = 'error';
-                    $respuesta_json['code'] = self::APPLICATION_ERROR_ALREADY_USED;
-                    $respuesta_json['message'] = 'Alguna de las inscripciones esta ya en otro justificante';
-                    $valid_enrollment = false;
-                    break;
-                }
-                $enrollment->setApplication($application); //addEnrollment($enrollment);
-                $enrollment->setStatus($status_pending_verification);
-                $em->persist($enrollment);
             }
-
             if ($valid_enrollment) {
-                $application->setStatus($em->getRepository('UAHGestorActividadesBundle:Statusapplication')->getDefault());
-                $application->setApplicationDateCreated(new \DateTime(date("c", time())));
-                $sr = new SecureRandom();
-                $code = bin2hex($sr->nextBytes(10));
-                $application->setVerificationCode($code);
-                $application->setUser($this->getUser());
+                foreach ($enrollments as $enrollment) {
+                    $enrollment = $enrollment_repository->find($enrollment);
+                    //Compruebo el estado de la inscripcion y que la inscripción se corresponda con una inscripción del usuario
+                    //Si no paso esta comprobación de seguridad, guardo un error y continuo con otro
+                    if ($enrollment->getStatus() !== $status_recognized) {
+                        $respuesta_json['type'] = 'error';
+                        $respuesta_json['code'] = self::APPLICATION_ERROR_NOT_RECOGNIZED;
+                        $respuesta_json['message'] = 'El estado no es el correcto';
+                        $valid_enrollment = false;
+                        break;
+                    }
+                    //Compruebo que el usuario es el del enrollment
+                    if ($enrollment->getUser() != $user) {
+                        $respuesta_json['type'] = 'error';
+                        $respuesta_json['code'] = self::APPLICATION_ERROR_NOT_YOUR_OWN;
+                        $respuesta_json['message'] = 'No es el tuyo';
+                        $valid_enrollment = false;
+                        break;
+                    }
+                    if (false === is_null($enrollment->getApplication())) {
+                        $respuesta_json['type'] = 'error';
+                        $respuesta_json['code'] = self::APPLICATION_ERROR_ALREADY_USED;
+                        $respuesta_json['message'] = 'Alguna de las inscripciones esta ya en otro justificante';
+                        $valid_enrollment = false;
+                        break;
+                    }
+                    $enrollment->setApplication($application); //addEnrollment($enrollment);
+                    $enrollment->setStatus($status_pending_verification);
+                    $em->persist($enrollment);
+                }
 
-                $em->persist($application);
-                $em->flush();
-                $respuesta_json['type'] = 'success';
-                $respuesta_json['code'] = self::APPLICATION_SUCCESS_CREATED;
-                $respuesta_json['message'] = $application->getId();
-                return new JsonResponse($respuesta_json, 200);
+                if ($valid_enrollment) {
+                    $application->setStatus($em->getRepository('UAHGestorActividadesBundle:Statusapplication')->getDefault());
+                    $application->setApplicationDateCreated(new \DateTime(date("c", time())));
+                    $sr = new SecureRandom();
+                    $code = bin2hex($sr->nextBytes(10));
+                    $application->setVerificationCode($code);
+                    $application->setUser($this->getUser());
+
+                    $em->persist($application);
+                    $em->flush();
+                    $respuesta_json['type'] = 'success';
+                    $respuesta_json['code'] = self::APPLICATION_SUCCESS_CREATED;
+                    $respuesta_json['message'] = $application->getId();
+                    return new JsonResponse($respuesta_json, 200);
+                }
             }
             return new JsonResponse($respuesta_json, 400);
         } else {

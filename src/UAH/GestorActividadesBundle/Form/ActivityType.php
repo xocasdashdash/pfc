@@ -31,7 +31,7 @@ class ActivityType extends AbstractType {
                 ->add('description', 'textarea', array('label' => 'Descripción', 'attr' => array('rows' => 20, 'class' => 'tinymce')))
                 ->add('socialMessage', 'textarea', array('label' => 'Mensaje para FB/Twitter', 'attr' => array('rows' => 2, 'help_text' => 'Escribe aquí un mensaje que quieras que se vea en FB/Twitter al compartir la actividad')))
                 ->add('hasAdditionalWorkload', null, array('label' => '¿Tiene trabajo adicional?'))
-                ->add('image_blob', 'file', array('required' => false))//array('required' => false)))
+                ->add('image_blob', 'file', array('required' => false))
                 ->add('save', 'submit')
         ;
     }

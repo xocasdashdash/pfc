@@ -29,7 +29,8 @@ class EnrollmentController extends Controller {
     const ENROLLMENT_ERROR_NO_PLACES = 2;
     //Error cuando no me puedo inscribir en la actividad por su estado
     const ENROLLMENT_ERROR_INVALID_ACTIVITY = 4;
-    const ENROLLMENT_ERROR_UNKNOWN = 8;
+    const ENROLLMENT_ERROR_NOT_FULL_PROFILE = 8;
+    const ENROLLMENT_ERROR_UNKNOWN = 16;
     const RECOGNIZEMENT_ERROR_CSRF_TOKEN_INVALID = 1;
     const RECOGNIZEMENT_ERROR_BASIC = 2;
     const RECOGNIZEMENT_ERROR_NO_DEGREE = 3;
@@ -61,10 +62,12 @@ class EnrollmentController extends Controller {
         $free_places = (is_null($activity->getNumberOfPlacesOffered()) ||
                 $activity->getNumberOfPlacesOccupied() >= $activity->getNumberOfPlacesOffered()) << 1;
         $can_enroll = !($em->getRepository('UAHGestorActividadesBundle:Enrollment')->canEnroll($activity)) << 2;
+        $full_profile = !($user->isProfileComplete()) << 3;
         $permissions = 0;
         $permissions |= $check_enrolled;
         $permissions |= $free_places;
         $permissions |= $can_enroll;
+        $permissions |= $full_profile;
         //$permissions = $check_enrolled | $free_places << 1 | $can_enroll << 2;
         $response = array();
 
@@ -82,6 +85,11 @@ class EnrollmentController extends Controller {
             $response['type'] = 'error';
             $response['code'] = self::ENROLLMENT_ERROR_INVALID_ACTIVITY;
             $response['message'] = 'Actividad no disponible.';
+            $code = 403;
+        } else if ($permissions & self::ENROLLMENT_ERROR_NOT_FULL_PROFILE) {
+            $response['type'] = 'error';
+            $response['code'] = self::ENROLLMENT_ERROR_NOT_FULL_PROFILE;
+            $response['message'] = 'Te faltan <a href="profile/update" class="alert-link">completar</a> datos de tu perfil!';
             $code = 403;
         } else {
             $enrollment = new Enrollment();
