@@ -16,7 +16,7 @@
 {% block content %}
     <div class="container">
         {% if app.user is not null and (activity.organizer == app.user or is_granted('ROLE_UAH_ADMIN')) %}        
-            <div class="row">
+            <div class="row hidden-print">
                 <div class="text-center col-xs-6">
                     <a href="{{path('uah_gestoractividades_activity_edit',{'activity_id': activity.id})}}">
                         <h4>EDITAR</h4>
@@ -50,8 +50,7 @@
                 <div class="row">
                     <div class="left-column col-lg-8 col-xs-8 activity-description">
                         <div class="social-share">
-                            <div class="col-xs-offset-4"></div>
-                            <div class="col-xs-4">
+                            <div class="col-xs-12 hidden-print">
                                 <a href="https://twitter.com/share" class="twitter-share-button" data-text="{{activity.socialMessage|default('Mira la actividad a la que voy a asistir')}}" data-lang="es" data-size="large">Twittear</a>
                                 <script>!function(d, s, id) {
                                         var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
@@ -72,40 +71,36 @@
                     </div>
                     <div class="right-column col-lg-4 col-xs-4 ">
                         <div class="row img-small photo">
-                            <img  class="center-block img-rounded img-activity img-big"  data-img-src="{{asset(activity.imagepath)}}"  data-toggle="modal" data-target="#imgmodal" src="{{asset(activity.imagepath)}}" title="Haz click para verla a tamaño real!">
+                            <img  class="center-block img-rounded img-activity img-big hidden-print"  data-img-src="{{asset(activity.imagepath)}}"  data-toggle="modal" data-target="#imgmodal" src="{{asset(activity.imagepath)}}" title="Haz click para verla a tamaño real!">
                         </div>
-                        {% if permissions == "ENROLLABLE" %}
-                            <div class="separator-row row center-block"></div>
-                            <div class="enrollment-button row">
+                        <div class="separator-row row center-block hidden-print"></div>
+                        <div class="enrollment-button row hidden-print">
+                            {% if permissions == "ENROLLABLE" %}
                                 <button class="btn btn-default center-block btn-primary enroll-button">
                                     <span class="texto">Inscribete!</span>
                                     <i class="fa fa-pencil-square-o fa-2x"></i>
                                 </button>
-                            </div>
-                        {% elseif permissions == "ENROLLED" and app.user is not null %}
-                            <div class="separator-row row center-block"></div>
-                            <div class="enrollment-button row">
+                            {% elseif permissions == "ENROLLED" and app.user is not null %}
                                 <button class="btn btn-default center-block btn-success already-enrolled">
                                     <span class="texto">Inscrito!</span>
                                     <i class="fa fa-check fa-2x"></i> 
                                 </button>
-                            </div>
-                        {% endif %}
+                            {% endif %}
+                        </div>
+
                         {% if activity.numberOfCreditsMax != 0 or activity.numberOfECTSCreditsMax != 0 %}
                             <div class="separator-row row center-block"></div>
                             <div class="credits row">
-                                <div class="col-xs-12">Créditos (min-max)</div>
-                                <div class="col-xs-12">
-                                    <div class="col-xs-4 text-left">Libre</div><div class="col-xs-6 col-xs-offset-2"> {{activity.numberOfCreditsMin}} - {{activity.numberOfCreditsMax}}</div>
-                                </div>
-                                <div class="col-xs-12">
-                                    <div class="col-xs-4 text-left">ECTS</div><div class="col-xs-6 col-xs-offset-2"> {{activity.numberOfECTSCreditsMin}} - {{activity.numberOfECTSCreditsMax}}</div>
-                                </div>
+                                <div class="col-xs-12 credits-text">Créditos (min-max)</div>
+                                <div class="col-xs-3 text-justify">Libre</div>
+                                <div class="col-xs-8 col-xs-offset-1 text-center">{{activity.numberOfCreditsMin}} - {{activity.numberOfCreditsMax}}</div>
+                                <div class="col-xs-3 text-justify">ECTS</div>
+                                <div class="col-xs-8 col-xs-offset-1 text-center">{{activity.numberOfECTSCreditsMin}} - {{activity.numberOfECTSCreditsMax}}</div>
                             </div>
                         {% endif %}
                         <div class="separator-row row center-block"></div>
                         <div class="workload row">
-                            <div class="col-xs-4 text-left">Trabajo adicional</div>
+                            <div class="col-xs-4 text-center">Trabajo adicional</div>
                             <div class="col-xs-6 col-xs-offset-2">
                                 <span class="fa-stack">
                                     <i class="fa fa-square-o fa-stack-2x"></i>
@@ -114,19 +109,25 @@
                                     {% else %}
                                         <i class="fa fa-times fa-stack-1x"></i>
                                     {% endif %}
-                                </span>                                
+                                </span>                               
 
                             </div>
-
-
                         </div>
                         <div class="separator-row row center-block"></div>
                         <div class="hours row">
-                            <div class="col-xs-12 text-left">
-                                <div class="col-xs-4 text-left">Horas</div>
-                                <div class="col-xs-6 col-xs-offset-2 text-center"> {{activity.numberOfHours}} </div>
-                            </div>
+                            <div class="col-xs-4 text-left">Horas</div>
+                            <div class="col-xs-6 col-xs-offset-2 text-center"> {{activity.numberOfHours}} </div>
                         </div>
+                        <div class="separator-row row center-block"></div>
+                        <div class="dates row">
+                            <div class="col-xs-12 text-center">Fechas</div>
+                            {% for fecha in activity.celebrationDates %}
+                                <div class="col-xs-12 text-center date">
+                                    {{fecha|date('d/m/Y')}}
+                                </div>
+
+                            {% endfor %}
+                        </div>    
                     </div>
 
                 </div>

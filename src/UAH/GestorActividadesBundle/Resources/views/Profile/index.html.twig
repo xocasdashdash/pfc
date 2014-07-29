@@ -59,7 +59,7 @@
                 <a href="{{path("uah_gestoractividades_application_index")}}" class="btn btn-default btn-primary btn-block" id="btn_my_applications">Mis certificados </a>
                 <a href="#" class="btn btn-default btn-primary btn-block" id="btn_generate_application">Generar un certificado</a>
                 {% if is_granted('ROLE_UAH_STAFF_PDI') %}
-                    <a href="{{path('uah_gestoractividades_actividad_create_form')}}" class="btn btn-default btn-primary btn-block" id="btn_create" >Crear un curso</a>
+                    <a href="{{path('uah_gestoractividades_activity_create_form')}}" class="btn btn-default btn-primary btn-block" id="btn_create" >Crear un curso</a>
                 {% endif %}
                 {% if is_granted('ROLE_UAH_STAFF_PAS') %}
                     <a href="#" class="btn btn-default btn-primary btn-block" data-toggle="modal" data-target="#modal_app_code">Validar un justificante</a>
