@@ -95,7 +95,7 @@ $(document).ready(function() {
             if (result) {
                 $.ajax({
                     type: "POST",
-                    url: Routing.generate('uah_gestoractividades_actividad_close', {activity_id: $activity_id}),
+                    url: Routing.generate('uah_gestoractividades_activity_close', {activity_id: $activity_id}),
                     statusCode: {
                         200: function(data) {
                             bootbox.alert("Actividad cerrada", function() {
