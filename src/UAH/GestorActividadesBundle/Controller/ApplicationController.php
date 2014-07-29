@@ -128,7 +128,7 @@ class ApplicationController extends Controller {
                         $valid_enrollment = false;
                         break;
                     }
-                    $enrollment->setApplication($application); //addEnrollment($enrollment);
+                    $enrollment->setApplication($application); 
                     $enrollment->setStatus($status_pending_verification);
                     $em->persist($enrollment);
                 }
@@ -140,7 +140,6 @@ class ApplicationController extends Controller {
                     $code = bin2hex($sr->nextBytes(10));
                     $application->setVerificationCode($code);
                     $application->setUser($this->getUser());
-
                     $em->persist($application);
                     $em->flush();
                     $respuesta_json['type'] = 'success';
