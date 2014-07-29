@@ -14,7 +14,7 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets 
-        '@UAHGestorActividadesBundle/Resources/public/css/backend/admin.less'%}
+        '@UAHGestorActividadesBundle/Resources/public/css/backend/myactivities.less'%}
     <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
     {% endstylesheets %}
 {% endblock %}
@@ -54,18 +54,23 @@
 {% block content %}
     <div class="visible-print-block print header-print">
         <div class="row">
-            <div class="col-xs-4">Título de la actividad(Es):</div><div class="col-xs-8">{{activity.name}}<br></div>
+            <div class="col-xs-4">Título de la actividad(Es):</div>
+            <div class="col-xs-8">{{activity.name}}<br></div>
         </div>
         <div class="row">
-            <div class="col-xs-4">Título de la actividad(En):</div><div class="col-xs-8">{{activity.englishName|default('-')}}<br></div></div>
+            <div class="col-xs-4">Título de la actividad(En):</div>
+            <div class="col-xs-8">{{activity.englishName|default('-')}}<br></div></div>
         <div class="row">
-            <div class="col-xs-4">Días de celebración:</div><div class="col-xs-8">{{activity.celebrationDatesUnencoded()}}<br></div>
+            <div class="col-xs-4">Días de celebración:</div>
+            <div class="col-xs-8">{{activity.celebrationDatesUnencoded()}}<br></div>
         </div>
         <div class="row">
-            <div class="col-xs-4">Primer día:</div><div class="col-xs-8">{{activity.startDate |date('d/m/Y')}}<br></div>
+            <div class="col-xs-4">Primer día:</div>
+            <div class="col-xs-8">{{activity.startDate |date('d/m/Y')}}<br></div>
         </div>
         <div class="row">
-            <div class="col-xs-4">Último día:</div><div class="col-xs-8">{{activity.finishDate |date('d/m/Y')}}<br></div>
+            <div class="col-xs-4">Último día:</div>
+            <div class="col-xs-8">{{activity.finishDate |date('d/m/Y')}}<br></div>
         </div>
 
     </div>
@@ -155,7 +160,7 @@
                             <td class="not-present hidden-print"><input type="checkbox" value="{{enrollment.id}}"></td>
                             <td class="not-present hidden-print"><input type="text" disabled value="0"></td>
                             {% elseif enrollment.status_enrollment == "STATUS_PENDING_VERIFICATION" %}
-                            <td><input type="checkbox" class="check_reconocer" disabled checked> </td>
+                            <td><input type="checkbox" class="check_reconocer" disabled checked></td>
                             <td class="unrecognize hidden-print"><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled value="{{enrollment.recognizedCredits}}"></td>
                             {% elseif enrollment.status_enrollment == "STATUS_VERIFIED" %}
                             <td class="hidden-print"><input type="checkbox" class="check_reconocer"  disabled checked> </td>

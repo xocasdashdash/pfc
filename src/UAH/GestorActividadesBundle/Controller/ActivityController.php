@@ -12,6 +12,7 @@ use UAH\GestorActividadesBundle\Entity\Activity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ActivityController extends Controller {
 
@@ -57,7 +58,7 @@ class ActivityController extends Controller {
     }
 
     /**
-     * @Route("/activity/create", name="uah_gestoractividades_actividad_create_form")
+     * @Route("/activity/create")
      * @Method({"GET","POST"})
      * @Security("has_role('ROLE_UAH_STAFF_PDI')")
      */
@@ -97,7 +98,7 @@ class ActivityController extends Controller {
             $activity->setOrganizer($this->getUser());
             $em->persist($activity);
             $em->flush();
-            return $this->redirect($this->generateUrl("uah_gestoractividades_actividad_index", array('activity_id' => $activity->getId(), 'slug' => $activity->getSlug())));
+            return $this->redirect($this->generateUrl("uah_gestoractividades_activity_index", array('activity_id' => $activity->getId(), 'slug' => $activity->getSlug())));
         }
         return $this->render('UAHGestorActividadesBundle:Activity:edit.html.twig', array(
                     'form' => $form->createView(),
@@ -117,7 +118,7 @@ class ActivityController extends Controller {
         if ($editForm->isValid()) {
             $em->persist($activity);
             $em->flush();
-            return $this->redirect($this->generateUrl("uah_gestoractividades_actividad_index", array('activity_id' => $activity->getId())));
+            return $this->redirect($this->generateUrl("uah_gestoractividades_activity_index", array('activity_id' => $activity->getId())));
         } else {
             return $this->render('UAHGestorActividadesBundle:Activity:edit.html.twig', array(
                         'form' => $editForm->createView()));
@@ -168,21 +169,12 @@ class ActivityController extends Controller {
     }
 
     /**
-     * @Route("/activity/enroll/{id}", requirements={"id" = "\d+"}, defaults={"id"=-1})
-     * @Method({"POST"})
-     * @Security("has_role=('ROLE_USER')")
-     */
-    public function enrollAction($id) {
-        
-    }
-
-    /**
      * 
      * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @Route("/activity/close/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1}, options={"expose"=true})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
-     * @Security("(is_granted('edit_activity',activity) && has_role('ROLE_UAH_STAFF_PDI')) || has_role('ROLE_UAH_ADMIN')")
+     * @Security("(is_granted('edit_activity',activity) && is_granted('ROLE_UAH_STAFF_PDI')) || is_granted('ROLE_UAH_ADMIN')")
      */
     public function closeAction(Activity $activity, Request $request) {
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
@@ -210,6 +202,30 @@ class ActivityController extends Controller {
             $json_response = new JsonResponse($response, 403);
             return $json_response;
         }
+    }
+
+    /**
+     * 
+     * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @Route("/activity/myactivities/{user_id}", requirements={"user_id" = "\d+"}, defaults={"user_id"=-1}, options={"expose"=true})
+     * @Security("is_granted('ROLE_UAH_STAFF_PDI') || is_granted('ROLE_UAH_ADMIN')")
+     */
+    public function myactivitiesAction($user_id) {
+        $em = $this->getDoctrine()->getManager();
+        if (($user_id !== -1)) {
+            if ($this->get('security.context')->isGranted('ROLE_UAH_ADMIN')) {
+                $user = $em->getRepository('UAHGestorActividadesBundle:User')->find($user_id);
+                $activities = $user->getActivities();
+            } else {
+                throw new Exception('No tienes permiso para ver estas actividades');
+            }
+        } else {
+            $activities = $this->getUser()->getActivities();
+        }
+        
+        return $this->render('UAHGestorActividadesBundle:Activity:myactivities.html.twig', array(
+                    'activities' => $activities));
     }
 
 }
