@@ -205,27 +205,38 @@ class ActivityController extends Controller {
     }
 
     /**
-     * 
-     * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     * @Route("/activity/myactivities/{user_id}", requirements={"user_id" = "\d+"}, defaults={"user_id"=-1}, options={"expose"=true})
+     * @Route("/activities/askapproval", options={"expose"=true})
      * @Security("is_granted('ROLE_UAH_STAFF_PDI') || is_granted('ROLE_UAH_ADMIN')")
      */
-    public function myactivitiesAction($user_id) {
+    public function askApprovalAction(Request $request) {
+        //Meter protección XSRF 
         $em = $this->getDoctrine()->getManager();
-        if (($user_id !== -1)) {
-            if ($this->get('security.context')->isGranted('ROLE_UAH_ADMIN')) {
-                $user = $em->getRepository('UAHGestorActividadesBundle:User')->find($user_id);
-                $activities = $user->getActivities();
-            } else {
-                throw new Exception('No tienes permiso para ver estas actividades');
+        $activityRepository = $em->getRepository('UAHGestorActividadesBundle:Activity');
+        $activities = $activityRepository->getActivitiesById(json_decode($request->getContent()));
+        $statusPendingApproval = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getPending();
+        $statusDraft = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getDefault();
+        $response = array();
+        foreach ($activities as $activity) {
+            if ($activity->getOrganizer() !== $this->getUser()) {
+                $response['code'] = self::APPROVAL_ERROR_NOT_ORGANIZER;
+                $response['message'] = 'No eres el organizador de esta actividad:' + $activity->getId();
+                $response['type'] = 'error';
+                return new JsonResponse($response, 400);
             }
-        } else {
-            $activities = $this->getUser()->getActivities();
+            if ($activity->getStatus() === $statusDraft) {
+                $activity->setStatus($statusPendingApproval);
+                $em->persist($activity);
+            } else {
+                $response['code'] = self::APPROVAL_ERROR_INCORRECT_STATUS;
+                $response['message'] = 'Hay un problema con el estado de la actividad:' + $activity->getId();
+                $response['type'] = 'error';
+                return new JsonResponse($response, 400);
+            }
         }
-        
-        return $this->render('UAHGestorActividadesBundle:Activity:myactivities.html.twig', array(
-                    'activities' => $activities));
+        $em->flush();
+        $response['code'] = self::APPROVAL_SUCCESSFULLY_ASKED;
+        $response['message'] = count($activities);
+        $response['type'] = 'success';
     }
 
 }
