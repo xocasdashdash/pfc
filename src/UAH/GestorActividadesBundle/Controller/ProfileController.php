@@ -56,5 +56,29 @@ class ProfileController extends Controller {
         return $this->render('UAHGestorActividadesBundle:Profile:update.html.twig', array(
                     'form' => $form->createView()));
     }
+    
+    /**
+     * 
+     * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @Route("/profile/activities/")
+     * @Route("/profile/activities/{user_id}", requirements={"user_id" = "\d+"}, defaults={"user_id"=-1}, options={"expose"=true})
+     * @Security("is_granted('ROLE_UAH_STAFF_PDI') || is_granted('ROLE_UAH_ADMIN')")
+     */
+    public function myactivitiesAction($user_id = -1) {
+        $em = $this->getDoctrine()->getManager();
+        if (($user_id !== -1)) {
+            if ($this->get('security.context')->isGranted('ROLE_UAH_ADMIN')) {
+                $user = $em->getRepository('UAHGestorActividadesBundle:User')->find($user_id);
+                $activities = $user->getActivities();
+            } else {
+                throw new AccessDeniedException('No tienes permiso para ver estas actividades');
+            }
+        } else {
+            $activities = $this->getUser()->getActivities();
+        }
 
+        return $this->render('UAHGestorActividadesBundle:Profile:myactivities.html.twig', array(
+                    'activities' => $activities));
+    }
 }
