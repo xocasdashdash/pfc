@@ -48,12 +48,7 @@ class Application {
      */
     private $applicationDateVerified;
 
-    /**
-     * @var blob application_file
-     * @Column(name="applicationFile", type="blob", nullable=true)
-     */
-    private $applicationFile;
-
+    
     /**
      * @var string verification_code
      * @Column(name="verificationCode", type="string")
