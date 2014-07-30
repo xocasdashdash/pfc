@@ -93,14 +93,14 @@ class ApplicationController extends Controller {
             $status_pending_verification = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')
                     ->getPendingVerificationStatus();
             $user = $this->getUser();
-            foreach ($enrollments as $enrollment) {
+            /*foreach ($enrollments as $enrollment) {
                 if ($user->getCreditsType() !== $enrollment->getCreditsType()) {
                     $respuesta_json['type'] = 'error';
                     $respuesta_json['code'] = self::APPLICATION_ERROR_MIXED_TYPE_OF_CREDITS;
                     $respuesta_json['message'] = 'Hay una mezcla entre créditos de libre y créditos ECTS. <br> Ponte en contacto con el administrador';
                     $valid_enrollment = false;
                 }
-            }
+            }*/
             if ($valid_enrollment) {
                 foreach ($enrollments as $enrollment) {
                     $enrollment = $enrollment_repository->find($enrollment);
