@@ -15,12 +15,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ActivityController extends Controller {
-    
+
     const ERROR_CSRF_TOKEN_INVALID = 1;
     const APPROVAL_ERROR_NOT_ORGANIZER = 2;
     const APPROVAL_ERROR_INCORRECT_STATUS = 3;
-    
     const APPROVAL_SUCCESSFULLY_ASKED = 4;
+    const ACTIVITY_OPENED = 5;
+
     /**
      * @Route("/activity/{activity_id}-{slug}",requirements={"activity_id" = "\d+"}, defaults={"slug" = ""}, options={"expose"=true}))
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
@@ -164,7 +165,7 @@ class ActivityController extends Controller {
      */
     public function closeAction(Activity $activity, Request $request) {
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
-                $this->get('form.csrf_provider')->isCsrfTokenValid('administracion', $request->headers->get('X-CSRFToken'))) {
+                $this->get('form.csrf_provider')->isCsrfTokenValid('profile', $request->headers->get('X-CSRFToken'))) {
             $em = $this->getDoctrine()->getManager();
             $enrollments = $activity->getEnrollees();
             $status_enrolled = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getEnrolledStatus();
@@ -176,10 +177,55 @@ class ActivityController extends Controller {
                     $em->persist($enrollment);
                 }
             }
-            $activity->setStatus($em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getClosedStatus());
+            $activity->setStatus($em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getClosed());
             $em->persist($activity);
             $em->flush();
             return new JsonResponse("OK", 200);
+        } else {
+            $response = array();
+            $response['code'] = self::ERROR_CSRF_TOKEN_INVALID;
+            $response['message'] = 'El token CSRF no es válido. Recarga la página e inténtalo de nuevo';
+            $response['type'] = 'error';
+            $json_response = new JsonResponse($response, 403);
+            return $json_response;
+        }
+    }
+
+    /**
+     * 
+     * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @Route("/activity/open/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1}, options={"expose"=true})
+     * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
+     * @Security("is_granted('ROLE_UAH_ADMIN')")
+     */
+    public function openAction(Activity $activity, Request $request) {
+        if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
+                $this->get('form.csrf_provider')->isCsrfTokenValid('profile', $request->headers->get('X-CSRFToken'))) {
+            $em = $this->getDoctrine()->getManager();
+            $enrollments = $activity->getEnrollees();
+            $status_enrolled = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getEnrolledStatus();
+            $status_not_recognized = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getNotRecognizedStatus();
+
+            foreach ($enrollments as $enrollment) {
+                if ($enrollment->getStatus() === $status_not_recognized) {
+                    $enrollment->setStatus($status_enrolled);
+                    $em->persist($enrollment);
+                }
+            }
+
+            $statusOpened = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getApproved();
+            $activity->setStatus($statusOpened);
+            $em->persist($activity);
+            $em->flush();
+            
+            $response = array();
+            $response['code'] = self::ACTIVITY_OPENED;
+            $response['message'] = array();
+            $response['message']['status'] = $statusOpened->getNameEs();
+            $response['type'] = 'success';
+
+            return new JsonResponse($response, 200);
         } else {
             $response = array();
             $response['code'] = self::ERROR_CSRF_TOKEN_INVALID;
@@ -219,7 +265,7 @@ class ActivityController extends Controller {
                     $num_activities++;
                 } else {
                     $response['code'] = self::APPROVAL_ERROR_INCORRECT_STATUS;
-                    $response['message'] = 'Hay un problema con el estado de la actividad:'.$activity->getId();
+                    $response['message'] = 'Hay un problema con el estado de la actividad:' . $activity->getId();
                     $response['type'] = 'error';
                     return new JsonResponse($response, 400);
                 }
