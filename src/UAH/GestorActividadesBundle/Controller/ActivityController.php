@@ -15,7 +15,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ActivityController extends Controller {
-
+    
+    const ERROR_CSRF_TOKEN_INVALID = 1;
+    const APPROVAL_ERROR_NOT_ORGANIZER = 2;
+    const APPROVAL_ERROR_INCORRECT_STATUS = 3;
+    
+    const APPROVAL_SUCCESSFULLY_ASKED = 4;
     /**
      * @Route("/activity/{activity_id}-{slug}",requirements={"activity_id" = "\d+"}, defaults={"slug" = ""}, options={"expose"=true}))
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
@@ -58,7 +63,7 @@ class ActivityController extends Controller {
     }
 
     /**
-     * @Route("/activity/create")
+     * @Route("/activity/create",options={"expose"=true})
      * @Method({"GET","POST"})
      * @Security("has_role('ROLE_UAH_STAFF_PDI')")
      */
@@ -150,25 +155,6 @@ class ActivityController extends Controller {
     }
 
     /**
-     * @Route("/activity/{id}/{slug}", requirements={"id" = "\d+"}, defaults={"id"=-1, "slug"="none"})
-     * @Method({"GET"})
-     * @param type $id
-     * @param type $slug
-     */
-    public function showAction($id, $slug) {
-        
-    }
-
-    /**
-     * @Route("/activity/manage/{id}", requirements={"id" = "\d+"}, defaults={"id"=-1})
-     * @Method({"POST,GET"})
-     * @Security("has_role=('ROLE_ORGANIZER')")
-     */
-    public function manageAction($id) {
-        
-    }
-
-    /**
      * 
      * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -196,7 +182,7 @@ class ActivityController extends Controller {
             return new JsonResponse("OK", 200);
         } else {
             $response = array();
-            $response['code'] = self::RECOGNIZEMENT_ERROR_CSRF_TOKEN_INVALID;
+            $response['code'] = self::ERROR_CSRF_TOKEN_INVALID;
             $response['message'] = 'El token CSRF no es válido. Recarga la página e inténtalo de nuevo';
             $response['type'] = 'error';
             $json_response = new JsonResponse($response, 403);
@@ -210,33 +196,48 @@ class ActivityController extends Controller {
      */
     public function askApprovalAction(Request $request) {
         //Meter protección XSRF 
-        $em = $this->getDoctrine()->getManager();
-        $activityRepository = $em->getRepository('UAHGestorActividadesBundle:Activity');
-        $activities = $activityRepository->getActivitiesById(json_decode($request->getContent()));
-        $statusPendingApproval = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getPending();
-        $statusDraft = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getDefault();
-        $response = array();
-        foreach ($activities as $activity) {
-            if ($activity->getOrganizer() !== $this->getUser()) {
-                $response['code'] = self::APPROVAL_ERROR_NOT_ORGANIZER;
-                $response['message'] = 'No eres el organizador de esta actividad:' + $activity->getId();
-                $response['type'] = 'error';
-                return new JsonResponse($response, 400);
+        if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
+                $this->get('form.csrf_provider')->isCsrfTokenValid('profile', $request->headers->get('X-CSRFToken'))) {
+            $em = $this->getDoctrine()->getManager();
+            $activityRepository = $em->getRepository('UAHGestorActividadesBundle:Activity');
+            $activities = $activityRepository->getActivitiesById(json_decode($request->getContent()));
+            $statusPendingApproval = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getPending();
+            $statusDraft = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getDraft();
+            $response = array();
+            $num_activities = 0;
+            foreach ($activities as $activity) {
+                $statusActivity = $activity->getStatus();
+                if ($activity->getOrganizer() !== $this->getUser()) {
+                    $response['code'] = self::APPROVAL_ERROR_NOT_ORGANIZER;
+                    $response['message'] = 'No eres el organizador de esta actividad:' + $activity->getId();
+                    $response['type'] = 'error';
+                    return new JsonResponse($response, 400);
+                }
+                if ($statusActivity === $statusDraft) {
+                    $activity->setStatus($statusPendingApproval);
+                    $em->persist($activity);
+                    $num_activities++;
+                } else {
+                    $response['code'] = self::APPROVAL_ERROR_INCORRECT_STATUS;
+                    $response['message'] = 'Hay un problema con el estado de la actividad:'.$activity->getId();
+                    $response['type'] = 'error';
+                    return new JsonResponse($response, 400);
+                }
             }
-            if ($activity->getStatus() === $statusDraft) {
-                $activity->setStatus($statusPendingApproval);
-                $em->persist($activity);
-            } else {
-                $response['code'] = self::APPROVAL_ERROR_INCORRECT_STATUS;
-                $response['message'] = 'Hay un problema con el estado de la actividad:' + $activity->getId();
-                $response['type'] = 'error';
-                return new JsonResponse($response, 400);
-            }
+            $em->flush();
+            $response['code'] = self::APPROVAL_SUCCESSFULLY_ASKED;
+            $response['message'] = array();
+            $response['message']['num_activities'] = $num_activities;
+            $response['message']['status'] = $statusPendingApproval->getNameEs();
+            $response['type'] = 'success';
+            return new JsonResponse($response, 200);
+        } else {
+            $response = array();
+            $response['code'] = self::ERROR_CSRF_TOKEN_INVALID;
+            $response['message'] = 'Problema con la seguridad. Prueba a recargar la página';
+            $response['type'] = 'error';
+            return new JsonResponse($response, 400);
         }
-        $em->flush();
-        $response['code'] = self::APPROVAL_SUCCESSFULLY_ASKED;
-        $response['message'] = count($activities);
-        $response['type'] = 'success';
     }
 
 }

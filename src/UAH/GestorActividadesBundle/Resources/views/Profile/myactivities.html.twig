@@ -49,10 +49,10 @@
         </thead>
         <tbody>
             {% for activity in activities %}
-                <tr>
+                <tr id="activity-{{activity.id}}">
                     <td>{{loop.index}}</td>
                     <td><a href="{{ path("uah_gestoractividades_activity_index",{"activity_id": activity.id})}}">{{activity.name}}</a></td>
-                    <td>{{activity.status.nameEs}}</td>
+                    <td class="status">{{activity.status.nameEs}}</td>
                     <td class="text-center">{{activity.publicityStartDate|date('d/m/Y')}}</td>
                     <td class="text-center"><input type="checkbox" value="{{activity.id}}"></td>
                 </tr>

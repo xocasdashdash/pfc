@@ -77,8 +77,11 @@ class ProfileController extends Controller {
         } else {
             $activities = $this->getUser()->getActivities();
         }
-
-        return $this->render('UAHGestorActividadesBundle:Profile:myactivities.html.twig', array(
+        $response = $this->render('UAHGestorActividadesBundle:Profile:myactivities.html.twig', array(
                     'activities' => $activities));
+        $token = $this->get('form.csrf_provider')->generateCsrfToken('profile');
+        $cookie = new Cookie('X-CSRFToken', $token, 0, '/', null, false, false);
+        $response->headers->setCookie($cookie);
+        return $response;
     }
 }
