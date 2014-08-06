@@ -78,7 +78,7 @@ class ActivityController extends Controller {
             $activity->setNumberOfPlacesOccupied(0);
             $em->persist($activity);
             $em->flush();
-            return $this->redirect($this->generateUrl("uah_gestoractividades_default_index"));
+            return $this->redirect($this->generateUrl("uah_gestoractividades_profile_myactivities"));
         }
         return $this->render('UAHGestorActividadesBundle:Activity:create.html.twig', array(
                     'form' => $form->createView()));
