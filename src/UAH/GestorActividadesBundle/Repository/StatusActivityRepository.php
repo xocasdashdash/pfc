@@ -34,10 +34,24 @@ class StatusActivityRepository extends EntityRepository {
         return $resultado;
     }
 
-    public function getClosedStatus() {
+    public function getClosed() {
 
         $resultado = $this->findOneBy(array(
             'code' => 'STATUS_CLOSED'));
+        return $resultado;
+    }
+
+    public function getApproved() {
+
+        $resultado = $this->findOneBy(array(
+            'code' => 'STATUS_APPROVED'));
+        return $resultado;
+    }
+
+    public function getPublished() {
+
+        $resultado = $this->findOneBy(array(
+            'code' => 'STATUS_PUBLISHED'));
         return $resultado;
     }
 

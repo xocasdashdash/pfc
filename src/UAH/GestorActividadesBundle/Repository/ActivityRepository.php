@@ -44,4 +44,20 @@ class ActivityRepository extends EntityRepository {
         }
     }
 
+    public function getNotClosedActivities(\UAH\GestorActividadesBundle\Entity\User $user) {
+        $em = $this->getEntityManager();
+        $dql = " SELECT a " .
+                " FROM UAHGestorActividadesBundle:Activity a " .
+                " WHERE a.Organizer = :user " .
+                " AND a.status != :closed_status" .
+                " ORDER BY a.id ASC";
+        
+        $a = "SELECT a FROM UAHGestorActividadesBundle:Activity a WHEREa a.User = :user AND WHEREr a.Status != :closed_status ORDER BY a.id ASC";
+        $consulta = $em->createQuery($dql);
+        $consulta->setParameter('user', $user);
+        $consulta->setParameter('closed_status', $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getClosed());
+        $results = $consulta->getResult();
+        return $results;
+    }
+
 }
