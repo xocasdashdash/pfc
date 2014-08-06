@@ -22,12 +22,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use UAH\GestorActividadesBundle\Entity\Degree as Degree;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use UAH\GestorActividadesBundle\Repository\ActivityRepository;
 
 /**
  * Activity
  *
  * @Table(name="UAH_GAT_Activity")
- * @Entity()
+ * @Entity(repositoryClass="UAH\GestorActividadesBundle\Repository\ActivityRepository")
  * @HasLifecycleCallbacks
  */
 class Activity {
