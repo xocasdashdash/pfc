@@ -35,6 +35,7 @@ security:
                     - contact/email     
                     - namePerson/first
                     - namePerson/prefix
+                success_handler: uah_authentication_handler
 
     providers:
         # the order is important here
