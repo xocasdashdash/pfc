@@ -14,6 +14,9 @@
     <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
     {% endstylesheets %}
 {% endblock %}
+{% block title %}
+    Crear nueva actividad
+{% endblock %}
 {% block content %}
     <div class="row">
         {{ form(form, { 'style': 'horizontal' }) }}

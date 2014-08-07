@@ -8,6 +8,9 @@
     <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
     {% endstylesheets %}
 {% endblock %}
+{% block title %}
+    Actualizar mis datos personales
+{% endblock %}
 {% block acciones_datos %}
     {{ form(form, { 'style': 'horizontal' }) }}
     {{ form_start(form)}}
