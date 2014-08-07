@@ -9,9 +9,8 @@ $(document).ready(function() {
     $(window).resize(function() {
         $('#right-block').css('height', $('#left-block').css('height'));
     });
-
     $("#tbl_activities").on("click", ".unenroll", function() {
-        //enviar ajax a unenroll en el enrollmentController
+//enviar ajax a unenroll en el enrollmentController
     });
     $('#btn_generate_application').on('click', function(evt) {
         $ids = getSelectedIds();
@@ -38,6 +37,39 @@ $(document).ready(function() {
                 }
             });
         }
+    });
+    $('.unenroll').on('click', function(evt) {
+        evt.preventDefault();
+        $enrollmentId = $(this).data('enrollmentId');
+        $fila = $(this).closest('tr');
+        bootbox.confirm('¿Estás seguro que quieres desinscribirte de esta actividad?',
+                function(result) {
+                    if (result) {
+                        $.ajax({
+                            type: "POST",
+                            url: Routing.generate('uah_gestoractividades_enrollment_unenroll', {enrollment_id: $enrollmentId}),
+                            success: function(data) {
+
+                                $tbody = $fila.closest('tbody');
+                                $fila.remove();
+                                $filas = $tbody.find('tr');
+                                if ($filas.length === 1) {
+                                    location.reload(true);
+                                }
+                                $.each($filas, function(index, value) {
+                                    $(value).find('.index').text('#' + (index + 1));
+                                });
+                                bootbox.alert('Desinscrito de la actividad!');
+                            },
+                            error: function(data) {
+                                bootbox.alert('Ha habido un error :S <br> ' + data.responseJSON.message, function() {
+                                    location.reload(true);
+                                });
+                            }
+
+                        });
+                    }
+                });
     });
     function getSelectedIds() {
         var $checked_rows = [];

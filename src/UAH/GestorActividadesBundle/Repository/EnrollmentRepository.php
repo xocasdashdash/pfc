@@ -78,7 +78,9 @@ class EnrollmentRepository extends EntityRepository {
         $em = $this->getEntityManager();
 
 
-        $consulta = $em->createQuery('SELECT a.id,a.name,a.englishName,e.dateRegistered,e.recognizedCredits,a.start_date,se.code, e.id as id_enrollment, IDENTITY(e.application) as application' .
+        $consulta = $em->createQuery('SELECT a.id,e.id as enrollment_id, a.name, a.englishName, e.dateRegistered, ' .
+                ' e.recognizedCredits,a.start_date,se.code, e.id as id_enrollment, ' .
+                ' IDENTITY(e.application) as application' .
                 ' FROM UAHGestorActividadesBundle:Activity a ' .
                 'JOIN UAHGestorActividadesBundle:Enrollment e' .
                 ' WITH a.id = e.activity ' .
@@ -120,7 +122,7 @@ class EnrollmentRepository extends EntityRepository {
             } else if ($filter === "not_recognized") {
                 $status = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getNotRecognizedStatus();
             }
-        }else  {
+        } else {
             $dql .= " ORDER BY e.dateRegistered DESC ";
         }
         $consulta = $em->createQuery($dql);
@@ -141,6 +143,7 @@ class EnrollmentRepository extends EntityRepository {
      */
     public function getEnrollmentsByID($enrollments) {
         $em = $this->getEntityManager();
+        if (count($enrollments) > 0) {
 //        $dql = " SELECT e.id, a, " .
 //                " se.code as status_enrollment, " .
 //                " sd.code as status_degree " .
@@ -157,14 +160,17 @@ class EnrollmentRepository extends EntityRepository {
 //                " WITH e.activity = a.id " .
 //                " WHERE e IN (:enrollments) " .
 //                " ORDER BY e.id ASC";
-        $dql = " SELECT e " .
-                " FROM UAHGestorActividadesBundle:Enrollment e " .
-                " WHERE e IN (:enrollments) " .
-                " ORDER BY e.id ASC";
-        $consulta = $em->createQuery($dql);
-        $consulta->setParameter('enrollments', $enrollments);
-        $results = $consulta->getResult();
-        return $results;
+            $dql = " SELECT e " .
+                    " FROM UAHGestorActividadesBundle:Enrollment e " .
+                    " WHERE e IN (:enrollments) " .
+                    " ORDER BY e.id ASC";
+            $consulta = $em->createQuery($dql);
+            $consulta->setParameter('enrollments', $enrollments);
+            $results = $consulta->getResult();
+            return $results;
+        } else {
+            return null;
+        }
     }
 
 }
