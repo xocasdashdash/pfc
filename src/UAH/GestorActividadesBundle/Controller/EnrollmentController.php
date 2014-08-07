@@ -37,6 +37,8 @@ class EnrollmentController extends Controller {
     //Tipos de creditos
     const ENROLLMENT_ECTS_CREDITS = "ECTS";
     const ENROLLMENT_LIBRE_CREDITS = "LIBRE";
+    const UNENROLLMENT_FAIL = 3;
+    const UNENROLLMENT_OK = 3;
 
     /**
      * @Route("/enroll/{activity_id}",requirements={"pagina" = "\d+"}, options={"expose"=true})
@@ -238,6 +240,33 @@ class EnrollmentController extends Controller {
             //$cookie = new Cookie('X-CSRFToken', $this->get('form.csrf_provider')->generateCsrfToken('administracion'), 0, '/', null, false, false);
             //$json_response->headers->setCookie($cookie);
             return $json_response;
+        }
+    }
+
+    /**
+     * 
+     * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollment
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @Route("/enroll/unenroll/{enrollment_id}", requirements={"enrollment_id" = "\d+"}, options={"expose" = true})
+     * @ParamConverter("enrollment",  class="UAHGestorActividadesBundle:Enrollment",options={"id" = "enrollment_id"}))
+     * @Security("enrollment.getUser() === user")
+     */
+    public function unenrollAction(Enrollment $enrollment, Request $request) {
+        $response = array();
+        if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
+                $this->get('form.csrf_provider')->isCsrfTokenValid('profile', $request->headers->get('X-CSRFToken'))) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($enrollment);
+            //$em->flush();
+            $response ['code'] = self::UNENROLLMENT_OK;
+            $response['message'] = 'Te has desinscrito correctamente';
+            $response['type'] = 'success';
+            return new JsonResponse($response, 200);
+        } else {
+            $response ['code'] = self::UNENROLLMENT_FAIL;
+            $response['message'] = 'Token de seguridad inválido. Prueba a recargar la página';
+            $response['type'] = 'error';
+            return new JsonResponse($response, 403);
         }
     }
 

@@ -58,7 +58,7 @@ $(document).ready(function() {
                                 location.reload(true);
                             }
                             $.each($filas, function(index, value) {
-                                $(value).find('.index').text(index + 1);
+                                $(value).find('.index').text('#' + index + 1);
                             });
                         });
                     },
