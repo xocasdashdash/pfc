@@ -9,9 +9,15 @@
 namespace UAH\GestorActividadesBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use UAH\GestorActividadesBundle\Entity\Activity;
 
 class ActivityRepository extends EntityRepository {
 
+    /**
+     * A partir de un array de id's devuelvo los objetos actividades
+     * @param type $activities
+     * @return null
+     */
     public function getActivitiesByID($activities) {
         $em = $this->getEntityManager();
         if (count($activities) > 0) {
@@ -44,6 +50,12 @@ class ActivityRepository extends EntityRepository {
         }
     }
 
+    /**
+     * Devuelvo aquellas actividades cuyo estado no sea cerrado usado en la vista myactivities
+     * 
+     * @param \UAH\GestorActividadesBundle\Entity\User $user
+     * @return type
+     */
     public function getNotClosedActivities(\UAH\GestorActividadesBundle\Entity\User $user) {
         $em = $this->getEntityManager();
         $dql = " SELECT a " .
@@ -51,13 +63,23 @@ class ActivityRepository extends EntityRepository {
                 " WHERE a.Organizer = :user " .
                 " AND a.status != :closed_status" .
                 " ORDER BY a.id ASC";
-        
+
         $a = "SELECT a FROM UAHGestorActividadesBundle:Activity a WHEREa a.User = :user AND WHEREr a.Status != :closed_status ORDER BY a.id ASC";
         $consulta = $em->createQuery($dql);
         $consulta->setParameter('user', $user);
         $consulta->setParameter('closed_status', $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getClosed());
         $results = $consulta->getResult();
         return $results;
+    }
+
+    /**
+     * 
+     * @param \UAH\GestorActividadesBundle\Repository\Activity $activity
+     */
+    public function isFullyEditable(Activity $activity) {
+        $em = $this->getEntityManager();
+        $draft_status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getDraft();
+        return $draft_status === $activity->getStatus();
     }
 
 }
