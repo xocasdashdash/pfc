@@ -88,6 +88,12 @@ class Enrollment {
     private $application;
 
     /**
+     * @var User verifiedByUser
+     * @ManyToOne(targetEntity="User", inversedBy="recognizedApplications")
+     * @JoinColumn(name="recognized_by_id", referencedColumnName="id", nullable=true,onDelete="SET NULL")     
+     */
+    private $recognizedByUser;
+    /**
      * Get id
      *
      * @return integer 
@@ -316,5 +322,28 @@ class Enrollment {
     public function getDateRecognized()
     {
         return $this->dateRecognized;
+    }
+
+    /**
+     * Set recognizedByUser
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\User $recognizedByUser
+     * @return Enrollment
+     */
+    public function setRecognizedByUser(\UAH\GestorActividadesBundle\Entity\User $recognizedByUser = null)
+    {
+        $this->recognizedByUser = $recognizedByUser;
+
+        return $this;
+    }
+
+    /**
+     * Get recognizedByUser
+     *
+     * @return \UAH\GestorActividadesBundle\Entity\User 
+     */
+    public function getRecognizedByUser()
+    {
+        return $this->recognizedByUser;
     }
 }
