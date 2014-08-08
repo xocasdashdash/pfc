@@ -15,11 +15,40 @@ class UserType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $degrees = $options['degrees'];
         $builder
-                ->add('name', null, array('label' => 'Nombre', 'attr' => array('help_text' => 'Tu nombre', 'label_col' => 4, 'widget_col' => 6, 'col_size' => 'xs')))
-                ->add('apellido_1', null, array('label' => 'Primer apellido', 'attr' => array('label_col' => 4, 'widget_col' => 6, 'col_size' => 'xs')))
-                ->add('apellido_2', null, array('label' => 'Segundo apellido', 'attr' => array('help_text' => 'Si no tienes un segundo apellido, déjalo en blanco. Si tienes más de dos apellidos pon aquí el segundo y sucesivos', 'label_col' => 4, 'widget_col' => 6, 'col_size' => 'xs')))
-                ->add('email', null, array('label' => 'E-mail', 'attr' => array('help_text' => 'Un email que consultes habitualmente', 'label_col' => 4, 'widget_col' => 6, 'col_size' => 'xs')))
-                ->add('documento_identidad', null, array('label' => 'Nº DNI/NIE/Pasaporte', 'attr' => array('help_text' => 'El que tengas registrado en la universidad. Si es DNI o NIE incluye la(s) letra(s)', 'label_col' => 4, 'widget_col' => 6, 'col_size' => 'xs')))
+                ->add('name', null, array(
+                    'required' =>true,
+                    'label' => 'Nombre', 
+                    'attr' => array(
+                        'help_text' => 'Tu nombre', 
+                        'label_col' => 4, 
+                        'widget_col' => 6, 
+                        'col_size' => 'xs')))
+                ->add('apellido_1', null, array(
+                    'required' =>true,
+                    'label' => 'Primer apellido', 
+                    'attr' => array('label_col' => 4, 'widget_col' => 6, 'col_size' => 'xs')))
+                ->add('apellido_2', null, array(
+                    
+                    'label' => 'Segundo apellido', 
+                    'attr' => array(
+                        'help_text' => 'Si no tienes un segundo apellido, déjalo en blanco. Si tienes más de dos apellidos pon aquí el segundo y sucesivos',
+                        'label_col' => 4, 
+                        'widget_col' => 6, 
+                        'col_size' => 'xs')))
+                ->add('email', null, array(
+                    'required' =>true,
+                    'label' => 'E-mail',
+                    'attr' => array(
+                        'help_text' => 'Un email que consultes habitualmente',
+                        'label_col' => 4, 'widget_col' => 6, 'col_size' => 'xs')))
+                ->add('documento_identidad', null, array(
+                    'required' =>true,
+                    'label' => 'Nº DNI/NIE/Pasaporte',
+                    'attr' => array(
+                        'help_text' => 'El que tengas registrado en la universidad. Si es DNI o NIE incluye la(s) letra(s)',
+                        'label_col' => 4, 
+                        'widget_col' => 6,
+                        'col_size' => 'xs')))
                 ->add('tipo_documento_identidad', 'choice', array('label' => 'Tipo de documento', 'expanded' => true, 'choices' => array(
                         'D.N.I.' => 'D.N.I.',
                         'N.I.E.' => 'N.I.E.',
@@ -27,6 +56,7 @@ class UserType extends AbstractType {
                     ), 'attr' => array('help_text' => 'DNI, NIE o Pasaporte', 'label_col' => 4, 'widget_col' => 6, 'col_size' => 'xs',
                         'multiple' => true)))
                 ->add('degree_id', 'entity', array(
+                    'required' =>true,
                     'class' => 'UAHGestorActividadesBundle:Degree',
                     'choices' => $degrees,
                     'property' => 'name',
@@ -34,7 +64,7 @@ class UserType extends AbstractType {
                     'label' => 'Plan de estudio',
                     'attr' => array('help_text' => 'Elige tu plan de estudio', 'label_col' => 4, 'widget_col' => 6, 'col_size' => 'xs')
                 ))
-                ->add('Guardar', 'submit')
+                ->add('Guardar', 'submit',array('attr' => array('type' => 'default', 'class' => 'btn-block','col_size' => 'xs','label_col' => 7,'widget_col' => 3)))
         ;
     }
 

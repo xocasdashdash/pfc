@@ -257,7 +257,7 @@ class EnrollmentController extends Controller {
                 $this->get('form.csrf_provider')->isCsrfTokenValid('profile', $request->headers->get('X-CSRFToken'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($enrollment);
-            //$em->flush();
+            $em->flush();
             $response ['code'] = self::UNENROLLMENT_OK;
             $response['message'] = 'Te has desinscrito correctamente';
             $response['type'] = 'success';
