@@ -19,7 +19,7 @@
     Editar esta actividad
 {% endblock %}
 {% block content %}
-    <div class="row">
+    <div class="row bottom-buffer">
         {#{% form_theme form with ['UAHGestorActividadesBundle:Actividad:Form/bootstrap-form-horizontal.html.twig'] %}  #}
         {{ form_start(form, { 'style': 'horizontal' }) }}
         {{ form_row(form.name) }}
@@ -34,6 +34,7 @@
         {% endif %}
         {{ form_row(form.organizerName) }}
         {{ form_rest(form)}}
+        {{ form_end(form)}}
 
 
     </div>
