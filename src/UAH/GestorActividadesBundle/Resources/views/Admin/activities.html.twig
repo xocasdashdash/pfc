@@ -1,0 +1,18 @@
+{% extends "::backend.html.twig" %}
+{% block javascripts %}
+    {{parent()}}
+    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/backend/profile.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block stylesheets %}
+    {{parent()}}
+    {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/profile/*.less' %}
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
+    {% endstylesheets %}
+{%endblock %}
+{% block acciones_datos %}
+{% endblock %}
+
+{% block content %}
+{% endblock %}
