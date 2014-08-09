@@ -91,12 +91,12 @@ class ActivityController extends Controller {
      * @Security("(is_granted('edit_activity',activity) && has_role('ROLE_UAH_STAFF_PDI')) || has_role('ROLE_UAH_ADMIN')")
      */
     public function editAction(Activity $activity, Request $request) {
-//        if (false === $this->get('security.context')->isGranted('edit_activity', $activity)) {
-//            throw new AccessDeniedException('Unauthorised access!');
-//        }
+        $em = $this->getDoctrine()->getManager();
+        $fullyEditable = $em->getRepository('UAHGestorActividadesBundle:Activity')->isFullyEditable($activity);
         $form = $this->createForm(new ActivityType(), $activity
                 , array(
-            'edit' => true
+            'fullyEditable' => $fullyEditable,
+            'isAdmin' => $this->get('security.context')->isGranted('ROLE_UAH_ADMIN')
         ));
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -108,7 +108,9 @@ class ActivityController extends Controller {
         }
         return $this->render('UAHGestorActividadesBundle:Activity:edit.html.twig', array(
                     'form' => $form->createView(),
-                    'activity' => $activity));
+                    'activity' => $activity,
+                    'fullyEditable' => $fullyEditable,
+                    'isAdmin' => $this->get('security.context')->isGranted('ROLE_UAH_ADMIN')));
     }
 
     /**
@@ -218,7 +220,7 @@ class ActivityController extends Controller {
             $activity->setStatus($statusOpened);
             $em->persist($activity);
             $em->flush();
-            
+
             $response = array();
             $response['code'] = self::ACTIVITY_OPENED;
             $response['message'] = array();
