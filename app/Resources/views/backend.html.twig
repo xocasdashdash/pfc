@@ -41,10 +41,25 @@
                         {% endif %}
                         {# fp_openid_security_check", {'openid_identifier': 'http://yo.rediris.es/','_target_path': "/"}) }}"#}
 
-                        <li><a href="{{ path('uah_gestoractividades_profile_index') }}">Perfil</a></li>
-                            {% if is_granted('ROLE_UAH_ADMIN') %}
-                            <li><a href="{{ path('uah_gestoractividades_admin_index') }}">Administrar</a></li>
-                            {% endif %}
+                        <li>
+                            <a href="{{ path('uah_gestoractividades_profile_index') }}">Perfil</a>
+                        </li>
+                        {% if is_granted('ROLE_UAH_ADMIN') %}
+                            <li>
+                                <a id="dropdownMenu1" href="#" data-toggle="dropdown">
+                                    Administrar
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                    <li role="presentation">
+                                        <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities')}}">Actividades</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_users')}}">Usuarios</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
                         <li>
                             <form class="form-inline pull-right" role="form">
                                 <div class="form-group">
