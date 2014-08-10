@@ -11,7 +11,7 @@
                 '@UAHGestorActividadesBundle/Resources/public/css/base/*.less'
                 '@UAHGestorActividadesBundle/Resources/public/vendor/qTip2/jquery.qtip.min.css'
                 filter='cssrewrite'%}
-            <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
+            <link href="{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ asset_url }}" rel="stylesheet" type="text/css" />          
             {% endstylesheets %}
 
         {% endblock %}
