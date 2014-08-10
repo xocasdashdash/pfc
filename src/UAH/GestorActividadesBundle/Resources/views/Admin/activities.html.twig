@@ -26,6 +26,34 @@
         </div>
     </div>
 {% endblock %}
-
+{% block title %}
+    Panel de administración de actividades
+{% endblock %}
 {% block content %}
+    <div class="row top-buffer">
+        <table class="table table-bordered tbl_enrolled">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="nombre-actividad">Nombre</th>
+                    <th class="hidden-print">Fecha de creación</th>
+                    <th>Fecha de solicitud</th>
+                    <th class="hidden-print">Acción</th>                
+                </tr>
+            </thead>
+            <tbody>
+                {% for activity in activities %}
+                    <tr id="activity-{{activity.id}}">
+                        <td class="index">{{loop.index}}</td>
+                        <td><a href="{{ path("uah_gestoractividades_activity_index",{"activity_id": activity.id})}}">{{activity.name}}</a></td>
+                        <td class="status">{{activity.date_created|date('d/m/Y')}}</td>
+                        <td class="text-center">{{activity.date_approved|date('d/m/Y')}}</td>
+                        <td class="text-center"><input type="checkbox" value="{{activity.id}}"></td>
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

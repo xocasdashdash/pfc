@@ -256,7 +256,7 @@ class Activity {
     /**
      * 
      * @var date Fecha en la que se aprueba la actividad.
-     * @Column(name="date_approved",type="datetime", nullable=false) 
+     * @Column(name="date_approved",type="datetime", nullable=true) 
      */
     private $date_approved;
 
