@@ -14,5 +14,9 @@ $(document).on('ready', function() {
     });
     $('#btn_print_pending_report').on('click', function() {
 
+        var frame = $('<iframe>', {'src': Routing.generate('uah_gestoractividades_admin_printpending')}).hide();
+        $('body').append(frame);
+
+
     });
 });
