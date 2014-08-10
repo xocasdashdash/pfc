@@ -7,16 +7,18 @@ security:
         ROLE_UAH_STAFF_PDI: ROLE_UAH_STUDENT
         ROLE_UAH_ADMIN: [ROLE_UAH_STAFF_PAS,ROLE_UAH_STAFF_PDI]
         ROLE_UAH_SUPER_ADMIN: [ROLE_UAH_ADMIN, ROLE_ALLOWED_TO_SWITCH]
-
+    providers:
+        # the order is important here
+        OpenIdUserManager:
+            id: UAH.GestorActividades.OpenIdUserManager # the name of the service
+        # keep your database provider below! it may look like this:        
+        database:
+            entity: { class: UAHGestorActividadesBundle:User, property: username }
     firewalls:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        login:
-            pattern:  ^/demo/secured/login$
-            security: false
-        
         main:
             pattern:    ^/
             logout:     true
@@ -27,7 +29,7 @@ security:
                 login_path: /login
                 check_path: /login_check_openid
                 create_user_if_not_exists: true # so createUserFromIdentity method will be called
-                provider: openid_user_manager # cf below
+                provider: OpenIdUserManager # cf below
                 # previously we used 'contact/email' field. So we have to request it!
                 # Please note that all OpenID providers may not be able to provide all fields.
                 # check the desired provider documentation
@@ -35,20 +37,8 @@ security:
                     - contact/email     
                     - namePerson/first
                     - namePerson/prefix
-                success_handler: uah_authentication_handler
+                success_handler: UahAuthenticationHandler
 
-    providers:
-        # the order is important here
-        openid_user_manager:
-            id: UAH.GestorActividades.openid_user_manager # the name of the service
-        # keep your database provider below! it may look like this:
-        database:
-            entity: { class: UAHGestorActividadesBundle:User, property: username }
-        in_memory:
-            memory:
-                users:
-                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
     
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }

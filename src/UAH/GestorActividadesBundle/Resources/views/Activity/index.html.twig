@@ -2,7 +2,7 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/frontend/activity/activity.less' %}
-    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
+    <link href="{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ asset_url }}" rel="stylesheet" type="text/css" />          
     {% endstylesheets %}
     <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
 {% endblock %}
