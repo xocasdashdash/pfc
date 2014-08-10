@@ -10,15 +10,17 @@
 {% endblock %}
 {% block stylesheets %}
     {{parent()}}
-    {% stylesheets '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-datepicker/build/build3.less' %}
+    {% stylesheets '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-datepicker/build/build3.less'%}
     <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
     {% endstylesheets %}
 {% endblock %}
+{% block title %}
+    Crear nueva actividad
+{% endblock %}
 {% block content %}
-    <div class="row">
+    <div class="row bottom-buffer">
         {{ form(form, { 'style': 'horizontal' }) }}
         {{ form_start(form)}}
-        {{ form_row(form.name) }}
         {{ form_rest(form) }}
         {{ form_end(form) }}        
     </div>

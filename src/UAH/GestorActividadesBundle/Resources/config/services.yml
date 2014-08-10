@@ -23,3 +23,6 @@ services:
         tags:
            - { name: security.voter }
         arguments: [@doctrine.orm.entity_manager]
+    uah_authentication_handler:
+        class: UAH\GestorActividadesBundle\Services\AuthenticationHandler
+        arguments: ['@router','@security.context']

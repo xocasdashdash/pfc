@@ -57,4 +57,36 @@ class ProfileController extends Controller {
                     'form' => $form->createView()));
     }
 
+    /**
+     * 
+     * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @Route("/profile/activities/",options={"expose"=true})
+     * @Route("/profile/activities/{user_id}", requirements={"user_id" = "\d+"}, defaults={"user_id"=-1}, options={"expose"=true})
+     * @Security("is_granted('ROLE_UAH_STAFF_PDI') || is_granted('ROLE_UAH_ADMIN')")
+     */
+    public function myactivitiesAction($user_id = -1, Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        if (($user_id !== -1)) {
+            if ($this->get('security.context')->isGranted('ROLE_UAH_ADMIN')) {
+                $user = $em->getRepository('UAHGestorActividadesBundle:User')->find($user_id);
+                $activities = $user->getActivities();
+            } else {
+                throw new AccessDeniedException('No tienes permiso para ver estas actividades');
+            }
+        } else {
+            if ($request->query->get('filter', 'none') === 'none') {
+                $activities = $em->getRepository('UAHGestorActividadesBundle:Activity')->getNotClosedActivities($this->getUser());
+            } else {
+                $activities = $this->getUser()->getActivities();
+            }
+        }
+        $response = $this->render('UAHGestorActividadesBundle:Profile:myactivities.html.twig', array(
+            'activities' => $activities));
+        $token = $this->get('form.csrf_provider')->generateCsrfToken('profile');
+        $cookie = new Cookie('X-CSRFToken', $token, 0, '/', null, false, false);
+        $response->headers->setCookie($cookie);
+        return $response;
+    }
+
 }

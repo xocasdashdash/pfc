@@ -1,7 +1,7 @@
 {% extends '::backend.html.twig' %}
 {% block javascripts %}
     {{parent()}}
-    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/backend/perfil.js' %}
+    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/backend/profile.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
@@ -11,6 +11,9 @@
     {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/profile/*.less' %}
     <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
     {% endstylesheets %}
+{% endblock %}
+{% block title %}
+    Administración de Secretaría de Alumnos
 {% endblock %}
 {% block acciones_datos %}
     <div class="row">

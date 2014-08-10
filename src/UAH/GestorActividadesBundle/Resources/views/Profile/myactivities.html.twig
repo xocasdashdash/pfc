@@ -16,7 +16,9 @@
     <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
     {% endstylesheets %}
 {% endblock %}
-
+{% block title %}
+    Mis actividades
+{% endblock %}
 {% block acciones_datos %}
     <div class="row acciones_datos hidden-print">
         <div class="flex-container">
@@ -30,11 +32,13 @@
                 <button type="button" class="btn btn-default" id="btn_ask_approval" title="Envía al administrador las actividades que marques para que se puedan aprobar">Solicitar aprobación</button>
             </div>
             <div class="flex-item">
-                <button type="button" class="btn btn-default" id="btn_update_publish_date" title="Actualiza la fecha de comienzo de publicidad de las actividades marcadas a fecha de hoy">Actualizar fecha de publicación</button>
-            </div>
-            <div class="flex-item">
                 <button type="button" class="btn btn-default" id="btn_show_all" title="Muestra también todas las actividades cerradas">Mostrar todas las actividades</button>
-            </div>            
+            </div>
+            {% if is_granted('ROLE_UAH_ADMIN') %}
+                <div class="flex-item">
+                    <button type="button" class="btn btn-default" id="btn_open" title="Abre una actividad que estuviese cerrada">Abrir una actividad</button>
+                </div>            
+            {% endif %}
         </div>
     </div>
     <table class="table table-bordered top-buffer">
@@ -49,10 +53,10 @@
         </thead>
         <tbody>
             {% for activity in activities %}
-                <tr>
-                    <td>{{loop.index}}</td>
+                <tr id="activity-{{activity.id}}">
+                    <td class="index">{{loop.index}}</td>
                     <td><a href="{{ path("uah_gestoractividades_activity_index",{"activity_id": activity.id})}}">{{activity.name}}</a></td>
-                    <td>{{activity.status.nameEs}}</td>
+                    <td class="status">{{activity.status.nameEs}}</td>
                     <td class="text-center">{{activity.publicityStartDate|date('d/m/Y')}}</td>
                     <td class="text-center"><input type="checkbox" value="{{activity.id}}"></td>
                 </tr>
@@ -60,7 +64,7 @@
                     <tr>
                         <td colspan="5" class="text-center">
                             No hemos encontrado ningún actividad tuya. 
-                            Porque no pruebas a <a href="{{path('uah_gestoractividades_activity_create')}}">crear</a>alguna
+                            Porque no pruebas a <a href="{{path('uah_gestoractividades_activity_create')}}">crear</a> alguna
                         </td>
                     </tr>
                     {% endfor %}
