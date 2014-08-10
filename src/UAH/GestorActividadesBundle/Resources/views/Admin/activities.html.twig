@@ -12,6 +12,19 @@
     {% endstylesheets %}
 {%endblock %}
 {% block acciones_datos %}
+    <div class="row acciones_datos hidden-print">
+        <div class="flex-container">
+            <div class="flex-item">
+                <button type="button" class="btn btn-default" title="Muestra todas las actividades" id="btn_show_all_activities" >Muestra todas las actividades</button>
+            </div>
+            <div class="flex-item">
+                <button type="button" class="btn btn-default" id="btn_approve_selected" title="Aprueba todas las actividades seleccionadas">Aprobar actividades seleccionadas</button>
+            </div>
+            <div class="flex-item">
+                <button type="button" class="btn btn-default" id="btn_print_pending_report" title="Descarga un pdf con todas las actividades pendientes de aprobar">Imprimir informe actividades pendientes</button>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block content %}
