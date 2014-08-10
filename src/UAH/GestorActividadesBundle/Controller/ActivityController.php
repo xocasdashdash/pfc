@@ -16,6 +16,12 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ActivityController extends Controller {
 
+    const ERROR_CSRF_TOKEN_INVALID = 1;
+    const APPROVAL_ERROR_NOT_ORGANIZER = 2;
+    const APPROVAL_ERROR_INCORRECT_STATUS = 3;
+    const APPROVAL_SUCCESSFULLY_ASKED = 4;
+    const ACTIVITY_OPENED = 5;
+
     /**
      * @Route("/activity/{activity_id}-{slug}",requirements={"activity_id" = "\d+"}, defaults={"slug" = ""}, options={"expose"=true}))
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
@@ -58,7 +64,7 @@ class ActivityController extends Controller {
     }
 
     /**
-     * @Route("/activity/create")
+     * @Route("/activity/create",options={"expose"=true})
      * @Method({"GET","POST"})
      * @Security("has_role('ROLE_UAH_STAFF_PDI')")
      */
@@ -73,7 +79,7 @@ class ActivityController extends Controller {
             $activity->setNumberOfPlacesOccupied(0);
             $em->persist($activity);
             $em->flush();
-            return $this->redirect($this->generateUrl("uah_gestoractividades_default_index"));
+            return $this->redirect($this->generateUrl("uah_gestoractividades_profile_myactivities"));
         }
         return $this->render('UAHGestorActividadesBundle:Activity:create.html.twig', array(
                     'form' => $form->createView()));
@@ -85,12 +91,12 @@ class ActivityController extends Controller {
      * @Security("(is_granted('edit_activity',activity) && has_role('ROLE_UAH_STAFF_PDI')) || has_role('ROLE_UAH_ADMIN')")
      */
     public function editAction(Activity $activity, Request $request) {
-//        if (false === $this->get('security.context')->isGranted('edit_activity', $activity)) {
-//            throw new AccessDeniedException('Unauthorised access!');
-//        }
+        $em = $this->getDoctrine()->getManager();
+        $fullyEditable = $em->getRepository('UAHGestorActividadesBundle:Activity')->isFullyEditable($activity);
         $form = $this->createForm(new ActivityType(), $activity
                 , array(
-            'edit' => true
+            'fullyEditable' => $fullyEditable,
+            'isAdmin' => $this->get('security.context')->isGranted('ROLE_UAH_ADMIN')
         ));
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -102,7 +108,9 @@ class ActivityController extends Controller {
         }
         return $this->render('UAHGestorActividadesBundle:Activity:edit.html.twig', array(
                     'form' => $form->createView(),
-                    'activity' => $activity));
+                    'activity' => $activity,
+                    'fullyEditable' => $fullyEditable,
+                    'isAdmin' => $this->get('security.context')->isGranted('ROLE_UAH_ADMIN')));
     }
 
     /**
@@ -150,25 +158,6 @@ class ActivityController extends Controller {
     }
 
     /**
-     * @Route("/activity/{id}/{slug}", requirements={"id" = "\d+"}, defaults={"id"=-1, "slug"="none"})
-     * @Method({"GET"})
-     * @param type $id
-     * @param type $slug
-     */
-    public function showAction($id, $slug) {
-        
-    }
-
-    /**
-     * @Route("/activity/manage/{id}", requirements={"id" = "\d+"}, defaults={"id"=-1})
-     * @Method({"POST,GET"})
-     * @Security("has_role=('ROLE_ORGANIZER')")
-     */
-    public function manageAction($id) {
-        
-    }
-
-    /**
      * 
      * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
      * @param \Symfony\Component\HttpFoundation\Request $request
@@ -178,7 +167,7 @@ class ActivityController extends Controller {
      */
     public function closeAction(Activity $activity, Request $request) {
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
-                $this->get('form.csrf_provider')->isCsrfTokenValid('administracion', $request->headers->get('X-CSRFToken'))) {
+                $this->get('form.csrf_provider')->isCsrfTokenValid('profile', $request->headers->get('X-CSRFToken'))) {
             $em = $this->getDoctrine()->getManager();
             $enrollments = $activity->getEnrollees();
             $status_enrolled = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getEnrolledStatus();
@@ -190,13 +179,13 @@ class ActivityController extends Controller {
                     $em->persist($enrollment);
                 }
             }
-            $activity->setStatus($em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getClosedStatus());
+            $activity->setStatus($em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getClosed());
             $em->persist($activity);
             $em->flush();
             return new JsonResponse("OK", 200);
         } else {
             $response = array();
-            $response['code'] = self::RECOGNIZEMENT_ERROR_CSRF_TOKEN_INVALID;
+            $response['code'] = self::ERROR_CSRF_TOKEN_INVALID;
             $response['message'] = 'El token CSRF no es válido. Recarga la página e inténtalo de nuevo';
             $response['type'] = 'error';
             $json_response = new JsonResponse($response, 403);
@@ -208,24 +197,95 @@ class ActivityController extends Controller {
      * 
      * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @Route("/activity/myactivities/{user_id}", requirements={"user_id" = "\d+"}, defaults={"user_id"=-1}, options={"expose"=true})
+     * @Route("/activity/open/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1}, options={"expose"=true})
+     * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
+     * @Security("is_granted('ROLE_UAH_ADMIN')")
+     */
+    public function openAction(Activity $activity, Request $request) {
+        if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
+                $this->get('form.csrf_provider')->isCsrfTokenValid('profile', $request->headers->get('X-CSRFToken'))) {
+            $em = $this->getDoctrine()->getManager();
+            $enrollments = $activity->getEnrollees();
+            $status_enrolled = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getEnrolledStatus();
+            $status_not_recognized = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getNotRecognizedStatus();
+
+            foreach ($enrollments as $enrollment) {
+                if ($enrollment->getStatus() === $status_not_recognized) {
+                    $enrollment->setStatus($status_enrolled);
+                    $em->persist($enrollment);
+                }
+            }
+
+            $statusOpened = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getApproved();
+            $activity->setStatus($statusOpened);
+            $em->persist($activity);
+            $em->flush();
+
+            $response = array();
+            $response['code'] = self::ACTIVITY_OPENED;
+            $response['message'] = array();
+            $response['message']['status'] = $statusOpened->getNameEs();
+            $response['type'] = 'success';
+
+            return new JsonResponse($response, 200);
+        } else {
+            $response = array();
+            $response['code'] = self::ERROR_CSRF_TOKEN_INVALID;
+            $response['message'] = 'El token CSRF no es válido. Recarga la página e inténtalo de nuevo';
+            $response['type'] = 'error';
+            $json_response = new JsonResponse($response, 403);
+            return $json_response;
+        }
+    }
+
+    /**
+     * @Route("/activities/askapproval", options={"expose"=true})
      * @Security("is_granted('ROLE_UAH_STAFF_PDI') || is_granted('ROLE_UAH_ADMIN')")
      */
-    public function myactivitiesAction($user_id) {
-        $em = $this->getDoctrine()->getManager();
-        if (($user_id !== -1)) {
-            if ($this->get('security.context')->isGranted('ROLE_UAH_ADMIN')) {
-                $user = $em->getRepository('UAHGestorActividadesBundle:User')->find($user_id);
-                $activities = $user->getActivities();
-            } else {
-                throw new Exception('No tienes permiso para ver estas actividades');
+    public function askApprovalAction(Request $request) {
+        //Meter protección XSRF 
+        if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
+                $this->get('form.csrf_provider')->isCsrfTokenValid('profile', $request->headers->get('X-CSRFToken'))) {
+            $em = $this->getDoctrine()->getManager();
+            $activityRepository = $em->getRepository('UAHGestorActividadesBundle:Activity');
+            $activities = $activityRepository->getActivitiesById(json_decode($request->getContent()));
+            $statusPendingApproval = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getPending();
+            $statusDraft = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getDraft();
+            $response = array();
+            $num_activities = 0;
+            foreach ($activities as $activity) {
+                $statusActivity = $activity->getStatus();
+                if ($activity->getOrganizer() !== $this->getUser()) {
+                    $response['code'] = self::APPROVAL_ERROR_NOT_ORGANIZER;
+                    $response['message'] = 'No eres el organizador de esta actividad:' + $activity->getId();
+                    $response['type'] = 'error';
+                    return new JsonResponse($response, 400);
+                }
+                if ($statusActivity === $statusDraft) {
+                    $activity->setStatus($statusPendingApproval);
+                    $em->persist($activity);
+                    $num_activities++;
+                } else {
+                    $response['code'] = self::APPROVAL_ERROR_INCORRECT_STATUS;
+                    $response['message'] = 'Hay un problema con el estado de la actividad:' . $activity->getId();
+                    $response['type'] = 'error';
+                    return new JsonResponse($response, 400);
+                }
             }
+            $em->flush();
+            $response['code'] = self::APPROVAL_SUCCESSFULLY_ASKED;
+            $response['message'] = array();
+            $response['message']['num_activities'] = $num_activities;
+            $response['message']['status'] = $statusPendingApproval->getNameEs();
+            $response['type'] = 'success';
+            return new JsonResponse($response, 200);
         } else {
-            $activities = $this->getUser()->getActivities();
+            $response = array();
+            $response['code'] = self::ERROR_CSRF_TOKEN_INVALID;
+            $response['message'] = 'Problema con la seguridad. Prueba a recargar la página';
+            $response['type'] = 'error';
+            return new JsonResponse($response, 400);
         }
-        
-        return $this->render('UAHGestorActividadesBundle:Activity:myactivities.html.twig', array(
-                    'activities' => $activities));
     }
 
 }

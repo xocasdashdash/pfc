@@ -13,6 +13,9 @@
     {% endjavascripts %}
 
 {% endblock %}
+{% block title %}
+    {{activity.name}}
+{% endblock %}
 {% block content %}
     <div class="container">
         {% if app.user is not null and (activity.organizer == app.user or is_granted('ROLE_UAH_ADMIN')) %}        

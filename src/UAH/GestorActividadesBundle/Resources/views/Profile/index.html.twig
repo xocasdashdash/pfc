@@ -1,7 +1,7 @@
 {% extends '::backend.html.twig' %}
 {% block javascripts %}
     {{parent()}}
-    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/backend/perfil.js' %}
+    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/backend/profile.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     {% if is_granted('ROLE_UAH_STAFF_PAS') %}
@@ -24,57 +24,57 @@
         <div class="col-lg-9 col-xs-9" id="left-block">                
             {# Falta dejar esto para que se cargue con las variables del user #}
             <div>
-                <form class="form-horizontal" role="form">
-                    <div class="form-group ">
-                        <label for="inputNombre" class="col-sm-2 col-xs-2 control-label">Nombre</label>
-                        <div class="col-sm-10  col-xs-10 datos-usuario">
-                            <input type="text" class="form-control datos-alumno" id="inputNombre" value="{{user.name ~ " " ~ user.apellido1 ~ " " ~ user.apellido2 }}">
-                        </div>
-
-                        <label for="inputEmail" class="col-sm-2 col-xs-2 control-label">Email</label>
-                        <div class="col-sm-10  col-xs-10 datos-usuario">
-                            <input type="email" class="form-control datos-alumno" id="inputEmail" value="{{user.email}}">
-                        </div>
-                        <div class="col-xs-offset-2"></div>
-
-                        <label for="inputCarrera" class="col-sm-2 col-xs-2 control-label">Carrera</label>
-                        <div class="col-sm-10  col-xs-10 datos-usuario">
-                            <input type="text" class="form-control datos-alumno" id="inputCarrera" value="{{degree.name |default("Ningun grado encontrado")}}">
-                        </div>
-                        <label for="inputDNI" class="col-sm-2 col-xs-2 control-label">{{user.tipoDocumentoIdentidad}}</label>
-                        <div class="col-sm-10 col-xs-10 datos-usuario">
-                            <input type="text" class="form-control datos-alumno" id="inputDNI" value="{{user.documentoIdentidad}}">
-                        </div>
-                        <label for="inputRole" class="col-sm-2 col-xs-2 control-label">Rol</label>
-                        <div class="col-sm-10 col-xs-10 datos-usuario">
-                            <input type="text" class="form-control datos-alumno" id="inputRole" value="{% for role in roles %}{{role.role}}, {% else %} {% endfor %}">
-                        </div>
-
+                <div class="form-group ">
+                    <label for="inputNombre" class="col-sm-2 col-xs-2 control-label">Nombre</label>
+                    <div class="col-sm-10  col-xs-10 datos-usuario">
+                        <input type="text" class="form-control datos-alumno" id="inputNombre" value="{{user.name ~ " " ~ user.apellido1 ~ " " ~ user.apellido2 }}" readonly>
                     </div>
-                </form>
+
+                    <label for="inputEmail" class="col-sm-2 col-xs-2 control-label">Email</label>
+                    <div class="col-sm-10  col-xs-10 datos-usuario">
+                        <input type="email" class="form-control datos-alumno" id="inputEmail" value="{{user.email}}" readonly>
+                    </div>
+                    <div class="col-xs-offset-2"></div>
+
+                    <label for="inputCarrera" class="col-sm-2 col-xs-2 control-label">Carrera</label>
+                    <div class="col-sm-10  col-xs-10 datos-usuario">
+                        <input type="text" class="form-control datos-alumno" id="inputCarrera" value="{{degree.name |default("Ningun grado encontrado")}}" readonly>
+                    </div>
+                    <label for="inputDNI" class="col-sm-2 col-xs-2 control-label">{{user.tipoDocumentoIdentidad}}</label>
+                    <div class="col-sm-10 col-xs-10 datos-usuario">
+                        <input type="text" class="form-control datos-alumno" id="inputDNI" value="{{user.documentoIdentidad}}" readonly>
+                    </div>
+                    <label for="inputRole" class="col-sm-2 col-xs-2 control-label">Rol</label>
+                    <div class="col-sm-10 col-xs-10 datos-usuario">
+                        <input type="text" class="form-control datos-alumno" id="inputRole" value="{% for role in roles %}{{role.role}}, {% else %} {% endfor %}" readonly>
+                    </div>
+
+                </div>
             </div>
         </div>
         <div class="col-lg-3 col-xs-3 children" id="right-block">                
-            <div class="pull-right " >
-                <a href="{{path("uah_gestoractividades_application_index")}}" class="btn btn-default btn-primary btn-block" id="btn_my_applications">Mis certificados </a>
-                <a href="#" class="btn btn-default btn-primary btn-block" id="btn_generate_application">Generar un certificado</a>
+            <div class="pull-right" >
+                <a href="{{path("uah_gestoractividades_application_index")}}" class="btn btn-default btn-block" id="btn_my_applications">Mis certificados </a>
+                <a class="btn btn-default btn-block" id="btn_generate_application">Generar un certificado</a>
                 {% if is_granted('ROLE_UAH_STAFF_PDI') %}
-                    <a href="{{path('uah_gestoractividades_activity_create_form')}}" class="btn btn-default btn-primary btn-block" id="btn_create" >Crear un curso</a>
+                    <a href="{{path('uah_gestoractividades_activity_create')}}" class="btn btn-default btn-block" id="btn_create" >Crear un curso</a>
+                    <a href="{{path('uah_gestoractividades_profile_myactivities')}}" class="btn btn-default btn-block">Mis actividades</a>
                 {% endif %}
                 {% if is_granted('ROLE_UAH_STAFF_PAS') %}
-                    <a href="#" class="btn btn-default btn-primary btn-block" data-toggle="modal" data-target="#modal_app_code">Validar un justificante</a>
+                    <a href="#" class="btn btn-default btn-block" data-toggle="modal" data-target="#modal_app_code">Validar un justificante</a>
                 {% endif %}
                 {% if is_granted('ROLE_UAH_ADMIN') %}
-                    <a href="#" class="btn btn-default btn-primary btn-block" id="btn_manage_users">Gestionar users</a>
+                    <a href="#" class="btn btn-default btn-block" id="btn_manage_users">Gestionar users</a>
                 {% endif %} 
-                <a href="{{path('uah_gestoractividades_profile_edit')}}" class="btn btn-default btn-primary btn-block" id="btn_update_data">Actualizar datos</a>
-                <a href="#" class="btn btn-default btn-primary btn-block" id="btn_unenroll">Desinscribirse</a>
+                <a href="{{path('uah_gestoractividades_profile_edit')}}" class="btn btn-default btn-block" id="btn_update_data">Actualizar datos</a>
 
             </div>
         </div>
     </div>
 {% endblock %}
-
+{% block title %}
+    Mi perfil
+{% endblock %}
 {% block content %}
     <div class="row zona-tabla">
         <table class="table table-bordered tbl_activities">
@@ -95,14 +95,14 @@
             <tbody>
                 {% for enrolled_activity in enrolled_activities %}
                     <tr>
-                        <td class="centrar-texto-col">#{{loop.index}}</td>
+                        <td class="centrar-texto-col index">#{{loop.index}}</td>
                         <td><a href="{{ path("uah_gestoractividades_activity_index",{"activity_id": enrolled_activity.id})}}">{{ enrolled_activity.name }}</a></td>
                         <td class="centrar-texto-col">{{ enrolled_activity.dateRegistered |date('d/m/Y')}}</td>
                         <td class="centrar-texto-col">{{ (enrolled_activity.code == "STATUS_ENROLLED") ? 'No':'Si' }}</td>
                         <td class="centrar-texto-col"> {{ enrolled_activity.start_date|date("d/m/Y") }} </td>
                         <td class="centrar-texto-col">{{ enrolled_activity.recognizedCredits|default('-') }}</td>
                         {% if  date(enrolled_activity.start_date) > "now"|date("d/m/Y") and  enrolled_activity.code=="STATUS_ENROLLED"%}
-                            <td class="unenroll centrar-texto-col" data-enrollment-id="{{enrolled_activity.id}}">Darme de baja </td>
+                            <td class="unenroll centrar-texto-col" data-enrollment-id="{{enrolled_activity.enrollment_id}}"><a href="#">Darme de baja</a></td>
                         {% elseif enrolled_activity.code == "STATUS_RECOGNIZED" %}
                             <td class="centrar-texto-col"><input type="checkbox" value="{{enrolled_activity.id_enrollment}}"/></td>
                             {% elseif enrolled_activity.code == "STATUS_PENDING_VERIFICATION" %}

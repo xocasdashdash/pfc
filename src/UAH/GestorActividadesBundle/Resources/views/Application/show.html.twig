@@ -14,6 +14,9 @@
         {% endjavascripts %}
     {% endif %}
 {% endblock %}
+{% block title %}
+    Justificante de asistencia a {{application.enrollments|length}} actividades
+{% endblock %}
 {% block content %}
     <div class="row">
         <div class="col-xs-7">

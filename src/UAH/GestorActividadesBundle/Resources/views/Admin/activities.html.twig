@@ -1,19 +1,18 @@
-{% extends '::backend.html.twig' %}
+{% extends "::backend.html.twig" %}
 {% block javascripts %}
     {{parent()}}
+    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/backend/profile.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}
 {% block stylesheets %}
-    {{ parent() }}
+    {{parent()}}
     {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/profile/*.less' %}
     <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
     {% endstylesheets %}
-{% endblock %}
-{% block title %}
-    Actualizar mis datos personales
-{% endblock %}
+{%endblock %}
 {% block acciones_datos %}
-    {{ form(form, { 'style': 'horizontal' }) }}
-    {{ form_start(form)}}
-    {{ form_rest(form) }}
-    {{ form_end(form) }}     
+{% endblock %}
+
+{% block content %}
 {% endblock %}
