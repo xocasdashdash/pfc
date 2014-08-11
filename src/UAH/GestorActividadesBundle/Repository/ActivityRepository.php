@@ -10,6 +10,7 @@ namespace UAH\GestorActividadesBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use UAH\GestorActividadesBundle\Entity\Activity;
+use UAH\GestorActividadesBundle\Entity\Statusactivity;
 
 class ActivityRepository extends EntityRepository {
 
@@ -116,6 +117,22 @@ class ActivityRepository extends EntityRepository {
         $consulta = $em->createQuery($dql);
         $resultado = $consulta->getArrayResult();
         return $resultado;
+    }
+
+    public function getAllByStatus(Statusactivity $status) {
+        if (is_null($status)) {
+            return $this->getAll();
+        } else {
+            $em = $this->getEntityManager();
+            $dql = ' SELECT a ' .
+                    ' FROM UAHGestorActividadesBundle:Activity a ' .
+                    ' WHERE a.status = :status ' .
+                    ' ORDER BY a.date_created DESC';
+            $consulta = $em->createQuery($dql);
+            $consulta->setParameter('status', $status);
+            $resultado = $consulta->getArrayResult();
+            return $resultado;
+        }
     }
 
 }
