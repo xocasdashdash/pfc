@@ -30,10 +30,25 @@ class AdminController extends Controller {
      */
     public function activitiesAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        if ($request->get('filter', 'pending') === 'pending') {
-            $activities = $em->getRepository('UAHGestorActividadesBundle:Activity')->getPending();
-        } else {
+        $filter = $request->get('filter', 'pending');
+
+        if ($filter === 'pending') {
+            $status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getPending();
+        } else if ($filter === 'published') {
+            $status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getPublished();
+        } else if ($filter === 'closed') {
+            $status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getClosed();
+        } else if ($filter === 'approved') {
+            $status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getApproved();
+        } else if ($filter === 'draft') {
+            $status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getDraft();
+        } else if ($filter === 'all') {
+            $status = null;
+        }
+        if (is_null($status)) {
             $activities = $em->getRepository('UAHGestorActividadesBundle:Activity')->getAll();
+        } else {
+            $activities = $em->getRepository('UAHGestorActividadesBundle:Activity')->getAllByStatus($status);
         }
         $token = $this->get('form.csrf_provider')->generateCsrfToken('uah_admin');
         $cookie = new Cookie('X-CSRFToken', $token, 0, '/', null, false, false);
