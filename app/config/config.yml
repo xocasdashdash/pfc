@@ -93,7 +93,7 @@ parameters:
         db_data_col: session_value
         db_time_col: session_time
     vendor_dir: %kernel.root_dir%/../src/UAH/GestorActividadesBundle/Resources/public/vendor    
-
+    pdf_dir: %kernel.root_dir%/../web/upload/pdf/
 
 services:
     session.handler.oci8:
@@ -123,3 +123,24 @@ braincrafted_bootstrap:
 fp_open_id:
     db_driver: orm
     identity_class: UAH\GestorActividadesBundle\Entity\OpenIdIdentity     
+knp_snappy:
+    pdf:
+        enabled:    true
+        binary:     /home/xokas/pfc/wkhtmltopdf/wkhtmltopdf
+        options:    
+            load-error-handling: ignore
+            print-media-type: true
+            disable-smart-shrinking: true
+            page-width: 21cm
+            page-height: 27cm
+            stop-slow-scripts: true
+            load-error-handling: ignore
+            dpi: 96
+            javascript-delay: 2000
+            
+            
+        # ['--print-media-type','--disable-smart-shrinking','--page-width 21cm','--page-height 27cm','--dpi 96']
+    image:
+        enabled:    true
+        binary:     /home/xokas/pfc/wkhtmltopdf/wkhtmltoimage
+        options:    []    
