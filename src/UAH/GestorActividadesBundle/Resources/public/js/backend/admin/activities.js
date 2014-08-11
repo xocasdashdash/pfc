@@ -15,7 +15,8 @@ $(document).on('ready', function() {
         return $activities_id;
     }
     $('#btn_show_all_activities').on('click', function() {
-
+        $url = Routing.generate('uah_gestoractividades_admin_activities', {filter: 'all'});
+        location.href = $url;
     });
     $('#btn_approve_selected').on('click', function() {
         $activities_id = getSelectedIds();

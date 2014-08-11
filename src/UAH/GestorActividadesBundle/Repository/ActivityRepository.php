@@ -94,6 +94,7 @@ class ActivityRepository extends EntityRepository {
         $resultado = $consulta->getScalarResult();
         return $resultado;
     }
+
     public function getPending() {
         $em = $this->getEntityManager();
         $pending_status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getPending();
@@ -103,6 +104,16 @@ class ActivityRepository extends EntityRepository {
                 ' ORDER BY a.date_pending_approval DESC';
         $consulta = $em->createQuery($dql);
         $consulta->setParameter('pending_status', $pending_status);
+        $resultado = $consulta->getArrayResult();
+        return $resultado;
+    }
+
+    public function getAll() {
+        $em = $this->getEntityManager();
+        $dql = ' SELECT a ' .
+                ' FROM UAHGestorActividadesBundle:Activity a ' .
+                ' ORDER BY a.date_created DESC';
+        $consulta = $em->createQuery($dql);
         $resultado = $consulta->getArrayResult();
         return $resultado;
     }

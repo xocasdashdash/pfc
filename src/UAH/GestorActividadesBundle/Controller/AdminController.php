@@ -25,12 +25,16 @@ class AdminController extends Controller {
     }
 
     /**
-     * @Route("/activities")
+     * @Route("/activities",options={"expose"=true})
      * @Security("has_role('ROLE_UAH_ADMIN')")
      */
     public function activitiesAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $activities = $em->getRepository('UAHGestorActividadesBundle:Activity')->getPending();
+        if ($request->get('filter', 'pending') === 'pending') {
+            $activities = $em->getRepository('UAHGestorActividadesBundle:Activity')->getPending();
+        } else {
+            $activities = $em->getRepository('UAHGestorActividadesBundle:Activity')->getAll();
+        }
         $token = $this->get('form.csrf_provider')->generateCsrfToken('uah_admin');
         $cookie = new Cookie('X-CSRFToken', $token, 0, '/', null, false, false);
         $response = $this->render('UAHGestorActividadesBundle:Admin:activities.html.twig', array('activities' => $activities));
@@ -103,23 +107,15 @@ class AdminController extends Controller {
             $pdf_dir = $this->container->getParameter('pdf_dir');
             $result = $this->get('knp_snappy.pdf')->generate($activities_url, $pdf_dir . 'Report.pdf', array(), true);
             if (is_null($result)) {
-                if ($request->isXmlHttpRequest()) {
-                    $response = array();
-                    $response['type'] = 'success';
-                    $response['message'] = 'a';
-                    $response = new JsonResponse();
-                } else {
-                    $content = file_get_contents($pdf_dir . 'Report.pdf');
-                    $response = new Response();
-
-                    //set headers
-                    $response->headers->set('Content-Type', 'application/pdf');
-                    $response->headers->set('Content-Type', 'application/download');
-                    $response->headers->set('Content-Length', filesize($pdf_dir . 'Report.pdf'));
-                    $response->headers->set('Content-Disposition', 'attachment;filename="Informe de actividades pendientes de aprobar.pdf"');
-                    $response->setContent($content);
-                    $response->setStatusCode(200);
-                }
+                $content = file_get_contents($pdf_dir . 'Report.pdf');
+                $response = new Response();
+                //set headers
+                $response->headers->set('Content-Type', 'application/pdf');
+                $response->headers->set('Content-Type', 'application/download');
+                $response->headers->set('Content-Length', filesize($pdf_dir . 'Report.pdf'));
+                $response->headers->set('Content-Disposition', 'attachment;filename="Informe de actividades pendientes de aprobar.pdf"');
+                $response->setContent($content);
+                $response->setStatusCode(200);
             } else {
                 $response = new JsonResponse('Error', 400);
             }
