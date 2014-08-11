@@ -25,6 +25,7 @@ class AppKernel extends Kernel {
             new Endroid\Bundle\QrCodeBundle\EndroidQrCodeBundle(),
             new Avalanche\Bundle\ImagineBundle\AvalancheImagineBundle(),
             new Mopa\Bundle\BarcodeBundle\MopaBarcodeBundle(),
+            new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
