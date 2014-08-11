@@ -133,7 +133,6 @@ class Activity {
      */
     private $publicityStartDate;
 
-
     /**
      * @var string
      *
@@ -239,6 +238,35 @@ class Activity {
      * @Column(type="string", length=140, nullable=true)
      */
     private $socialMessage = "He encontrado esta actividad!";
+
+    /**
+     * 
+     * @var date Fecha en la que se creo la actividad. 
+     * @Column(name="date_created",type="datetime", nullable=false) 
+     */
+    private $date_created;
+
+    /**
+     * 
+     * @var date Fecha en la que modificó por última vez la actividad.
+     * @Column(name="date_modified",type="datetime", nullable=false) 
+     */
+    private $date_modified;
+
+    /**
+     * 
+     * @var date Fecha en la que se aprueba la actividad.
+     * @Column(name="date_approved",type="datetime", nullable=true) 
+     */
+    private $date_approved;
+
+    /**
+     * 
+     * @var date Fecha en la que se solicita el aprobar la actividad. 
+     * @Column(name="date_pending_approval",type="datetime", nullable=false) 
+     */
+    private $date_pending_approval;
+
     /**
      * Constructor
      */
@@ -974,15 +1002,13 @@ class Activity {
         }
     }
 
-
     /**
      * Set socialMessage
      *
      * @param string $socialMessage
      * @return Activity
      */
-    public function setSocialMessage($socialMessage)
-    {
+    public function setSocialMessage($socialMessage) {
         $this->socialMessage = $socialMessage;
 
         return $this;
@@ -993,8 +1019,100 @@ class Activity {
      *
      * @return string 
      */
-    public function getSocialMessage()
-    {
+    public function getSocialMessage() {
         return $this->socialMessage;
+    }
+
+
+    /**
+     * Set date_created
+     *
+     * @param \DateTime $dateCreated
+     * @return Activity
+     */
+    public function setDateCreated($dateCreated)
+    {
+        $this->date_created = $dateCreated;
+
+        return $this;
+    }
+
+    /**
+     * Get date_created
+     *
+     * @return \DateTime 
+     */
+    public function getDateCreated()
+    {
+        return $this->date_created;
+    }
+
+    /**
+     * Set date_modified
+     *
+     * @param \DateTime $dateModified
+     * @return Activity
+     */
+    public function setDateModified($dateModified)
+    {
+        $this->date_modified = $dateModified;
+
+        return $this;
+    }
+
+    /**
+     * Get date_modified
+     *
+     * @return \DateTime 
+     */
+    public function getDateModified()
+    {
+        return $this->date_modified;
+    }
+
+    /**
+     * Set date_approved
+     *
+     * @param \DateTime $dateApproved
+     * @return Activity
+     */
+    public function setDateApproved($dateApproved)
+    {
+        $this->date_approved = $dateApproved;
+
+        return $this;
+    }
+
+    /**
+     * Get date_approved
+     *
+     * @return \DateTime 
+     */
+    public function getDateApproved()
+    {
+        return $this->date_approved;
+    }
+
+    /**
+     * Set date_pending_approval
+     *
+     * @param \DateTime $datePendingApproval
+     * @return Activity
+     */
+    public function setDatePendingApproval($datePendingApproval)
+    {
+        $this->date_pending_approval = $datePendingApproval;
+
+        return $this;
+    }
+
+    /**
+     * Get date_pending_approval
+     *
+     * @return \DateTime 
+     */
+    public function getDatePendingApproval()
+    {
+        return $this->date_pending_approval;
     }
 }

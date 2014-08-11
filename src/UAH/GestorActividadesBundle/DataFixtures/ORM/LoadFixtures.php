@@ -143,7 +143,7 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         }
         $manager->flush();
         echo "Estados creados\n";
-
+        $activity_status = array_slice($statuses, 0, 5);
         $faker = FakerFactory::create('es_ES');
         $faker->addProvider(new UAHUserProvider($faker));
         $faker->addProvider(new UAHDegreeProvider($faker));
@@ -231,10 +231,18 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         return $image_route;
     }, 'publicityStartDate' => function() use($faker) {
         return $faker->dateTimeBetween('now', '+2 month');
-    }, 'status' => function() use($statuses) {
-        return $statuses[1];
+    }, 'status' => function() use($activity_status) {
+        return $activity_status[array_rand($activity_status)];
     }, 'organizer_name' => function() use($faker) {
         return $faker->company;
+    }, 'date_approved' => function() use($faker) {
+        return null;
+    }, 'date_created' => function() use($faker) {
+        return $faker->dateTimeBetween('-2 month', '-1 month');
+    }, 'date_modified' => function() use($faker) {
+        return $faker->dateTimeBetween('-1 month', 'now');
+    }, 'date_pending_approval' => function() use($faker) {
+        return $faker->dateTimeBetween('-1 week', 'now');
     }
         ));
 
