@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Cookie;
 
@@ -54,6 +55,43 @@ class AdminController extends Controller {
         $cookie = new Cookie('X-CSRFToken', $token, 0, '/', null, false, false);
         $response = $this->render('UAHGestorActividadesBundle:Admin:activities.html.twig', array('activities' => $activities));
         $response->headers->setCookie($cookie);
+        return $response;
+    }
+
+    /**
+     * @Route("/activities/exportCSV/{filter}", defaults={"filter" = "all"} ,options={"expose"=true})
+     * @Security("has_role('ROLE_UAH_ADMIN')")
+     */
+    public function exportAction($filter) {
+
+        $em = $this->getDoctrine()->getManager();
+        // get the service container to pass to the closure
+        $container = $this->container;
+        $results = $em->getRepository('UAHGestorActividadesBundle:Activity')->getExportData($filter); //->iterate();
+
+        $response = new StreamedResponse(function() use($container) {
+
+            $em = $container->get('doctrine')->getManager();
+
+            // The getExportQuery method returns a query that is used to retrieve
+            // all the objects (lines of your csv file) you need. The iterate method
+            // is used to limit the memory consumption
+            $handle = fopen('php://output', 'r+');
+
+            while (false !== ($row = $results->next())) {
+                // add a line in the csv file. You need to implement a toArray() method
+                // to transform your object into an array
+                fputcsv($handle, $row[0]->toArray());
+                // used to limit the memory consumption
+                $em->detach($row[0]);
+            }
+
+            fclose($handle);
+        });
+
+        $response->headers->set('Content-Type', 'application/force-download');
+        $response->headers->set('Content-Disposition', 'attachment; filename="export.csv"');
+
         return $response;
     }
 

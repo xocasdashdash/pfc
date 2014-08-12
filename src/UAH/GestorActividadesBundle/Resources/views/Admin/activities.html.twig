@@ -46,26 +46,47 @@
                         </li>
                     </ul>
                 </li>
-                {#<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"  data-toggle="dropdown" data-target="#">
-        Filtra las actividades<span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu"role="menu" aria-labelledby="dropdownMenu1">
-        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Filtro 1</a></li>
-        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Filtro 2</a></li>
-        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Filtro 3</a></li>
-        <li role="presentation" class="divider"></li>
-        <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Todas</a></li>
-    </ul>
-    { </div> #}
             </div>
-
-
 
             <div class="flex-item">
                 <button type="button" class="btn btn-default" id="btn_approve_selected" title="Aprueba todas las actividades seleccionadas">Aprobar actividades seleccionadas</button>
             </div>
             <div class="flex-item">
                 <button type="button" class="btn btn-default" id="btn_print_pending_report" title="Descarga un pdf con todas las actividades pendientes de aprobar">Imprimir informe actividades pendientes</button>
+            </div>
+            <div class="flex-item">
+                <li class="dropdown">
+                    <button id="dropdownMenu1" href="#" data-toggle="dropdown" class="btn btn-default">
+                        Descargar CSV 
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right filter-csv" role="menu" aria-labelledby="dropdownMenu1">
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="pending" >Pendientes</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="approved" >Aprobadas</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="published">Publicadas</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="closed" >Cerradas</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="draft" >Borrador</a>
+                        </li>
+                        <li role="presentation" class="divider"></li>
+
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="all" >Todas del año</a>
+                        </li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="year0">Año 0</a>
+                        </li>
+                    </ul>
+                </li>
             </div>
         </div>
 
