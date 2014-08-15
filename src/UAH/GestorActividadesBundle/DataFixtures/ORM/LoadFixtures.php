@@ -24,6 +24,7 @@ use \UAH\GestorActividadesBundle\Entity\Statusdegree as Statusdegree;
 use UAH\GestorActividadesBundle\Entity\Statusapplication as Statusapplication;
 //use \Faker\Provider;
 use \Faker\Factory as FakerFactory;
+use DateTime;
 
 /**
  * Description of LoadUserData
@@ -337,6 +338,8 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $degree = $em_degree[array_rand($em_degree)];
         $userAdmin->setDegreeId($degree);
         $userAdmin->addRole($roles[2]);
+        $userAdmin->setDateCreated(new DateTime());
+        $userAdmin->setDateUpdated(new DateTime());
 
         echo "Creando el usuario Bolonio\n";
         $userBolonio = new User();
@@ -348,6 +351,8 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $userBolonio->setIdUsuldap("http://yo.rediris.es/soy/adrian.bolonio@uah.es/");
         $userBolonio->setDegreeId($em_degree[array_rand($em_degree)]);
         $userBolonio->addRole($roles[0]);
+        $userBolonio->setDateCreated(new DateTime());
+        $userBolonio->setDateUpdated(new DateTime());
 
         //Acevedo
         echo "Creando el usuario Acevedo\n";
@@ -359,6 +364,8 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $userAcevedo->setType('staff');
         $userAcevedo->setIdUsuldap("http://yo.rediris.es/soy/javier.acevedo@uah.es/");
         $userAcevedo->addRole($roles[2]);
+        $userAcevedo->setDateCreated(new DateTime());
+        $userAcevedo->setDateUpdated(new DateTime());
 
         //Marta
         echo "Creando el usuario Marta\n";
@@ -371,6 +378,8 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $userMarta->setIdUsuldap("http://yo.rediris.es/soy/marta.lumeras@uah.es/");
         $userMarta->setDegreeId($em_degree[array_rand($em_degree)]);
         $userMarta->addRole($roles[3]);
+        $userMarta->setDateCreated(new DateTime());
+        $userMarta->setDateUpdated(new DateTime());
 
         echo "Guardando los usuarios...\n";
         $manager->persist($userAdmin);

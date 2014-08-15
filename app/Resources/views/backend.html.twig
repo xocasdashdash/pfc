@@ -60,6 +60,11 @@
                                 </ul>
                             </li>
                         {% endif %}
+                        {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                            <li>
+                                <a href="{{path('uah_gestoractividades_admin_activities', {_switch_user:'exit'}) }}">EXIT</a>
+                            </li>
+                        {% endif %}
                         <li>
                             <form class="form-inline pull-right" role="form">
                                 <div class="form-group">

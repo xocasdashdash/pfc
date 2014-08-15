@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 use UAH\GestorActividadesBundle\Entity\DefaultPermit as DefaultPermit;
 use UAH\GestorActividadesBundle\Entity\User as User;
+use DateTime;
 
 class OpenIdUserManager extends UserManager {
 
@@ -51,6 +52,9 @@ class OpenIdUserManager extends UserManager {
             $user->setName($name);
             $user->setApellido1($apellido);
             $user->setIdUsuldap($identity);
+            $user->setDateCreated(new DateTime());
+            $user->setDateUpdated(new DateTime());
+            
             $roles = $this->entityManager->getRepository('UAHGestorActividadesBundle:DefaultPermit')->findOneBy(
                     array('id_usuldap' => $identity));
             if ($roles) {
