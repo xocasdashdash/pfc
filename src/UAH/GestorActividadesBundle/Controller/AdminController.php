@@ -65,32 +65,26 @@ class AdminController extends Controller {
     public function exportAction($filter) {
 
         $em = $this->getDoctrine()->getManager();
-        // get the service container to pass to the closure
-        $container = $this->container;
-        $results = $em->getRepository('UAHGestorActividadesBundle:Activity')->getExportData($filter); //->iterate();
-
-        $response = new StreamedResponse(function() use($container) {
-
-            $em = $container->get('doctrine')->getManager();
-
-            // The getExportQuery method returns a query that is used to retrieve
-            // all the objects (lines of your csv file) you need. The iterate method
-            // is used to limit the memory consumption
+        $results = $em->getRepository('UAHGestorActividadesBundle:Activity')->getExportData($filter, true);
+        $response = new StreamedResponse(function() use($results) {
             $handle = fopen('php://output', 'r+');
+            $titulos = array(
+                'Id', 'Nombre', 'Nombre en inglés', 'Trabajo Adicional', 'ECTS Min', 'ECTS Max', 'Libre Min', 'Libre Max', 'Inscripciones', 'ECTS Reconocidos', 'Libre Reconocidos', 'Fecha Creada', 'Fecha Solicitud Aprobación', 'Fecha Aprobación'
+            );
+            $titulos_printed = false;
 
             while (false !== ($row = $results->next())) {
-                // add a line in the csv file. You need to implement a toArray() method
-                // to transform your object into an array
-                fputcsv($handle, $row[0]->toArray());
-                // used to limit the memory consumption
-                $em->detach($row[0]);
+                if (!$titulos_printed) {
+                    fputcsv($handle, $titulos);
+                    $titulos_printed = true;
+                }
+                fputcsv($handle, $row[0]); //[0]->toArray());
             }
 
             fclose($handle);
         });
-
         $response->headers->set('Content-Type', 'application/force-download');
-        $response->headers->set('Content-Disposition', 'attachment; filename="export.csv"');
+        $response->headers->set('Content-Disposition', 'attachment; filename="Export de datos estádisticos -filtro-' . $filter . '.csv"');
 
         return $response;
     }

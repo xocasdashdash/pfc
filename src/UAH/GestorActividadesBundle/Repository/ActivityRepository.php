@@ -9,6 +9,7 @@
 namespace UAH\GestorActividadesBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use UAH\GestorActividadesBundle\Entity\Activity;
 use UAH\GestorActividadesBundle\Entity\Statusactivity;
 
@@ -135,10 +136,11 @@ class ActivityRepository extends EntityRepository {
         }
     }
 
-    public function getExportData($filter) {
+    public function getExportData($filter, $iterator = FALSE) {
         $em = $this->getEntityManager();
         $activity_status_repository = $em->getRepository('UAHGestorActividadesBundle:Statusactivity');
         $all = false;
+        $year0 = false;
         switch ($filter) {
             case "pending":
                 $status = $activity_status_repository->getPending();
@@ -157,14 +159,13 @@ class ActivityRepository extends EntityRepository {
                 break;
             case "all":
                 $all = true;
-                $year0 = false;
                 break;
             case "year0":
                 $all = true;
                 $year0 = true;
                 break;
         }
-        $dql = "SELECT a . id AS Id_Actividad  , a.name Nombre , a.englishName NombreEn" .
+        $dql = "SELECT a.id AS Id_Actividad  , a.name Nombre , a.englishName NombreEn" .
                 " ,a.hasAdditionalWorkload TrabajoAdicional,a.numberOfECTSCreditsMin ECTSminimos, " .
                 " a.numberOfECTSCreditsMax ECTSMaximos, a.numberOfCreditsMin LibreMinimo, " .
                 " a.numberOfCreditsMax LibreMaximo, " .
@@ -179,13 +180,14 @@ class ActivityRepository extends EntityRepository {
                 " WITH a.id = e.activity ";
         if ($all & $year0) {
             //No hago nada
-        } elseif ($all & !$year0) {
+        } elseif ($all) {
             $year = date('Y');
             $dql .= " WHERE a.date_created > :year ";
         } elseif (!$all) {
             $year = date('Y');
             $dql .= " WHERE a.status=:status and a.date_created > :year ";
         }
+
         $dql .=" GROUP BY e.activity ";
         $consulta = $em->createQuery($dql);
         if (isset($year)) {
@@ -194,7 +196,11 @@ class ActivityRepository extends EntityRepository {
         if (isset($status)) {
             $consulta->setParameter('status', $status);
         }
-        $resultado = $consulta->getArrayResult();// iterate();
+        if ($iterator) {
+            $resultado = $consulta->iterate(null, Query::HYDRATE_SCALAR);
+        } else {
+            $resultado = $consulta->getScalarResult();
+        }
         return $resultado;
     }
 
