@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Cookie;
 
@@ -54,6 +55,37 @@ class AdminController extends Controller {
         $cookie = new Cookie('X-CSRFToken', $token, 0, '/', null, false, false);
         $response = $this->render('UAHGestorActividadesBundle:Admin:activities.html.twig', array('activities' => $activities));
         $response->headers->setCookie($cookie);
+        return $response;
+    }
+
+    /**
+     * @Route("/activities/exportCSV/{filter}", defaults={"filter" = "all"} ,options={"expose"=true})
+     * @Security("has_role('ROLE_UAH_ADMIN')")
+     */
+    public function exportAction($filter) {
+
+        $em = $this->getDoctrine()->getManager();
+        $results = $em->getRepository('UAHGestorActividadesBundle:Activity')->getExportData($filter, true);
+        $response = new StreamedResponse(function() use($results) {
+            $handle = fopen('php://output', 'r+');
+            $titulos = array(
+                'Id', 'Nombre', 'Nombre en inglés', 'Trabajo Adicional', 'ECTS Min', 'ECTS Max', 'Libre Min', 'Libre Max', 'Inscripciones', 'ECTS Reconocidos', 'Libre Reconocidos', 'Fecha Creada', 'Fecha Solicitud Aprobación', 'Fecha Aprobación'
+            );
+            $titulos_printed = false;
+
+            while (false !== ($row = $results->next())) {
+                if (!$titulos_printed) {
+                    fputcsv($handle, $titulos);
+                    $titulos_printed = true;
+                }
+                fputcsv($handle, $row[0]); //[0]->toArray());
+            }
+
+            fclose($handle);
+        });
+        $response->headers->set('Content-Type', 'application/force-download');
+        $response->headers->set('Content-Disposition', 'attachment; filename="Export de datos estádisticos -filtro-' . $filter . '.csv"');
+
         return $response;
     }
 

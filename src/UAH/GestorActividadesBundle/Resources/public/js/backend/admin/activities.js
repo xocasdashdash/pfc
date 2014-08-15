@@ -54,5 +54,11 @@ $(document).on('ready', function() {
         var frame = $('<iframe>', {'src': Routing.generate('uah_gestoractividades_admin_printpending')}).hide();
         $('body').append(frame);
     });
+    $('.filter-csv').on('click', 'a', function() {
+        $filter = this.dataset.filter;
+        console.log("Filter:" + $filter);
+        var frame = $('<iframe>', {'src': Routing.generate('uah_gestoractividades_admin_export', {filter: $filter})}).hide();
+        $('body').append(frame);
+    });
 
 });
