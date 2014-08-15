@@ -94,7 +94,9 @@ class AdminController extends Controller {
      * @Security("has_role('ROLE_UAH_ADMIN')")
      */
     public function usersAction() {
-        
+        $em = $this->getDoctrine()->getManager();
+        $users = $em->getRepository('UAHGestorActividadesBundle:User')->findAll();
+        return $this->render('UAHGestorActividadesBundle:Admin:users.html.twig', array('users' => $users));
     }
 
     /**
