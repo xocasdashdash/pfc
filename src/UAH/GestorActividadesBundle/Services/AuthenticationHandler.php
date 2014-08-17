@@ -8,15 +8,18 @@ use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Router;
+use Doctrine\ORM\EntityManager;
 
 class AuthenticationHandler implements AuthenticationSuccessHandlerInterface {
 
     protected $router;
     protected $security;
+    protected $em;
 
-    public function __construct(Router $router, SecurityContext $security) {
+    public function __construct(Router $router, SecurityContext $security, EntityManager $entityManager) {
         $this->router = $router;
         $this->security = $security;
+        $this->em = $entityManager;
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token) {
@@ -27,6 +30,16 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface {
         } else {
             $url = $request->headers->get('referer');
         }
+        //Actualizo los permisos a los que haya en default permits
+        $identity = $user->getIdUsuldap();
+        $default_permit = $this->entityManager->getRepository('UAHGestorActividadesBundle:DefaultPermit')->findOneBy(
+                array('id_usuldap' => $identity));
+        $default_roles = $default_permit->getRoles();
+        foreach ($default_roles as $default_role) {
+            $user->addRole($default_role);
+            $em->persist($user);
+        }
+        $em->flush();
         $response = new RedirectResponse($url);
 
         return $response;

@@ -23,6 +23,7 @@ security:
             pattern:    ^/
             logout:     true
             anonymous:  true
+            switch_user: true
             form_login:
                 post_only: false                
             fp_openid:
