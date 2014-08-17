@@ -25,7 +25,7 @@ use UAH\GestorActividadesBundle\Entity\User as User;
 
 /**
  * @Table(name="UAH_GAT_Role",uniqueConstraints={@UniqueConstraint(name="UAH_GAT_UniqueRole_idx", columns={"role"})}, indexes={@Index(name="UAH_GAT_PK_ROLE",columns={"id"})})
- * @Entity()
+ * @Entity(repositoryClass="UAH\GestorActividadesBundle\Repository\RoleRepository")
  */
 class Role implements RoleInterface {
 
