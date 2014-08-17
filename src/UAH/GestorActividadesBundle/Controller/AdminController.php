@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Cookie;
 use UAH\GestorActividadesBundle\Entity\Role;
 use UAH\GestorActividadesBundle\Entity\DefaultPermit;
+use UAH\GestorActividadesBundle\Entity\Degree;
 
 /**
  * @Route("/admin")
@@ -420,6 +421,75 @@ class AdminController extends Controller {
         $response->headers->set('Content-Disposition', 'attachment; filename="Export de datos estádisticos -filtro-' . $filter . '.csv"');
 
         return $response;
+    }
+
+    /**
+     * @Route("/degrees")
+     * Security("is_granted('ROLE_UAH_ADMIN')")
+     */
+    public function degreesAction(Request $request) {
+        $em = $this->getDoctrine()->getManager();
+        $filter = $request->get('filter', 'ALL');
+
+        $degrees = $em->getRepository('UAHGestorActividadesBundle:Degree')->getDegrees($filter);
+        $token = $this->get('form.csrf_provider')->generateCsrfToken('uah_admin');
+        $cookie = new Cookie('X-CSRFToken', $token, 0, '/', null, false, false);
+        $response = $this->render('UAHGestorActividadesBundle:Admin:degrees.html.twig', array('degrees' => $degrees));
+        $response->headers->setCookie($cookie);
+        return $response;
+    }
+
+    public function updateDegreesAction(Degree $degree, Request $request) {
+        
+    }
+
+    public function deleteDegreesAction(Degree $degree, Request $request) {
+        
+    }
+
+    /**
+     * @Route("/degrees/new", options={"expose"=true})
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     */
+    public function newDegreeAction(Request $request) {
+        $response = array();
+
+        if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
+                $this->get('form.csrf_provider')->isCsrfTokenValid('uah_admin', $request->headers->get('X-CSRFToken'))) {
+            $em = $this->getDoctrine()->getManager();
+            $parameters = $request->request->all();
+            if ($parameters['degree-id'] !== '') {
+                //Actualizo uno que ya este
+                $degree = $em->getRepository('UAHGestorActividadesBundle:Degree')
+                        ->find($parameters['degree-id']);
+            } else {
+                //Creo uno nuevo
+                $degree = new Degree();
+            }
+            if (is_null($degree)) {
+                //No hemos encontrado esa titulación
+                $response['message'] = 'No hemos encontrado esa titulación';
+                $response['type'] = 'error';
+                $code = 400;
+            } else {
+                $degree->setName($parameters['degree-name']);
+                $degree->setAcademicCode($parameters['academic-code']);
+                $degree->setKnowledgeArea($parameters['knowledge-area']);
+                $status = $em->getRepository('UAHGestorActividadesBundle:Statusdegree')->findOneBy(array('code' => $parameters['type']));
+                $degree->setStatus($status);
+                $em->persist($degree);
+                $em->flush();
+                $response['message'] = 'Titulación creada';
+                $response['type'] = 'success';
+                $response['degreeId'] = $degree->getId();
+                $code = 200;
+            }
+        } else {
+            $response['message'] = 'Error con el token CSRF. Prueba a recargar la página';
+            $response['type'] = 'error';
+            $code = 400;
+        }
+        return new JsonResponse($response, $code);
     }
 
 }

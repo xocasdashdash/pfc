@@ -75,9 +75,6 @@ $(document).on('ready', function() {
         }
 
     });
-    $('#btn_create_new_user').on('click', function() {
-
-    });
     $('#form-create-new-user').on('submit', function(evt) {
         evt.preventDefault();
         $uah_name = $('#uah-name').val();
