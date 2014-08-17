@@ -10,6 +10,7 @@
                 'bootstrap/css/bootstrap.css' 
                 '@UAHGestorActividadesBundle/Resources/public/css/base/*.less'
                 '@UAHGestorActividadesBundle/Resources/public/vendor/qTip2/jquery.qtip.min.css'
+                '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-select/dist/css/bootstrap-select.min.css' 
                 filter='cssrewrite'%}
             <link href="{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ asset_url }}" rel="stylesheet" type="text/css" />          
             {% endstylesheets %}
@@ -95,7 +96,10 @@
             '@UAHGestorActividadesBundle/Resources/public/vendor/jquery.cookie/jquery.cookie.js'
             '@UAHGestorActividadesBundle/Resources/public/vendor/bootbox.js/bootbox.js'
             '@UAHGestorActividadesBundle/Resources/public/js/base/base.js'
-            '@UAHGestorActividadesBundle/Resources/public/vendor/qTip2/jquery.qtip.min.js' %}                
+            '@UAHGestorActividadesBundle/Resources/public/vendor/qTip2/jquery.qtip.min.js'
+            '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-select/dist/js/bootstrap-select.min.js' 
+            '@UAHGestorActividadesBundle/Resources/public/vendor/qTip2/jquery.qtip.min.js'
+        %}                
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
         {% javascripts    '@UAHGestorActividadesBundle/Resources/public/js/enroll.js'%}

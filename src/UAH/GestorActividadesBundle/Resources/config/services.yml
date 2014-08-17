@@ -24,4 +24,8 @@ services:
         arguments: [@doctrine.orm.entity_manager]
     UahAuthenticationHandler:
         class: UAH\GestorActividadesBundle\Services\AuthenticationHandler
-        arguments: ['@router','@security.context']
+        arguments: ['@router','@security.context','@doctrine.orm.entity_manager']
+    UAH.GestorActividades.twig.UAHNameExtension:
+        class: UAH\GestorActividadesBundle\Twig\UAHNameExtension
+        tags:
+            - { name: twig.extension }        

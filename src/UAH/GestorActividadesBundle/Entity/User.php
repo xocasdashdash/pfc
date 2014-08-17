@@ -15,12 +15,14 @@ use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use DateTime;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 
 /**
  * User
  *
  * @Table(name="UAH_GAT_User")
- * @Entity
+ * @Entity(repositoryClass="UAH\GestorActividadesBundle\Repository\UserRepository")
+ * @HasLifecycleCallbacks
  */
 class User implements UserInterface {
 
