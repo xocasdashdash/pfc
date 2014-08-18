@@ -28,4 +28,4 @@ services:
     UAH.GestorActividades.twig.UAHNameExtension:
         class: UAH\GestorActividadesBundle\Twig\UAHNameExtension
         tags:
-            - { name: twig.extension }        
+            - { name: twig.extension }

@@ -33,7 +33,8 @@ class EnrollmentRepository extends EntityRepository {
      */
     public function canEnroll(Activity $activity) {
         $valid_status = $this->getEntityManager()->getRepository('UAHGestorActividadesBundle:Statusactivity')->getValidStatus();
-        return $activity->getStatus() === $valid_status;
+        $activity_status = $activity->getStatus();
+        return $activity_status === $valid_status;
     }
 
     /**
