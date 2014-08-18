@@ -82,7 +82,7 @@ class DegreeRepository extends EntityRepository {
     private function getKnowledgeArea($knowledgeArea) {
         $em = $this->getEntityManager();
         $active_statuses = $em->getRepository('UAHGestorActividadesBundle:Statusdegree')->getActive();
-        $dql = "SELECT d,s.code tipo from UAHGestorActividadesBundle:Degree d LEFT JOIN d.status s where d.status in (:active_statuses) " .
+        $dql = "SELECT d obj,s.code tipo from UAHGestorActividadesBundle:Degree d LEFT JOIN d.status s where d.status in (:active_statuses) " .
                 " AND d.knowledgeArea = :knowledgeArea";
         $consulta = $em->createQuery($dql);
         $consulta->setParameter('active_statuses', $active_statuses);
