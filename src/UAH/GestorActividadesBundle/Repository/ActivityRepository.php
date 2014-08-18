@@ -206,14 +206,31 @@ class ActivityRepository extends EntityRepository {
 
     public function getPublishedActivities($page = 1, $page_length = 20) {
         $em = $this->getEntityManager();
-        $dql = "SELECT a from UAHGestorActividadesBundle:Activity a" .
+        $dql = "SELECT a from UAHGestorActividadesBundle:Activity a " .
                 " LEFT JOIN a.status s " .
-                " WHERE s.code = 'STATUS_PUBLISHED'";
+                " WHERE s.code = 'STATUS_PUBLISHED' " .
+                " ORDER BY a.publicityStartDate ASC";
         $consulta = $em->createQuery($dql);
         $consulta->setFirstResult(($page - 1) * $page_length);
         $consulta->setMaxResults($page * $page_length);
         $resultado = $consulta->getResult();
         return $resultado;
+    }
+
+    public function updatePublished() {
+        $em = $this->getEntityManager();
+        $dql = " UPDATE UAHGestorActividadesBundle:Activity a " .
+                " set a.status = :status_published " .
+                " WHERE a.status = :status_approved and a.publicityStartDate < :fecha ";
+        $status_published = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getPublished();
+        $status_approved = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getApproved();
+        $consulta = $em->createQuery($dql);
+
+        $consulta->setParameter('status_published', $status_published);
+        $consulta->setParameter('status_approved', $status_approved);
+        $consulta->setParameter('fecha', date('Y-m-d', time()));
+        $consulta->execute();
+        $em->flush();
     }
 
 }
