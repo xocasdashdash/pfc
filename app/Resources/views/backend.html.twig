@@ -45,7 +45,7 @@
                             <a href="{{ path('uah_gestoractividades_profile_index') }}">Perfil</a>
                         </li>
                         {% if is_granted('ROLE_UAH_ADMIN') %}
-                            <li>
+                            <li class="dropdown">
                                 <a id="dropdownMenu1" href="#" data-toggle="dropdown">
                                     Administrar
                                     <span class="caret"></span>
@@ -57,7 +57,15 @@
                                     <li role="presentation">
                                         <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_users')}}">Usuarios</a>
                                     </li>
+                                    <li role="presentation">
+                                        <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_degrees')}}">Titulaciones</a>
+                                    </li>
                                 </ul>
+                            </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                            <li>
+                                <a href="{{path('uah_gestoractividades_admin_activities', {_switch_user:'exit'}) }}">EXIT</a>
                             </li>
                         {% endif %}
                         <li>

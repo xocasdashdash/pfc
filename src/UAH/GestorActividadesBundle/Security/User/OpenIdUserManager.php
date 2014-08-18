@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 use UAH\GestorActividadesBundle\Entity\DefaultPermit as DefaultPermit;
 use UAH\GestorActividadesBundle\Entity\User as User;
+use DateTime;
 
 class OpenIdUserManager extends UserManager {
 
@@ -51,10 +52,13 @@ class OpenIdUserManager extends UserManager {
             $user->setName($name);
             $user->setApellido1($apellido);
             $user->setIdUsuldap($identity);
-            $roles = $this->entityManager->getRepository('UAHGestorActividadesBundle:DefaultPermit')->findOneBy(
+            $user->setDateCreated(new DateTime());
+            $user->setDateUpdated(new DateTime());
+
+            $default_permits = $this->entityManager->getRepository('UAHGestorActividadesBundle:DefaultPermit')->findOneBy(
                     array('id_usuldap' => $identity));
-            if ($roles) {
-                $roles = $roles->getRoles();
+            if ($default_permits) {
+                $roles = $default_permits->getRoles();
                 foreach ($roles as $role) {
                     $user->addRole($role);
                 }
@@ -62,6 +66,7 @@ class OpenIdUserManager extends UserManager {
                 $role = $this->entityManager
                                 ->getRepository('UAHGestorActividadesBundle:Role')->findOneBy(
                         array('role' => 'ROLE_UAH_STUDENT'));
+                $user->addRole($role);
             }
         }
         // we create an OpenIdIdentity for this User

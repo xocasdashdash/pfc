@@ -14,12 +14,15 @@ use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use DateTime;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 
 /**
  * User
  *
  * @Table(name="UAH_GAT_User")
- * @Entity
+ * @Entity(repositoryClass="UAH\GestorActividadesBundle\Repository\UserRepository")
+ * @HasLifecycleCallbacks
  */
 class User implements UserInterface {
 
@@ -59,6 +62,20 @@ class User implements UserInterface {
      * @Column(name="creationIp", type="string", length=255, nullable=true)
      */
     private $creationIp;
+
+    /**
+     * 
+     * @var date Fecha en la que se creo el usuario. 
+     * @Column(name="date_created",type="datetime", nullable=false) 
+     */
+    private $date_created;
+
+    /**
+     * 
+     * @var date Fecha en la que se modificó el usuario. 
+     * @Column(name="date_updated",type="datetime", nullable=false) 
+     */
+    private $date_updated;
 
     /**
      * @var string
@@ -559,15 +576,13 @@ class User implements UserInterface {
         }
     }
 
-
     /**
      * Set type
      *
      * @param string $type
      * @return User
      */
-    public function setType($type)
-    {
+    public function setType($type) {
         $this->type = $type;
 
         return $this;
@@ -578,8 +593,60 @@ class User implements UserInterface {
      *
      * @return string 
      */
-    public function getType()
-    {
+    public function getType() {
         return $this->type;
     }
+
+    /**
+     * Set date_created
+     *
+     * @param \DateTime $dateCreated
+     * @return User
+     */
+    public function setDateCreated($dateCreated) {
+        $this->date_created = $dateCreated;
+
+        return $this;
+    }
+
+    /**
+     * Get date_created
+     *
+     * @return \DateTime 
+     */
+    public function getDateCreated() {
+        return $this->date_created;
+    }
+
+    /**
+     * Set date_updated
+     *
+     * @param \DateTime $dateUpdated
+     * @return User
+     */
+    public function setDateUpdated($dateUpdated) {
+        $this->date_updated = $dateUpdated;
+
+        return $this;
+    }
+
+    /**
+     * Get date_updated
+     *
+     * @return \DateTime 
+     */
+    public function getDateUpdated() {
+        return $this->date_updated;
+    }
+
+    public function getUAHUser() {
+        $pattern = '/^https?:\/\/yo\.rediris\.es\/soy\/(.+)@\w+\.+[a-z]{2,4}\/?/';
+        if (preg_match($pattern, $this->getIdUsuldap(), $matches) === 1) {
+            return $matches[0];
+        } else {
+            return 'No encontrado';
+            //return 'http://yo.rediris.es/soy/adrian.bolonio@uah.es';
+        }
+    }
+
 }

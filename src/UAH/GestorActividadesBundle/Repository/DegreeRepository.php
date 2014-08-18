@@ -30,4 +30,64 @@ class DegreeRepository extends EntityRepository {
         return $consulta->getResult();
     }
 
+    public function getDegrees($filter) {
+        switch ($filter) {
+            case 'CIENCIAS':
+                $degrees = $this->getCiencias();
+                break;
+            case 'SALUD':
+                $degrees = $this->getCCSS();
+                break;
+            case 'CCSSYJJ':
+                $degrees = $this->getCCSSYJJ();
+                break;
+            case 'HUMANIDADES':
+                $degrees = $this->getHumanidades();
+                break;
+            case 'INGYARQ':
+                $degrees = $this->getIngYArq();
+                break;
+            case 'ALL':
+                $em = $this->getEntityManager();
+                $active_statuses = $em->getRepository('UAHGestorActividadesBundle:Statusdegree')->getActive();
+                $dql = "SELECT d obj,s.code tipo from UAHGestorActividadesBundle:Degree d LEFT JOIN d.status s where d.status in (:active_statuses)";
+                $consulta = $em->createQuery($dql);
+                $consulta->setParameter('active_statuses', $active_statuses);
+                $degrees = $consulta->getResult();
+                break;
+        }
+        return $degrees;
+    }
+
+    public function getCiencias() {
+        return $this->getKnowledgeArea('Ciencias');
+    }
+
+    public function getCCSS() {
+        return $this->getKnowledgeArea('Ciencias de la Salud');
+    }
+
+    public function getCCSSYJJ() {
+        return $this->getKnowledgeArea('Ciencias Sociales y Jurídicas');
+    }
+
+    public function getIngYArq() {
+        return $this->getKnowledgeArea('Ingeniería y Arquitectura');
+    }
+
+    public function getHumanidades() {
+        return $this->getKnowledgeArea('Humanidades');
+    }
+
+    private function getKnowledgeArea($knowledgeArea) {
+        $em = $this->getEntityManager();
+        $active_statuses = $em->getRepository('UAHGestorActividadesBundle:Statusdegree')->getActive();
+        $dql = "SELECT d,s.code tipo from UAHGestorActividadesBundle:Degree d LEFT JOIN d.status s where d.status in (:active_statuses) " .
+                " AND d.knowledgeArea = :knowledgeArea";
+        $consulta = $em->createQuery($dql);
+        $consulta->setParameter('active_statuses', $active_statuses);
+        $consulta->setParameter('knowledgeArea', $knowledgeArea);
+        return $consulta->getResult();
+    }
+
 }
