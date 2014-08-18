@@ -204,4 +204,16 @@ class ActivityRepository extends EntityRepository {
         return $resultado;
     }
 
+    public function getPublishedActivities($page = 1, $page_length = 20) {
+        $em = $this->getEntityManager();
+        $dql = "SELECT a from UAHGestorActividadesBundle:Activity a" .
+                " LEFT JOIN a.status s " .
+                " WHERE s.code = 'STATUS_PUBLISHED'";
+        $consulta = $em->createQuery($dql);
+        $consulta->setFirstResult(($page - 1) * $page_length);
+        $consulta->setMaxResults($page * $page_length);
+        $resultado = $consulta->getResult();
+        return $resultado;
+    }
+
 }
