@@ -13,8 +13,11 @@ class DefaultController extends Controller {
      * @Route("/pag/{pagina}", requirements={"pagina" = "\d+"}, defaults={"pagina" = 1})
      */
     public function indexAction($pagina, Request $request) {
+        
         $em = $this->getDoctrine()->getManager();
-        $activities = $em->getRepository('UAHGestorActividadesBundle:Activity')->findBy(array(), array('publicityStartDate' => 'ASC'));
+        $activity_repository = $em->getRepository('UAHGestorActividadesBundle:Activity');
+        $activity_repository->updatePublished();
+        $activities = $activity_repository->getPublishedActivities();//findBy(array(), array('publicityStartDate' => 'ASC'));
         $num_actividades = count($activities);
         $enrollments_id = array();
         $enrolled_activities = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrolledActivitiesId($this->getUser(), $pagina);
