@@ -1,1 +1,151 @@
-{# empty Twig template #}
+{% extends "::backend.html.twig" %}
+{% block javascripts %}
+    {{parent()}}
+    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/backend/admin/users.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block stylesheets %}
+    {{parent()}}
+    {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/admin/*.less' %}
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
+    {% endstylesheets %}
+{%endblock %}
+{% block acciones_datos %}
+    <div class="row acciones_datos hidden-print">
+        <div class="flex-container">
+            <div class="flex-item">
+                {# <div class="dropdown"> #}
+                {# <button type="button" class="btn btn-default" title="Muestra todas las actividades" id="btn_show_all_activities" >
+                    <div class="dropdown"> #}
+                <li class="dropdown">
+                    <button id="dropdownMenu1" href="#" data-toggle="dropdown" class="btn btn-default">
+                        Filtra los usuarios
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_users', {filter: 'STUDENT'})}}">Estudiantes</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_users', {filter: 'STAFF'})}}">Secretarias de alumnos - PAS</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_users', {filter: 'PDI'})}}">PDI y Organizadores</a>
+                        </li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_users', {filter: 'ADMIN'})}}">Admin</a>
+                        </li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_users', {filter: 'SUPERADMIN'})}}">SuperAdmin</a>
+                        </li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_users', {filter: 'ALL'})}}">Todos</a>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+
+            <div class="flex-item">
+
+                <button class="btn btn-default" id="btn_create_new_default" title="Mostrar el formulario para dar de alta nuevos permisos" data-toggle="modal" data-target="#modal-create-user">Dar de alta nuevo usuario</button>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+{% block title %}
+    Panel de administración de permisos de usuarios
+{% endblock %}
+{% block content %}
+    <div class="row top-buffer">
+        <table class="table table-bordered tbl_enrolled">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="nombre-actividad">Nombre</th>
+                    <th class="hidden-print">Usuario UAH</th>
+                    <th>Permisos</th>
+                    <th class="hidden-print">Acción</th>                
+                </tr>
+            </thead>
+            <tbody>
+                {% for user_permit in users_permits %}
+                    <tr id="default-permit-{{user_permit.default_permit.id}}">
+                        <td class="index">{{loop.index}}</td>
+
+                        {% if user_permit.user_id is null %}
+                            <td class="id_ldap" data-id-ldap="{{user_permit.default_permit.idUsuldap}}" >Todavía no se ha logueado </td>
+
+                        {% else %}
+                            <td class="id_ldap" data-id-ldap="{{user_permit.default_permit.idUsuldap}}" ><a href="{{ path("uah_gestoractividades_profile_index",{"_switch_user": user_permit.id_ldap})}}" class="switch_user" title="Cambiarte a este usuario">{{user_permit.name ~ ' ' ~ user_permit.apellido1 ~ ' ' ~ user_permit.apellido2}}</a></td>
+                            {% endif %}
+                        <td class="text-left">{{user_permit.default_permit.idUsuldap|uahuser}}</td>
+
+
+
+                        <td class="text-left">
+                            <select class="selectpicker" title="Cambiar roles de los usuarios">
+                                {% for role in roles %}
+                                    {% if role.role != 'ROLE_UAH_SUPER_ADMIN' %}
+                                        <option value="{{role.role}}" {% if role in user_permit.default_permit.roles %} selected="true" {% endif %}>{{role.name}}</option>
+                                    {% elseif app.user and app.user.granted('ROLE_UAH_SUPER_ADMIN') %}
+                                        <option value="{{role.role}}" {% if role in user_permit.default_permit.roles %} selected="true" {% endif %}>{{role.name}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>                            
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-default update_permissions" data-default-permit-id="{{user_permit.default_permit.id}}" title="Actualiza los permisos que este usuario tiene disponibles">Actualizar</button>
+                            <button class="btn btn-default delete_permissions" data-default-permit-id="{{user_permit.default_permit.id}}" title="Deja a este usuario con los permisos por defecto (Estudiante) y lo borra de aquí">Quitar</button>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="modal-create-user" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form class="form-horizontal" id="form-create-new-user">
+                    <div class="modal-header">
+                        <h4>Crear permisos para usuario</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="uah-name" class="col-sm-4 control-label">Nombre UAH:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="uah-name" placeholder="nombre.apellido">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="uah-roles" class="col-sm-4 control-label">Permisos:</label>
+                            <div class="col-sm-8">
+                                <select class="selectpicker" title="Elegir un los usuarios" id="uah-roles">
+                                    {% for role in roles %}
+                                        {% if role.role != 'ROLE_UAH_SUPER_ADMIN' %}
+                                            <option value="{{role.role}}">{{role.name}}</option>
+                                        {% elseif app.user and app.user.granted('ROLE_UAH_SUPER_ADMIN') %}
+                                            <option value="{{role.role}}">{{role.name}}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-default" data-dismiss="modal">Cerrar</a>    
+                        <button class="btn btn-success" type="submit">Crear</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>                
+
+{% endblock %}

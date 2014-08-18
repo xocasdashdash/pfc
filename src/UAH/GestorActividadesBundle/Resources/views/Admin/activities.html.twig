@@ -7,7 +7,7 @@
 {% endblock %}
 {% block stylesheets %}
     {{parent()}}
-    {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/profile/*.less' %}
+    {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/admin/*.less' %}
     <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
     {% endstylesheets %}
 {%endblock %}
@@ -15,16 +15,83 @@
     <div class="row acciones_datos hidden-print">
         <div class="flex-container">
             <div class="flex-item">
-                <button type="button" class="btn btn-default" title="Muestra todas las actividades" id="btn_show_all_activities" >Muestra todas las actividades</button>
+                {# <div class="dropdown"> #}
+                {# <button type="button" class="btn btn-default" title="Muestra todas las actividades" id="btn_show_all_activities" >
+                    <div class="dropdown"> #}
+                <li class="dropdown">
+                    <button id="dropdownMenu1" href="#" data-toggle="dropdown" class="btn btn-default">
+                        Filtra las actividades
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'pending'})}}">Pendientes</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'approved'})}}">Aprobadas</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'published'})}}">Publicadas</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'closed'})}}">Cerradas</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'draft'})}}">Borrador</a>
+                        </li>
+                        <li role="presentation" class="divider"></li>
+
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'all'})}}">Todas</a>
+                        </li>
+                    </ul>
+                </li>
             </div>
+
             <div class="flex-item">
                 <button type="button" class="btn btn-default" id="btn_approve_selected" title="Aprueba todas las actividades seleccionadas">Aprobar actividades seleccionadas</button>
             </div>
             <div class="flex-item">
                 <button type="button" class="btn btn-default" id="btn_print_pending_report" title="Descarga un pdf con todas las actividades pendientes de aprobar">Imprimir informe actividades pendientes</button>
             </div>
+            <div class="flex-item">
+                <li class="dropdown">
+                    <button id="dropdownMenu1" href="#" data-toggle="dropdown" class="btn btn-default">
+                        Descargar CSV 
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right filter-csv" role="menu" aria-labelledby="dropdownMenu1">
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="pending" >Pendientes</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="approved" >Aprobadas</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="published">Publicadas</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="closed" >Cerradas</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="draft" >Borrador</a>
+                        </li>
+                        <li role="presentation" class="divider"></li>
+
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="all" >Todas del año</a>
+                        </li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="year0">Año 0</a>
+                        </li>
+                    </ul>
+                </li>
+            </div>
         </div>
+
     </div>
+
 {% endblock %}
 {% block title %}
     Panel de administración de actividades

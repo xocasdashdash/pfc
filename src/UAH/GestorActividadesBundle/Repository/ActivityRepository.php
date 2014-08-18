@@ -9,7 +9,9 @@
 namespace UAH\GestorActividadesBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use UAH\GestorActividadesBundle\Entity\Activity;
+use UAH\GestorActividadesBundle\Entity\Statusactivity;
 
 class ActivityRepository extends EntityRepository {
 
@@ -115,6 +117,90 @@ class ActivityRepository extends EntityRepository {
                 ' ORDER BY a.date_created DESC';
         $consulta = $em->createQuery($dql);
         $resultado = $consulta->getArrayResult();
+        return $resultado;
+    }
+
+    public function getAllByStatus(Statusactivity $status) {
+        if (is_null($status)) {
+            return $this->getAll();
+        } else {
+            $em = $this->getEntityManager();
+            $dql = ' SELECT a ' .
+                    ' FROM UAHGestorActividadesBundle:Activity a ' .
+                    ' WHERE a.status = :status ' .
+                    ' ORDER BY a.date_created DESC';
+            $consulta = $em->createQuery($dql);
+            $consulta->setParameter('status', $status);
+            $resultado = $consulta->getArrayResult();
+            return $resultado;
+        }
+    }
+
+    public function getExportData($filter, $iterator = FALSE) {
+        $em = $this->getEntityManager();
+        $activity_status_repository = $em->getRepository('UAHGestorActividadesBundle:Statusactivity');
+        $all = false;
+        $year0 = false;
+        switch ($filter) {
+            case "pending":
+                $status = $activity_status_repository->getPending();
+                break;
+            case "approved":
+                $status = $activity_status_repository->getApproved();
+                break;
+            case "published":
+                $status = $activity_status_repository->getPublished();
+                break;
+            case "closed":
+                $status = $activity_status_repository->getClosed();
+                break;
+            case "draft":
+                $status = $activity_status_repository->getDraft();
+                break;
+            case "all":
+                $all = true;
+                break;
+            case "year0":
+                $all = true;
+                $year0 = true;
+                break;
+        }
+        $dql = "SELECT a.id AS Id_Actividad  , a.name Nombre , a.englishName NombreEn" .
+                " ,a.hasAdditionalWorkload TrabajoAdicional,a.numberOfECTSCreditsMin ECTSminimos, " .
+                " a.numberOfECTSCreditsMax ECTSMaximos, a.numberOfCreditsMin LibreMinimo, " .
+                " a.numberOfCreditsMax LibreMaximo, " .
+                " COUNT( e.id ) inscripciones, " .
+                " (select sum(e1.recognizedCredits) from UAHGestorActividadesBundle:Enrollment e1 where e1.creditsType = 'ECTS' " .
+                " and e1.activity = a.id) ECTSReconocidos, " .
+                " (select sum(e2.recognizedCredits) from UAHGestorActividadesBundle:Enrollment e2 where e2.creditsType = 'LIBRE' " .
+                " and e2.activity = a.id) CreditosLibreReconocidos, " .
+                " a.date_created FechaCreada, a.date_pending_approval FechaSolicitudAprobacion, " .
+                " a.date_approved FechaAprobacion " .
+                " FROM UAHGestorActividadesBundle:Activity a JOIN UAHGestorActividadesBundle:Enrollment e " .
+                " WITH a.id = e.activity ";
+        if ($all & $year0) {
+            //No hago nada
+        } elseif ($all) {
+            $year = date('Y');
+            $dql .= " WHERE a.date_created > :year ";
+        } elseif (!$all) {
+            $year = date('Y');
+            $dql .= " WHERE a.status=:status and a.date_created > :year ";
+        }
+
+        $dql .=" GROUP BY e.activity ";
+        $consulta = $em->createQuery($dql);
+        if (isset($year)) {
+            $consulta->setParameter('year', $year);
+        }
+        if (isset($status)) {
+            $consulta->setParameter('status', $status);
+        }
+        if ($iterator) {
+            $resultado = $consulta->iterate(null, Query::HYDRATE_SCALAR);
+        } else {
+            $resultado = $consulta->getScalarResult();
+        }
         return $resultado;
     }
 
