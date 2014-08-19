@@ -23,7 +23,7 @@ $(document).on('ready', function() {
                     $fila.find('.degree-academic-code').text($('#academic-code').val());
                     $fila.data('degreeType', $('.radio-div input[type=radio]:checked').val());
                 } else {
-                    bootbox.alert('Nueva titulación añadida');
+                    bootbox.alert('Nueva titulación añadida. Recarga para verla');
                 }
                 $('#form-create-degree')[0].reset();
             },

@@ -87,7 +87,9 @@ class Category {
      * @return Category
      */
     public function setName($name) {
-        $this->hash = sha1($name . $this->getStatus()->getId());
+        if (!is_null($this->getStatus())) {
+            $this->hash = sha1($name . $this->getStatus()->getId());
+        }
         $this->name = $name;
 
         return $this;
@@ -118,7 +120,9 @@ class Category {
      * @return Category
      */
     public function setStatus(\UAH\GestorActividadesBundle\Entity\Statuscategory $status = null) {
-        $this->hash = sha1($this->getName() . $status->getId());
+        if (!is_null($this->getName())) {
+            $this->hash = sha1($this->getName() . $status->getId());
+        }
         $this->status = $status;
 
         return $this;

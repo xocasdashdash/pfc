@@ -1,0 +1,103 @@
+{% extends "::backend.html.twig" %}
+{% block javascripts %}
+    {{parent()}}
+    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/backend/admin/categories.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block stylesheets %}
+    {{parent()}}
+    {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/admin/*.less' %}
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
+    {% endstylesheets %}
+{%endblock %}
+{% block acciones_datos %}
+    <div class="row acciones_datos hidden-print">
+        <div class="flex-container">
+            <div class="flex-item">
+                <button class="btn btn-default" id="btn_create_new_category" title="Mostrar el formulario para dar de alta nuevas categorias" data-toggle="modal" data-target="#modal-create-category">Dar de alta nueva categoria</button>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+{% block title %}
+    Panel de administración de permisos de usuarios
+{% endblock %}
+{% block content %}
+    <div class="row top-buffer">
+        <table class="table table-bordered tbl_enrolled">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="category-name">Nombre</th>
+                    <th class="category-parent">Padre</th>
+                    <th class="category-status">Estado</th>
+                    <th class="hidden-print">Acción</th>                
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in categories %}
+                    {#
+                    {% if category.status.code = 'STATUS_RENEWED' %}
+                        {% set tipo = 'Plan Renovado'%}
+                    {% elseif category.status.code = 'STATUS_NON_RENEWED' %}
+                        {% set tipo = 'Plan NO Renovado'%}
+                    {%else%}
+                        {% set tipo = 'Plan inactivo'%}
+                    {%endif%}
+                    #}
+                    <tr id="category-{{category.obj.id}}" data-category-type="{{category.tipo}}">
+                        <td class="index">{{loop.index}}</td>
+                        <td class="category-name">{{category.obj.name}}</td>
+                        <td class="category-parent">{{category.obj.parentCategory.name|default('-')}}</td>
+                        <td class="category-status">{{category.tipo}}</td>
+                        <td class="text-center">
+                            <button class="btn btn-default update_category" data-category-id="{{category.obj.id}}" title="Actualiza los datos de esta categoria">Actualizar</button>
+                            <button class="btn btn-default delete_category" data-category-id="{{category.obj.id}}" title="Desactiva esta categoría">Eliminar</button>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="modal-create-category" role="dialog" data-keyboard="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form class="form-horizontal" id="form-create-category">
+                    <div class="modal-header">
+                        <h4>Crear una nueva categoría</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="category-name" class="col-sm-4 control-label">Nombre categoría:</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="category-name" name="category-name" placeholder="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="parent-category" class="col-sm-4 control-label">Categoría padre (Deja vacio para crear una categoría padre):</label>
+                            <div class="col-sm-8">
+                                <select class="selectpicker" name="parent-category" title="Categoria padre" id="parent-category" data-width="100%">
+                                    <option data-hidden="true"></option>
+                                    {% for category in parent_categories %}
+                                        <option value="{{category.id}}">{{category.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <input type="hidden" name="category-id" id="category-id">
+                    </div>
+                    <div class="modal-footer">
+                        <a class="btn btn-default" data-dismiss="modal">Cerrar</a>    
+                        <button class="btn btn-success" type="submit" id="btn_submit_category">Crear</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>                
+
+{% endblock %}
