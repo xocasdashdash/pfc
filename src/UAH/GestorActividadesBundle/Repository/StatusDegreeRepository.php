@@ -19,23 +19,24 @@ class StatusDegreeRepository extends EntityRepository {
     }
 
     public function getRenewed() {
-        $dql = "SELECT sd from UAHGestorActividadesBundle:Statusdegree sd where sd.code = 'STATUS_RENEWED'";
-        $consulta = $this->getEntityManager()->createQuery($dql);
-        return $consulta->getResult();
+        return $this->getByStatus('STATUS_RENEWED');
     }
 
     public function getNotRenewed() {
 
-        $dql = "SELECT sd from UAHGestorActividadesBundle:Statusdegree sd where sd.code = 'STATUS_NON_RENEWED'";
-        $consulta = $this->getEntityManager()->createQuery($dql);
-        return $consulta->getResult();
+        return $this->getByStatus('STATUS_NON_RENEWED');
     }
 
     public function getInactive() {
 
-        $dql = "SELECT sd from UAHGestorActividadesBundle:Statusdegree sd where sd.code = 'STATUS_INACTIVE'";
+        return $this->getByStatus('STATUS_INACTIVE');
+    }
+
+    private function getByStatus($status) {
+        $dql = "SELECT sd from UAHGestorActividadesBundle:Statusdegree sd where sd.code = :code";
         $consulta = $this->getEntityManager()->createQuery($dql);
-        return $consulta->getResult();
+        $consulta->setParameter('code', $status);
+        return $consulta->getSingleResult();
     }
 
 }
