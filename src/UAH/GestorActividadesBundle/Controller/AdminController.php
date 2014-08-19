@@ -188,7 +188,7 @@ class AdminController extends Controller {
     /**
      * @Route("/users/updatepermissions/{identity}/{permits}", defaults={"identity":"-1","permits":"ROLE_UAH_STUDENT"},options={"expose"=true})
      * @ParamConverter("role", class="UAHGestorActividadesBundle:Role",options={"mapping": {"permits": "role"}})
-     * Security("is_granted('ROLE_UAH_ADMIN')")
+     * @Security("is_granted('ROLE_UAH_ADMIN')")
      * @param type $identity
      */
     public function updatePermissionsAction($identity, Role $role, Request $request) {
@@ -266,7 +266,7 @@ class AdminController extends Controller {
 
     /**
      * @Route("/users/deletepermissions/{identity}", defaults={"identity":"-1"},options={"expose"=true})
-     * Security("is_granted('ROLE_UAH_ADMIN')")
+     * @Security("is_granted('ROLE_UAH_ADMIN')")
      * @param type $identity
      */
     public function deletePermissionsAction($identity, Request $request) {
@@ -331,7 +331,7 @@ class AdminController extends Controller {
 
     /**
      * @Route("/users/new",options={"expose"=true})
-     * Security("is_granted('ROLE_UA_ADMIN')")
+     * @Security("is_granted('ROLE_UA_ADMIN')")
      */
     public function newUserAction(Request $request) {
         $response = array();
@@ -394,38 +394,8 @@ class AdminController extends Controller {
     }
 
     /**
-     * @Route("/users/exportCSV",options={"expose"=true})
-     * Security("is_granted('ROLE_UAH_ADMIN')")
-     */
-    public function exportUsersAction() {
-
-        $em = $this->getDoctrine()->getManager();
-        $results = $em->getRepository('UAHGestorActividadesBundle:User')->getExportData(); //$filter, true);
-        $response = new StreamedResponse(function() use($results) {
-            $handle = fopen('php://output', 'r+');
-            $titulos = array(
-                'Id', 'Nombre', 'Nombre en inglés', 'Trabajo Adicional', 'ECTS Min', 'ECTS Max', 'Libre Min', 'Libre Max', 'Inscripciones', 'ECTS Reconocidos', 'Libre Reconocidos', 'Fecha Creada', 'Fecha Solicitud Aprobación', 'Fecha Aprobación'
-            );
-            $titulos_printed = false;
-            while (false !== ($row = $results->next())) {
-                if (!$titulos_printed) {
-                    fputcsv($handle, $titulos);
-                    $titulos_printed = true;
-                }
-                fputcsv($handle, $row[0]);
-            }
-
-            fclose($handle);
-        });
-        $response->headers->set('Content-Type', 'application/force-download');
-        $response->headers->set('Content-Disposition', 'attachment; filename="Export de datos estádisticos -filtro-' . $filter . '.csv"');
-
-        return $response;
-    }
-
-    /**
      * @Route("/degrees")
-     * Security("is_granted('ROLE_UAH_ADMIN')")
+     * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
     public function degreesAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -439,21 +409,12 @@ class AdminController extends Controller {
         return $response;
     }
 
-    public function updateDegreesAction(Degree $degree, Request $request) {
-        
-    }
-
-    public function deleteDegreesAction(Degree $degree, Request $request) {
-        
-    }
-
     /**
      * @Route("/degrees/new", options={"expose"=true})
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
     public function newDegreeAction(Request $request) {
         $response = array();
-
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('uah_admin', $request->headers->get('X-CSRFToken'))) {
             $em = $this->getDoctrine()->getManager();
@@ -484,6 +445,32 @@ class AdminController extends Controller {
                 $response['degreeId'] = $degree->getId();
                 $code = 200;
             }
+        } else {
+            $response['message'] = 'Error con el token CSRF. Prueba a recargar la página';
+            $response['type'] = 'error';
+            $code = 400;
+        }
+        return new JsonResponse($response, $code);
+    }
+
+    /**
+     * @Route("/degrees/delete/{degree_id}", options={"expose"=true})
+     * @ParamConverter("degree", class="UAHGestorActividadesBundle:Degree",options={"id":"degree_id"})
+     * @Security("is_granted('ROLE_UAH_ADMIN')")     
+     */
+    public function deleteDegreeAction(Degree $degree, Request $request) {
+        $response = array();
+        if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
+                $this->get('form.csrf_provider')->isCsrfTokenValid('uah_admin', $request->headers->get('X-CSRFToken'))) {
+
+            $em = $this->getDoctrine()->getManager();
+            $status_inactivo = $em->getRepository('UAHGestorActividadesBundle:Statusdegree')->getInactive();
+            $degree->setStatus($status_inactivo);
+            $em->persist($degree);
+            $em->flush();
+            $response['message'] = 'Grado borrado';
+            $response['type'] = 'success';
+            $code = 200;
         } else {
             $response['message'] = 'Error con el token CSRF. Prueba a recargar la página';
             $response['type'] = 'error';
