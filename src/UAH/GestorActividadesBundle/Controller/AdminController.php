@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Cookie;
 use UAH\GestorActividadesBundle\Entity\Role;
 use UAH\GestorActividadesBundle\Entity\DefaultPermit;
 use UAH\GestorActividadesBundle\Entity\Degree;
+use UAH\GestorActividadesBundle\Entity\Category;
 
 /**
  * @Route("/admin")
@@ -469,6 +470,99 @@ class AdminController extends Controller {
             $em->persist($degree);
             $em->flush();
             $response['message'] = 'Grado borrado';
+            $response['type'] = 'success';
+            $code = 200;
+        } else {
+            $response['message'] = 'Error con el token CSRF. Prueba a recargar la página';
+            $response['type'] = 'error';
+            $code = 400;
+        }
+        return new JsonResponse($response, $code);
+    }
+
+    /**
+     * @Route("/categories")
+     * @Security("is_granted('ROLE_UAH_ADMIN')")
+     */
+    public function categoriesAction() {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $categories = $em->getRepository('UAHGestorActividadesBundle:Category')->getAll();
+        $parent_categories = $em->getRepository('UAHGestorActividadesBundle:Category')->getParentCategories();
+        $token = $this->get('form.csrf_provider')->generateCsrfToken('uah_admin');
+        $cookie = new Cookie('X-CSRFToken', $token, 0, '/', null, false, false);
+        $response = $this->render('UAHGestorActividadesBundle:Admin:categories.html.twig', array(
+            'categories' => $categories,
+            'parent_categories' => $parent_categories
+        ));
+        $response->headers->setCookie($cookie);
+        return $response;
+    }
+
+    /**
+     * @Route("/categories/new", options={"expose"=true})
+     * @Security("is_granted('ROLE_UAH_ADMIN')")
+     */
+    public function newCategoryAction(Request $request) {
+        $response = array();
+        if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
+                $this->get('form.csrf_provider')->isCsrfTokenValid('uah_admin', $request->headers->get('X-CSRFToken'))) {
+            $em = $this->getDoctrine()->getManager();
+            $parameters = $request->request->all();
+            if ($parameters['category-id'] !== '') {
+                //Actualizo una que ya este
+                $category = $em->getRepository('UAHGestorActividadesBundle:Category')
+                        ->find($parameters['category-id']);
+            } else {
+                //Creo una nueva
+                $category = new Category();
+            }
+            if (is_null($category)) {
+                //No hemos encontrado esa titulación
+                $response['message'] = 'No hemos encontrado esa categoría';
+                $response['type'] = 'error';
+                $code = 400;
+            } else {
+                $active_status = $em->getRepository('UAHGestorActividadesBundle:Statuscategory')->getActive();
+                $category->setStatus($active_status);
+                $category->setName($parameters['category-name']);
+                if (isset($parameters['parent-category'])) {
+                    $parent_category = $em->getRepository('UAHGestorActividadesBundle:Category')->find($parameters['parent-category']);
+                } else {
+                    $parent_category = null;
+                }
+                $category->setParentCategory($parent_category);
+                $em->persist($category);
+                $em->flush();
+                $response['message'] = 'Categoría creada';
+                $response['type'] = 'success';
+                $response['degreeId'] = $category->getId();
+                $code = 200;
+            }
+        } else {
+            $response['message'] = 'Error con el token CSRF. Prueba a recargar la página';
+            $response['type'] = 'error';
+            $code = 400;
+        }
+        return new JsonResponse($response, $code);
+    }
+
+    /**
+     * @Route("/categories/delete/{category_id}", options={"expose"=true})
+     * @Security("is_granted('ROLE_UAH_ADMIN')")
+     * @ParamConverter("category", class="UAHGestorActividadesBundle:Category",options={"id":"category_id"})
+     */
+    public function deleteCategoryAction(Category $category, Request $request) {
+        $response = array();
+        if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
+                $this->get('form.csrf_provider')->isCsrfTokenValid('uah_admin', $request->headers->get('X-CSRFToken'))) {
+            $em = $this->getDoctrine()->getManager();
+            $status_inactivo = $em->getRepository('UAHGestorActividadesBundle:Statuscategory')->getInactive();
+            $category->setStatus($status_inactivo);
+            $em->persist($category);
+            $em->flush();
+            $response['message'] = $status_inactivo->getCode();
             $response['type'] = 'success';
             $code = 200;
         } else {
