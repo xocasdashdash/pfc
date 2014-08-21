@@ -23,7 +23,7 @@ $(document).on('ready', function() {
                     $fila.find('.degree-academic-code').text($('#academic-code').val());
                     $fila.data('degreeType', $('.radio-div input[type=radio]:checked').val());
                 } else {
-                    bootbox.alert('Nueva titulación añadida');
+                    bootbox.alert('Nueva titulación añadida. Recarga para verla');
                 }
                 $('#form-create-degree')[0].reset();
             },
@@ -47,8 +47,8 @@ $(document).on('ready', function() {
             return $(this).val() === tipo;
         }).prop('checked', true);
         $('#degree-id').val(evt.target.dataset.degreeId);
-        $('#modal-create-degree').modal('show');
         $('#btn_submit_degree').text('Actualizar');
+        $('#modal-create-degree').modal('show');
         edit = true;
     });
     $('table').on('click', '.delete_degree', function(evt) {

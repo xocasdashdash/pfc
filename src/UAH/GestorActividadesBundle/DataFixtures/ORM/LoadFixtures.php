@@ -146,7 +146,8 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $statuses[count($statuses) - 1]->setCode("STATUS_ACTIVE");
         $statuses[count($statuses) - 1]->setNameEs("Activa");
         $statuses[count($statuses) - 1]->setNameEn("Active");
-        
+
+        $statuses[] = new Statuscategory();
         $statuses[count($statuses) - 1]->setCode("STATUS_INACTIVE");
         $statuses[count($statuses) - 1]->setNameEs("Inactiva");
         $statuses[count($statuses) - 1]->setNameEn("Inactive");
@@ -381,7 +382,6 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
 //        $userAcevedo->addRole($roles[2]);
 //        $userAcevedo->setDateCreated(new DateTime());
 //        $userAcevedo->setDateUpdated(new DateTime());
-
         //Marta
         echo "Creando el usuario Marta\n";
         $userMarta = new User();
