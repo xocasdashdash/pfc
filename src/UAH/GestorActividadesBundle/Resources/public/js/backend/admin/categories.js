@@ -7,32 +7,37 @@ var edit = false;
 $(document).on('ready', function() {
     $('#form-create-category').on('submit', function(evt) {
         evt.preventDefault();
-        $('#modal-create-category').modal('hide');
-        $.ajax({
-            type: 'POST',
-            url: Routing.generate('uah_gestoractividades_admin_newcategory'),
-            data: $(this).serialize(),
-            success: function(data) {
-                if (edit) {
-                    bootbox.alert('Categoría actualizada');
+        regex = /^[A-Za-z0-9][A-Za-z0-9 ]*$/;
+        if (!regex.test($('#category-name').val().trim())) {
+            bootbox.alert('El nombre no puede estar vacio');
+        } else {
+            $('#modal-create-category').modal('hide');
+            $.ajax({
+                type: 'POST',
+                url: Routing.generate('uah_gestoractividades_admin_newcategory'),
+                data: $(this).serialize(),
+                success: function(data) {
+                    if (edit) {
+                        bootbox.alert('Categoría actualizada');
+                        edit = false;
+                        $fila = $('#category-' + data.categoryId);
+                        $fila.find('.category-name').text($('#category-name').val());
+                        $fila.find('.category-knowledge-area').text($('#knowledge-area').val());
+                    } else {
+                        bootbox.alert('Nueva categoría añadida. Recarga para verla.');
+                    }
                     edit = false;
-                    $fila = $('#category-' + data.categoryId);
-                    $fila.find('.category-name').text($('#category-name').val());
-                    $fila.find('.category-knowledge-area').text($('#knowledge-area').val());
-                } else {
-                    bootbox.alert('Nueva categoría añadida. Recarga para verla.');
+                    $('#form-create-category')[0].reset();
+                },
+                error: function(data) {
+                    bootbox.alert('Problema al crear la categoría: ' + data.responseJSON.message, function() {
+                        $('#modal-create-category').modal('show');
+                    });
+
+
                 }
-                edit = false;
-                $('#form-create-category')[0].reset();
-            },
-            error: function(data) {
-                bootbox.alert('Problema al crear la categoría: ' + data.responseJSON.message, function() {
-                    $('#modal-create-category').modal('show');
-                });
-
-
-            }
-        });
+            });
+        }
     });
     $('#modal-create-category').on('hide.bs.modal', function(evt) {
         $('#btn_submit_category').text('Crear');
