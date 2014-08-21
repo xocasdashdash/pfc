@@ -93,7 +93,7 @@
                                 {% for role in roles %}
                                     {% if role.role != 'ROLE_UAH_SUPER_ADMIN' %}
                                         <option value="{{role.role}}" {% if role in user_permit.default_permit.roles %} selected="true" {% endif %}>{{role.name}}</option>
-                                    {% elseif app.user and app.user.granted('ROLE_UAH_SUPER_ADMIN') %}
+                                    {% elseif is_granted('ROLE_UAH_SUPER_ADMIN')  %}
                                         <option value="{{role.role}}" {% if role in user_permit.default_permit.roles %} selected="true" {% endif %}>{{role.name}}</option>
                                     {% endif %}
                                 {% endfor %}
@@ -131,7 +131,7 @@
                                     {% for role in roles %}
                                         {% if role.role != 'ROLE_UAH_SUPER_ADMIN' %}
                                             <option value="{{role.role}}">{{role.name}}</option>
-                                        {% elseif app.user and app.user.granted('ROLE_UAH_SUPER_ADMIN') %}
+                                        {% elseif is_granted('ROLE_UAH_SUPER_ADMIN')  %}
                                             <option value="{{role.role}}">{{role.name}}</option>
                                         {% endif %}
                                     {% endfor %}

@@ -396,6 +396,20 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $userMarta->setDateCreated(new DateTime());
         $userMarta->setDateUpdated(new DateTime());
 
+        //Marta
+        echo "Creando el usuario Pedro\n";
+        $userMarta = new User();
+        $userMarta->setName('Pedro');
+        $userMarta->setApellido1('Gullón');
+        $userMarta->setApellido2('Tosio');
+        $userMarta->setType('admin');
+        $userMarta->setEmail("pedro.gullon@gmail.com");
+        $userMarta->setIdUsuldap("http://yo.rediris.es/soy/pedro.gullon@uah.es/");
+        $userMarta->setDegreeId($em_degree[array_rand($em_degree)]);
+        $userMarta->addRole($roles[2]);
+        $userMarta->setDateCreated(new DateTime());
+        $userMarta->setDateUpdated(new DateTime());
+        
         echo "Guardando los usuarios...\n";
         $manager->persist($userAdmin);
         $manager->persist($userBolonio);
