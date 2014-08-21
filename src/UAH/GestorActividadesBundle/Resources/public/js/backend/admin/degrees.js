@@ -23,7 +23,7 @@ $(document).on('ready', function() {
                     $fila.find('.degree-academic-code').text($('#academic-code').val());
                     $fila.data('degreeType', $('.radio-div input[type=radio]:checked').val());
                 } else {
-                    bootbox.alert('Nueva titulación añadida');
+                    bootbox.alert('Nueva titulación añadida. Recarga para verla');
                 }
                 $('#form-create-degree')[0].reset();
             },
@@ -35,7 +35,6 @@ $(document).on('ready', function() {
     $('#modal-create-degree').on('hidden.bs.modal', function() {
         $('#btn_submit_degree').text('Crear');
     });
-    $('.selectpicker').selectpicker();
     $('table').on('click', '.update_degree', function(evt) {
         $fila = $(this).closest('tr');
         $('#degree-name').val($fila.find('.degree-name').text());
@@ -48,11 +47,37 @@ $(document).on('ready', function() {
             return $(this).val() === tipo;
         }).prop('checked', true);
         $('#degree-id').val(evt.target.dataset.degreeId);
-        $('#modal-create-degree').modal('show');
         $('#btn_submit_degree').text('Actualizar');
+        $('#modal-create-degree').modal('show');
         edit = true;
     });
     $('table').on('click', '.delete_degree', function(evt) {
+        $degree_id = $(this).data().degreeId;
+        $degree_name = $(this).closest('td').siblings('.degree-name').text();
+        bootbox.confirm('¿Estás seguro que quieres eliminar este grado: <br>' + $degree_name + '?', function(result) {
+            if (result) {
+                $.ajax({
+                    type: 'POST',
+                    url: Routing.generate('uah_gestoractividades_admin_deletedegree', {degree_id: $degree_id}),
+                    success: function(data) {
+                        bootbox.alert('Grado eliminado');
+                        $tbody = $(evt.delegateTarget).find('tbody');
+                        $(evt.target).closest('tr').remove();
+                        $filas = $tbody.find('tr');
+                        
+                        //Cambio los valores del indice
+                        $.each($filas, function(index, value) {
+                            $(value).find('.index').text(index + 1);
+                        });
+                    },
+                    error: function(data) {
+                        bootbox.alert('Ha habido un problema al eliminar el grado: ' + data.responseJSON.message);
+                    }
+                });
+            }
+        });
     });
+    $('.selectpicker').selectpicker();
+
 });
 

@@ -18,7 +18,7 @@ use UAH\GestorActividadesBundle\Entity\User as User;
 use UAH\GestorActividadesBundle\Entity\Role as Role;
 use UAH\GestorActividadesBundle\Entity\DefaultPermit as DefaultPermit;
 use UAH\GestorActividadesBundle\Entity\Statusactivity as Statusactivity;
-use UAH\GestorActividadesBundle\Entity\Status as Status;
+use UAH\GestorActividadesBundle\Entity\Statuscategory as Statuscategory;
 use UAH\GestorActividadesBundle\Entity\Statusenrollment as Statusenrollment;
 use \UAH\GestorActividadesBundle\Entity\Statusdegree as Statusdegree;
 use UAH\GestorActividadesBundle\Entity\Statusapplication as Statusapplication;
@@ -138,6 +138,19 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $statuses[count($statuses) - 1]->setCode("STATUS_ARCHIVED");
         $statuses[count($statuses) - 1]->setNameEs("Archivado");
         $statuses[count($statuses) - 1]->setNameEn("Archieved");
+
+        /**
+         * CATEGORIAS
+         */
+        $statuses[] = new Statuscategory();
+        $statuses[count($statuses) - 1]->setCode("STATUS_ACTIVE");
+        $statuses[count($statuses) - 1]->setNameEs("Activa");
+        $statuses[count($statuses) - 1]->setNameEn("Active");
+
+        $statuses[] = new Statuscategory();
+        $statuses[count($statuses) - 1]->setCode("STATUS_INACTIVE");
+        $statuses[count($statuses) - 1]->setNameEs("Inactiva");
+        $statuses[count($statuses) - 1]->setNameEn("Inactive");
 
         foreach ($statuses as $status) {
             $manager->persist($status);
@@ -369,7 +382,6 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
 //        $userAcevedo->addRole($roles[2]);
 //        $userAcevedo->setDateCreated(new DateTime());
 //        $userAcevedo->setDateUpdated(new DateTime());
-
         //Marta
         echo "Creando el usuario Marta\n";
         $userMarta = new User();
