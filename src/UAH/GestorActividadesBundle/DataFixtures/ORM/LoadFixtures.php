@@ -334,6 +334,10 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $defaultpermits[] = new DefaultPermit();
         $defaultpermits[count($defaultpermits) - 1]->addRole($roles[0]);
         $defaultpermits[count($defaultpermits) - 1]->setIdUsuldap("http://yo.rediris.es/soy/marta.lumeras@uah.es/");
+        
+         $defaultpermits[] = new DefaultPermit();
+        $defaultpermits[count($defaultpermits) - 1]->addRole($roles[2]);
+        $defaultpermits[count($defaultpermits) - 1]->setIdUsuldap("http://yo.rediris.es/soy/pedro.gullon@uah.es/");
 
 
         foreach ($defaultpermits as $defaultpermit) {
@@ -409,7 +413,7 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $userMarta->addRole($roles[2]);
         $userMarta->setDateCreated(new DateTime());
         $userMarta->setDateUpdated(new DateTime());
-        
+
         echo "Guardando los usuarios...\n";
         $manager->persist($userAdmin);
         $manager->persist($userBolonio);

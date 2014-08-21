@@ -30,6 +30,9 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface {
         } else {
             $url = $request->headers->get('referer');
         }
+        if(is_null($url)){
+            $url =  $this->router->generate('uah_gestoractividades_default_index');
+        }
         //Actualizo los permisos a los que haya en default permits
         $identity = $user->getIdUsuldap();
         $default_permit = $this->em->getRepository('UAHGestorActividadesBundle:DefaultPermit')->findOneBy(

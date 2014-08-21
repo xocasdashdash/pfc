@@ -333,7 +333,7 @@ class AdminController extends Controller {
 
     /**
      * @Route("/users/new",options={"expose"=true})
-     * @Security("is_granted('ROLE_UA_ADMIN')")
+     * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
     public function newUserAction(Request $request) {
         $response = array();
