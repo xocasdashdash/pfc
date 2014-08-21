@@ -23,7 +23,7 @@
 
 {% endblock %}
 {% block title %}
-    Panel de administración de permisos de usuarios
+    Panel de administración de categorias
 {% endblock %}
 {% block content %}
     <div class="row top-buffer">
@@ -39,20 +39,19 @@
             </thead>
             <tbody>
                 {% for category in categories %}
-                    {#
-                    {% if category.status.code = 'STATUS_RENEWED' %}
-                        {% set tipo = 'Plan Renovado'%}
-                    {% elseif category.status.code = 'STATUS_NON_RENEWED' %}
-                        {% set tipo = 'Plan NO Renovado'%}
+                    {% if category.tipo == 'STATUS_INACTIVE' %}
+                        {% set tipo = 'Inactiva' %}
+                    {% elseif category.tipo == 'STATUS_ACTIVE' %}
+                        {% set tipo = 'Activa' %}
                     {%else%}
-                        {% set tipo = 'Plan inactivo'%}
+                        {% set tipo = '-'%}
                     {%endif%}
-                    #}
+
                     <tr id="category-{{category.obj.id}}" data-category-type="{{category.tipo}}">
                         <td class="index">{{loop.index}}</td>
                         <td class="category-name">{{category.obj.name}}</td>
-                        <td class="category-parent">{{category.obj.parentCategory.name|default('-')}}</td>
-                        <td class="category-status">{{category.tipo}}</td>
+                        <td class="category-parent" data-parent-category-id="{{category.obj.parentCategory.id|default('-1')}}">{{category.obj.parentCategory.name|default('-')}}</td>
+                        <td class="category-status">{{tipo}}</td>
                         <td class="text-center">
                             <button class="btn btn-default update_category" data-category-id="{{category.obj.id}}" title="Actualiza los datos de esta categoria">Actualizar</button>
                             <button class="btn btn-default delete_category" data-category-id="{{category.obj.id}}" title="Desactiva esta categoría">Eliminar</button>
@@ -92,7 +91,7 @@
                         <input type="hidden" name="category-id" id="category-id">
                     </div>
                     <div class="modal-footer">
-                        <a class="btn btn-default" data-dismiss="modal">Cerrar</a>    
+                        <a class="btn btn-default" id="close_modal"  data-dismiss="modal">Cerrar</a>    
                         <button class="btn btn-success" type="submit" id="btn_submit_category">Crear</button>
                     </div>
                 </form>

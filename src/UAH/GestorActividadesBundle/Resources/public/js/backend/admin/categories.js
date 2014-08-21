@@ -19,25 +19,49 @@ $(document).on('ready', function() {
                     $fila = $('#category-' + data.categoryId);
                     $fila.find('.category-name').text($('#category-name').val());
                     $fila.find('.category-knowledge-area').text($('#knowledge-area').val());
-
                 } else {
                     bootbox.alert('Nueva categoría añadida. Recarga para verla.');
                 }
+                edit = false;
                 $('#form-create-category')[0].reset();
             },
             error: function(data) {
-                bootbox.alert('Problema al crear la categoría: ' + data.responseJSON.message);
+                bootbox.alert('Problema al crear la categoría: ' + data.responseJSON.message, function() {
+                    $('#modal-create-category').modal('show');
+                });
+
+
             }
         });
     });
-    $('#modal-create-category').on('hidden.bs.modal', function() {
+    $('#modal-create-category').on('hide.bs.modal', function(evt) {
         $('#btn_submit_category').text('Crear');
     });
+
+    $(document).keydown(function(evt) {
+        if (event.which === 27) {
+            $('#modal-create-category').modal('hide');
+            $('#form-create-category')[0].reset();
+            $('#parent-category').selectpicker('val', null);
+            if (edit) {
+                edit = false;
+            }
+        }
+    });
+
+    $('#close_modal').on('click', function() {
+        $('#form-create-category')[0].reset();
+        edit = false;
+        $('#parent-category').selectpicker('val', null);
+    });
+
     $('table').on('click', '.update_category', function(evt) {
         $fila = $(this).closest('tr');
         $('#category-name').val($fila.find('.category-name').text());
-        $('#knowledge-area').selectpicker('val', knowledgeArea);
-        //$('.selectpicker').('render');
+        $category_parent = $fila.find('.category-parent');
+        if ($category_parent !== '-') {
+            $('#parent-category').selectpicker('val', $category_parent.data().parentCategoryId);
+        }
         $('#category-id').val(evt.target.dataset.categoryId);
         $('#btn_submit_category').text('Actualizar');
         $('#modal-create-category').modal('show');
@@ -53,7 +77,7 @@ $(document).on('ready', function() {
                     url: Routing.generate('uah_gestoractividades_admin_deletecategory', {category_id: $category_id}),
                     success: function(data) {
                         bootbox.alert('Categoría eliminada');
-                        $(evt.target).closest('tr').find('.category-status').text(data.message);                        
+                        $(evt.target).closest('tr').find('.category-status').text(data.message);
                     },
                     error: function(data) {
                         bootbox.alert('Ha habido un problema al eliminar la categoría: ' + data.responseJSON.message);

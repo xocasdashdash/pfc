@@ -47,8 +47,8 @@ $(document).on('ready', function() {
             return $(this).val() === tipo;
         }).prop('checked', true);
         $('#degree-id').val(evt.target.dataset.degreeId);
-        $('#modal-create-degree').modal('show');
         $('#btn_submit_degree').text('Actualizar');
+        $('#modal-create-degree').modal('show');
         edit = true;
     });
     $('table').on('click', '.delete_degree', function(evt) {
