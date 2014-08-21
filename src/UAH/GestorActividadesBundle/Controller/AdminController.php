@@ -16,6 +16,7 @@ use UAH\GestorActividadesBundle\Entity\Role;
 use UAH\GestorActividadesBundle\Entity\DefaultPermit;
 use UAH\GestorActividadesBundle\Entity\Degree;
 use UAH\GestorActividadesBundle\Entity\Category;
+use Doctrine\DBAL\DBALException;
 
 /**
  * @Route("/admin")
@@ -524,20 +525,29 @@ class AdminController extends Controller {
                 $response['type'] = 'error';
                 $code = 400;
             } else {
-                $active_status = $em->getRepository('UAHGestorActividadesBundle:Statuscategory')->getActive();
+                //if ($parameters['category-id'] === '') {
+                $active_status = $em->getRepository('UAHGestorActividadesBundle:Statuscategory')
+                        ->getActive();
                 $category->setStatus($active_status);
+                //}
                 $category->setName($parameters['category-name']);
-                if (isset($parameters['parent-category'])) {
-                    $parent_category = $em->getRepository('UAHGestorActividadesBundle:Category')->find($parameters['parent-category']);
-                } else {
-                    $parent_category = null;
-                }
+                //Si no elijo ningún valor, llega null y con ese valor no se encuenta ninguna categoría
+                $parent_category = $em->getRepository('UAHGestorActividadesBundle:Category')
+                        ->find($parameters['parent-category']);
                 $category->setParentCategory($parent_category);
                 $em->persist($category);
-                $em->flush();
+                try {
+                    $em->flush();
+                } catch (DBALException $ex) {
+                    $response['message'] = 'Error al crear categoría, ya existe una con esa combinación';
+                    $response['type'] = 'success';
+                    $response['categoryId'] = $category->getId();
+                    $code = 400;
+                    return new JsonResponse($response, $code);
+                }
                 $response['message'] = 'Categoría creada';
                 $response['type'] = 'success';
-                $response['degreeId'] = $category->getId();
+                $response['categoryId'] = $category->getId();
                 $code = 200;
             }
         } else {
