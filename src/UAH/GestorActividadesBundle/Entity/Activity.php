@@ -267,6 +267,11 @@ class Activity {
      */
     private $date_pending_approval;
 
+     /**
+     * @ManyToMany(targetEntity="Category", mappedBy="activities")
+     * @JoinTable(name="UAH_GAT_Activities_Categories")
+     */
+    private $categories;
     /**
      * Constructor
      */
@@ -1114,5 +1119,38 @@ class Activity {
     public function getDatePendingApproval()
     {
         return $this->date_pending_approval;
+    }
+
+    /**
+     * Add categories
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Category $categories
+     * @return Activity
+     */
+    public function addCategory(\UAH\GestorActividadesBundle\Entity\Category $categories)
+    {
+        $this->categories[] = $categories;
+
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Category $categories
+     */
+    public function removeCategory(\UAH\GestorActividadesBundle\Entity\Category $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCategories()
+    {
+        return $this->categories;
     }
 }
