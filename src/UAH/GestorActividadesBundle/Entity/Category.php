@@ -87,7 +87,8 @@ class Category {
      * @return Category
      */
     public function setName($name) {
-        $this->hash = sha1($name . $this->getStatus()->getId());
+        $this->hash = sha1($name . (is_null($this->getStatus()) ? null : $this->getStatus()->getId()) .
+                (is_null($this->getParentCategory()) ? null : $this->getParentCategory()->getId()));
         $this->name = $name;
 
         return $this;
@@ -118,7 +119,10 @@ class Category {
      * @return Category
      */
     public function setStatus(\UAH\GestorActividadesBundle\Entity\Statuscategory $status = null) {
-        $this->hash = sha1($this->getName() . $status->getId());
+
+        $this->hash = sha1($this->getName() . (is_null($status) ? null : $status->getId()) .
+                (is_null($this->getParentCategory()) ? null : $this->getParentCategory()->getId()));
+
         $this->status = $status;
 
         return $this;
@@ -171,6 +175,9 @@ class Category {
      */
     public function setParentCategory(\UAH\GestorActividadesBundle\Entity\Category $parentCategory = null) {
         $this->parent_category = $parentCategory;
+        
+        $this->hash = sha1($this->getName() . (is_null($this->getStatus()) ? null : $this->getStatus()->getId()) .
+                (is_null($parentCategory) ? null : $this->getParentCategory()->getId()));
 
         return $this;
     }
