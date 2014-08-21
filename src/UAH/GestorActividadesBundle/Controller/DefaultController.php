@@ -13,17 +13,20 @@ class DefaultController extends Controller {
      * @Route("/pag/{pagina}", requirements={"pagina" = "\d+"}, defaults={"pagina" = 1})
      */
     public function indexAction($pagina, Request $request) {
-        
+
         $em = $this->getDoctrine()->getManager();
         $activity_repository = $em->getRepository('UAHGestorActividadesBundle:Activity');
+        $category_repository = $em->getRepository('UAHGestorActividadesBundle:Category');
         $activity_repository->updatePublished();
-        $activities = $activity_repository->getPublishedActivities();//findBy(array(), array('publicityStartDate' => 'ASC'));
+        $activities = $activity_repository->getPublishedActivities(); //findBy(array(), array('publicityStartDate' => 'ASC'));
+        $categories = $category_repository->getActive();
         $num_actividades = count($activities);
         $enrollments_id = array();
         $enrolled_activities = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrolledActivitiesId($this->getUser(), $pagina);
         return $this->render('UAHGestorActividadesBundle:Default:index.html.twig', array(
                     'activities' => $activities,
-                    'enrollments' => $enrolled_activities));
+                    'enrollments' => $enrolled_activities,
+                    'categories' => $categories));
     }
 
 }
