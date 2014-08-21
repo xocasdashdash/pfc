@@ -19,6 +19,30 @@ class CategoryRepository extends EntityRepository {
         return $consulta->getResult();
     }
 
+    public function getActive() {
+        return $this->getByStatus('active');
+    }
+
+    public function getInactive() {
+        return $this->getByStatus('inactive');
+    }
+
+    private function getByStatus($status) {
+        $em = $this->getEntityManager();
+
+        if ($status === 'active') {
+            $status = $em->getRepository('UAHGestorActividadesBundle:Statuscategory')->getActive();
+        } elseif ($status === 'inactive') {
+            $status = $em->getRepository('UAHGestorActividadesBundle:Statuscategory')->getInactive();
+        } else {
+            return $this->getAll();
+        }
+        $dql = "SELECT c from UAHGestorActividadesBundle:Category c WHERE c.status = :status";
+        $consulta = $em->createQuery($dql);
+        $consulta->setParameter('status', $status);
+        return $consulta->getResult();
+    }
+
     public function getParentCategories() {
         $em = $this->getEntityManager();
         $dql = "SELECT c from UAHGestorActividadesBundle:Category c LEFT JOIN c.status s WHERE c.status = :active_status and c.parent_category is NULL";

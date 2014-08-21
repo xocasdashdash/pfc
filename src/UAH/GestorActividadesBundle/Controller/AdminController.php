@@ -529,19 +529,28 @@ class AdminController extends Controller {
                 $active_status = $em->getRepository('UAHGestorActividadesBundle:Statuscategory')
                         ->getActive();
                 $category->setStatus($active_status);
-                //}
-                $category->setName($parameters['category-name']);
+                //} 
+                if (trim($parameters['category-name']) === "") {
+                    $response['message'] = 'Error al crear categoría: El nombre no puede estar vacío';
+                    $response['type'] = 'error';
+                    $code = 400;
+                    return new JsonResponse($response, $code);
+                }
+                $category->setName(trim($parameters['category-name']));
                 //Si no elijo ningún valor, llega null y con ese valor no se encuenta ninguna categoría
-                $parent_category = $em->getRepository('UAHGestorActividadesBundle:Category')
-                        ->find($parameters['parent-category']);
+                if (isset($parameters['parent-category'])) {
+                    $parent_category = $em->getRepository('UAHGestorActividadesBundle:Category')
+                            ->find($parameters['parent-category']);
+                } else {
+                    $parent_category = null;
+                }
                 $category->setParentCategory($parent_category);
                 $em->persist($category);
                 try {
                     $em->flush();
                 } catch (DBALException $ex) {
                     $response['message'] = 'Error al crear categoría, ya existe una con esa combinación';
-                    $response['type'] = 'success';
-                    $response['categoryId'] = $category->getId();
+                    $response['type'] = 'error';
                     $code = 400;
                     return new JsonResponse($response, $code);
                 }
