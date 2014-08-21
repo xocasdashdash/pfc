@@ -175,7 +175,7 @@ class Category {
      */
     public function setParentCategory(\UAH\GestorActividadesBundle\Entity\Category $parentCategory = null) {
         $this->parent_category = $parentCategory;
-        
+
         $this->hash = sha1($this->getName() . (is_null($this->getStatus()) ? null : $this->getStatus()->getId()) .
                 (is_null($parentCategory) ? null : $this->getParentCategory()->getId()));
 
@@ -189,6 +189,10 @@ class Category {
      */
     public function getParentCategory() {
         return $this->parent_category;
+    }
+
+    public function getActivityCount() {
+        return $this->getActivities()->count();
     }
 
 }

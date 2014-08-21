@@ -38,6 +38,8 @@ class CategoryRepository extends EntityRepository {
             return $this->getAll();
         }
         $dql = "SELECT c from UAHGestorActividadesBundle:Category c WHERE c.status = :status";
+        //        $dql = "SELECT c obj, count(a) from UAHGestorActividadesBundle:Category c LEFT JOIN c.activities a WHERE c.status = :status GROUP BY a.categories";
+
         $consulta = $em->createQuery($dql);
         $consulta->setParameter('status', $status);
         return $consulta->getResult();
