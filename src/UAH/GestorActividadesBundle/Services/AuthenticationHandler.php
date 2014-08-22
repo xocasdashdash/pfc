@@ -30,22 +30,24 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface {
         } else {
             $url = $request->headers->get('referer');
         }
-        if(is_null($url)){
-            $url =  $this->router->generate('uah_gestoractividades_default_index');
+        if (is_null($url)) {
+            $url = $this->router->generate('uah_gestoractividades_default_index');
         }
         //Actualizo los permisos a los que haya en default permits
         $identity = $user->getIdUsuldap();
         $default_permit = $this->em->getRepository('UAHGestorActividadesBundle:DefaultPermit')->findOneBy(
                 array('id_usuldap' => $identity));
-        $default_roles = $default_permit->getRoles();
-        $user_roles = $user->getUserRoles()->toArray();
-        foreach ($default_roles as $default_role) {
-            if (!in_array($default_role, $user_roles)) {
-                $user->addRole($default_role);
-                $this->em->persist($user);
+        if(!is_null($default_permit)) {
+            $default_roles = $default_permit->getRoles();
+            $user_roles = $user->getUserRoles()->toArray();
+            foreach ($default_roles as $default_role) {
+                if (!in_array($default_role, $user_roles)) {
+                    $user->addRole($default_role);
+                    $this->em->persist($user);
+                }
             }
+            $this->em->flush();
         }
-        $this->em->flush();
         $response = new RedirectResponse($url);
 
         return $response;
