@@ -172,6 +172,7 @@ class AdminController extends Controller {
 
     /**
      * @Route("/users")
+     * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
     public function usersAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
@@ -208,17 +209,14 @@ class AdminController extends Controller {
                     array('id_usuldap' => urldecode($identity)));
             $super_admin_role = $em->getRepository('UAHGestorActividadesBundle:Role')->getSuperAdmin();
             $admin_role = $em->getRepository('UAHGestorActividadesBundle:Role')->getAdmin();
-            //Ya se ha logueado alguna vez
-
             if ($user) {
-                //Actualizo ROLES
+                //Ya se ha logueado alguna vez. Actualizo ROLES
                 if ($role === $super_admin_role) {
                     $securityContext = $this->container->get('security.context');
                     //Compruebo que sea el Super administrador
                     if ($securityContext->isGranted($super_admin_role->getRole())) {
                         $user->addRole($super_admin_role);
-                        $em->persist($user);
-                        $super_admin_role->getUsers();
+                        $super_admin_users = $super_admin_role->getUsers();
                         if (count($super_admin_users) > 1) {
                             $response['type'] = 'warning';
                             $response['message'] = 'Había más de un usuario super administrador. <br> Intente evitar esto siempre que sea posible';
@@ -228,12 +226,13 @@ class AdminController extends Controller {
                             $response['message'] = 'Permisos actualizados';
                             $code = 200;
                         }
+                        $em->persist($user);
                     } else {
                         $response['type'] = 'error';
                         $response['message'] = 'Solo un superadministrador puede crear otros superadministradores';
                         $code = 403;
                     }
-                } else {
+                } elseif ($role === $admin_role) {
                     $user->addRole($admin_role);
                     $em->persist($user);
                     $response['type'] = 'success';
@@ -241,20 +240,19 @@ class AdminController extends Controller {
                     $code = 200;
                 }
             }
-            //Actualizo DEFAULT PERMITS (Nunca actualizo los permisos por defecto de un usuario que es SuperAdmin)
-            if ($role !== $super_admin_role) {
-                $default_permit = $em->getRepository('UAHGestorActividadesBundle:DefaultPermit')->findOneBy(
-                        array('id_usuldap' => urldecode($identity)));
-                $default_permit_roles = $default_permit->getRoles();
-                foreach ($default_permit_roles as $default_permit_role) {
-                    $default_permit->removeRole($default_permit_role);
-                }
-                $default_permit->addRole($role);
-                $em->persist($default_permit);
-                $response['type'] = 'success';
-                $response['message'] = 'Permisos actualizados';
-                $code = 200;
+            //Actualizo los permisos. Solo dejo el último añadido
+            $default_permit = $em->getRepository('UAHGestorActividadesBundle:DefaultPermit')->findOneBy(
+                    array('id_usuldap' => urldecode($identity)));
+            $default_permit_roles = $default_permit->getRoles();
+            foreach ($default_permit_roles as $default_permit_role) {
+                $default_permit->removeRole($default_permit_role);
             }
+            $default_permit->addRole($role);
+            $em->persist($default_permit);
+            $response['type'] = 'success';
+            $response['message'] = 'Permisos actualizados';
+            $code = 200;
+
             if ($code === 200) {
                 $em->flush();
             }
@@ -319,7 +317,7 @@ class AdminController extends Controller {
               $default_permit->removeRole($default_permit_role);
               $em->persist($default_permit);
               } */
-            //$em->flush();
+            $em->flush();
             $response['type'] = 'success';
             $response['message'] = 'Permisos actualizados.';
             $code = 200;
@@ -539,8 +537,15 @@ class AdminController extends Controller {
                 $category->setName(trim($parameters['category-name']));
                 //Si no elijo ningún valor, llega null y con ese valor no se encuenta ninguna categoría
                 if (isset($parameters['parent-category'])) {
-                    $parent_category = $em->getRepository('UAHGestorActividadesBundle:Category')
-                            ->find($parameters['parent-category']);
+                    if ($parameters['parent-category'] !== $parameters['category-id']) {
+                        $parent_category = $em->getRepository('UAHGestorActividadesBundle:Category')
+                                ->find($parameters['parent-category']);
+                    } else {
+                        $response['message'] = 'Error al crear categoría. Una categoría no puede ser su propio padre';
+                        $response['type'] = 'error';
+                        $code = 400;
+                        return new JsonResponse($response, $code);
+                    }
                 } else {
                     $parent_category = null;
                 }
