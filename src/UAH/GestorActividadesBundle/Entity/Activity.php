@@ -844,11 +844,15 @@ class Activity {
         if ($this->getPublicityStartDate() === null) {
             $this->setPublicityStartDate(new \DateTime(date("c", time())));
         }
-        $this->setIndexFilter(
-                implode(" ", array_map(function($category) {
-                            return "category-" . $category->getId();
-                        }, $this->getCategories()->toArray())
-        ));
+        if (!is_null($this->getCategories())) {
+            $this->setIndexFilter(
+                    implode(" ", array_map(function($category) {
+                                return "category-" . $category->getId();
+                            }, $this->getCategories()->toArray())
+            ));
+        } else {
+            $this->setIndexFilter('category-no-pillada');
+        }
     }
 
     /**

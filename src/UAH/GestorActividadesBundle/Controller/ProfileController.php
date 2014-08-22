@@ -47,8 +47,7 @@ class ProfileController extends Controller {
         $form = $this->createForm(new UserType(), $this->getUser(), array('degrees' => $degrees));
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $user = $form->getData();
-            
+            $user = $form->getData();            
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
