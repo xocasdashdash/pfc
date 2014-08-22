@@ -22,6 +22,7 @@ use UAH\GestorActividadesBundle\Entity\Statuscategory as Statuscategory;
 use UAH\GestorActividadesBundle\Entity\Statusenrollment as Statusenrollment;
 use \UAH\GestorActividadesBundle\Entity\Statusdegree as Statusdegree;
 use UAH\GestorActividadesBundle\Entity\Statusapplication as Statusapplication;
+use UAH\GestorActividadesBundle\Entity\Category as Category;
 //use \Faker\Provider;
 use \Faker\Factory as FakerFactory;
 use DateTime;
@@ -275,7 +276,7 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $image_route = $image_route[1];
         return $image_route;
     }, 'publicityStartDate' => function() use($faker) {
-        return $faker->dateTimeBetween('now', '+2 month');
+        return $faker->dateTimeBetween('-1 week', 'now');
     }, 'status' => function() use($activity_status) {
         return $activity_status[array_rand($activity_status)];
     }, 'organizer_name' => function() use($faker) {
@@ -334,8 +335,8 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $defaultpermits[] = new DefaultPermit();
         $defaultpermits[count($defaultpermits) - 1]->addRole($roles[0]);
         $defaultpermits[count($defaultpermits) - 1]->setIdUsuldap("http://yo.rediris.es/soy/marta.lumeras@uah.es/");
-        
-         $defaultpermits[] = new DefaultPermit();
+
+        $defaultpermits[] = new DefaultPermit();
         $defaultpermits[count($defaultpermits) - 1]->addRole($roles[2]);
         $defaultpermits[count($defaultpermits) - 1]->setIdUsuldap("http://yo.rediris.es/soy/pedro.gullon@uah.es/");
 
@@ -421,6 +422,40 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         //$manager->persist($userAcevedo);
         $manager->flush();
         echo "Usuarios guardados\n";
+
+        echo "Creando las categorías básicas...\n";
+        $categories = array();
+        $categories[] = new Category();
+        $categories[count($categories) - 1]->setName('Ciencias');
+        $categories[count($categories) - 1]->setStatus($statuses[count($statuses) - 2]);
+        $categories[count($categories) - 1]->setParentCategory(null);
+
+        $categories[] = new Category();
+        $categories[count($categories) - 1]->setName('Ciencias de la Salud');
+        $categories[count($categories) - 1]->setStatus($statuses[count($statuses) - 2]);
+        $categories[count($categories) - 1]->setParentCategory(null);
+
+        $categories[] = new Category();
+        $categories[count($categories) - 1]->setName('Ciencias Sociales y Juridicas');
+        $categories[count($categories) - 1]->setStatus($statuses[count($statuses) - 2]);
+        $categories[count($categories) - 1]->setParentCategory(null);
+
+        $categories[] = new Category();
+        $categories[count($categories) - 1]->setName('Arte y Humanidades');
+        $categories[count($categories) - 1]->setStatus($statuses[count($statuses) - 2]);
+        $categories[count($categories) - 1]->setParentCategory(null);
+
+        $categories[] = new Category();
+        $categories[count($categories) - 1]->setName('Ingeniería y Arquitectura');
+        $categories[count($categories) - 1]->setStatus($statuses[count($statuses) - 2]);
+        $categories[count($categories) - 1]->setParentCategory(null);
+
+        foreach ($categories as $category) {
+            $manager->persist($category);
+        }
+        $manager->flush();
+
+        echo "Categorías básicas creadas";
     }
 
     /**
