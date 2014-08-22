@@ -66,11 +66,12 @@ class ActivityController extends Controller {
     /**
      * @Route("/activity/create",options={"expose"=true})
      * @Method({"GET","POST"})
-     * @Security("has_role('ROLE_UAH_STAFF_PDI')")
+     * @Security("is_granted('ROLE_UAH_STAFF_PDI')")
      */
     public function createAction(Request $request) {
         $activity = new \UAH\GestorActividadesBundle\Entity\Activity();
-        $form = $this->createForm(new ActivityType(), $activity);
+        $form = $this->createForm(new ActivityType($this->getDoctrine()->getManager()
+                        ->getRepository('UAHGestorActividadesBundle:Category')), $activity);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $activity = $form->getData();
@@ -88,12 +89,13 @@ class ActivityController extends Controller {
     /**
      * @Route("/activity/edit/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
-     * @Security("(is_granted('edit_activity',activity) && has_role('ROLE_UAH_STAFF_PDI')) || has_role('ROLE_UAH_ADMIN')")
+     * @Security("(is_granted('edit_activity',activity) && is_granted('ROLE_UAH_STAFF_PDI')) || is_granted('ROLE_UAH_ADMIN')")
      */
     public function editAction(Activity $activity, Request $request) {
         $em = $this->getDoctrine()->getManager();
         $fullyEditable = $em->getRepository('UAHGestorActividadesBundle:Activity')->isFullyEditable($activity);
-        $form = $this->createForm(new ActivityType(), $activity
+        $form = $this->createForm(new ActivityType($this->getDoctrine()->getManager()
+                        ->getRepository('UAHGestorActividadesBundle:Category')), $activity
                 , array(
             'fullyEditable' => $fullyEditable,
             'isAdmin' => $this->get('security.context')->isGranted('ROLE_UAH_ADMIN')
@@ -101,7 +103,7 @@ class ActivityController extends Controller {
         $form->handleRequest($request);
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $activity->setOrganizer($this->getUser());
+            $activity = $form->getData();
             $em->persist($activity);
             $em->flush();
             return $this->redirect($this->generateUrl("uah_gestoractividades_activity_index", array('activity_id' => $activity->getId(), 'slug' => $activity->getSlug())));
@@ -116,10 +118,11 @@ class ActivityController extends Controller {
     /**
      * @Route("/activity/update/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
-     * @Security("(is_granted('edit_activity',activity) && has_role('ROLE_UAH_STAFF_PDI')) || has_role('ROLE_UAH_ADMIN')")
+     * @Security("(is_granted('edit_activity',activity) && is_granted('ROLE_UAH_STAFF_PDI')) || is_granted('ROLE_UAH_ADMIN')")
      */
     public function updateAction(Activity $activity, Request $request) {
-        $editForm = $this->createForm(new ActivityType(), $activity);
+        $editForm = $this->createForm(new ActivityType($this->getDoctrine()->getManager()
+                        ->getRepository('UAHGestorActividadesBundle:Category')), $activity);
         $rutaFotoOriginal = $editForm->getData()->getImagePath();
 
         $editForm->handleRequest($request);
@@ -136,7 +139,7 @@ class ActivityController extends Controller {
     /**
      * @Route("/activity/admin/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
-     * @Security("(is_granted('edit_activity',activity) && has_role('ROLE_UAH_STAFF_PDI')) || has_role('ROLE_UAH_ADMIN')")
+     * @Security("(is_granted('edit_activity',activity) && is_granted('ROLE_UAH_STAFF_PDI')) || is_granted('ROLE_UAH_ADMIN')")
      */
     public function adminAction(Activity $activity, Request $request) {
 

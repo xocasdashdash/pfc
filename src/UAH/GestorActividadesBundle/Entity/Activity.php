@@ -267,11 +267,19 @@ class Activity {
      */
     private $date_pending_approval;
 
-     /**
-     * @ManyToMany(targetEntity="Category", mappedBy="activities")
-     * @JoinTable(name="UAH_GAT_Activities_Categories")
+    /**
+     * @ManyToMany(targetEntity="Category", inversedBy="activities",cascade={"persist"})
+     * @JoinTable(name="UAH_GAT_Activities_Categories",
+     * joinColumns={@JoinColumn(name="activity_id", referencedColumnName="id", onDelete="CASCADE")},
+     * inverseJoinColumns={@JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")})
      */
     private $categories;
+
+    /**
+     * @Column(name="index_filter", type="string", length= 500);
+     */
+    private $index_filter;
+
     /**
      * Constructor
      */
@@ -836,6 +844,11 @@ class Activity {
         if ($this->getPublicityStartDate() === null) {
             $this->setPublicityStartDate(new \DateTime(date("c", time())));
         }
+        $this->setIndexFilter(
+                implode(" ", array_map(function($category) {
+                            return "category-" . $category->getId();
+                        }, $this->getCategories()->toArray())
+        ));
     }
 
     /**
@@ -1028,15 +1041,13 @@ class Activity {
         return $this->socialMessage;
     }
 
-
     /**
      * Set date_created
      *
      * @param \DateTime $dateCreated
      * @return Activity
      */
-    public function setDateCreated($dateCreated)
-    {
+    public function setDateCreated($dateCreated) {
         $this->date_created = $dateCreated;
 
         return $this;
@@ -1047,8 +1058,7 @@ class Activity {
      *
      * @return \DateTime 
      */
-    public function getDateCreated()
-    {
+    public function getDateCreated() {
         return $this->date_created;
     }
 
@@ -1058,8 +1068,7 @@ class Activity {
      * @param \DateTime $dateModified
      * @return Activity
      */
-    public function setDateModified($dateModified)
-    {
+    public function setDateModified($dateModified) {
         $this->date_modified = $dateModified;
 
         return $this;
@@ -1070,8 +1079,7 @@ class Activity {
      *
      * @return \DateTime 
      */
-    public function getDateModified()
-    {
+    public function getDateModified() {
         return $this->date_modified;
     }
 
@@ -1081,8 +1089,7 @@ class Activity {
      * @param \DateTime $dateApproved
      * @return Activity
      */
-    public function setDateApproved($dateApproved)
-    {
+    public function setDateApproved($dateApproved) {
         $this->date_approved = $dateApproved;
 
         return $this;
@@ -1093,8 +1100,7 @@ class Activity {
      *
      * @return \DateTime 
      */
-    public function getDateApproved()
-    {
+    public function getDateApproved() {
         return $this->date_approved;
     }
 
@@ -1104,8 +1110,7 @@ class Activity {
      * @param \DateTime $datePendingApproval
      * @return Activity
      */
-    public function setDatePendingApproval($datePendingApproval)
-    {
+    public function setDatePendingApproval($datePendingApproval) {
         $this->date_pending_approval = $datePendingApproval;
 
         return $this;
@@ -1116,8 +1121,7 @@ class Activity {
      *
      * @return \DateTime 
      */
-    public function getDatePendingApproval()
-    {
+    public function getDatePendingApproval() {
         return $this->date_pending_approval;
     }
 
@@ -1127,8 +1131,7 @@ class Activity {
      * @param \UAH\GestorActividadesBundle\Entity\Category $categories
      * @return Activity
      */
-    public function addCategory(\UAH\GestorActividadesBundle\Entity\Category $categories)
-    {
+    public function addCategory(\UAH\GestorActividadesBundle\Entity\Category $categories) {
         $this->categories[] = $categories;
 
         return $this;
@@ -1139,8 +1142,7 @@ class Activity {
      *
      * @param \UAH\GestorActividadesBundle\Entity\Category $categories
      */
-    public function removeCategory(\UAH\GestorActividadesBundle\Entity\Category $categories)
-    {
+    public function removeCategory(\UAH\GestorActividadesBundle\Entity\Category $categories) {
         $this->categories->removeElement($categories);
     }
 
@@ -1149,8 +1151,29 @@ class Activity {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getCategories()
-    {
+    public function getCategories() {
         return $this->categories;
     }
+
+    /**
+     * Set index_filter
+     *
+     * @param string $indexFilter
+     * @return Activity
+     */
+    public function setIndexFilter($indexFilter) {
+        $this->index_filter = $indexFilter;
+
+        return $this;
+    }
+
+    /**
+     * Get index_filter
+     *
+     * @return string 
+     */
+    public function getIndexFilter() {
+        return $this->index_filter;
+    }
+
 }
