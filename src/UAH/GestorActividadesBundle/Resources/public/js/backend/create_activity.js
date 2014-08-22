@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    $('.selectpicker').selectpicker();
     $('.celebration_dates').datepicker({
         format: "dd/mm/yyyy",
         weekStart: 1,

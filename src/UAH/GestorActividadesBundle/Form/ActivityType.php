@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use UAH\GestorActividadesBundle\Repository\CategoryRepository;
 
 class ActivityType extends AbstractType {
 
@@ -14,9 +15,16 @@ class ActivityType extends AbstractType {
      * @param FormBuilderInterface $builder
      * @param array $options
      */
+    private $cat_repo;
+
+    public function __construct(CategoryRepository $cat_repo) {
+        $this->cat_repo = $cat_repo;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $fullyEditable = $options['fullyEditable'];
         $isAdmin = $options['isAdmin'];
+        $categories = $this->cat_repo->getActive();
         $builder->add('name', null, array(
                     'label' => 'Nombre',
                     'attr' => array(
@@ -108,6 +116,16 @@ class ActivityType extends AbstractType {
                     'attr' => array(
                         'rows' => 20,
                         'class' => 'tinymce')))
+                ->add('categories', 'entity', array(
+                    'required' => true,
+                    'class' => 'UAHGestorActividadesBundle:Category',
+                    'choices' => $categories,
+                    'property' => 'name',
+                    //'group_by' => 'parent_category.getname',
+                    'multiple' => 'true',
+                    'label' => 'Categoría(s)',
+                    'attr' => array('help_text' => 'Elige la o las categorías', 'class' => 'selectpicker', 'data-live-search' => 'true')
+                ))
                 ->add('socialMessage', 'textarea', array(
                     'label' => 'Mensaje para Twitter',
                     'attr' => array(

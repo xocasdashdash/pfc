@@ -19,15 +19,15 @@ class CategoryRepository extends EntityRepository {
         return $consulta->getResult();
     }
 
-    public function getActive() {
-        return $this->getByStatus('active');
+    public function getActive($type = 'obj') {
+        return $this->getByStatus('active', $type);
     }
 
-    public function getInactive() {
-        return $this->getByStatus('inactive');
+    public function getInactive($type = 'obj') {
+        return $this->getByStatus('inactive', $type);
     }
 
-    private function getByStatus($status) {
+    private function getByStatus($status, $type) {
         $em = $this->getEntityManager();
 
         if ($status === 'active') {
@@ -42,7 +42,11 @@ class CategoryRepository extends EntityRepository {
 
         $consulta = $em->createQuery($dql);
         $consulta->setParameter('status', $status);
-        return $consulta->getResult();
+        if ($type === 'obj') {
+            return $consulta->getResult();
+        } elseif ($type === 'arr') {
+            return $consulta->getArrayResult();
+        }
     }
 
     public function getParentCategories() {
