@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\ManyToMany;
-use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\Table;
@@ -51,15 +51,19 @@ class Category {
     private $status;
 
     /**
-     * @ManyToMany(targetEntity="Activity", inversedBy="categories",cascade={"persist"})
-     * @JoinTable(name="UAH_GAT_Activities_Categories",
-     * joinColumns={@JoinColumn(name="activity_id", referencedColumnName="id", onDelete="RESTRICT")},
-     * inverseJoinColumns={@JoinColumn(name="category_id", referencedColumnName="id", onDelete="RESTRICT")})
+     * @ManyToMany(targetEntity="Activity", mappedBy="categories")
+     * @JoinTable(name="UAH_GAT_Activities_Categories")
      */
     private $activities;
+    //Habría que fijar un limite a la profundidad pero solamente se muestran aquellos 
+    // que sean padres, luego solamente hay un descendiente
+    /**
+     * @OneToMany(targetEntity="Category", mappedBy="parent_category")
+     */
+    private $children_category;
 
     /**
-     * @OneToOne(targetEntity="Category")
+     * @ManyToOne(targetEntity="Category", inversedBy="children_category")
      * @JoinColumn(name="parent_category_id", referencedColumnName="id")
      */
     private $parent_category;
@@ -69,6 +73,7 @@ class Category {
      */
     public function __construct() {
         $this->activities = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -193,6 +198,52 @@ class Category {
 
     public function getActivityCount() {
         return $this->getActivities()->count();
+    }
+
+    /**
+     * Set hash
+     *
+     * @param string $hash
+     * @return Category
+     */
+    public function setHash($hash) {
+        $this->hash = $hash;
+
+        return $this;
+    }
+
+    /**
+     * Add children_category
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Category $childrenCategory
+     * @return Category
+     */
+    public function addChildrenCategory(\UAH\GestorActividadesBundle\Entity\Category $childrenCategory) {
+        $this->children_category[] = $childrenCategory;
+
+        return $this;
+    }
+
+    /**
+     * Remove children_category
+     *
+     * @param \UAH\GestorActividadesBundle\Entity\Category $childrenCategory
+     */
+    public function removeChildrenCategory(\UAH\GestorActividadesBundle\Entity\Category $childrenCategory) {
+        $this->children_category->removeElement($childrenCategory);
+    }
+
+    /**
+     * Get children_category
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getChildrenCategory() {
+        return $this->children_category;
+    }
+
+    public function __toString() {
+        return strval($this->id);
     }
 
 }

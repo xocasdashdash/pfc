@@ -549,7 +549,11 @@ class AdminController extends Controller {
                 } else {
                     $parent_category = null;
                 }
-                $category->setParentCategory($parent_category);
+                if (!is_null($parent_category)) {
+                    $category->setParentCategory($parent_category);
+                    $parent_category->addChildrenCategory($category);
+                }
+                $em->persist($parent_category);
                 $em->persist($category);
                 try {
                     $em->flush();
