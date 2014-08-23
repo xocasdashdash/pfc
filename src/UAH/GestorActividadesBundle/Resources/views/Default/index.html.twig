@@ -21,24 +21,24 @@
 {% block content %}
     <div class="container">
         <div class="row" id="cont-basico">
-            <div class="col-lg-4 col-xs-4 col-md-4 clearfix">
+            <div class="col-lg-4 col-xs-4 col-md-4 clearfix lista-categorias">
                 <h4>Elige las categorías que te interesen</h4>
                 <div class="lista-categorias">
                     <ul class="no-bullets">
                         <li data-id="-1" class="category"> 
                             <div class="checkbox-column">
-                                <input id="checkbox--1" type="checkbox" checked="checked" aria-label="Todas las categorias" />
+                                <input id="checkbox--1" class="all-categories" type="checkbox" checked="checked" aria-label="Todas las categorias" value="-1"/>
                             </div>
                             <div class="category-name"><label for="checkbox--1">Todas las categorias</label></div>
-                            <div class="count-activities">{{activities.0.getCount|default('0')}}</div>
+                            <div class="count-activities">{{num_activities|default('0')}}</div>
                         </li>
                         {% for category in categories %}
                             <li data-id="{{category.id}}" class="category" style="display:list-item;"> 
-                                <div class="checkbox-column">
-                                    <input type="checkbox" id="checkbox-{{category.id}}" aria-label="{{category.name}}" />
+                                <div class="checkbox-column checkbox-category">
+                                    <input type="checkbox" id="checkbox-{{category.id}}" aria-label="{{category.name}}" value="category-{{category.id}}"/>
                                 </div>
                                 <div class="category-name"><label for="checkbox-{{category.id}}">{{category.name}}</label></div>
-                                <div class="count-activities">{{category.activityCount}}</div>
+                                <div class="count-activities">{{category.num_activities}}</div>
                             </li>
 
                         {% endfor %}
@@ -47,14 +47,15 @@
             </div>
             <div class="col-lg-8 col-md-8 col-xs-8  activities">
                 {% for activity in activities %} 
-                    <div class="col-lg-12 col-md-12 col-xs-12 activity {{activity.indexfilter}}" data-activity-id="{{activity.id}}">
+                    <div class="col-lg-12 col-md-12 col-xs-12 activity category-all {{activity.indexfilter}}" id="activity-{{activity.id}}" >
                         <div class="row">
                             <div class="col-md-8 col-xs-8">
                                 <h3 class="titulo-actividad"><a href="{{path('uah_gestoractividades_activity_index',{'activity_id': activity.id,'slug':activity.slug})}}">{{activity.name}}</a></h3>
                                 <div class="abstract-actividad ocultado-vertical">
                                     {{activity.description|raw('html')}}
                                 </div>
-                                <a class="leer-mas" href="#" data-toggle="modal" data-target="#actividadModalPrincipal">Leer mas</a>
+                                <a class="leer-mas" href="#" data-toggle="modal" data-target="#actividadModalPrincipal" data-activity-id="{{activity.id}}">Leer mas</a>
+                                <div class="categories-activity"><span>Categorias:</span>{{activity.CategorySlug}}</div>
                             </div>
                             <div class="col-md-4 col-xs-4 center-block collapse right-column">
                                 <h3 class="fecha-publicidad-actividad activity-date">{{activity.startdate|date("d/m/Y")}}</h3>
@@ -81,7 +82,7 @@
                                                     <i class="fa fa-times fa-2x"></i> 
                                                 </button>
                                             {% else %}
-                                                <button class="btn btn-default center-block btn-primary enroll-button">
+                                                <button class="btn btn-default center-block btn-primary enroll-button" data-activity-id="{{activity.id}}">
                                                     <span class="texto">Inscribete!</span>
                                                     <i class="fa fa-pencil-square-o fa-2x"></i>
                                                 </button>
@@ -99,7 +100,7 @@
                         {% block modal %}
                             <div class="modal fade" id="actividadModalPrincipal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
-                                    <div class="modal-content activity">
+                                    <div class="modal-content activity activity-modal">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                             <h4 class="modal-title" id="modal-title"></h4>

@@ -117,7 +117,7 @@ class ActivityType extends AbstractType {
                         'rows' => 20,
                         'class' => 'tinymce')))
                 ->add('categories', 'entity', array(
-                    'required' => true,
+                    'required' => false,
                     'class' => 'UAHGestorActividadesBundle:Category',
                     'choices' => $categories,
                     'property' => 'name',

@@ -1,5 +1,4 @@
 (function ($) {
-
   'use strict';
 
   $.expr[':'].icontains = function (obj, index, meta) {
@@ -19,7 +18,8 @@
     this.$lis = null;
     this.options = options;
 
-    //If we have no title yet, check the attribute 'title' (this is missed by jq as its not a data-attribute
+    // If we have no title yet, try to pull it from the html title attribute (jQuery doesnt' pick it up as it's not a
+    // data-attribute)
     if (this.options.title === null) {
       this.options.title = this.$element.attr('title');
     }
@@ -39,7 +39,7 @@
     this.init();
   };
 
-  Selectpicker.VERSION = '1.6.1';
+  Selectpicker.VERSION = '1.6.2';
 
   // part of this is duplicated in i18n/defaults-en_US.js. Make sure to update both.
   Selectpicker.DEFAULTS = {
@@ -65,7 +65,9 @@
     iconBase: 'glyphicon',
     tickIcon: 'glyphicon-ok',
     maxOptions: false,
-    mobile: false
+    mobile: false,
+    selectOnTab: false,
+    dropdownAlignRight: false
   };
 
   Selectpicker.prototype = {
@@ -85,7 +87,10 @@
       this.$button = this.$newElement.find('> button');
       this.$searchbox = this.$newElement.find('input');
 
-      if (id !== undefined) {
+      if (this.options.dropdownAlignRight)
+        this.$menu.addClass('pull-right');
+
+      if (typeof id !== 'undefined') {
         this.$button.attr('data-id', id);
         $('label[for="' + id + '"]').click(function (e) {
           e.preventDefault();
@@ -173,8 +178,8 @@
         var optionClass = $this.attr('class') || '';
         var inline = $this.attr('style') || '';
         var text = $this.data('content') ? $this.data('content') : $this.html();
-        var subtext = $this.data('subtext') !== undefined ? '<small class="muted text-muted">' + $this.data('subtext') + '</small>' : '';
-        var icon = $this.data('icon') !== undefined ? '<i class="' + that.options.iconBase + ' ' + $this.data('icon') + '"></i> ' : '';
+        var subtext = typeof $this.data('subtext') !== 'undefined' ? '<small class="muted text-muted">' + $this.data('subtext') + '</small>' : '';
+        var icon = typeof $this.data('icon') !== 'undefined' ? '<i class="' + that.options.iconBase + ' ' + $this.data('icon') + '"></i> ' : '';
         if (icon !== '' && ($this.is(':disabled') || $this.parent().is(':disabled'))) {
           icon = '<span>' + icon + '</span>';
         }
@@ -190,7 +195,7 @@
           if ($this.index() === 0) {
             //Get the opt group label
             var label = $this.parent().attr('label');
-            var labelSubtext = $this.parent().data('subtext') !== undefined ? '<small class="muted text-muted">' + $this.parent().data('subtext') + '</small>' : '';
+            var labelSubtext = typeof $this.parent().data('subtext') !== 'undefined' ? '<small class="muted text-muted">' + $this.parent().data('subtext') + '</small>' : '';
             var labelIcon = $this.parent().data('icon') ? '<i class="' + that.options.iconBase + ' ' + $this.parent().data('icon') + '"></i> ' : '';
             label = labelIcon + '<span class="text">' + label + labelSubtext + '</span>';
 
@@ -249,7 +254,7 @@
     },
 
     /**
-     * @param [updateLi]
+     * @param [updateLi] defaults to true
      */
     render: function (updateLi) {
       var that = this;
@@ -275,7 +280,7 @@
         }
         if ($this.data('content') && that.options.showContent) {
           return $this.data('content');
-        } else if ($this.attr('title') !== undefined) {
+        } else if (typeof $this.attr('title') !== 'undefined') {
           return $this.attr('title');
         } else {
           return icon + $this.html() + subtext;
@@ -303,7 +308,7 @@
 
       //If we dont have a title, then use the default, or if nothing is set at all, use the not selected text
       if (!title) {
-        title = this.options.title !== undefined ? this.options.title : this.options.noneSelectedText;
+        title = typeof this.options.title !== 'undefined' ? this.options.title : this.options.noneSelectedText;
       }
 
       this.$button.attr('title', $.trim($("<div/>").html(title).text()).replace(/\s\s+/g, ' '));
@@ -741,9 +746,8 @@
     },
 
     val: function (value) {
-      if (value !== undefined) {
+      if (typeof value !== 'undefined') {
         this.$element.val(value);
-        this.$element.change();
         this.render();
 
         return this.$element;
@@ -912,8 +916,8 @@
         $items.eq(keyIndex[count - 1]).focus();
       }
 
-      // Select focused option if "Enter", "Spacebar" are pressed inside the menu.
-      if (/(13|32)/.test(e.keyCode.toString(10)) && isActive) {
+      // Select focused option if "Enter", "Spacebar" or "Tab" (when selectOnTab is true) are pressed inside the menu.
+      if ((/(13|32)/.test(e.keyCode.toString(10)) || (that.options.selectOnTab && /(^9$)/.test(e.keyCode.toString(10)))) && isActive) {
         if (!/(32)/.test(e.keyCode.toString(10))) e.preventDefault();
         if (!that.options.liveSearch) {
           $(':focus').click();
@@ -967,10 +971,12 @@
     }
   };
 
-  $.fn.selectpicker = function (option, event) {
+  // SELECTPICKER PLUGIN DEFINITION
+  // ==========================
+  function Plugin (option, event) {
     // get the args of the outer function..
     var args = arguments;
-    // The arguments of the function are explicitely re-defined from the argument list, because the shift causes them
+    // The arguments of the function are explicitly re-defined from the argument list, because the shift causes them
     // to get lost
     //noinspection JSDuplicatedDeclaration
     var option = args[0],
@@ -984,7 +990,7 @@
             options = typeof option == 'object' && option;
 
         if (!data) {
-          var config = $.extend(Selectpicker.DEFAULTS, $.fn.selectpicker.defaults || {}, $this.data(), options);
+          var config = $.extend({}, Selectpicker.DEFAULTS, $.fn.selectpicker.defaults, $this.data(), options);
           $this.data('selectpicker', (data = new Selectpicker(this, config, event)));
         } else if (options) {
           for (var i in options) {
@@ -1010,9 +1016,18 @@
     } else {
       return chain;
     }
-  };
+  }
 
+  var old = $.fn.selectpicker;
+  $.fn.selectpicker = Plugin;
   $.fn.selectpicker.Constructor = Selectpicker;
+
+  // SELECTPICKER NO CONFLICT
+  // ====================
+  $.fn.selectpicker.noConflict = function () {
+    $.fn.selectpicker = old;
+    return this;
+  };
 
   $(document)
       .data('keycount', 0)

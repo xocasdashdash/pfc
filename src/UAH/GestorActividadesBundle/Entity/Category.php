@@ -64,7 +64,7 @@ class Category {
 
     /**
      * @ManyToOne(targetEntity="Category", inversedBy="children_category")
-     * @JoinColumn(name="parent_category_id", referencedColumnName="id")
+     * @JoinColumn(name="parent_category_id", referencedColumnName="id",onDelete="SET NULL")
      */
     private $parent_category;
 

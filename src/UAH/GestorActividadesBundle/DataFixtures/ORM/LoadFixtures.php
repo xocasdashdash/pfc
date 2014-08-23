@@ -228,10 +228,43 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         return $faker->type();
     },
         ));
+        echo "Creando las categorías básicas...\n";
+        $categories = array();
+        $categories[] = new Category();
+        $categories[count($categories) - 1]->setName('Ciencias');
+        $categories[count($categories) - 1]->setStatus($statuses[count($statuses) - 2]);
+        $categories[count($categories) - 1]->setParentCategory(null);
+
+        $categories[] = new Category();
+        $categories[count($categories) - 1]->setName('Ciencias de la Salud');
+        $categories[count($categories) - 1]->setStatus($statuses[count($statuses) - 2]);
+        $categories[count($categories) - 1]->setParentCategory(null);
+
+        $categories[] = new Category();
+        $categories[count($categories) - 1]->setName('Ciencias Sociales y Juridicas');
+        $categories[count($categories) - 1]->setStatus($statuses[count($statuses) - 2]);
+        $categories[count($categories) - 1]->setParentCategory(null);
+
+        $categories[] = new Category();
+        $categories[count($categories) - 1]->setName('Arte y Humanidades');
+        $categories[count($categories) - 1]->setStatus($statuses[count($statuses) - 2]);
+        $categories[count($categories) - 1]->setParentCategory(null);
+
+        $categories[] = new Category();
+        $categories[count($categories) - 1]->setName('Ingeniería y Arquitectura');
+        $categories[count($categories) - 1]->setStatus($statuses[count($statuses) - 2]);
+        $categories[count($categories) - 1]->setParentCategory(null);
+
+        foreach ($categories as $category) {
+            $manager->persist($category);
+        }
+        $manager->flush();
+
+        echo "Categorías básicas creadas";
         //Actividades
         echo "Añadidos usuarios!\n";
         echo "Añadiendo actividades...";
-        $populator->addEntity('UAHGestorActividadesBundle:Activity', 10, array(
+        $populator->addEntity('UAHGestorActividadesBundle:Activity', 100, array(
             'name' => function() use($faker) {
         return $faker->sentence(10, true);
     },
@@ -246,7 +279,7 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         //var_dump("FECHAS CREADAS\n".print_r($fechas,true));
         return ($fechas);
     }, 'url' => function() use($faker) {
-        return $faker->url;
+        return $faker->url; 
     }, 'slug' => function() use($faker) {
         $nbWords = (int) (6 * mt_rand(60, 140) / 100) + 1;
         $words = $faker->words($nbWords);
@@ -289,6 +322,18 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         return $faker->dateTimeBetween('-1 month', 'now');
     }, 'date_pending_approval' => function() use($faker) {
         return $faker->dateTimeBetween('-1 week', 'now');
+    }, 'categories' => function() use($categories) {
+        $randomInteger = rand(1, count($categories));
+        $random_categories_key = array_rand($categories, $randomInteger);
+        $random_categories = array();
+        if (is_array($random_categories_key)) {
+            foreach ($random_categories_key as $value) {
+                $random_categories[] = $categories[$value];
+            }
+        } else {
+            $random_categories[] = $categories[$random_categories_key];
+        }
+        return $random_categories;
     }
         ));
 
@@ -422,40 +467,6 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         //$manager->persist($userAcevedo);
         $manager->flush();
         echo "Usuarios guardados\n";
-
-        echo "Creando las categorías básicas...\n";
-        $categories = array();
-        $categories[] = new Category();
-        $categories[count($categories) - 1]->setName('Ciencias');
-        $categories[count($categories) - 1]->setStatus($statuses[count($statuses) - 2]);
-        $categories[count($categories) - 1]->setParentCategory(null);
-
-        $categories[] = new Category();
-        $categories[count($categories) - 1]->setName('Ciencias de la Salud');
-        $categories[count($categories) - 1]->setStatus($statuses[count($statuses) - 2]);
-        $categories[count($categories) - 1]->setParentCategory(null);
-
-        $categories[] = new Category();
-        $categories[count($categories) - 1]->setName('Ciencias Sociales y Juridicas');
-        $categories[count($categories) - 1]->setStatus($statuses[count($statuses) - 2]);
-        $categories[count($categories) - 1]->setParentCategory(null);
-
-        $categories[] = new Category();
-        $categories[count($categories) - 1]->setName('Arte y Humanidades');
-        $categories[count($categories) - 1]->setStatus($statuses[count($statuses) - 2]);
-        $categories[count($categories) - 1]->setParentCategory(null);
-
-        $categories[] = new Category();
-        $categories[count($categories) - 1]->setName('Ingeniería y Arquitectura');
-        $categories[count($categories) - 1]->setStatus($statuses[count($statuses) - 2]);
-        $categories[count($categories) - 1]->setParentCategory(null);
-
-        foreach ($categories as $category) {
-            $manager->persist($category);
-        }
-        $manager->flush();
-
-        echo "Categorías básicas creadas";
     }
 
     /**

@@ -19,6 +19,15 @@ class CategoryRepository extends EntityRepository {
         return $consulta->getResult();
     }
 
+    public function getFrontPage() {
+        $em = $this->getEntityManager();
+        $dql = "SELECT c.name name, c.id id, count(a.id) num_activities from UAHGestorActividadesBundle:Category c LEFT JOIN c.activities a WHERE a.status = :status GROUP BY c.id";
+        $active_status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getPublished();
+        $consulta = $em->createQuery($dql);
+        $consulta->setParameter('status', $active_status);
+        return $consulta->getResult();
+    }
+
     public function getActive($type = 'obj') {
         return $this->getByStatus('active', $type);
     }
