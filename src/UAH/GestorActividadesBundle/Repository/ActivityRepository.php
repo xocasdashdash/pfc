@@ -212,9 +212,8 @@ class ActivityRepository extends EntityRepository {
                 " ORDER BY a.publicityStartDate ASC";
         $consulta = $em->createQuery($dql);
         $firstResult = ($page - 1) * $page_length;
-        $max_results = $page_length;
         $consulta->setFirstResult($firstResult);
-        $consulta->setMaxResults($max_results);
+        $consulta->setMaxResults($page_length);
         $resultado = $consulta->getResult();
         return $resultado;
     }

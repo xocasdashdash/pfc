@@ -1,9 +1,9 @@
 {# Tengo que pasarle activities, enrollments#}
 {% for activity in activities %} 
 
-    <div class="col-lg-12 col-md-12 col-xs-12 activity category-all {{activity.indexfilter}}"  style="display:none;" id="activity-{{activity.id}}" >
+    <div id="activity-{{activity.id}}" class="col-xs-12 activity category-all {{activity.indexfilter}}"  style="display:none;"  >
         <div class="row">
-            <div class="col-md-8 col-xs-8">
+            <div class="col-xs-8">
                 <h3 class="titulo-actividad"><a href="{{path('uah_gestoractividades_activity_index',{'activity_id': activity.id,'slug':activity.slug})}}">{{activity.name}}</a></h3>
                 <div class="abstract-actividad ocultado-vertical">
                     {{activity.description|raw('html')}}
@@ -11,7 +11,7 @@
                 <a class="leer-mas" href="#" data-toggle="modal" data-target="#actividadModalPrincipal" data-activity-id="{{activity.id}}">Leer mas</a>
                 <div class="categories-activity"><span>Categorias:</span>{{activity.CategorySlug}}</div>
             </div>
-            <div class="col-md-4 col-xs-4 center-block collapse right-column">
+            <div class="col-xs-4 center-block collapse right-column">
                 <h3 class="fecha-publicidad-actividad activity-date">{{activity.startdate|date("d/m/Y")}}</h3>
                 <a href="{{path('uah_gestoractividades_activity_index',{'activity_id': activity.id,'slug':activity.slug})}}">
                     <img class="center-block img-rounded img-activity img-small" data-img-src="{{asset(activity.imagepath)}}" src="{{asset(activity.imagepath)}}" data-toggle="modal" data-target="#img-modal" >                                         
