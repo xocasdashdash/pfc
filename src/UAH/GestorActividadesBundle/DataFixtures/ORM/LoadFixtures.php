@@ -264,7 +264,7 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         //Actividades
         echo "Añadidos usuarios!\n";
         echo "Añadiendo actividades...";
-        $populator->addEntity('UAHGestorActividadesBundle:Activity', 100, array(
+        $populator->addEntity('UAHGestorActividadesBundle:Activity', 20, array(
             'name' => function() use($faker) {
         return $faker->sentence(10, true);
     },
