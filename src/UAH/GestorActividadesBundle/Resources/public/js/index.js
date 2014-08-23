@@ -1,6 +1,6 @@
 var filter;
 var filter_array = [];
-var page = 2;
+var page = 1;
 var last_page = false;
 var elements_per_page = 1;
 $(document).ready(function() {
@@ -104,6 +104,7 @@ $(document).ready(function() {
             }
         });
     }
+    addMoreActivities();
 
     $(window).scroll(function() {
 
