@@ -2,13 +2,13 @@
 {% extends '::frontend.html.twig' %}
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/index.js' %}
+    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/index.js' filter='?uglifyjs2' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
 {% block stylesheets %}
     {{parent()}}
-    {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/frontend/index/*.less' %}
+    {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/frontend/index/index.less' filter='?uglifycss' %}
     <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
     {% endstylesheets %}
 {% endblock %}
@@ -20,8 +20,8 @@
 {% endblock %}
 {% block content %}
     <div class="container">
-        <div class="row" id="cont-basico">
-            <div class="col-lg-4 col-xs-4 col-md-4 clearfix lista-categorias">
+        <div class="row row-offcanvas row-offcanvas-left" id="cont-basico">
+            <div id="sidebar" class="col-xs-6 col-sm-3 sidebar-offcanvas lista-categorias" role="navigation">
                 <h4>Elige las categorías que te interesen</h4>
                 <div class="lista-categorias">
                     <ul class="no-bullets">
@@ -45,7 +45,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-8 col-md-8 col-xs-8  activities">
+            <div class="col-lg-8 col-md-8 col-xs-12  activities">
+                <p class="pull-left visible-xs">
+                    <button class="btn btn-primary btn-lg" data-toggle="offcanvas" type="button">Ver categorias</button>
+                </p>
                 {% for activity in activities %} 
                     <div class="col-lg-12 col-md-12 col-xs-12 activity category-all {{activity.indexfilter}}" id="activity-{{activity.id}}" >
                         <div class="row">
