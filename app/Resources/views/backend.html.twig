@@ -4,7 +4,7 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets 
-        '@UAHGestorActividadesBundle/Resources/public/css/backend/backend.less'%}
+        '@UAHGestorActividadesBundle/Resources/public/css/backend/backend.less' filter='uglifycss'%}
     <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
     {% endstylesheets %}
 {% endblock %}
@@ -76,9 +76,6 @@
                                 <div class="form-group">
                                     <input type="text" class="form-control" placeholder="Buscar">
                                 </div>
-                                <button type="submit" class="btn btn-default">
-                                    <span class="glyphicon glyphicon-search"></span>
-                                </button>
                             </form>
                         </li>
                     </ul>                    

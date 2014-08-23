@@ -9,7 +9,7 @@
 {% block javascripts %}
     {{ parent() }}
     {% if is_granted('ROLE_UAH_STAFF_PAS') %}
-        {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/backend/secretaria.js' %}
+        {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/backend/secretaria.js' filter='?uglifyjs2' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
     {% endif %}

@@ -4,6 +4,7 @@ var page = 1;
 var last_page = false;
 var elements_per_page = 1;
 $(document).ready(function() {
+
     filter = '.activity-modal, .category-all';
     $('#actividadModal').modal({
         keyboard: true,
@@ -89,6 +90,11 @@ $(document).ready(function() {
             type: "GET",
             url: Routing.generate('uah_gestoractividades_default_ajaxactivities', {page: page}),
             success: function(data) {
+//                before = [];
+//                $('.activity').filter(function(index, eleme) {
+//                    before.push(eleme.id);
+//                });
+//                console.log(before.sort());
                 if (data.html.length > 0) {
                     $('.activities').append(data.html);
                     $('.activity').not(filter).hide();
@@ -98,6 +104,11 @@ $(document).ready(function() {
                 } else {
                     last_page = true;
                 }
+//                after = [];
+//                $('.activity').filter(function(index, eleme) {
+//                    after.push(eleme.id);
+//                });
+//                console.log(after.sort());
             },
             error: function(data) {
 
@@ -109,14 +120,12 @@ $(document).ready(function() {
     $(window).scroll(function() {
 
         var wintop = $(window).scrollTop(), docheight = $(document).height(), winheight = $(window).height();
-        var scrolltrigger = 0.90;
+        var scrolltrigger = 0.80;
 
         if ((wintop / (docheight - winheight)) > scrolltrigger) {
             //lastAddedLiveFunc();
             if (last_page === false) {
                 addMoreActivities();
-            } else {
-                console.log('Todas las paginas cargadas');
             }
         }
     });

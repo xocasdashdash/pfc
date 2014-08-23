@@ -1,7 +1,7 @@
 {% extends "::backend.html.twig" %}
 {% block javascripts %}
     {{parent()}}
-    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/backend/admin/users.js' %}
+    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/backend/admin/users.js' filter='?uglifyjs2'%}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
