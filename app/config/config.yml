@@ -84,7 +84,6 @@ swiftmailer:
 sensio_framework_extra:
     router:  { annotations: true }
     security:   { annotations: true }
-parameters:
      
 parameters:
     oci8.db_options:
@@ -94,6 +93,7 @@ parameters:
         db_time_col: session_time
     vendor_dir: %kernel.root_dir%/../src/UAH/GestorActividadesBundle/Resources/public/vendor    
     pdf_dir: %kernel.root_dir%/../web/upload/pdf/
+    elements_per_page: 2
 
 services:
     session.handler.oci8:

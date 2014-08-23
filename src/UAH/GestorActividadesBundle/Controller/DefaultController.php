@@ -19,7 +19,11 @@ class DefaultController extends Controller {
         $activity_repository = $em->getRepository('UAHGestorActividadesBundle:Activity');
         $category_repository = $em->getRepository('UAHGestorActividadesBundle:Category');
         $activity_repository->updatePublished();
-        $activities = $activity_repository->getPublishedActivities($pagina, 1); //findBy(array(), array('publicityStartDate' => 'ASC'));
+        $elements_per_page = $this->container->getParameter('elements_per_page');
+        if ($pagina <= 0) {
+            $pagina = 1;
+        }
+        $activities = $activity_repository->getPublishedActivities($pagina, $elements_per_page);
         $categories = $category_repository->getFrontPage();
         $num_activities = $activity_repository->getCountPublishedActivities();
         $enrolled_activities = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrolledActivitiesId($this->getUser(), $pagina);
@@ -36,13 +40,15 @@ class DefaultController extends Controller {
     public function ajaxActivities($page) {
         $em = $this->getDoctrine()->getManager();
         $activity_repository = $em->getRepository('UAHGestorActividadesBundle:Activity');
-        $activities = $activity_repository->getPublishedActivities($page, 1);
+        $elements_per_page = $this->container->getParameter('elements_per_page');
+        $activities = $activity_repository->getPublishedActivities($page, $elements_per_page);
         $enrolled_activities = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrolledActivitiesId($this->getUser(), $page);
         $html = $this->renderView('UAHGestorActividadesBundle:Activity:activity-pagination.html.twig', array(
             'activities' => $activities,
             'enrollments' => $enrolled_activities));
         $response = array();
         $response['html'] = $html;
+        $response['last_page'] = count($activities) < $elements_per_page;
         return new JsonResponse($response);
     }
 
