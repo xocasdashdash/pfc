@@ -8,10 +8,11 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    {#
     {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/index.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-
+    #}
 {% endblock %}
 {% block title %}
     {{activity.name}}
@@ -70,6 +71,8 @@
                             <span>
                                 {{activity.description|raw('html')}}
                             </span>
+                            <div class="categories-activity"><span>Categorias:</span>{{activity.CategorySlug}}</div>
+
                         </div>
                     </div>
                     <div class="right-column col-lg-4 col-xs-4 ">
@@ -79,7 +82,7 @@
                         <div class="separator-row row center-block hidden-print"></div>
                         <div class="enrollment-button row hidden-print">
                             {% if permissions == "ENROLLABLE" %}
-                                <button class="btn btn-default center-block btn-primary enroll-button">
+                                <button class="btn btn-default center-block btn-primary enroll-button" data-activity-id="{{activity.id}}">
                                     <span class="texto">Inscribete!</span>
                                     <i class="fa fa-pencil-square-o fa-2x"></i>
                                 </button>
