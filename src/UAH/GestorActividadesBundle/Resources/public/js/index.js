@@ -1,6 +1,10 @@
 var filter;
 var filter_array = [];
+var page = 2;
+var last_page = false;
+var elements_per_page = 1;
 $(document).ready(function() {
+    filter = '.activity-modal, .category-all';
     $('#actividadModal').modal({
         keyboard: true,
         backdrop: "static",
@@ -84,5 +88,40 @@ $(document).ready(function() {
         $(filter).show();
 
         //console.log($elems);
+    });
+    function addMoreActivities() {
+        //$('div#lastPostsLoader').html('<img src="bigLoader.gif"/>');
+
+        $.ajax({
+            type: "GET",
+            url: Routing.generate('uah_gestoractividades_default_ajaxactivities', {page: page}),
+            success: function(data) {
+                if (data.html.length > 0) {
+                    $('.activities').append(data.html);
+                    $('.activity').not(filter).hide();
+                    $(filter).show();
+                    page = page + 1;
+                } else {
+                    last_page = true;
+                }
+            },
+            error: function(data) {
+
+            }
+        });
+    }
+
+    $(window).scroll(function() {
+
+        var wintop = $(window).scrollTop(), docheight = $(document).height(), winheight = $(window).height();
+        var scrolltrigger = 0.90;
+
+        if ((wintop / (docheight - winheight)) > scrolltrigger) {
+            //lastAddedLiveFunc();
+            console.log('Toy al final');
+            if (last_page === false) {
+                addMoreActivities();
+            }
+        }
     });
 });

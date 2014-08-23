@@ -211,9 +211,22 @@ class ActivityRepository extends EntityRepository {
                 " WHERE s.code = 'STATUS_PUBLISHED' " .
                 " ORDER BY a.publicityStartDate ASC";
         $consulta = $em->createQuery($dql);
-        $consulta->setFirstResult(($page - 1) * $page_length);
-        $consulta->setMaxResults($page * $page_length);
+        $firstResult = ($page - 1) * $page_length;
+        $max_results = $page_length;
+        $consulta->setFirstResult($firstResult);
+        $consulta->setMaxResults($max_results);
         $resultado = $consulta->getResult();
+        return $resultado;
+    }
+
+    public function getCountPublishedActivities() {
+        $em = $this->getEntityManager();
+        $dql = "SELECT count(a) num_activities from UAHGestorActividadesBundle:Activity a " .
+                " LEFT JOIN a.status s " .
+                " WHERE s.code = 'STATUS_PUBLISHED' " .
+                " ORDER BY a.publicityStartDate ASC";
+        $consulta = $em->createQuery($dql);
+        $resultado = $consulta->getSingleScalarResult();
         return $resultado;
     }
 
