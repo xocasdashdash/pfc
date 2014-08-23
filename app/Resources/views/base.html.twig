@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+        <meta name="google-site-verification" content="3I8i2g1hcriT9J_u2Xf8ySu1_4zitJLFDEzJxr_K4cA" />
         <title>{% block title %}{% endblock %} - Actividades de la UAH</title>
         <link href="http://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed|Alegreya:700" rel="stylesheet" type="text/css" />
         {% block stylesheets %}
@@ -103,14 +103,14 @@
             '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-select/dist/js/bootstrap-select.min.js' 
             '@UAHGestorActividadesBundle/Resources/public/vendor/qTip2/jquery.qtip.min.js'
         filter='?uglifyjs2' %}                
-        <script type="text/javascript" src="{{ asset_url }}"></script>
+        <script type="text/javascript" src="{{ asset_url }}" async></script>
         {% endjavascripts %}
         {% javascripts    '@UAHGestorActividadesBundle/Resources/public/js/enroll.js' filter='?uglifyjs2' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
+        <script type="text/javascript" src="{{ asset_url }}" async></script>
         {% endjavascripts %}
 
         <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/jquery.qtip.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/jquery.qtip.min.js" async></script>
     {% endblock %}
 </html>
