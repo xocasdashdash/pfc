@@ -27,15 +27,15 @@
                     <ul class="no-bullets">
                         <li data-id="-1" class="category"> 
                             <div class="checkbox-column">
-                                <input id="checkbox--1" type="checkbox" checked="checked" aria-label="Todas las categorias" />
+                                <input id="checkbox--1" class="all-categories" type="checkbox" checked="checked" aria-label="Todas las categorias" value="-1"/>
                             </div>
                             <div class="category-name"><label for="checkbox--1">Todas las categorias</label></div>
                             <div class="count-activities">{{num_activities|default('0')}}</div>
                         </li>
                         {% for category in categories %}
                             <li data-id="{{category.id}}" class="category" style="display:list-item;"> 
-                                <div class="checkbox-column">
-                                    <input type="checkbox" id="checkbox-{{category.id}}" aria-label="{{category.name}}" />
+                                <div class="checkbox-column checkbox-category">
+                                    <input type="checkbox" id="checkbox-{{category.id}}" aria-label="{{category.name}}" value="category-{{category.id}}"/>
                                 </div>
                                 <div class="category-name"><label for="checkbox-{{category.id}}">{{category.name}}</label></div>
                                 <div class="count-activities">{{category.num_activities}}</div>
@@ -47,7 +47,7 @@
             </div>
             <div class="col-lg-8 col-md-8 col-xs-8  activities">
                 {% for activity in activities %} 
-                    <div class="col-lg-12 col-md-12 col-xs-12 activity {{activity.indexfilter}}" data-activity-id="{{activity.id}}">
+                    <div class="col-lg-12 col-md-12 col-xs-12 activity category-all {{activity.indexfilter}}" data-activity-id="{{activity.id}}">
                         <div class="row">
                             <div class="col-md-8 col-xs-8">
                                 <h3 class="titulo-actividad"><a href="{{path('uah_gestoractividades_activity_index',{'activity_id': activity.id,'slug':activity.slug})}}">{{activity.name}}</a></h3>
@@ -99,7 +99,7 @@
                         {% block modal %}
                             <div class="modal fade" id="actividadModalPrincipal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
-                                    <div class="modal-content activity">
+                                    <div class="modal-content activity activity-modal">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                             <h4 class="modal-title" id="modal-title"></h4>

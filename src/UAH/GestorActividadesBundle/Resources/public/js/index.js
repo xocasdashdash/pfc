@@ -1,15 +1,15 @@
+var filter;
+var filter_array = [];
 $(document).ready(function() {
-    $(function() {
-        $('#actividadModal').modal({
-            keyboard: true,
-            backdrop: "static",
-            show: false
+    $('#actividadModal').modal({
+        keyboard: true,
+        backdrop: "static",
+        show: false
 
-        }).on('show.bs.modal', function() { //subscribe to show method
-            var getNombrefromRow = $(event.target).data('id');
-            var valorNombre = $(event.target).text();
-            $('#myModalLabel').text(valorNombre);
-        });
+    }).on('show.bs.modal', function() { //subscribe to show method
+        var getNombrefromRow = $(event.target).data('id');
+        var valorNombre = $(event.target).text();
+        $('#myModalLabel').text(valorNombre);
     });
     $(function() {
         $('#actividadModalPrincipal').modal({
@@ -47,5 +47,42 @@ $(document).ready(function() {
     });
     $('.img-activity').click(function(e) {
         $('#imgmodal img').attr('src', $(this).attr('data-img-src'));
+    });
+    function unique(element, index, array) {
+        return array.indexOf(element) === index;
+    }
+    $('.lista-categorias li').on('change', function(evt) {
+        if (evt.target.checked && $(evt.target).val() === "-1") {
+            //Limpio el array con los filtros
+            filter_array = [];
+            //Deselecciono el resto de checkbox
+            $('.checkbox-category input').each(function(index, elem) {
+                elem.checked = false;
+            });
+        } else {
+            if (evt.target.checked) {
+                filter_array.push($(evt.target).val());
+                filter_array = filter_array.filter(unique);
+            } else {
+                index = filter_array.indexOf($(evt.target).val());
+                if (index > -1) {
+                    filter_array.splice(index, 1);
+                }
+            }
+            if (filter_array.length === 0) {
+                //Selecciono la casilla "Todas las categorias"
+                $('.all-categories').prop('checked', true);
+
+            } else {
+                //Desmarco la casilla ALL
+                $('.all-categories').prop('checked', false);
+            }
+            console.log(filter_array);
+        }
+        filter = filter_array.length > 0 ? '.activity-modal, .' + filter_array.join(".") : '.activity-modal, .category-all';
+        $('.activity').not(filter).hide();
+        $(filter).show();
+
+        //console.log($elems);
     });
 });
