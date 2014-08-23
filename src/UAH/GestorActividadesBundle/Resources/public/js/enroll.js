@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('.activities, .activity-modal').on('click', '.enroll-button', function(event) {
+    $('.activities, .activity-modal, .activity').on('click', '.enroll-button', function(event) {
         var $id = $(this).data('activity-id');
         var $boton = $(this);
         $boton.html($('#ajax-loading-image').clone());

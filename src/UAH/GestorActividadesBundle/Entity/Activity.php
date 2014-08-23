@@ -281,6 +281,11 @@ class Activity {
     private $index_filter;
 
     /**
+     * @Column(name="category_slug", type="string", length = 1000);
+     */
+    private $category_slug;
+
+    /**
      * Constructor
      */
     public function __construct() {
@@ -847,24 +852,42 @@ class Activity {
         }
 
         if (!is_null($this->getCategories())) {
+            $index_filter = '';
+            $category_slug = '';
+            foreach ($this->getCategories() as $category) {
+                if (!is_null($category->getParentCategory())) {
+                    $index_filter .= " category-" . $category->getParentCategory()->getId();
+                    $category_slug .= $category->getParentCategory()->getName() . ", ";
+                }
+            }
             //var_dump($this->getCategories());
             if (!is_array($this->getCategories())) {
-                $this->setIndexFilter(
+                $this->setIndexFilter($index_filter . " " .
                         implode(" ", array_map(function($category) {
                                     return "category-" . $category->getId();
                                 }, $this->getCategories()->toArray())
                 ));
+                $this->setCategorySlug(chop($category_slug . " " .
+                                implode(" ", array_map(function($category) {
+                                            return $category->getName() . ", ";
+                                        }, $this->getCategories()->toArray())
+                                ), ", "));
             } else {
-                $this->setIndexFilter(
+                $this->setIndexFilter($index_filter . " " .
                         implode(" ", array_map(function($category) {
                                     return "category-" . $category->getId();
                                 }, $this->getCategories())
                 ));
+                $this->setCategorySlug(chop($category_slug . " " .
+                                implode(" ", array_map(function($category) {
+                                            return $category->getName() . ", ";
+                                        }, $this->getCategories())
+                                ), ", "));
+                $this->setCategorySlug($this->getCategorySlug());
             }
         } else {
             $this->setIndexFilter('category-no-pillada');
         }
-       
     }
 
     /**
@@ -1190,6 +1213,27 @@ class Activity {
      */
     public function getIndexFilter() {
         return $this->index_filter;
+    }
+
+    /**
+     * Set category_slug
+     *
+     * @param string $categorySlug
+     * @return Activity
+     */
+    public function setCategorySlug($categorySlug) {
+        $this->category_slug = $categorySlug;
+
+        return $this;
+    }
+
+    /**
+     * Get category_slug
+     *
+     * @return string 
+     */
+    public function getCategorySlug() {
+        return $this->category_slug;
     }
 
 }

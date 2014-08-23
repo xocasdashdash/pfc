@@ -9,6 +9,7 @@
                     {{activity.description|raw('html')}}
                 </div>
                 <a class="leer-mas" href="#" data-toggle="modal" data-target="#actividadModalPrincipal" data-activity-id="{{activity.id}}">Leer mas</a>
+                <div class="categories-activity"><span>Categorias:</span>{{activity.CategorySlug}}</div>
             </div>
             <div class="col-md-4 col-xs-4 center-block collapse right-column">
                 <h3 class="fecha-publicidad-actividad activity-date">{{activity.startdate|date("d/m/Y")}}</h3>
