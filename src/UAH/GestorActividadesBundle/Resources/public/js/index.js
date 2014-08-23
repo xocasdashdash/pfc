@@ -29,17 +29,13 @@ $(document).ready(function() {
             $('#modal-image a').attr("href", $(event.relatedTarget).closest('.activity').find('.right-column a').attr("href"));
             $('#modal-image a img').attr("src", $(event.relatedTarget).closest('.activity').find('.img-activity').attr("src"));
             $('#modal-enrollment-button').html($(event.relatedTarget).closest('.activity').find('.enrollment-button').html());
-            $('.modal-content.activity').data('activity-id', $(event.relatedTarget).closest('.activity').data('activity-id'));
+            $('.modal-content.activity').data('activity-id', event.relatedTarget.dataset.activityId);
         }).on('hide.bs.modal', function() {
-            if ($('.modal-content.activity').data('enrolled-in')) {
+            if ($('#modal-enrollment-button').data('enrolled-in')) {
                 var activity_id = $('.modal-content.activity').data('activity-id');
-                $('.activity').each(function(index, value) {
-                    if ($(value).data('activity-id') === activity_id) {
-                        $boton = $(value).find('.enroll-button');
-                        $boton.addClass('btn-success  already-enrolled').removeClass('btn-primary enroll-button');
-                        $boton.html('<span class="texto">Inscrito!</span><span class="fa fa-check fa-2x"></span>');
-                    }
-                });
+                $boton = $('#activity-' + activity_id + ' .enroll-button');
+                $boton.addClass('btn-success  already-enrolled').removeClass('btn-primary enroll-button');
+                $boton.html('<span class="texto">Inscrito!</span><span class="fa fa-check fa-2x"></span>');
             }
         });
     });
@@ -81,13 +77,10 @@ $(document).ready(function() {
                 //Desmarco la casilla ALL
                 $('.all-categories').prop('checked', false);
             }
-            console.log(filter_array);
         }
         filter = filter_array.length > 0 ? '.activity-modal, .' + filter_array.join(".") : '.activity-modal, .category-all';
         $('.activity').not(filter).hide();
         $(filter).show();
-
-        //console.log($elems);
     });
     function addMoreActivities() {
         //$('div#lastPostsLoader').html('<img src="bigLoader.gif"/>');
@@ -101,6 +94,7 @@ $(document).ready(function() {
                     $('.activity').not(filter).hide();
                     $(filter).show();
                     page = page + 1;
+                    last_page = data.last_page;
                 } else {
                     last_page = true;
                 }
@@ -118,9 +112,10 @@ $(document).ready(function() {
 
         if ((wintop / (docheight - winheight)) > scrolltrigger) {
             //lastAddedLiveFunc();
-            console.log('Toy al final');
             if (last_page === false) {
                 addMoreActivities();
+            } else {
+                console.log('Todas las paginas cargadas');
             }
         }
     });
