@@ -1,0 +1,48 @@
+{# Tengo que pasarle activities, enrollments#}
+{% for activity in activities %} 
+
+    <div class="col-lg-12 col-md-12 col-xs-12 activity category-all {{activity.indexfilter}}" data-activity-id="{{activity.id}}" style="display:none;">
+        <div class="row">
+            <div class="col-md-8 col-xs-8">
+                <h3 class="titulo-actividad"><a href="{{path('uah_gestoractividades_activity_index',{'activity_id': activity.id,'slug':activity.slug})}}">{{activity.name}}</a></h3>
+                <div class="abstract-actividad ocultado-vertical">
+                    {{activity.description|raw('html')}}
+                </div>
+                <a class="leer-mas" href="#" data-toggle="modal" data-target="#actividadModalPrincipal">Leer mas</a>
+            </div>
+            <div class="col-md-4 col-xs-4 center-block collapse right-column">
+                <h3 class="fecha-publicidad-actividad activity-date">{{activity.startdate|date("d/m/Y")}}</h3>
+                <a href="{{path('uah_gestoractividades_activity_index',{'activity_id': activity.id,'slug':activity.slug})}}">
+                    <img class="center-block img-rounded img-activity img-small" data-img-src="{{asset(activity.imagepath)}}" src="{{asset(activity.imagepath)}}" data-toggle="modal" data-target="#img-modal" >                                         
+                </a>
+                <div class="credits-index text-center">
+                    Créditos: <span class="badge">
+                        {% if activity.numberOfCreditsMax != 0 or activity.numberOfECTSCreditsMax != 0 %}
+                            Si
+                        {% else %}
+                            No
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="enrollment-button">
+                    {% if activity.id in enrollments  %}
+                        <button class="btn btn-default center-block btn-success already-enrolled">
+                            <span class="texto">Inscrito!</span>
+                            <i class="fa fa-check fa-2x"></i> 
+                        </button>
+                    {% elseif activity.numberOfPlacesOffered <= activity.numberOfPlacesOccupied %}
+                        <button class="btn btn-default center-block btn-info no-places">
+                            <span class="texto">No hay plazas!</span>
+                            <i class="fa fa-times fa-2x"></i> 
+                        </button>
+                    {% else %}
+                        <button class="btn btn-default center-block btn-primary enroll-button">
+                            <span class="texto">Inscribete!</span>
+                            <i class="fa fa-pencil-square-o fa-2x"></i>
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
