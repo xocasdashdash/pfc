@@ -19,14 +19,15 @@ class DefaultController extends Controller {
         $category_repository = $em->getRepository('UAHGestorActividadesBundle:Category');
         $activity_repository->updatePublished();
         $activities = $activity_repository->getPublishedActivities(); //findBy(array(), array('publicityStartDate' => 'ASC'));
-        $categories = $category_repository->getActive();
-        $num_actividades = count($activities);
+        $categories = $category_repository->getFrontPage();
+        $num_activities = count($activities);
         $enrollments_id = array();
         $enrolled_activities = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrolledActivitiesId($this->getUser(), $pagina);
         return $this->render('UAHGestorActividadesBundle:Default:index.html.twig', array(
                     'activities' => $activities,
                     'enrollments' => $enrolled_activities,
-                    'categories' => $categories));
+                    'categories' => $categories,
+                    'num_activities' => $num_activities));
     }
 
 }
