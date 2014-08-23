@@ -30,7 +30,7 @@
                                 <input id="checkbox--1" type="checkbox" checked="checked" aria-label="Todas las categorias" />
                             </div>
                             <div class="category-name"><label for="checkbox--1">Todas las categorias</label></div>
-                            <div class="count-activities">{{activities.0.getCount|default('0')}}</div>
+                            <div class="count-activities">{{num_activities|default('0')}}</div>
                         </li>
                         {% for category in categories %}
                             <li data-id="{{category.id}}" class="category" style="display:list-item;"> 
@@ -38,7 +38,7 @@
                                     <input type="checkbox" id="checkbox-{{category.id}}" aria-label="{{category.name}}" />
                                 </div>
                                 <div class="category-name"><label for="checkbox-{{category.id}}">{{category.name}}</label></div>
-                                <div class="count-activities">{{category.activityCount}}</div>
+                                <div class="count-activities">{{category.num_activities}}</div>
                             </li>
 
                         {% endfor %}
