@@ -63,7 +63,7 @@ class Category {
     private $children_category;
 
     /**
-     * @ManyToOne(targetEntity="Category", inversedBy="children_category")
+     * @ManyToOne(targetEntity="Category", inversedBy="children_category",cascade={"detach"})
      * @JoinColumn(name="parent_category_id", referencedColumnName="id")
      */
     private $parent_category;

@@ -285,6 +285,7 @@ class Activity {
      */
     public function __construct() {
         $this->studentProfile = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -844,15 +845,26 @@ class Activity {
         if ($this->getPublicityStartDate() === null) {
             $this->setPublicityStartDate(new \DateTime(date("c", time())));
         }
+
         if (!is_null($this->getCategories())) {
-            $this->setIndexFilter(
-                    implode(" ", array_map(function($category) {
-                                return "category-" . $category->getId();
-                            }, $this->getCategories()->toArray())
-            ));
+            //var_dump($this->getCategories());
+            if (!is_array($this->getCategories())) {
+                $this->setIndexFilter(
+                        implode(" ", array_map(function($category) {
+                                    return "category-" . $category->getId();
+                                }, $this->getCategories()->toArray())
+                ));
+            } else {
+                $this->setIndexFilter(
+                        implode(" ", array_map(function($category) {
+                                    return "category-" . $category->getId();
+                                }, $this->getCategories())
+                ));
+            }
         } else {
             $this->setIndexFilter('category-no-pillada');
         }
+       
     }
 
     /**
