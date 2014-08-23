@@ -23,7 +23,7 @@ class DefaultController extends Controller {
         if ($pagina <= 0) {
             $pagina = 1;
         }
-        $activities = $activity_repository->getPublishedActivities($pagina, $elements_per_page);
+        $activities = null;//$activity_repository->getPublishedActivities($pagina, $elements_per_page);
         $categories = $category_repository->getFrontPage();
         $num_activities = $activity_repository->getCountPublishedActivities();
         $enrolled_activities = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrolledActivitiesId($this->getUser(), $pagina);
