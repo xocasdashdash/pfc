@@ -12,7 +12,7 @@
     {{ parent() }}
 {% endblock %}
 {% block body %}
-    {% block navbar %}
+    {# {% block navbar %}
         <div class="navbar navbar-default navbar-fixed-top hidden-print" role="navigation">
             <div class="container">
                 <div class="navbar-header">
@@ -39,7 +39,7 @@
                             <li><a href="{{ path("uah_gestoractividades_login_login")}}" >Log in</a></li>
 
                         {% endif %}
-                        {# fp_openid_security_check", {'openid_identifier': 'http://yo.rediris.es/','_target_path': "/"}) }}"#}
+                        {# fp_openid_security_check", {'openid_identifier': 'http://yo.rediris.es/','_target_path': "/"}) }}"#
 
                         <li>
                             <a href="{{ path('uah_gestoractividades_profile_index') }}">Perfil</a>
@@ -82,6 +82,9 @@
                 </div><!--/.nav-collapse -->
             </div>
         </div>
+    {% endblock %} #}
+    {% block navbar %}
+        {{parent()}}
     {% endblock %}
     {% block flashmessages %}
         {{ parent() }}

@@ -62,12 +62,12 @@
     Panel de administración de permisos de usuarios
 {% endblock %}
 {% block content %}
-    <div class="row top-buffer">
+    <div class="row top-buffer col-xs-12">
         <table class="table table-bordered tbl_enrolled">
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th class="nombre-actividad">Nombre</th>
+                    <th class="hidden-xs"></th>
+                    <th class="nombre-actividad hidden-xs">Nombre</th>
                     <th class="hidden-print">Usuario UAH</th>
                     <th>Permisos</th>
                     <th class="hidden-print">Acción</th>                
@@ -76,18 +76,15 @@
             <tbody>
                 {% for user_permit in users_permits %}
                     <tr id="default-permit-{{user_permit.default_permit.id}}">
-                        <td class="index">{{loop.index}}</td>
+                        <td class="index hidden-xs">{{loop.index}}</td>
 
                         {% if user_permit.user_id is null %}
-                            <td class="id_ldap" data-id-ldap="{{user_permit.default_permit.idUsuldap}}" >Todavía no se ha logueado </td>
+                            <td class="id_ldap hidden-xs" data-id-ldap="{{user_permit.default_permit.idUsuldap}}" >Todavía no se ha logueado </td>
 
                         {% else %}
-                            <td class="id_ldap" data-id-ldap="{{user_permit.default_permit.idUsuldap}}" ><a href="{{ path("uah_gestoractividades_profile_index",{"_switch_user": user_permit.id_ldap})}}" class="switch_user" title="Cambiarte a este usuario">{{user_permit.name ~ ' ' ~ user_permit.apellido1 ~ ' ' ~ user_permit.apellido2}}</a></td>
+                            <td class="id_ldap hidden-xs" data-id-ldap="{{user_permit.default_permit.idUsuldap}}" ><a href="{{ path("uah_gestoractividades_profile_index",{"_switch_user": user_permit.id_ldap})}}" class="switch_user" title="Cambiarte a este usuario">{{user_permit.name ~ ' ' ~ user_permit.apellido1 ~ ' ' ~ user_permit.apellido2}}</a></td>
                             {% endif %}
                         <td class="text-left">{{user_permit.default_permit.idUsuldap|uahuser}}</td>
-
-
-
                         <td class="text-left">
                             <select class="selectpicker" title="Cambiar roles de los usuarios">
                                 {% for role in roles %}
@@ -100,8 +97,8 @@
                             </select>                            
                         </td>
                         <td class="text-center">
-                            <button class="btn btn-default update_permissions" data-default-permit-id="{{user_permit.default_permit.id}}" title="Actualiza los permisos que este usuario tiene disponibles">Actualizar</button>
-                            <button class="btn btn-default delete_permissions" data-default-permit-id="{{user_permit.default_permit.id}}" title="Deja a este usuario con los permisos por defecto (Estudiante) y lo borra de aquí">Quitar</button>
+                            <button class="btn btn-default update_permissions button-lg" data-default-permit-id="{{user_permit.default_permit.id}}" title="Actualiza los permisos que este usuario tiene disponibles">Actualizar</button>
+                            <button class="btn btn-default delete_permissions button-lg" data-default-permit-id="{{user_permit.default_permit.id}}" title="Deja a este usuario con los permisos por defecto (Estudiante) y lo borra de aquí">Quitar</button>
                         </td>
                     </tr>
 
