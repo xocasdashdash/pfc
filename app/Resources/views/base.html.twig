@@ -89,7 +89,7 @@
                                         <a href="{{path('uah_gestoractividades_admin_activities', {_switch_user:'exit'}) }}">EXIT</a>
                                     </li>
                                 {% endif %}
-                                <li class="hidden-xs navbar-right">
+                                <li class="hidden-sm hidden-xs navbar-right">
                                     <form class="form-inline" action="{{path('uah_gestoractividades_default_search')}}" method="GET" role="form">
                                         <div class="form-group">
                                             <input type="text" class="form-control" placeholder="Buscar" name="q" value="{{query|default('')}}">
