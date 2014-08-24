@@ -5,7 +5,7 @@
  */
 
 
-$(document).ready(function() {
+$(window).load(function() {
     $('#notification').bind('close.bs.alert', function(evt) {
         evt.preventDefault();
         $('#notification').addClass('hide');

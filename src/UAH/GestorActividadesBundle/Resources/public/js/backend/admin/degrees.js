@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 var edit = false;
-$(document).on('ready', function() {
+$(window).load(function() {
     $('#form-create-degree').on('submit', function(evt) {
         evt.preventDefault();
         $('#modal-create-degree').modal('hide');

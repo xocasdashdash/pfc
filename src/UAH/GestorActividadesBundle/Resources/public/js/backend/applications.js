@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-$(document).ready(function() {
+$(window).load(function() {
     $('#btn_show_all').on('click', function() {
         window.location.href = Routing.generate('uah_gestoractividades_application_index', {filter: 'all'});
     });

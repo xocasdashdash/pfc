@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(window).load(function() {
 
     $('#frm_code').on('submit', function(evt) {
         evt.preventDefault();
