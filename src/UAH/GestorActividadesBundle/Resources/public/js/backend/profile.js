@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-$(document).ready(function() {
+$(window).load(function() {
     $('#right-block').css('height', $('#left-block').css('height'));
     $(window).resize(function() {
         $('#right-block').css('height', $('#left-block').css('height'));
