@@ -93,7 +93,12 @@
     {% block javascripts %}
         {% javascripts 
             'bootstrap/js/jquery.js'
-            'bootstrap/js/bootstrap.js'
+            'bootstrap/js/bootstrap.js' filter='?uglifyjs2' %}                
+
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+
+        {% endjavascripts %}
+        {% javascripts
             '@UAHGestorActividadesBundle/Resources/public/vendor/holderjs/holder.js'
             '@UAHGestorActividadesBundle/Resources/public/vendor/jquery.cookie/jquery.cookie.js'
             '@UAHGestorActividadesBundle/Resources/public/vendor/bootbox.js/bootbox.js'
