@@ -141,7 +141,7 @@ knp_snappy:
             stop-slow-scripts: true
             load-error-handling: ignore
             dpi: 96
-            javascript-delay: 2000
+            javascript-delay: 100
             
             
         # ['--print-media-type','--disable-smart-shrinking','--page-width 21cm','--page-height 27cm','--dpi 96']
