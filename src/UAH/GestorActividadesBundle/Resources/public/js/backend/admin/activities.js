@@ -5,7 +5,7 @@
  */
 
 
-$(document).on('ready', function() {
+$(window).load(function() {
     function getSelectedIds() {
         var $activities_id = [];
         $filas_seleccionadas = $('table input[type=checkbox]:checked');

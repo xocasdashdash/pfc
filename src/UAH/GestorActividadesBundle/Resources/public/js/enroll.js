@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(window).load(function() {
     $('.activities, .activity-modal, .activity').on('click', '.enroll-button', function(event) {
         var $id = $(this).data('activity-id');
         var $boton = $(this);

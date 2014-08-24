@@ -13,7 +13,7 @@ function getSelectedIds() {
     });
     return $activities_id;
 }
-$(document).ready(function() {
+$(window).on('load', function() {
     console.log('ready!' + new Date());
     $('#btn_ask_approval').on('click', function() {
         $selected_activity = getSelectedIds();
