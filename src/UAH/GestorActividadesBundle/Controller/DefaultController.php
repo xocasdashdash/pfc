@@ -26,7 +26,7 @@ class DefaultController extends Controller {
         $enrolled_activities = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrolledActivitiesId($this->getUser(), $pagina);
         $session = $this->get("session");
         $session->set("num_pagina", 0);
-        
+
         return $this->render('UAHGestorActividadesBundle:Default:index.html.twig', array(
                     'activities' => $activities,
                     'enrollments' => $enrolled_activities,
@@ -42,8 +42,6 @@ class DefaultController extends Controller {
         $activity_repository = $em->getRepository('UAHGestorActividadesBundle:Activity');
         $elements_per_page = $this->container->getParameter('elements_per_page');
         $activities = $activity_repository->getPublishedActivities($page, $elements_per_page);
-        $session = $this->get("session");
-        //$page =$session->get("num_pagina");
         $enrolled_activities = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrolledActivitiesId($this->getUser(), $page);
         $html = $this->renderView('UAHGestorActividadesBundle:Activity:activity-pagination.html.twig', array(
             'activities' => $activities,
@@ -52,6 +50,24 @@ class DefaultController extends Controller {
         $response['html'] = $html;
         $response['last_page'] = count($activities) < $elements_per_page;
         return new JsonResponse($response);
+    }
+
+    /**
+     * @Route("/search")
+     */
+    public function searchAction(Request $request) {
+        $query = $request->get('q');
+        $em = $this->getDoctrine()->getManager();
+        $activity_repository = $em->getRepository('UAHGestorActividadesBundle:Activity');
+        $enrolled_activities = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrolledActivitiesId($this->getUser());
+        $category_repository = $em->getRepository('UAHGestorActividadesBundle:Category');
+        $categories = $category_repository->getFrontPage();
+        $activities = $activity_repository->searchActivities($query);
+        return $this->render('UAHGestorActividadesBundle:Activity:activity-search.html.twig', array(
+                    'activities' => $activities,
+                    'enrollments' => $enrolled_activities,
+                    'categories' => $categories,
+                    'query' => $query));
     }
 
 }
