@@ -81,7 +81,7 @@
         <table class="table table-bordered tbl_enrolled">
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th class="hidden-xs">#</th>
                     <th class="nombre-actividad">Nombre y apellidos</th>
                     <th class="hidden-print">E-mail</th>
                     <th>Fecha Inscripción</th>
@@ -101,7 +101,7 @@
                 <table class="table table-bordered tbl_enrolled">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th class="hidden-xs">#</th>
                             <th class="nombre-actividad">Nombre y apellidos</th>
                             <th class="hidden-print">E-mail</th>
                             <th>Fecha Inscripción</th>
@@ -114,7 +114,7 @@
                     <tbody>
                     {% endif %}
                     <tr data-id-enrollment="{{enrollment.id}}">
-                        <td>#{{ loop.index }}</td>
+                        <td class="hidden-xs">#{{ loop.index }}</td>
                         <td>{{ enrollment.name ~ " " ~ enrollment.apellido_1 ~ " " ~ enrollment.apellido_2}}</td>
                         <td class="hidden-print email">{{ enrollment.email }}</td>
                         <td>{{ enrollment.dateRegistered |date('d/m/Y') }}</td>
