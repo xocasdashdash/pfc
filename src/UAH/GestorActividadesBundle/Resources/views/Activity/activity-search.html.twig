@@ -1,10 +1,8 @@
-
 {% extends '::frontend.html.twig' %}
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/index.js'
-        '@UAHGestorActividadesBundle/Resources/public/js/infinite-scroll.js' filter='?uglifyjs2' %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/index.js' filter='?uglifyjs2' %}
+    <script a type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
 {% block stylesheets %}
@@ -17,7 +15,7 @@
     {{parent()}}
 {% endblock %}
 {% block title %}
-    Portal
+    Resultados de búsqueda de {{query}}
 {% endblock %}
 {% block content %}
     <div class="container">
@@ -31,7 +29,7 @@
                                 <input id="checkbox--1" class="all-categories" type="checkbox" checked="checked" aria-label="Todas las categorias" value="-1"/>
                             </div>
                             <div class="category-name"><label for="checkbox--1">Todas las categorias</label></div>
-                            <div class="count-activities">{{num_activities|default('0')}}</div>
+
                         </li>
                         {% for category in categories %}
                             <li data-id="{{category.id}}" class="category" style="display:list-item;"> 
@@ -39,14 +37,13 @@
                                     <input type="checkbox" id="checkbox-{{category.id}}" aria-label="{{category.name}}" value="category-{{category.id}}"/>
                                 </div>
                                 <div class="category-name"><label for="checkbox-{{category.id}}">{{category.name}}</label></div>
-                                <div class="count-activities">{{category.num_activities}}</div>
                             </li>
 
                         {% endfor %}
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-8 col-md-8 col-xs-12  activities">
+            <div class="col-md-8 col-xs-12 activities">
                 <p class="pull-left visible-xs">
                     <button class="btn btn-primary btn-lg" data-toggle="offcanvas" type="button">Ver categorias</button>
                 </p>
