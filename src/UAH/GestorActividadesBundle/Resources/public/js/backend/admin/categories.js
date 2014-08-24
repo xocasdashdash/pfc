@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 var edit = false;
-$(document).on('ready', function() {
+$(window).load(function() {
     $('#form-create-category').on('submit', function(evt) {
         evt.preventDefault();
         regex = /^[a-zA-Z\ \'\u00e1\u00e9\u00ed\u00f3\u00fa\u00c1\u00c9\u00cd\u00d3\u00da\u00f1\u00d1\u00FC\u00DC]+$/; ///^[A-Za-z0-9][A-Za-z0-9 ]*$/;

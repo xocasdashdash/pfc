@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(window).load(function() {
     $('.selectpicker').selectpicker();
     $('.celebration_dates').datepicker({
         format: "dd/mm/yyyy",

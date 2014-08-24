@@ -22,7 +22,7 @@ $(window).on('load', function() {
         }
     });
 });
-$(document).on('ready', function() {
+$(window).on('load', function() {
     $('table').on('click', '.update_permissions', function(evt) {
     //console.log(evt.target);
         $idLdap = $(evt.target).closest('tr').find('.id_ldap').data().idLdap;

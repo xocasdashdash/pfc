@@ -116,6 +116,11 @@
 
         {% endblock %}
         <div class="ajax-loading"></div>
+        {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/base/cookie-banner.js' %}
+        <script id="cookiebanner" type="text/javascript" src="{{ asset_url }}" data-height="40px" data-position="bottom"
+                data-message="Usamos cookies para mejorar la experiencia del usuario. Entendemos que las aceptas si sigues navegando por nuestra web."
+        data-linkmsg="Más información"></script>
+        {% endjavascripts %}
     </body>
     {% block javascripts %}
         {% javascripts 
@@ -134,17 +139,18 @@
             '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-select/dist/js/bootstrap-select.min.js' 
             '@UAHGestorActividadesBundle/Resources/public/vendor/qTip2/jquery.qtip.min.js'
         filter='?uglifyjs2' %}                
-        <script type="text/javascript" src="{{ asset_url }}" async></script>
+        <script type="text/javascript" src="{{ asset_url }}" ></script>
         {% endjavascripts %}
         {% javascripts    '@UAHGestorActividadesBundle/Resources/public/js/enroll.js' filter='?uglifyjs2' %}
-        <script type="text/javascript" src="{{ asset_url }}" async></script>
+        <script type="text/javascript" src="{{ asset_url }}" ></script>
         {% endjavascripts %}
         {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/base/sidebar.js' %}
-        <script type="text/javascript" src="{{ asset_url }}" async></script>
+        <script type="text/javascript" src="{{ asset_url }}" ></script>
         {% endjavascripts %}
+
 
         <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
         <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/jquery.qtip.min.js" async></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/jquery.qtip.min.js" ></script>
     {% endblock %}
 </html>
