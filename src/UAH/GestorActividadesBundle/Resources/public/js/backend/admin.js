@@ -212,4 +212,10 @@ $(document).ready(function() {
         $fila = $(this).closest('tr');
         $fila.find("input[type=checkbox]").prop('checked', this.checkValidity());
     });
+
+//    $('.ayuda').popover(
+//            {
+//                placement: 'auto right',
+//                trigger: 'focus'
+//            });
 });

@@ -4,10 +4,27 @@
  * and open the template in the editor.
  */
 
-
+$(window).on('load', function() {
+    $('.selectpicker').selectpicker();
+    $('[title!=""]').qtip({
+        content: {
+            title: 'Para que sirve'
+        },
+        position: {
+            my: 'top center', // Position my top left...
+            at: 'bottom center', // at the bottom right of...
+            //target: $('.selector') // my target
+        },
+        style: {classes: 'hidden-print'},
+        adjust: {
+            x: 10,
+            y: 10
+        }
+    });
+});
 $(document).on('ready', function() {
     $('table').on('click', '.update_permissions', function(evt) {
-//console.log(evt.target);
+    //console.log(evt.target);
         $idLdap = $(evt.target).closest('tr').find('.id_ldap').data().idLdap;
         $permits = $(evt.target).closest('tr').find('select :selected').text();
         $role = $(evt.target).closest('tr').find('select :selected').val();
@@ -29,8 +46,8 @@ $(document).on('ready', function() {
         });
     });
     $('table').on('click', '.delete_permissions', function(evt) {
-//Mostrar bootbox
-//Si dice que si, envíamos al servidor
+    //Mostrar bootbox
+    //Si dice que si, envíamos al servidor
         console.log(evt.target);
         $tbody = $(evt.target).closest('tbody');
         $fila = $(evt.target).closest('tr');
@@ -58,23 +75,7 @@ $(document).on('ready', function() {
             }
         });
     });
-    $('.selectpicker').selectpicker();
-    $('[title!=""]').qtip({
-        content: {
-            title: 'Para que sirve'
-        },
-        position: {
-            my: 'top center', // Position my top left...
-            at: 'bottom center', // at the bottom right of...
-            //target: $('.selector') // my target
-        },
-        style: {classes: 'hidden-print'},
-        adjust: {
-            x: 10,
-            y: 10
-        }
 
-    });
     $('#form-create-new-user').on('submit', function(evt) {
         evt.preventDefault();
         $uah_name = $('#uah-name').val();

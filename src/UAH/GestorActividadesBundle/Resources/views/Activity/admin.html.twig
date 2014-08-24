@@ -3,8 +3,6 @@
     {{parent()}}
     <script type="text/javascript" src="{{ asset('bundles/uahgestoractividades/vendor/zeroclipboard/dist/ZeroClipboard.min.js') }}"></script> 
     {% javascripts 
-        '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js'
-        '@UAHGestorActividadesBundle/Resources/public/js/backend/create_activity.js'
         '@UAHGestorActividadesBundle/Resources/public/js/backend/admin.js'
     filter='?uglifyjs2' %}
     <script type="text/javascript" src="{{ asset_url }}" async></script>
@@ -83,7 +81,7 @@
         <table class="table table-bordered tbl_enrolled">
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th class="hidden-xs">#</th>
                     <th class="nombre-actividad">Nombre y apellidos</th>
                     <th class="hidden-print">E-mail</th>
                     <th>Fecha Inscripción</th>
@@ -103,7 +101,7 @@
                 <table class="table table-bordered tbl_enrolled">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th class="hidden-xs">#</th>
                             <th class="nombre-actividad">Nombre y apellidos</th>
                             <th class="hidden-print">E-mail</th>
                             <th>Fecha Inscripción</th>
@@ -116,7 +114,7 @@
                     <tbody>
                     {% endif %}
                     <tr data-id-enrollment="{{enrollment.id}}">
-                        <td>#{{ loop.index }}</td>
+                        <td class="hidden-xs">#{{ loop.index }}</td>
                         <td>{{ enrollment.name ~ " " ~ enrollment.apellido_1 ~ " " ~ enrollment.apellido_2}}</td>
                         <td class="hidden-print email">{{ enrollment.email }}</td>
                         <td>{{ enrollment.dateRegistered |date('d/m/Y') }}</td>
@@ -142,20 +140,20 @@
                                     {%  set min_credits = activity.numberOfCreditsMin %}
                                 {% endif %}
                             {% else %}
-                                {% set max_creditos = 0 %}
-                                {% set min_creditos = 0 %}
+                                {% set max_credits = 0 %}
+                                {% set min_credits = 0 %}
                             {% endif %}
 
                             <td class="reconocer no-print"><input type="checkbox" class="check_reconocer" value="{{enrollment.id}}"> </td>
                                 {# Alternativa para reconocimiento de numeros ^[0-9]{1,2}\,[0-9]{1}[0,5]{1}$|^[0-9]{1,2}\.[0-9]{1}[0,5]{1}$ #}
-                            <td class="reconocer no-print"><input type="number" step="{{ min_step_credits }}"  pattern="[0-9]+([\.|,][0-9]+)?"
+                            <td class="reconocer no-print ayuda" data-content="Minimo: {{min_credits}} | Máximo: {{max_credits}}"><input type="number" step="{{ min_step_credits }}"  pattern="[0-9]+([\.|,][0-9]+)?"
                                                                   min="{{ min_credits}}" 
                                                                   max="{{ max_credits }}" 
                                                                   class="numero_de_creditos" 
                                                                   placeholder="Número de créditos"
                                                                   tabindex="{{loop.index}}">
-                                <div class="ayuda"><span> Minimo: {{min_credits}} | Máximo: {{max_credits}}</span></div></td>
-                            {% elseif enrollment.status_enrollment =="STATUS_RECOGNIZED" %}                            
+                            </td>
+                        {% elseif enrollment.status_enrollment =="STATUS_RECOGNIZED" %}                            
                             <td class="unrecognize hidden-print"><input type="checkbox" class="check_unrecognize" value="{{enrollment.id}}"></td>
                             <td class="unrecognize hidden-print"><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled value="{{enrollment.recognizedCredits}}"></td>
                             {% elseif enrollment.status_enrollment == "STATUS_NOT_RECOGNIZED" %}

@@ -245,4 +245,19 @@ class ActivityRepository extends EntityRepository {
         $em->flush();
     }
 
+    public function searchActivities($query) {
+        $em = $this->getEntityManager();
+        $dql = "SELECT a from UAHGestorActividadesBundle:Activity a " .
+                " LEFT JOIN a.status s " .
+                " WHERE s.code = 'STATUS_PUBLISHED' " .
+                " AND ( a.name LIKE :name OR " .
+                " a.description LIKE :description) " .
+                " ORDER BY a.publicityStartDate ASC";
+        $consulta = $em->createQuery($dql);
+        $consulta->setParameter('name', '%' . $query . '%');
+        $consulta->setParameter('description', '%' . $query . '%');
+        $resultado = $consulta->getResult();
+        return $resultado;
+    }
+
 }

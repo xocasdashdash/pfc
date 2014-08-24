@@ -1,10 +1,8 @@
-
 {% extends '::frontend.html.twig' %}
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/index.js'
-        '@UAHGestorActividadesBundle/Resources/public/js/infinite-scroll.js' filter='?uglifyjs2' %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/index.js' filter='?uglifyjs2' %}
+    <script a type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
 {% block stylesheets %}
@@ -17,7 +15,7 @@
     {{parent()}}
 {% endblock %}
 {% block title %}
-    Portal
+    Resultados de búsqueda de {{query}}
 {% endblock %}
 {% block content %}
     <div class="container">
@@ -31,7 +29,7 @@
                                 <input id="checkbox--1" class="all-categories" type="checkbox" checked="checked" aria-label="Todas las categorias" value="-1"/>
                             </div>
                             <div class="category-name"><label for="checkbox--1">Todas las categorias</label></div>
-                            <div class="count-activities">{{num_activities|default('0')}}</div>
+
                         </li>
                         {% for category in categories %}
                             <li data-id="{{category.id}}" class="category" style="display:list-item;"> 
@@ -39,21 +37,20 @@
                                     <input type="checkbox" id="checkbox-{{category.id}}" aria-label="{{category.name}}" value="category-{{category.id}}"/>
                                 </div>
                                 <div class="category-name"><label for="checkbox-{{category.id}}">{{category.name}}</label></div>
-                                <div class="count-activities">{{category.num_activities}}</div>
                             </li>
 
                         {% endfor %}
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12  activities">
+            <div class="col-md-8 col-xs-12 activities">
                 <p class="pull-left visible-xs">
                     <button class="btn btn-primary btn-lg" data-toggle="offcanvas" type="button">Ver categorias</button>
                 </p>
                 {% for activity in activities %} 
-                    <div class="col-xs-12 activity category-all {{activity.indexfilter}}" id="activity-{{activity.id}}" >
+                    <div class="col-lg-12 col-md-12 col-xs-12 activity category-all {{activity.indexfilter}}" id="activity-{{activity.id}}" >
                         <div class="row">
-                            <div class="col-xs-8">
+                            <div class="col-md-8 col-xs-8">
                                 <h3 class="titulo-actividad"><a href="{{path('uah_gestoractividades_activity_index',{'activity_id': activity.id,'slug':activity.slug})}}">{{activity.name}}</a></h3>
                                 <div class="abstract-actividad ocultado-vertical">
                                     {{activity.description|raw('html')}}
@@ -61,7 +58,7 @@
                                 <a class="leer-mas" href="#" data-toggle="modal" data-target="#actividadModalPrincipal" data-activity-id="{{activity.id}}">Leer mas</a>
                                 <div class="categories-activity"><span>Categorias:</span>{{activity.CategorySlug}}</div>
                             </div>
-                            <div class="col-xs-4 center-block collapse right-column">
+                            <div class="col-md-4 col-xs-4 center-block collapse right-column">
                                 <h3 class="fecha-publicidad-actividad activity-date">{{activity.startdate|date("d/m/Y")}}</h3>
                                 <a href="{{path('uah_gestoractividades_activity_index',{'activity_id': activity.id,'slug':activity.slug})}}">
                                     <img class="center-block img-rounded img-activity img-small" data-img-src="{{asset(activity.imagepath)}}" src="{{asset(activity.imagepath)}}" data-toggle="modal" data-target="#img-modal" >                                         
@@ -110,14 +107,14 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="modal-title"></h4>
                 </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-xs-8">
+                <div class="row">
+                    <div class="modal-body" >
+                        <div class="col-lg-8">
                             <div class="abstract-actividad-modal" id="modal-abstract">
 
                             </div>
                         </div>
-                        <div class="col-xs-4 center-block collapse">
+                        <div class="col-lg-4 center-block collapse">
                             <h3 id="modal-date"></h3>
                             <div id="modal-image">
                                 <a href="">
