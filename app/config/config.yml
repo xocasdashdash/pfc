@@ -131,7 +131,7 @@ fp_open_id:
 knp_snappy:
     pdf:
         enabled:    true
-        binary:     /home/xokas/pfc/wkhtmltopdf/wkhtmltopdf
+        binary:     %kernel.root_dir%/../wkhtmltopdf/wkhtmltopdf
         options:    
             load-error-handling: ignore
             print-media-type: true
