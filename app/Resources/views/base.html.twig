@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <meta name="google-site-verification" content="3I8i2g1hcriT9J_u2Xf8ySu1_4zitJLFDEzJxr_K4cA" />
         <title>{% block title %}{% endblock %} - Actividades de la UAH</title>
         <link href="http://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed|Alegreya:700" rel="stylesheet" type="text/css" />
@@ -13,7 +13,7 @@
                 '@UAHGestorActividadesBundle/Resources/public/css/base/*.less'
                 '@UAHGestorActividadesBundle/Resources/public/vendor/qTip2/jquery.qtip.min.css'
                 '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-select/dist/css/bootstrap-select.min.css' 
-                filter='cssrewrite' filter='uglifycss'%}
+                filter='cssrewrite' filter='?uglifycss'%}
             <link href="{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ asset_url }}" rel="stylesheet" type="text/css" />          
             {% endstylesheets %}
 
@@ -130,6 +130,12 @@
         <script type="text/javascript" src="{{ asset_url }}"></script>
 
         {% endjavascripts %}
+
+        {% javascripts 
+            '@UAHGestorActividadesBundle/Resources/public/js/detectmobilebrowser.js' filter='?uglifyjs2' %}
+        <script type="text/javascript" src="{{ asset_url}}"></script>
+        {% endjavascripts %}
+
         {% javascripts
             '@UAHGestorActividadesBundle/Resources/public/vendor/holderjs/holder.js'
             '@UAHGestorActividadesBundle/Resources/public/vendor/jquery.cookie/jquery.cookie.js'

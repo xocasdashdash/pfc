@@ -11,26 +11,32 @@ $(window).load(function() {
         $('#notification').addClass('hide');
         $('#notification').removeClass('alert-info alert-warning alert-danger alert-success');
     });
-    var client = new ZeroClipboard($("#btn_copy"));
-    client.on('ready', function(event) {
-        client.on('copy', function(event) {
-            event.clipboardData.setData('text/plain', $(".email").map(function() {
-                return $(this).text();
-            }).get().join(';'));
+    if (jQuery.browser.mobile === false) {
+        var client = new ZeroClipboard($("#btn_copy"));
+        client.on('ready', function(event) {
+            client.on('copy', function(event) {
+                event.clipboardData.setData('text/plain', $(".email").map(function() {
+                    return $(this).text();
+                }).get().join(';'));
+            });
+            client.on('aftercopy', function(event) {
+                $('#notification').removeClass('hide');
+                $('#notification').addClass('alert-success');
+                $('#notification #type').text('Éxito');
+                $('#notification #message').html('Emails copiados al portapapeles. Pégalo con Ctrl+V');
+                setTimeout(function() {
+                    $("#notification").alert('close');
+                }, 4000);
+            });
         });
-        client.on('aftercopy', function(event) {
-            $('#notification').removeClass('hide');
-            $('#notification').addClass('alert-success');
-            $('#notification #type').text('Éxito');
-            $('#notification #message').html('Emails copiados al portapapeles. Pégalo con Ctrl+V');
-            setTimeout(function() {
-                $("#notification").alert('close');
-            }, 4000);
+        client.on('error', function(event) {
+            ZeroClipboard.destroy();
         });
-    });
-    client.on('error', function(event) {
-        ZeroClipboard.destroy();
-    });
+    } else {
+        $('#btn_copy_item').addClass('hide');
+        $('#btn_print_report_item').addClass('hide');
+    }
+
     function getSelectedIds(type) {
         var $checked_rows = [];
         $filas_seleccionadas = $('.tbl_enrolled ' + type + ' input[type=checkbox]:checked').closest('tr');
@@ -213,9 +219,10 @@ $(window).load(function() {
         $fila.find("input[type=checkbox]").prop('checked', this.checkValidity());
     });
 
-//    $('.ayuda').popover(
-//            {
-//                placement: 'auto right',
-//                trigger: 'focus'
-//            });
+    $('[data-toggle="popover"]').popover({
+        placement: 'auto right',
+        trigger: 'focus',
+        html: true,
+        template: '<div class="popover"><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+    });
 });
