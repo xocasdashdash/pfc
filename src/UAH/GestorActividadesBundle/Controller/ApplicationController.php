@@ -83,10 +83,11 @@ class ApplicationController extends Controller {
         //Comprobación CSRF
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('profile', $request->headers->get('X-CSRFToken'))) {
+            $em = $this->getDoctrine()->getManager();
+
+            $enrollment_repository = $em->getRepository('UAHGestorActividadesBundle:Enrollment');
             $enrollments = $enrollment_repository->getEnrollmentsByID(json_decode($request->getContent()));
             if ($enrollments) {
-                $em = $this->getDoctrine()->getManager();
-                $enrollment_repository = $em->getRepository('UAHGestorActividadesBundle:Enrollment');
                 $status_recognized = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getRecognizedStatus();
                 $respuesta_json = array();
                 $application = new Application();
@@ -116,7 +117,7 @@ class ApplicationController extends Controller {
                             break;
                         }
                         //Compruebo que el usuario es el del enrollment
-                        if ($enrollment->getUser() != $user) {
+                        if ($enrollment->getUser() !== $this->getUser()) {
                             $respuesta_json['type'] = 'error';
                             $respuesta_json['code'] = self::APPLICATION_ERROR_NOT_YOUR_OWN;
                             $respuesta_json['message'] = 'No es el tuyo';

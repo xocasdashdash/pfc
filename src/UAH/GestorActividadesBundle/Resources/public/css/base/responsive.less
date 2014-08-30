@@ -29,18 +29,18 @@ and open the template in the editor.
 @screen-md-max:              (@screen-lg - 1);
 
 .hidden-xs-up{
-    @media (min-width: @screen-xs-max) {
+    @media screen and (min-width: @screen-xs-max) {
         .responsive-invisibility(); 
     }
 }
 
 .hidden-sm-up{
-    @media (min-width: @screen-sm-max) {
+    @media screen and (min-width: @screen-sm-max) {
         .responsive-invisibility(); 
     }
 }
 .hidden-md-up{    
-    @media (min-width: @screen-md-max) {
+    @media screen and (min-width: @screen-md-max) {
         .responsive-invisibility(); 
     }
 }
@@ -49,27 +49,27 @@ and open the template in the editor.
 
 .visible-xs-up{
     .responsive-invisibility(); 
-    @media (min-width: @screen-xs) {
+    @media screen and (min-width: @screen-xs) {
         .responsive-visibility()
     }
 }
 .visible-sm-up{
     .responsive-invisibility(); 
-    @media (min-width: @screen-sm) {
+    @media screen and (min-width: @screen-sm) {
         .responsive-visibility()
     }    
 }
 
-.visible-md-up{
-    .responsive-invisibility(); 
-    @media (min-width: @screen-md) {
+.visible-md-up
+{    .responsive-invisibility(); 
+    @media screen and (min-width: @screen-md) {
         .responsive-visibility()
     }    
 }
 
 .visible-lg-up{
     .responsive-invisibility(); 
-    @media (min-width: @screen-lg) {
+    @media screen and (min-width: @screen-lg) {
         .responsive-visibility(); 
     }
 }

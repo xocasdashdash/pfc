@@ -30,9 +30,9 @@
         <table class="table table-bordered tbl_enrolled">
             <thead>
                 <tr>
-                    <th>#</th>
+                    <th class="visible-sm-up">#</th>
                     <th class="category-name">Nombre</th>
-                    <th class="category-parent">Padre</th>
+                    <th class="visible-md-up category-parent">Padre</th>
                     <th class="category-status">Estado</th>
                     <th class="hidden-print">Acción</th>                
                 </tr>
@@ -48,9 +48,9 @@
                     {%endif%}
 
                     <tr id="category-{{category.obj.id}}" data-category-type="{{category.tipo}}">
-                        <td class="index">{{loop.index}}</td>
+                        <td class="visible-sm-up index">{{loop.index}}</td>
                         <td class="category-name">{{category.obj.name}}</td>
-                        <td class="category-parent" data-parent-category-id="{{category.obj.parentCategory.id|default('-1')}}">{{category.obj.parentCategory.name|default('-')}}</td>
+                        <td class="visible-md-up category-parent" data-parent-category-id="{{category.obj.parentCategory.id|default('-1')}}">{{category.obj.parentCategory.name|default('-')}}</td>
                         <td class="category-status">{{tipo}}</td>
                         <td class="text-center">
                             <button class="btn btn-default update_category" data-category-id="{{category.obj.id}}" title="Actualiza los datos de esta categoria">Actualizar</button>
