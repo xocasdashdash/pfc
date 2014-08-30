@@ -1,0 +1,75 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 30-ago-2014, 17:53:11
+    Author     : xokas
+*/
+.responsive-visibility() {
+    display: block !important;
+    table&  { display: table; }
+    tr&     { display: table-row !important; }
+    th&,
+    td&     { display: table-cell !important; }
+}
+
+.responsive-invisibility() {
+    display: none !important;
+}
+@screen-xs:                  480px;
+@screen-sm:                  768px;
+@screen-md:                  992px;
+@screen-lg:                  1200px;
+
+// So media queries don't overlap when required, provide a maximum
+@screen-xs-max:              (@screen-sm - 1);
+@screen-sm-max:              (@screen-md - 1);
+@screen-md-max:              (@screen-lg - 1);
+
+.hidden-xs-up{
+    @media (min-width: @screen-xs-max) {
+        .responsive-invisibility(); 
+    }
+}
+
+.hidden-sm-up{
+    @media (min-width: @screen-sm-max) {
+        .responsive-invisibility(); 
+    }
+}
+.hidden-md-up{    
+    @media (min-width: @screen-md-max) {
+        .responsive-invisibility(); 
+    }
+}
+
+
+
+.visible-xs-up{
+    .responsive-invisibility(); 
+    @media (min-width: @screen-xs) {
+        .responsive-visibility()
+    }
+}
+.visible-sm-up{
+    .responsive-invisibility(); 
+    @media (min-width: @screen-sm) {
+        .responsive-visibility()
+    }    
+}
+
+.visible-md-up{
+    .responsive-invisibility(); 
+    @media (min-width: @screen-md) {
+        .responsive-visibility()
+    }    
+}
+
+.visible-lg-up{
+    .responsive-invisibility(); 
+    @media (min-width: @screen-lg) {
+        .responsive-visibility(); 
+    }
+}

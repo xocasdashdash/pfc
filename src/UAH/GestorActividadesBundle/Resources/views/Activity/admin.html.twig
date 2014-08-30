@@ -77,7 +77,7 @@
     <div class="col-xs-12 visible-print-block print" style="height:20px;">
 
     </div>
-    <div class="row" style="padding-top:20px;">
+    <div class="row table-style">
         <div class="page-break">
 
         </div>
@@ -85,11 +85,12 @@
         <table class="table table-bordered tbl_enrolled">
             <thead>
                 <tr>
-                    <th class="hidden-xs">#</th>
+                    {# TODO: ARREGLAR ESTO #}
+                    <th class="visible-md-up">#</th>
                     <th class="nombre-actividad">Nombre y apellidos</th>
-                    <th class="visible-md  hidden-print">E-mail</th>
-                    <th class="visible-md" >Fecha Inscripción</th>
-                    <th class="visible-md" >Tipo de plan de estudios</th>
+                    <th class="visible-md-up  hidden-print">E-mail</th>
+                    <th class="visible-md-up" >Fecha Inscripción</th>
+                    <th class="visible-sm-up" >Tipo de plan de estudios</th>
                     <th class="hidden-print">Acción</th>
                     <th class="hidden-print">Créditos a reconocer</th>
                     <th class="visible-print print">Firma</th>
@@ -108,11 +109,11 @@
                 <table class="table table-bordered tbl_enrolled">
                     <thead>
                         <tr>
-                            <th class="visible-sm">#</th>
+                            <th class="visible-md-up">#</th>
                             <th class="nombre-actividad">Nombre y apellidos</th>
-                            <th class="visible-md hidden-print">E-mail</th>
-                            <th class="visible-md">Fecha Inscripción</th>
-                            <th class="visible-sm">Tipo de plan de estudios</th>
+                            <th class="visible-md-up hidden-print">E-mail</th>
+                            <th class="visible-md-up">Fecha Inscripción</th>
+                            <th class="visible-sm-up">Tipo de plan de estudios</th>
                             <th class="hidden-print">Acción</th>
                             <th class="hidden-print">Créditos a reconocer</th>
                             <th class="visible-print print" >Firma</th>
@@ -124,11 +125,11 @@
                     {% endif %}
 
                     <tr data-id-enrollment="{{enrollment.id}}">
-                        <td class="visible-sm">#{{ loop.index }}</td>
+                        <td class="visible-md-up">#{{ loop.index }}</td>
                         <td>{{ enrollment.name ~ " " ~ enrollment.apellido_1 ~ " " ~ enrollment.apellido_2}}</td>
-                        <td class="visible-md hidden-print email">{{ enrollment.email }}</td>
-                        <td class="visible-md" >{{ enrollment.dateRegistered |date('d/m/Y') }}</td>
-                        <td class="visible-sm">
+                        <td class="visible-md-up hidden-print email">{{ enrollment.email }}</td>
+                        <td class="visible-md-up" >{{ enrollment.dateRegistered |date('d/m/Y') }}</td>
+                        <td class="visible-sm-up">
                             {% if enrollment.status_degree == "STATUS_RENEWED" %}
                                 Plan renovado
                             {% elseif enrollment.status_degree == "STATUS_NON_RENEWED" %}
