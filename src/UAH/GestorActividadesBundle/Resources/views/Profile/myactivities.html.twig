@@ -41,33 +41,41 @@
             {% endif %}
         </div>
     </div>
-    <table class="table table-bordered top-buffer">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th class="nombre-actividad">Titulo</th>
-                <th class="hidden-print">Estado</th>
-                <th>Fecha de publicidad</th>
-                <th>Seleccionar</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for activity in activities %}
-                <tr id="activity-{{activity.id}}">
-                    <td class="index">{{loop.index}}</td>
-                    <td><a href="{{ path("uah_gestoractividades_activity_index",{"activity_id": activity.id})}}">{{activity.name}}</a></td>
-                    <td class="status">{{activity.status.nameEs}}</td>
-                    <td class="text-center">{{activity.publicityStartDate|date('d/m/Y')}}</td>
-                    <td class="text-center"><input type="checkbox" value="{{activity.id}}"></td>
+    <div class="row table-style">
+        <table class="table table-bordered top-buffer">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="nombre-actividad">Titulo</th>
+                    <th class="hidden-print">Estado</th>
+                    <th>Fecha de publicidad</th>
+                    <th>Seleccionar</th>
                 </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="5" class="text-center">
-                            No hemos encontrado ningún actividad tuya. 
-                            Porque no pruebas a <a href="{{path('uah_gestoractividades_activity_create')}}">crear</a> alguna
+            </thead>
+            <tbody>
+                {% for activity in activities %}
+
+                    <tr id="activity-{{activity.id}}">
+                        <td class="index">{{loop.index}}</td>
+                        <td>
+                            <a href="{{ path("uah_gestoractividades_activity_index",{"activity_id": activity.id})}}">{{activity.name}}</a>
                         </td>
+                        <td class="status">{{activity.status.nameEs}}</td>
+                        <td class="text-center">{{activity.publicityStartDate|date('d/m/Y')}}</td>
+                        <td class="text-center"><input type="checkbox" value="{{activity.id}}"></td>
                     </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center">
+                                No hemos encontrado ningún actividad tuya. 
+                                Porque no pruebas a <a href="{{path('uah_gestoractividades_activity_create')}}">crear</a> alguna
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+
                 {% endblock %}
