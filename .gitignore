@@ -40,3 +40,7 @@ web/upload/*
 bin/*
 # OpenShift
 app/config/params.php
+#WebStorm
+.idea/*
+
+

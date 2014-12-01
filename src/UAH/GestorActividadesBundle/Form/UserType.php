@@ -75,7 +75,7 @@ class UserType extends AbstractType {
                         'widget_col' => 8,
                         'col_size' => 'xs')
                 ))
-                ->add('Guardar', 'submit', array('attr' => array('type' => 'default', 'class' => 'btn-block', 'col_size' => 'xs', 'label_col' => 7, 'widget_col' => 3)))
+                ->add('Guardar', 'submit', array('attr' => array('type' => 'default', 'class' => 'btn-block col-sm-offset-9 col-sm-2 col-xs-offset-5 col-xs-5', 'col_size' => 'xs', 'label_col' => 5, 'widget_col' => 4)))
         ;
     }
 
