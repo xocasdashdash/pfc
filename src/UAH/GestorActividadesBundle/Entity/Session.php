@@ -13,31 +13,30 @@ use Doctrine\ORM\Mapping\Entity;
  * @Table(name="UAH_GAT_Session")
  * @Entity
  */
-class Session {
-    
+class Session
+{
     /**
      * @Column(name="session_id", type="string", length=255)
      * @Id
      */
     private $session_id;
-    
+
     /**
      * @Column(name="session_value", type="text")
-     * 
+     *
      */
     private $session_value;
-    
+
     /**
      * @Column(name="session_time", type="integer")
-     * 
+     *
      */
     private $session_time;
-    
 
     /**
      * Set session_id
      *
-     * @param string $sessionId
+     * @param  string  $sessionId
      * @return Session
      */
     public function setSessionId($sessionId)
@@ -50,7 +49,7 @@ class Session {
     /**
      * Get session_id
      *
-     * @return string 
+     * @return string
      */
     public function getSessionId()
     {
@@ -60,7 +59,7 @@ class Session {
     /**
      * Set session_value
      *
-     * @param string $sessionValue
+     * @param  string  $sessionValue
      * @return Session
      */
     public function setSessionValue($sessionValue)
@@ -73,7 +72,7 @@ class Session {
     /**
      * Get session_value
      *
-     * @return string 
+     * @return string
      */
     public function getSessionValue()
     {
@@ -83,7 +82,7 @@ class Session {
     /**
      * Set session_time
      *
-     * @param integer $sessionTime
+     * @param  integer $sessionTime
      * @return Session
      */
     public function setSessionTime($sessionTime)
@@ -96,7 +95,7 @@ class Session {
     /**
      * Get session_time
      *
-     * @return integer 
+     * @return integer
      */
     public function getSessionTime()
     {

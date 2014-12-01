@@ -12,10 +12,9 @@ use UAH\GestorActividadesBundle\Entity\Activity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class ActivityController extends Controller {
-
+class ActivityController extends Controller
+{
     const ERROR_CSRF_TOKEN_INVALID = 1;
     const APPROVAL_ERROR_NOT_ORGANIZER = 2;
     const APPROVAL_ERROR_INCORRECT_STATUS = 3;
@@ -27,7 +26,8 @@ class ActivityController extends Controller {
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Method({"GET"})
      */
-    public function indexAction(Activity $activity, Request $request) {
+    public function indexAction(Activity $activity, Request $request)
+    {
         if ($request->isXmlHttpRequest()) {
             return new JSONResponse($activity);
         } else {
@@ -49,16 +49,17 @@ class ActivityController extends Controller {
             $permissions |= $can_enroll;
             if ($permissions === 0) {
                 $permissions = "ENROLLABLE";
-            } else if ($permissions === 1) {
+            } elseif ($permissions === 1) {
                 $permissions = "ENROLLED";
-            } else if ($permissions === 2) {
+            } elseif ($permissions === 2) {
                 $permissions = "NO_PLACES";
-            } else if ($permissions === 4) {
+            } elseif ($permissions === 4) {
                 $permissions = "NOT_ENROLLABLE";
             }
+
             return $this->render('UAHGestorActividadesBundle:Activity:index.html.twig', array(
                         'activity' => $activity,
-                        'permissions' => $permissions
+                        'permissions' => $permissions,
             ));
         }
     }
@@ -68,7 +69,8 @@ class ActivityController extends Controller {
      * @Method({"GET","POST"})
      * @Security("is_granted('ROLE_UAH_STAFF_PDI')")
      */
-    public function createAction(Request $request) {
+    public function createAction(Request $request)
+    {
         $activity = new \UAH\GestorActividadesBundle\Entity\Activity();
         $form = $this->createForm(new ActivityType($this->getDoctrine()->getManager()
                         ->getRepository('UAHGestorActividadesBundle:Category')), $activity);
@@ -80,10 +82,12 @@ class ActivityController extends Controller {
             $activity->setNumberOfPlacesOccupied(0);
             $em->persist($activity);
             $em->flush();
+
             return $this->redirect($this->generateUrl("uah_gestoractividades_profile_myactivities"));
         }
+
         return $this->render('UAHGestorActividadesBundle:Activity:create.html.twig', array(
-                    'form' => $form->createView()));
+                    'form' => $form->createView(), ));
     }
 
     /**
@@ -91,14 +95,14 @@ class ActivityController extends Controller {
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("(is_granted('edit_activity',activity) && is_granted('ROLE_UAH_STAFF_PDI')) || is_granted('ROLE_UAH_ADMIN')")
      */
-    public function editAction(Activity $activity, Request $request) {
+    public function editAction(Activity $activity, Request $request)
+    {
         $em = $this->getDoctrine()->getManager();
         $fullyEditable = $em->getRepository('UAHGestorActividadesBundle:Activity')->isFullyEditable($activity);
         $form = $this->createForm(new ActivityType($this->getDoctrine()->getManager()
-                        ->getRepository('UAHGestorActividadesBundle:Category')), $activity
-                , array(
+                        ->getRepository('UAHGestorActividadesBundle:Category')), $activity, array(
             'fullyEditable' => $fullyEditable,
-            'isAdmin' => $this->get('security.context')->isGranted('ROLE_UAH_ADMIN')
+            'isAdmin' => $this->get('security.context')->isGranted('ROLE_UAH_ADMIN'),
         ));
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -106,13 +110,15 @@ class ActivityController extends Controller {
             $activity = $form->getData();
             $em->persist($activity);
             $em->flush();
+
             return $this->redirect($this->generateUrl("uah_gestoractividades_activity_index", array('activity_id' => $activity->getId(), 'slug' => $activity->getSlug())));
         }
+
         return $this->render('UAHGestorActividadesBundle:Activity:edit.html.twig', array(
                     'form' => $form->createView(),
                     'activity' => $activity,
                     'fullyEditable' => $fullyEditable,
-                    'isAdmin' => $this->get('security.context')->isGranted('ROLE_UAH_ADMIN')));
+                    'isAdmin' => $this->get('security.context')->isGranted('ROLE_UAH_ADMIN'), ));
     }
 
     /**
@@ -120,7 +126,8 @@ class ActivityController extends Controller {
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("(is_granted('edit_activity',activity) && is_granted('ROLE_UAH_STAFF_PDI')) || is_granted('ROLE_UAH_ADMIN')")
      */
-    public function updateAction(Activity $activity, Request $request) {
+    public function updateAction(Activity $activity, Request $request)
+    {
         $editForm = $this->createForm(new ActivityType($this->getDoctrine()->getManager()
                         ->getRepository('UAHGestorActividadesBundle:Category')), $activity);
         $rutaFotoOriginal = $editForm->getData()->getImagePath();
@@ -129,10 +136,11 @@ class ActivityController extends Controller {
         if ($editForm->isValid()) {
             $em->persist($activity);
             $em->flush();
+
             return $this->redirect($this->generateUrl("uah_gestoractividades_activity_index", array('activity_id' => $activity->getId())));
         } else {
             return $this->render('UAHGestorActividadesBundle:Activity:edit.html.twig', array(
-                        'form' => $editForm->createView()));
+                        'form' => $editForm->createView(), ));
         }
     }
 
@@ -141,8 +149,8 @@ class ActivityController extends Controller {
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("(is_granted('edit_activity',activity) && is_granted('ROLE_UAH_STAFF_PDI')) || is_granted('ROLE_UAH_ADMIN')")
      */
-    public function adminAction(Activity $activity, Request $request) {
-
+    public function adminAction(Activity $activity, Request $request)
+    {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('UAHGestorActividadesBundle:Enrollment');
         if ($request->query->get('show')) {
@@ -153,22 +161,24 @@ class ActivityController extends Controller {
         $enrollments = $repository->getEnrolledInActivity($activity, $filter);
         $response = $this->render('UAHGestorActividadesBundle:Activity:admin.html.twig', array(
             'enrollments' => $enrollments,
-            'activity' => $activity));
+            'activity' => $activity, ));
         $token = $this->get('form.csrf_provider')->generateCsrfToken('administracion');
         $cookie = new Cookie('X-CSRFToken', $token, 0, '/', null, false, false);
         $response->headers->setCookie($cookie);
+
         return $response;
     }
 
     /**
-     * 
+     *
      * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\HttpFoundation\Request    $request
      * @Route("/activity/close/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1}, options={"expose"=true})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("(is_granted('edit_activity',activity) && is_granted('ROLE_UAH_STAFF_PDI')) || is_granted('ROLE_UAH_ADMIN')")
      */
-    public function closeAction(Activity $activity, Request $request) {
+    public function closeAction(Activity $activity, Request $request)
+    {
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('profile', $request->headers->get('X-CSRFToken'))) {
             $em = $this->getDoctrine()->getManager();
@@ -185,6 +195,7 @@ class ActivityController extends Controller {
             $activity->setStatus($em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getClosed());
             $em->persist($activity);
             $em->flush();
+
             return new JsonResponse("OK", 200);
         } else {
             $response = array();
@@ -192,19 +203,21 @@ class ActivityController extends Controller {
             $response['message'] = 'El token CSRF no es válido. Recarga la página e inténtalo de nuevo';
             $response['type'] = 'error';
             $json_response = new JsonResponse($response, 403);
+
             return $json_response;
         }
     }
 
     /**
-     * 
+     *
      * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param \Symfony\Component\HttpFoundation\Request    $request
      * @Route("/activity/open/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1}, options={"expose"=true})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
-    public function openAction(Activity $activity, Request $request) {
+    public function openAction(Activity $activity, Request $request)
+    {
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('profile', $request->headers->get('X-CSRFToken'))) {
             $em = $this->getDoctrine()->getManager();
@@ -237,6 +250,7 @@ class ActivityController extends Controller {
             $response['message'] = 'El token CSRF no es válido. Recarga la página e inténtalo de nuevo';
             $response['type'] = 'error';
             $json_response = new JsonResponse($response, 403);
+
             return $json_response;
         }
     }
@@ -245,8 +259,9 @@ class ActivityController extends Controller {
      * @Route("/activities/askapproval", options={"expose"=true})
      * @Security("is_granted('ROLE_UAH_STAFF_PDI') || is_granted('ROLE_UAH_ADMIN')")
      */
-    public function askApprovalAction(Request $request) {
-        //Meter protección XSRF 
+    public function askApprovalAction(Request $request)
+    {
+        //Meter protección XSRF
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('profile', $request->headers->get('X-CSRFToken'))) {
             $em = $this->getDoctrine()->getManager();
@@ -262,6 +277,7 @@ class ActivityController extends Controller {
                     $response['code'] = self::APPROVAL_ERROR_NOT_ORGANIZER;
                     $response['message'] = 'No eres el organizador de esta actividad:' + $activity->getId();
                     $response['type'] = 'error';
+
                     return new JsonResponse($response, 400);
                 }
                 if ($statusActivity === $statusDraft) {
@@ -270,8 +286,9 @@ class ActivityController extends Controller {
                     $num_activities++;
                 } else {
                     $response['code'] = self::APPROVAL_ERROR_INCORRECT_STATUS;
-                    $response['message'] = 'Hay un problema con el estado de la actividad:' . $activity->getId();
+                    $response['message'] = 'Hay un problema con el estado de la actividad:'.$activity->getId();
                     $response['type'] = 'error';
+
                     return new JsonResponse($response, 400);
                 }
             }
@@ -281,14 +298,15 @@ class ActivityController extends Controller {
             $response['message']['num_activities'] = $num_activities;
             $response['message']['status'] = $statusPendingApproval->getNameEs();
             $response['type'] = 'success';
+
             return new JsonResponse($response, 200);
         } else {
             $response = array();
             $response['code'] = self::ERROR_CSRF_TOKEN_INVALID;
             $response['message'] = 'Problema con la seguridad. Prueba a recargar la página';
             $response['type'] = 'error';
+
             return new JsonResponse($response, 400);
         }
     }
-
 }

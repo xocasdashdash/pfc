@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Entity;
 
@@ -18,8 +17,8 @@ use Doctrine\ORM\Mapping\Entity;
  * @Table(name="UAH_GAT_Application")
  * @Entity(repositoryClass="UAH\GestorActividadesBundle\Repository\ApplicationRepository")
  */
-class Application {
-
+class Application
+{
     //put your code here
     /**
      * @var integer Id
@@ -48,7 +47,6 @@ class Application {
      */
     private $applicationDateVerified;
 
-    
     /**
      * @var string verification_code
      * @Column(name="verificationCode", type="string")
@@ -57,7 +55,7 @@ class Application {
 
     /**
      * @OneToMany(targetEntity="Enrollment", fetch="EAGER", mappedBy="application")
-     * @var type 
+     * @var type
      */
     private $enrollments;
 
@@ -71,26 +69,28 @@ class Application {
     /**
      * @var User verifiedByUser
      * @ManyToOne(targetEntity="User", inversedBy="verifiedApplications")
-     * @JoinColumn(name="verified_by_id", referencedColumnName="id", nullable=true,onDelete="SET NULL")     
+     * @JoinColumn(name="verified_by_id", referencedColumnName="id", nullable=true,onDelete="SET NULL")
      */
     private $verifiedByUser;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * Set user
      *
-     * @param integer $user
+     * @param  integer     $user
      * @return Application
      */
-    public function setUser($user) {
+    public function setUser($user)
+    {
         $this->user = $user;
 
         return $this;
@@ -99,19 +99,21 @@ class Application {
     /**
      * Get user
      *
-     * @return integer 
+     * @return integer
      */
-    public function getUser() {
+    public function getUser()
+    {
         return $this->user;
     }
 
     /**
      * Set verificationCode
      *
-     * @param string $verificationCode
+     * @param  string      $verificationCode
      * @return Application
      */
-    public function setVerificationCode($verificationCode) {
+    public function setVerificationCode($verificationCode)
+    {
         $this->verificationCode = $verificationCode;
 
         return $this;
@@ -120,42 +122,47 @@ class Application {
     /**
      * Get verificationCode
      *
-     * @return string 
+     * @return string
      */
-    public function getVerificationCode() {
+    public function getVerificationCode()
+    {
         return $this->verificationCode;
     }
 
     /**
      * Get verificationCode separated by a space
      *
-     * @return string 
+     * @return string
      */
-    public function getVerificationCodeSeparado($code_length = 5, $separador = "<br>") {
+    public function getVerificationCodeSeparado($code_length = 5, $separador = "<br>")
+    {
         $arr_resultado = str_split($this->verificationCode, $code_length);
         $resultado = "";
         end($arr_resultado);
         $end_key = key($arr_resultado);
         foreach ($arr_resultado as $key => $arr) {
-            $resultado .=$arr . ($key === $end_key ? "" : $separador);
+            $resultado .= $arr.($key === $end_key ? "" : $separador);
         }
+
         return $resultado;
     }
 
     /**
      * Constructor
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->enrollments = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
      * Add enrollments
      *
-     * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollments
+     * @param  \UAH\GestorActividadesBundle\Entity\Enrollment $enrollments
      * @return Application
      */
-    public function addEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments) {
+    public function addEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments)
+    {
         $this->enrollments[] = $enrollments;
 
         return $this;
@@ -166,26 +173,29 @@ class Application {
      *
      * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollments
      */
-    public function removeEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments) {
+    public function removeEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments)
+    {
         $this->enrollments->removeElement($enrollments);
     }
 
     /**
      * Get enrollments
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getEnrollments() {
+    public function getEnrollments()
+    {
         return $this->enrollments;
     }
 
     /**
      * Set status
      *
-     * @param \UAH\GestorActividadesBundle\Entity\Statusapplication $status
+     * @param  \UAH\GestorActividadesBundle\Entity\Statusapplication $status
      * @return Application
      */
-    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusapplication $status = null) {
+    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusapplication $status = null)
+    {
         $this->status = $status;
 
         return $this;
@@ -194,19 +204,21 @@ class Application {
     /**
      * Get status
      *
-     * @return \UAH\GestorActividadesBundle\Entity\Statusapplication 
+     * @return \UAH\GestorActividadesBundle\Entity\Statusapplication
      */
-    public function getStatus() {
+    public function getStatus()
+    {
         return $this->status;
     }
 
     /**
      * Set applicationDateCreated
      *
-     * @param \DateTime $applicationDateCreated
+     * @param  \DateTime   $applicationDateCreated
      * @return Application
      */
-    public function setApplicationDateCreated(\DateTime $applicationDateCreated) {
+    public function setApplicationDateCreated(\DateTime $applicationDateCreated)
+    {
         $this->applicationDateCreated = $applicationDateCreated;
 
         return $this;
@@ -215,19 +227,21 @@ class Application {
     /**
      * Get applicationDateCreated
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
-    public function getApplicationDateCreated() {
+    public function getApplicationDateCreated()
+    {
         return $this->applicationDateCreated;
     }
 
     /**
      * Set applicationDateVerified
      *
-     * @param \DateTime $applicationDateVerified
+     * @param  \DateTime   $applicationDateVerified
      * @return Application
      */
-    public function setApplicationDateVerified(\DateTime $applicationDateVerified) {
+    public function setApplicationDateVerified(\DateTime $applicationDateVerified)
+    {
         $this->applicationDateVerified = $applicationDateVerified;
 
         return $this;
@@ -236,17 +250,19 @@ class Application {
     /**
      * Get applicationDateVerified
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
-    public function getApplicationDateVerified() {
+    public function getApplicationDateVerified()
+    {
         return $this->applicationDateVerified;
     }
 
-    public function getNumberOfCredits() {
+    public function getNumberOfCredits()
+    {
         $resultado = 0;
 
-        $this->getEnrollments()->map(function($entity) use (&$resultado) {
-            $resultado +=$entity->getRecognizedCredits();
+        $this->getEnrollments()->map(function ($entity) use (&$resultado) {
+            $resultado += $entity->getRecognizedCredits();
         });
 
         return $resultado;
@@ -255,10 +271,11 @@ class Application {
     /**
      * Set verifiedByUser
      *
-     * @param \UAH\GestorActividadesBundle\Entity\User $verifiedByUser
+     * @param  \UAH\GestorActividadesBundle\Entity\User $verifiedByUser
      * @return Application
      */
-    public function setVerifiedByUser(\UAH\GestorActividadesBundle\Entity\User $verifiedByUser = null) {
+    public function setVerifiedByUser(\UAH\GestorActividadesBundle\Entity\User $verifiedByUser = null)
+    {
         $this->verifiedByUser = $verifiedByUser;
 
         return $this;
@@ -267,10 +284,10 @@ class Application {
     /**
      * Get verifiedByUser
      *
-     * @return \UAH\GestorActividadesBundle\Entity\User 
+     * @return \UAH\GestorActividadesBundle\Entity\User
      */
-    public function getVerifiedByUser() {
+    public function getVerifiedByUser()
+    {
         return $this->verifiedByUser;
     }
-
 }

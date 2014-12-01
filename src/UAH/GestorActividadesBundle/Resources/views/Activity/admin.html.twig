@@ -1,8 +1,8 @@
 {% extends '::backend.html.twig' %}
 {% block javascripts %}
     {{parent()}}
-    <script type="text/javascript" src="{{ asset('bundles/uahgestoractividades/vendor/zeroclipboard/dist/ZeroClipboard.min.js') }}"></script> 
-    {% javascripts 
+    <script type="text/javascript" src="{{ asset('bundles/uahgestoractividades/vendor/zeroclipboard/dist/ZeroClipboard.min.js') }}"></script>
+    {% javascripts
         '@UAHGestorActividadesBundle/Resources/public/js/backend/admin.js'
     filter='?uglifyjs2' %}
     <script type="text/javascript" src="{{ asset_url }}" ></script>
@@ -11,9 +11,9 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {% stylesheets 
+    {% stylesheets
         '@UAHGestorActividadesBundle/Resources/public/css/backend/activities/admin.less'%}
-    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
     {% endstylesheets %}
 {% endblock %}
 {% block title %}
@@ -149,7 +149,7 @@
                             {% endif %}
                         </td>
                         {% set min_step_credits = 0.05 %}
-                        {% if enrollment.status_enrollment == "STATUS_ENROLLED" %}      
+                        {% if enrollment.status_enrollment == "STATUS_ENROLLED" %}
 
                             {% if enrollment.status_degree is defined %}
 
@@ -176,7 +176,7 @@
                             <td class="reconocer no-print ayuda" >
                                 <input type="number" step="{{ min_step_credits }}"  data-content="Mín.:{{min_credits}}<br>Máx.:{{max_credits}}" data-toggle="popover" pattern="[0-9]+([\.|,][0-9]+)?" min="{{ min_credits}}" max="{{ max_credits }}" class="numero_de_creditos" placeholder="Número de créditos" tabindex="{{loop.index}}">
                             </td>
-                        {% elseif enrollment.status_enrollment =="STATUS_RECOGNIZED" %}                            
+                        {% elseif enrollment.status_enrollment =="STATUS_RECOGNIZED" %}
                             <td class="unrecognize hidden-print">
                                 <input type="checkbox" class="check_unrecognize" value="{{enrollment.id}}">
                             </td>

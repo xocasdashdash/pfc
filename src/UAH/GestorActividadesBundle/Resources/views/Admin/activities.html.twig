@@ -8,7 +8,7 @@
 {% block stylesheets %}
     {{parent()}}
     {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/admin/*.less' %}
-    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
     {% endstylesheets %}
 {%endblock %}
 {% block acciones_datos %}
@@ -54,7 +54,7 @@
             <div class="flex-item">
                 <li class="dropdown">
                     <button id="dropdownMenu1" href="#" data-toggle="dropdown" class="btn btn-default">
-                        Descargar CSV 
+                        Descargar CSV
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right filter-csv" role="menu" aria-labelledby="dropdownMenu1">
@@ -102,7 +102,7 @@
                     <th class="nombre-actividad">Nombre</th>
                     <th class="hidden-print">Fecha de creación</th>
                     <th>Fecha de solicitud</th>
-                    <th class="hidden-print">Acción</th>                
+                    <th class="hidden-print">Acción</th>
                 </tr>
             </thead>
             <tbody>

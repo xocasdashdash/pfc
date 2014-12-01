@@ -5,17 +5,17 @@ services:
         class: UAH\GestorActividadesBundle\Subscriber\TablePrefixSubscriber
         arguments: [%UAHGestorActividadesBundle.db.table_prefix%]
         tags:
-            - { name: doctrine.event_subscriber }    
+            - { name: doctrine.event_subscriber }
     UAH.GestorActividades.OpenIdUserManager:
         class: UAH\GestorActividadesBundle\Security\User\OpenIdUserManager
         # we used an EntityManager, so don't forget it in dependency injection
         # you may want to adapt it, only the IdentityManager is mandatory
-        arguments: [@fp_openid.identity_manager, @doctrine.orm.entity_manager]      
+        arguments: [@fp_openid.identity_manager, @doctrine.orm.entity_manager]
 #    faker.provider.UAHStudentProvider:
 #        class: UAH\GestorActividadesBundle\DataFixtures\FakerProviders\UAHStudentProvider
 #        arguments: [@faker.generator]
 #        tags:
-#            - { name: bazinga_faker.provider }          
+#            - { name: bazinga_faker.provider }
     security.access.ActivityEditAdminVoter:
         class:      UAH\GestorActividadesBundle\Security\Authorization\Voter\ActivityVoter
         public:     false

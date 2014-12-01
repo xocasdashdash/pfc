@@ -5,7 +5,7 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/profile/*.less' %}
-    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
     {% endstylesheets %}
 {% endblock %}
 {% block title %}
@@ -15,5 +15,5 @@
     {{ form(form, { 'style': 'horizontal' }) }}
     {{ form_start(form)}}
     {{ form_rest(form) }}
-    {{ form_end(form) }}     
+    {{ form_end(form) }}
 {% endblock %}
