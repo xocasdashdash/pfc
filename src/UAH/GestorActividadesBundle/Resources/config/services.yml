@@ -1,25 +1,31 @@
 parameters:
     UAHGestorActividadesBundle.db.table_prefix: UAH_GAT_
 services:
-            UAHGestorActividadesBundle.tblprefix_subscriber:
-                class: UAH\GestorActividadesBundle\Subscriber\TablePrefixSubscriber
-                arguments: [%UAHGestorActividadesBundle.db.table_prefix%]
-                tags:
-                    - { name: doctrine.event_subscriber }    
-services:
-    UAH.GestorActividades.openid_user_manager:
+    UAHGestorActividadesBundle.tblprefix_subscriber:
+        class: UAH\GestorActividadesBundle\Subscriber\TablePrefixSubscriber
+        arguments: [%UAHGestorActividadesBundle.db.table_prefix%]
+        tags:
+            - { name: doctrine.event_subscriber }
+    UAH.GestorActividades.OpenIdUserManager:
         class: UAH\GestorActividadesBundle\Security\User\OpenIdUserManager
         # we used an EntityManager, so don't forget it in dependency injection
         # you may want to adapt it, only the IdentityManager is mandatory
-        arguments: [@fp_openid.identity_manager, @doctrine.orm.entity_manager]      
+        arguments: [@fp_openid.identity_manager, @doctrine.orm.entity_manager]
 #    faker.provider.UAHStudentProvider:
 #        class: UAH\GestorActividadesBundle\DataFixtures\FakerProviders\UAHStudentProvider
 #        arguments: [@faker.generator]
 #        tags:
-#            - { name: bazinga_faker.provider }          
-    security.access.activity_edit_admin_voter:
+#            - { name: bazinga_faker.provider }
+    security.access.ActivityEditAdminVoter:
         class:      UAH\GestorActividadesBundle\Security\Authorization\Voter\ActivityVoter
         public:     false
         tags:
            - { name: security.voter }
         arguments: [@doctrine.orm.entity_manager]
+    UahAuthenticationHandler:
+        class: UAH\GestorActividadesBundle\Services\AuthenticationHandler
+        arguments: ['@router','@security.context','@doctrine.orm.entity_manager']
+    UAH.GestorActividades.twig.UAHNameExtension:
+        class: UAH\GestorActividadesBundle\Twig\UAHNameExtension
+        tags:
+            - { name: twig.extension }

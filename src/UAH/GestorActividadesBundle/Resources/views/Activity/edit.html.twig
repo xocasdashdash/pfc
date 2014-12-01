@@ -1,0 +1,41 @@
+{% extends '::backend.html.twig' %}
+{% block javascripts %}
+    {{parent()}}
+    {% javascripts
+        '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js'
+        '@UAHGestorActividadesBundle/Resources/public/js/backend/create_activity.js' filter='?uglifyjs2' %}
+    <script type="text/javascript" src="{{ asset_url }}" ></script>
+    {% endjavascripts %}
+    {{ tinymce_init() }}
+
+{% endblock %}
+{% block stylesheets %}
+    {{parent()}}
+    {% stylesheets '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-datepicker/build/build3.less' %}
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
+    {% endstylesheets %}
+{% endblock %}
+{% block title %}
+    Editar esta actividad
+{% endblock %}
+{% block content %}
+    <div class="row bottom-buffer">
+        {#{% form_theme form with ['UAHGestorActividadesBundle:Actividad:Form/bootstrap-form-horizontal.html.twig'] %}  #}
+        {{ form_start(form, { 'style': 'horizontal' }) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.englishName) }}
+        {% if isAdmin or fullyEditable %}
+            {{form_row(form.numberOfECTSCreditsMin)}}
+            {{form_row(form.numberOfECTSCreditsMax)}}
+            {{form_row(form.numberOfCreditsMin)}}
+            {{form_row(form.numberOfCreditsMax)}}
+            {{form_row(form.hasAdditionalWorkload)}}
+            {{form_row(form.numberOfHours)}}
+        {% endif %}
+        {{ form_row(form.organizerName) }}
+        {{ form_rest(form)}}
+        {{ form_end(form)}}
+
+
+    </div>
+{% endblock %}

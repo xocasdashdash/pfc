@@ -2,11 +2,11 @@
 #    path:  /
 #    defaults: { _controller: UAHGestorActividadesBundle:Default:index }
 #
-#uah_pagina: 
+#uah_pagina:
 #    path: /pag/{pagina}
 #    defaults: { _controller: UAHGestorActividadesBundle:Default:index, pagina:1}
 #    requirements:
-#        pagina: \d+           
+#        pagina: \d+
 
 #uah_perfil:
 #    path: /perfil
@@ -21,7 +21,7 @@
 #uah_justificante_show:
 #    path: /justificante/{id}
 #    defaults: {_controller: UAHGestorActividadesBundle:Justificante:show}
-#uah_justificante_create: 
+#uah_justificante_create:
 #    path: /justificante/create
 #    defaults: {_controller: UAHGestorActividadesBundle:Justificante:create}
 #uah_justificante_delete:
@@ -47,7 +47,7 @@
 #    defaults: {_controller: UAHGestorActividadesBundle:Actividad:show}
 #    requirements:
 #        id: \d+
-#uah_actividad_crear: 
+#uah_actividad_crear:
 #    path: /actividad/create
 #    defaults: {_controller: UAHGestorActividadesBundle:Actividad:create}
 #uah_actividad_editar:
@@ -65,5 +65,4 @@
 #openid_logout:
 #    path: /logout
 #    defaults: {_controller: UAHGestorActividadesBundle:Login:logout}
-#    
-        
+#

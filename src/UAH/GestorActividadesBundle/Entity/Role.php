@@ -11,24 +11,20 @@ namespace UAH\GestorActividadesBundle\Entity;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\ManyToMany;
-use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 use Doctrine\ORM\Mapping\Index;
-
 use Symfony\Component\Security\Core\Role\RoleInterface;
-use UAH\GestorActividadesBundle\Entity\User as User;
 
 /**
  * @Table(name="UAH_GAT_Role",uniqueConstraints={@UniqueConstraint(name="UAH_GAT_UniqueRole_idx", columns={"role"})}, indexes={@Index(name="UAH_GAT_PK_ROLE",columns={"id"})})
- * @Entity()
+ * @Entity(repositoryClass="UAH\GestorActividadesBundle\Repository\RoleRepository")
  */
-class Role implements RoleInterface {
-
+class Role implements RoleInterface
+{
     /**
      * @Column(name="id", type="integer")
      * @Id()
@@ -52,33 +48,37 @@ class Role implements RoleInterface {
      */
     private $users;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
      * @see RoleInterface
      */
-    public function getRole() {
+    public function getRole()
+    {
         return $this->role;
     }
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string $name
      * @return Role
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
 
         return $this;
@@ -87,19 +87,21 @@ class Role implements RoleInterface {
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
     /**
      * Set role
      *
-     * @param string $role
+     * @param  string $role
      * @return Role
      */
-    public function setRole($role) {
+    public function setRole($role)
+    {
         $this->role = $role;
 
         return $this;
@@ -108,10 +110,11 @@ class Role implements RoleInterface {
     /**
      * Add users
      *
-     * @param \UAH\GestorActividadesBundle\Entity\User $users
+     * @param  \UAH\GestorActividadesBundle\Entity\User $users
      * @return Role
      */
-    public function addUser(\UAH\GestorActividadesBundle\Entity\User $users) {
+    public function addUser(\UAH\GestorActividadesBundle\Entity\User $users)
+    {
         $this->users[] = $users;
 
         return $this;
@@ -122,17 +125,18 @@ class Role implements RoleInterface {
      *
      * @param \UAH\GestorActividadesBundle\Entity\User $users
      */
-    public function removeUser(\UAH\GestorActividadesBundle\Entity\User $users) {
+    public function removeUser(\UAH\GestorActividadesBundle\Entity\User $users)
+    {
         $this->users->removeElement($users);
     }
 
     /**
      * Get users
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getUsers() {
+    public function getUsers()
+    {
         return $this->users;
     }
-
 }

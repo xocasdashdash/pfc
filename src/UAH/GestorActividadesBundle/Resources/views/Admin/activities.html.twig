@@ -1,0 +1,123 @@
+{% extends "::backend.html.twig" %}
+{% block javascripts %}
+    {{parent()}}
+    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/backend/admin/activities.js' filter='?uglifyjs2'%}
+    <script type="text/javascript" src="{{ asset_url }}" ></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block stylesheets %}
+    {{parent()}}
+    {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/admin/*.less' %}
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
+    {% endstylesheets %}
+{%endblock %}
+{% block acciones_datos %}
+    <div class="row acciones_datos hidden-print">
+        <div class="flex-container">
+            <div class="flex-item">
+                <li class="dropdown">
+                    <button id="dropdownMenu1" href="#" data-toggle="dropdown" class="btn btn-default">
+                        Filtra las actividades
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'pending'})}}">Pendientes</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'approved'})}}">Aprobadas</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'published'})}}">Publicadas</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'closed'})}}">Cerradas</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'draft'})}}">Borrador</a>
+                        </li>
+                        <li role="presentation" class="divider"></li>
+
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'all'})}}">Todas</a>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+
+            <div class="flex-item">
+                <button type="button" class="btn btn-default" id="btn_approve_selected" title="Aprueba todas las actividades seleccionadas">Aprobar actividades seleccionadas</button>
+            </div>
+            <div class="flex-item">
+                <button type="button" class="btn btn-default" id="btn_print_pending_report" title="Descarga un pdf con todas las actividades pendientes de aprobar">Imprimir informe actividades pendientes</button>
+            </div>
+            <div class="flex-item">
+                <li class="dropdown">
+                    <button id="dropdownMenu1" href="#" data-toggle="dropdown" class="btn btn-default">
+                        Descargar CSV
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right filter-csv" role="menu" aria-labelledby="dropdownMenu1">
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="pending" >Pendientes</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="approved" >Aprobadas</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="published">Publicadas</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="closed" >Cerradas</a>
+                        </li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="draft" >Borrador</a>
+                        </li>
+                        <li role="presentation" class="divider"></li>
+
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="all" >Todas del año</a>
+                        </li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation">
+                            <a role="menuitem" tabindex="-1" data-filter="year0">Año 0</a>
+                        </li>
+                    </ul>
+                </li>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
+{% block title %}
+    Panel de administración de actividades
+{% endblock %}
+{% block content %}
+    <div class="row top-buffer table-style">
+        <table class="table table-bordered tbl_enrolled">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th class="nombre-actividad">Nombre</th>
+                    <th class="hidden-print">Fecha de creación</th>
+                    <th>Fecha de solicitud</th>
+                    <th class="hidden-print">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for activity in activities %}
+                    <tr id="activity-{{activity.id}}">
+                        <td class="index">{{loop.index}}</td>
+                        <td><a href="{{ path("uah_gestoractividades_activity_index",{"activity_id": activity.id})}}">{{activity.name}}</a></td>
+                        <td class="status">{{activity.date_created|date('d/m/Y')}}</td>
+                        <td class="text-center">{{activity.date_approved|date('d/m/Y')}}</td>
+                        <td class="text-center"><input type="checkbox" value="{{activity.id}}"></td>
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Entity;
 
@@ -16,10 +15,10 @@ use Doctrine\ORM\Mapping\Entity;
  * Description of Application
  *
  * @Table(name="UAH_GAT_Application")
- * @Entity()
+ * @Entity(repositoryClass="UAH\GestorActividadesBundle\Repository\ApplicationRepository")
  */
-class Application {
-
+class Application
+{
     //put your code here
     /**
      * @var integer Id
@@ -30,23 +29,23 @@ class Application {
     private $id;
 
     /**
-     * @var integer userId;
+     * @var integer user;
      * @ManyToOne(targetEntity="User",fetch="EAGER",inversedBy="applications")
      * @JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $userId;
+    private $user;
 
     /**
      * @var date applicationDate
-     * @Column(name="applicationDate", type="datetime")
+     * @Column(name="applicationDateCreated", type="datetime")
      */
-    private $applicationDate;
+    private $applicationDateCreated;
 
     /**
-     * @var blob application_file
-     * @Column(name="applicationFile", type="blob")
+     * @var date applicationDate
+     * @Column(name="applicationDateVerified", type="datetime", nullable=true)
      */
-    private $applicationFile;
+    private $applicationDateVerified;
 
     /**
      * @var string verification_code
@@ -55,11 +54,11 @@ class Application {
     private $verificationCode;
 
     /**
-     * @OneToMany(targetEntity="Enrollment", mappedBy="applicationForm")
-     * @var type 
+     * @OneToMany(targetEntity="Enrollment", fetch="EAGER", mappedBy="application")
+     * @var type
      */
     private $enrollments;
-    
+
     /**
      * @var int Estado del registro
      * @ManyToOne(targetEntity="Statusapplication")
@@ -68,84 +67,53 @@ class Application {
     private $status;
 
     /**
+     * @var User verifiedByUser
+     * @ManyToOne(targetEntity="User", inversedBy="verifiedApplications")
+     * @JoinColumn(name="verified_by_id", referencedColumnName="id", nullable=true,onDelete="SET NULL")
+     */
+    private $verifiedByUser;
+
+    /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
-     * Set userId
+     * Set user
      *
-     * @param integer $userId
+     * @param  integer     $user
      * @return Application
      */
-    public function setUserId($userId) {
-        $this->userId = $userId;
+    public function setUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get userId
+     * Get user
      *
-     * @return integer 
+     * @return integer
      */
-    public function getUserId() {
-        return $this->userId;
-    }
-
-    /**
-     * Set applicationDate
-     *
-     * @param \DateTime $applicationDate
-     * @return Application
-     */
-    public function setApplicationDate($applicationDate) {
-        $this->applicationDate = $applicationDate;
-
-        return $this;
-    }
-
-    /**
-     * Get applicationDate
-     *
-     * @return \DateTime 
-     */
-    public function getApplicationDate() {
-        return $this->applicationDate;
-    }
-
-    /**
-     * Set applicationFile
-     *
-     * @param string $applicationFile
-     * @return Application
-     */
-    public function setApplicationFile($applicationFile) {
-        $this->applicationFile = $applicationFile;
-
-        return $this;
-    }
-
-    /**
-     * Get applicationFile
-     *
-     * @return string 
-     */
-    public function getApplicationFile() {
-        return $this->applicationFile;
+    public function getUser()
+    {
+        return $this->user;
     }
 
     /**
      * Set verificationCode
      *
-     * @param string $verificationCode
+     * @param  string      $verificationCode
      * @return Application
      */
-    public function setVerificationCode($verificationCode) {
+    public function setVerificationCode($verificationCode)
+    {
         $this->verificationCode = $verificationCode;
 
         return $this;
@@ -154,10 +122,29 @@ class Application {
     /**
      * Get verificationCode
      *
-     * @return string 
+     * @return string
      */
-    public function getVerificationCode() {
+    public function getVerificationCode()
+    {
         return $this->verificationCode;
+    }
+
+    /**
+     * Get verificationCode separated by a space
+     *
+     * @return string
+     */
+    public function getVerificationCodeSeparado($code_length = 5, $separador = "<br>")
+    {
+        $arr_resultado = str_split($this->verificationCode, $code_length);
+        $resultado = "";
+        end($arr_resultado);
+        $end_key = key($arr_resultado);
+        foreach ($arr_resultado as $key => $arr) {
+            $resultado .= $arr.($key === $end_key ? "" : $separador);
+        }
+
+        return $resultado;
     }
 
     /**
@@ -171,7 +158,7 @@ class Application {
     /**
      * Add enrollments
      *
-     * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollments
+     * @param  \UAH\GestorActividadesBundle\Entity\Enrollment $enrollments
      * @return Application
      */
     public function addEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments)
@@ -194,7 +181,7 @@ class Application {
     /**
      * Get enrollments
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getEnrollments()
     {
@@ -204,7 +191,7 @@ class Application {
     /**
      * Set status
      *
-     * @param \UAH\GestorActividadesBundle\Entity\Statusapplication $status
+     * @param  \UAH\GestorActividadesBundle\Entity\Statusapplication $status
      * @return Application
      */
     public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusapplication $status = null)
@@ -217,10 +204,90 @@ class Application {
     /**
      * Get status
      *
-     * @return \UAH\GestorActividadesBundle\Entity\Statusapplication 
+     * @return \UAH\GestorActividadesBundle\Entity\Statusapplication
      */
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set applicationDateCreated
+     *
+     * @param  \DateTime   $applicationDateCreated
+     * @return Application
+     */
+    public function setApplicationDateCreated(\DateTime $applicationDateCreated)
+    {
+        $this->applicationDateCreated = $applicationDateCreated;
+
+        return $this;
+    }
+
+    /**
+     * Get applicationDateCreated
+     *
+     * @return \DateTime
+     */
+    public function getApplicationDateCreated()
+    {
+        return $this->applicationDateCreated;
+    }
+
+    /**
+     * Set applicationDateVerified
+     *
+     * @param  \DateTime   $applicationDateVerified
+     * @return Application
+     */
+    public function setApplicationDateVerified(\DateTime $applicationDateVerified)
+    {
+        $this->applicationDateVerified = $applicationDateVerified;
+
+        return $this;
+    }
+
+    /**
+     * Get applicationDateVerified
+     *
+     * @return \DateTime
+     */
+    public function getApplicationDateVerified()
+    {
+        return $this->applicationDateVerified;
+    }
+
+    public function getNumberOfCredits()
+    {
+        $resultado = 0;
+
+        $this->getEnrollments()->map(function ($entity) use (&$resultado) {
+            $resultado += $entity->getRecognizedCredits();
+        });
+
+        return $resultado;
+    }
+
+    /**
+     * Set verifiedByUser
+     *
+     * @param  \UAH\GestorActividadesBundle\Entity\User $verifiedByUser
+     * @return Application
+     */
+    public function setVerifiedByUser(\UAH\GestorActividadesBundle\Entity\User $verifiedByUser = null)
+    {
+        $this->verifiedByUser = $verifiedByUser;
+
+        return $this;
+    }
+
+    /**
+     * Get verifiedByUser
+     *
+     * @return \UAH\GestorActividadesBundle\Entity\User
+     */
+    public function getVerifiedByUser()
+    {
+        return $this->verifiedByUser;
     }
 }

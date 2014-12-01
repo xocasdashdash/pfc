@@ -1,0 +1,35 @@
+{% extends '::backend.html.twig' %}
+{% block javascripts %}
+    {{parent()}}
+    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/backend/profile.js' filter='?uglifyjs2' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/profile/*.less' %}
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
+    {% endstylesheets %}
+{% endblock %}
+{% block title %}
+    Administración de Secretaría de Alumnos
+{% endblock %}
+{% block acciones_datos %}
+    <div class="row">
+        <form class="form-horizontal" role="form" id="frm_code">
+            <div class="form-group">
+                <label for="inputCode" class="col-xs-2 control-label">Código</label>
+                <div class="col-xs-10">
+                    <input type="email" class="form-control" id="inputCode" placeholder="Código">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-10">
+                    <button type="submit" class="btn btn-default">Ir al justificante</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+{% endblock %}

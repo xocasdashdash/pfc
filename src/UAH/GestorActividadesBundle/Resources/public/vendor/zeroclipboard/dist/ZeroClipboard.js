@@ -4,7 +4,7 @@
  * Copyright (c) 2014 Jon Rohan, James M. Greene
  * Licensed MIT
  * http://zeroclipboard.org/
- * v2.1.3
+ * v2.1.6
  */
 (function(window, undefined) {
   "use strict";
@@ -12,7 +12,21 @@
  * Store references to critically important global functions that may be
  * overridden on certain web pages.
  */
-  var _window = window, _document = _window.document, _navigator = _window.navigator, _setTimeout = _window.setTimeout, _encodeURIComponent = _window.encodeURIComponent, _ActiveXObject = _window.ActiveXObject, _Error = _window.Error, _parseInt = _window.Number.parseInt || _window.parseInt, _parseFloat = _window.Number.parseFloat || _window.parseFloat, _isNaN = _window.Number.isNaN || _window.isNaN, _round = _window.Math.round, _now = _window.Date.now, _keys = _window.Object.keys, _defineProperty = _window.Object.defineProperty, _hasOwn = _window.Object.prototype.hasOwnProperty, _slice = _window.Array.prototype.slice;
+  var _window = window, _document = _window.document, _navigator = _window.navigator, _setTimeout = _window.setTimeout, _encodeURIComponent = _window.encodeURIComponent, _ActiveXObject = _window.ActiveXObject, _Error = _window.Error, _parseInt = _window.Number.parseInt || _window.parseInt, _parseFloat = _window.Number.parseFloat || _window.parseFloat, _isNaN = _window.Number.isNaN || _window.isNaN, _round = _window.Math.round, _now = _window.Date.now, _keys = _window.Object.keys, _defineProperty = _window.Object.defineProperty, _hasOwn = _window.Object.prototype.hasOwnProperty, _slice = _window.Array.prototype.slice, _unwrap = function() {
+    var unwrapper = function(el) {
+      return el;
+    };
+    if (typeof _window.wrap === "function" && typeof _window.unwrap === "function") {
+      try {
+        var div = _document.createElement("div");
+        var unwrappedDiv = _window.unwrap(div);
+        if (div.nodeType === 1 && unwrappedDiv && unwrappedDiv.nodeType === 1) {
+          unwrapper = _window.unwrap;
+        }
+      } catch (e) {}
+    }
+    return unwrapper;
+  }();
   /**
  * Convert an `arguments` object into an Array.
  *
@@ -288,6 +302,11 @@
  * @private
  */
   var _currentElement;
+  /**
+ * Keep track of the element that was activated when a `copy` process started.
+ * @private
+ */
+  var _copyTarget;
   /**
  * Keep track of data for the pending clipboard transaction.
  * @private
@@ -664,6 +683,9 @@
     if (!eventType) {
       return;
     }
+    if (!event.target && /^(copy|aftercopy|_click)$/.test(eventType.toLowerCase())) {
+      event.target = _copyTarget;
+    }
     _extend(event, {
       type: eventType.toLowerCase(),
       target: event.target || _currentElement || null,
@@ -861,6 +883,10 @@
       });
       break;
 
+     case "beforecopy":
+      _copyTarget = element;
+      break;
+
      case "copy":
       var textContent, htmlContent, targetEl = event.relatedTarget;
       if (!(_clipData["text/html"] || _clipData["text/plain"]) && targetEl && (htmlContent = targetEl.value || targetEl.outerHTML || targetEl.innerHTML) && (textContent = targetEl.value || targetEl.textContent || targetEl.innerText)) {
@@ -933,6 +959,14 @@
       break;
 
      case "_click":
+      _copyTarget = null;
+      if (_globalConfig.bubbleEvents === true && sourceIsSwf) {
+        _fireMouseEvent(_extend({}, event, {
+          type: event.type.slice(1)
+        }));
+      }
+      break;
+
      case "_mousemove":
       if (_globalConfig.bubbleEvents === true && sourceIsSwf) {
         _fireMouseEvent(_extend({}, event, {
@@ -1024,7 +1058,7 @@
       tmpDiv.innerHTML = '<object id="' + _globalConfig.swfObjectId + '" name="' + _globalConfig.swfObjectId + '" ' + 'width="100%" height="100%" ' + (oldIE ? 'classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"' : 'type="application/x-shockwave-flash" data="' + swfUrl + '"') + ">" + (oldIE ? '<param name="movie" value="' + swfUrl + '"/>' : "") + '<param name="allowScriptAccess" value="' + allowScriptAccess + '"/>' + '<param name="allowNetworking" value="' + allowNetworking + '"/>' + '<param name="menu" value="false"/>' + '<param name="wmode" value="transparent"/>' + '<param name="flashvars" value="' + flashvars + '"/>' + "</object>";
       flashBridge = tmpDiv.firstChild;
       tmpDiv = null;
-      flashBridge.ZeroClipboard = ZeroClipboard;
+      _unwrap(flashBridge).ZeroClipboard = ZeroClipboard;
       container.replaceChild(flashBridge, divToBeReplaced);
     }
     if (!flashBridge) {
@@ -1590,7 +1624,7 @@
  * @property {string}
  */
   _defineProperty(ZeroClipboard, "version", {
-    value: "2.1.3",
+    value: "2.1.6",
     writable: false,
     configurable: true,
     enumerable: true

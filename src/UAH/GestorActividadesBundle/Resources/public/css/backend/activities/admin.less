@@ -1,0 +1,78 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 26, 2014, 12:05:23 AM
+    Author     : xokas
+*/
+.reconocer{
+    width: 12em;
+    height: 40px;
+    input{
+        width: 100%;
+    }
+
+}
+.reconocido{
+    .reconocer;
+}
+.unrecognize{
+    input{
+        width: 100%;
+    }
+}
+
+@media screen{
+    .print{
+        display:none;
+    }
+
+    td{
+        width: 40em;
+
+    }
+
+    th{
+        width: 40em;
+    }
+}  
+@media all {
+    .page-break	{ display: none; }
+}
+
+@media print {
+    .page-break	{ display: block; page-break-before: always; }
+}
+@media print{
+    .no-print{
+        display:none;
+    }
+    tr{
+        height: 30px;
+    }
+    td{
+        min-width: 50px;
+        min-height: 40px;
+    }
+    th{
+        min-width: 50px;
+        min-height: 40px;
+    }
+    td.print{
+        width: 170px;
+    }
+    th.print{
+        width: 170px;
+    }
+
+    .header-print{
+        padding-bottom:20px;
+        margin-bottom: 20px;
+    }
+}
+.popover-content{
+    min-width: 110px;
+    margin-right: -10px;
+}

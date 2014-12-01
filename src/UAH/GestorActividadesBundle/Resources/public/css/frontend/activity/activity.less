@@ -20,6 +20,9 @@
     text-align: justify;
     text-justify: auto;
     font-size: 20px;
+    @media print{
+        font-size: 16px;
+    }
 
 }
 .right-column{
@@ -81,12 +84,39 @@
     text-align: left;
     font-family: 'Roboto Condensed', sans-serif;
     font-weight: normal;
-    font-size: 21px;
     line-height: 23px;
     text-transform: uppercase;
     letter-spacing: 2px;
 
 }
-
+.date{
+    margin-top:  10px;
+}
 table { page-break-inside:auto }
 tr    { page-break-inside:avoid; page-break-after:auto }
+
+.categories-activity{
+    margin-top: 40px;
+    font-style: italic;
+    span{
+        font-style: normal;
+    }
+}
+@media print {
+    a[href]:after {
+        content: none !important;
+        display:none;
+    }
+    span.a{
+        text-decoration: none;
+    }
+    .credits-text{
+        text-align: center;        
+    }
+    .right-column{
+        font-size: 80%;
+    }
+    body{
+        text-rendering: geometricPrecision;
+    }
+}

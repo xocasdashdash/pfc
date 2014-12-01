@@ -1,6 +1,6 @@
-$(document).ready(function() {
-    $('.activity').on('click', '.enroll-button', function(event) {
-        var $id = $(event.delegateTarget).data('activity-id');
+$(window).load(function() {
+    $('.activities, .activity-modal, .activity').on('click', '.enroll-button', function(event) {
+        var $id = $(this).data('activity-id');
         var $boton = $(this);
         $boton.html($('#ajax-loading-image').clone());
         $.ajax({
@@ -11,7 +11,7 @@ $(document).ready(function() {
                     console.log('Inscrito en la actividad:' + $id);
                     $boton.addClass('btn-success  already-enrolled').removeClass('btn-primary enroll-button');
                     $boton.html('<span class="texto">Inscrito!</span><span class="fa fa-check fa-2x"></span>');
-                    $(event.delegateTarget).data('enrolled-in', true);
+                    $('#modal-enrollment-button').data('enrolled-in', true);
                 },
                 401: function(data) {
                     $('#notification').removeClass('hide');
@@ -47,7 +47,7 @@ $(document).ready(function() {
                             break;
                     }
                     $('#notification #type').text($type);
-                    $('#notification #message').text(data.responseJSON.message);
+                    $('#notification #message').html(data.responseJSON.message);
                 }
             }
         }

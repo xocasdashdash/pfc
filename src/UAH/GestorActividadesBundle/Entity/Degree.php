@@ -7,9 +7,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
-use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Entity;
 
@@ -17,10 +15,10 @@ use Doctrine\ORM\Mapping\Entity;
  * Degree
  *
  * @Table(name="UAH_GAT_Degree")
- * @Entity
+ * @Entity(repositoryClass="UAH\GestorActividadesBundle\Repository\DegreeRepository")
  */
-class Degree {
-
+class Degree
+{
     /**
      * @var integer
      *
@@ -50,35 +48,37 @@ class Degree {
      * @Column(name="academicCode", type="string", length=255)
      */
     private $academicCode;
-    
+
     /**
      * @var int Estado del registro
      * @ManyToOne(targetEntity="Statusdegree")
      * @JoinColumn(name="status_degree", referencedColumnName="id")
      */
     private $status;
-    
-       
+
     /**
      * @OneToMany(targetEntity="User", mappedBy="degree_id")
      */
     private $degree_students;
+
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string $name
      * @return Degree
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
 
         return $this;
@@ -87,19 +87,21 @@ class Degree {
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
     /**
      * Set knowledgeArea
      *
-     * @param array $knowledgeArea
+     * @param  array  $knowledgeArea
      * @return Degree
      */
-    public function setKnowledgeArea($knowledgeArea) {
+    public function setKnowledgeArea($knowledgeArea)
+    {
         $this->knowledgeArea = $knowledgeArea;
 
         return $this;
@@ -108,19 +110,21 @@ class Degree {
     /**
      * Get knowledgeArea
      *
-     * @return array 
+     * @return array
      */
-    public function getKnowledgeArea() {
+    public function getKnowledgeArea()
+    {
         return $this->knowledgeArea;
     }
 
     /**
      * Set academicCode
      *
-     * @param string $academicCode
+     * @param  string $academicCode
      * @return Degree
      */
-    public function setAcademicCode($academicCode) {
+    public function setAcademicCode($academicCode)
+    {
         $this->academicCode = $academicCode;
 
         return $this;
@@ -129,17 +133,17 @@ class Degree {
     /**
      * Get academicCode
      *
-     * @return string 
+     * @return string
      */
-    public function getAcademicCode() {
+    public function getAcademicCode()
+    {
         return $this->academicCode;
     }
-
 
     /**
      * Set status
      *
-     * @param \UAH\GestorActividadesBundle\Entity\Statusdegree $status
+     * @param  \UAH\GestorActividadesBundle\Entity\Statusdegree $status
      * @return Degree
      */
     public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusdegree $status = null)
@@ -152,12 +156,13 @@ class Degree {
     /**
      * Get status
      *
-     * @return \UAH\GestorActividadesBundle\Entity\Statusdegree 
+     * @return \UAH\GestorActividadesBundle\Entity\Statusdegree
      */
     public function getStatus()
     {
         return $this->status;
     }
+
     /**
      * Constructor
      */
@@ -169,7 +174,7 @@ class Degree {
     /**
      * Add degree_students
      *
-     * @param \UAH\GestorActividadesBundle\Entity\User $degreeStudents
+     * @param  \UAH\GestorActividadesBundle\Entity\User $degreeStudents
      * @return Degree
      */
     public function addDegreeStudent(\UAH\GestorActividadesBundle\Entity\User $degreeStudents)
@@ -192,7 +197,7 @@ class Degree {
     /**
      * Get degree_students
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getDegreeStudents()
     {

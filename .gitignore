@@ -35,8 +35,12 @@ Gestor-deployment/*.deb
 
 # Uploads
 web/upload/images
-
+web/upload/*
 #Binaries
 bin/*
 # OpenShift
 app/config/params.php
+#WebStorm
+.idea/*
+
+
