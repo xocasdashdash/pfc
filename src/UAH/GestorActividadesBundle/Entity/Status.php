@@ -5,11 +5,6 @@ namespace UAH\GestorActividadesBundle\Entity;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToOne;
-use Doctrine\ORM\Mapping\ManyToMany;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\InheritanceType;
@@ -23,8 +18,8 @@ use Doctrine\ORM\Mapping\DiscriminatorMap;
  * @DiscriminatorColumn(name="discr", type="string")
  * @DiscriminatorMap({"activity" = "Statusactivity", "enrollment" = "Statusenrollment", "degree" ="Statusdegree", "application" = "Statusapplication", "category" = "Statuscategory"})
  */
-class Status {
-
+class Status
+{
     /**
      * @Column(name="id",type="integer")
      * @Id
@@ -34,56 +29,58 @@ class Status {
 
     /**
      *
-     * @var String Cadena que uso para saber en que clase se usa el estado 
+     * @var String Cadena que uso para saber en que clase se usa el estado
      * Todas los nombres siguen el esquema STATUS_{descripcion sin espacios}
-     * @Column(name="name_es", type="string", length=255,nullable=true), 
+     * @Column(name="name_es", type="string", length=255,nullable=true),
      * options={
      * "comments"="Cadena que uso para mostrar en que estado esta. En castellano"
      * })
-     * 
+     *
      */
     private $name_es = 'Nombre en castellano';
 
     /**
      *
-     * @var String Cadena que uso para saber en que clase se usa el estado 
+     * @var String Cadena que uso para saber en que clase se usa el estado
      * Todas los nombres siguen el esquema STATUS_{descripcion sin espacios}
-     * @Column(name="name_en", type="string", length=255,nullable=true), 
+     * @Column(name="name_en", type="string", length=255,nullable=true),
      * options={
      * "comments"="Cadena que uso para mostrar en que estado esta. En ingles"
      * })
-     * 
+     *
      */
     private $name_en = 'English name';
 
     /**
      *
-     * @var String Cadena que uso para saber en que clase se usa el estado 
+     * @var String Cadena que uso para saber en que clase se usa el estado
      * Todas los nombres siguen el esquema STATUS_{descripcion sin espacios}
      * @Column(name="code", type="string", length=255, nullable=true),
      * options={
      * "comments"="Cadena que uso para saber en que clase se usa el estado.Todos los nombres siguen el esquema STATUS_{descripcion sin espacios}"
      * })
-     * 
+     *
      */
     private $code = 'Estado por defecto';
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * Set name_es
      *
-     * @param string $nameEs
+     * @param  string $nameEs
      * @return Status
      */
-    public function setNameEs($nameEs) {
+    public function setNameEs($nameEs)
+    {
         $this->name_es = $nameEs;
 
         return $this;
@@ -92,19 +89,21 @@ class Status {
     /**
      * Get name_es
      *
-     * @return string 
+     * @return string
      */
-    public function getNameEs() {
+    public function getNameEs()
+    {
         return $this->name_es;
     }
 
     /**
      * Set name_en
      *
-     * @param string $nameEn
+     * @param  string $nameEn
      * @return Status
      */
-    public function setNameEn($nameEn) {
+    public function setNameEn($nameEn)
+    {
         $this->name_en = $nameEn;
 
         return $this;
@@ -113,19 +112,21 @@ class Status {
     /**
      * Get name_en
      *
-     * @return string 
+     * @return string
      */
-    public function getNameEn() {
+    public function getNameEn()
+    {
         return $this->name_en;
     }
 
     /**
      * Set code
      *
-     * @param string $code
+     * @param  string $code
      * @return Status
      */
-    public function setCode($code) {
+    public function setCode($code)
+    {
         $this->code = $code;
 
         return $this;
@@ -134,14 +135,14 @@ class Status {
     /**
      * Get code
      *
-     * @return string 
+     * @return string
      */
-    public function getCode() {
+    public function getCode()
+    {
         return $this->code;
     }
-    
-    public function toString(){
-        
-    }
 
+    public function toString()
+    {
+    }
 }

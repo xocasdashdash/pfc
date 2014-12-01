@@ -9,7 +9,7 @@
 namespace UAH\GestorActividadesBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use \Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use UAH\GestorActividadesBundle\DataFixtures\FakerProviders\UAHUserProvider as UAHUserProvider;
 use UAH\GestorActividadesBundle\DataFixtures\FakerProviders\UAHDegreeProvider as UAHDegreeProvider;
@@ -20,11 +20,11 @@ use UAH\GestorActividadesBundle\Entity\DefaultPermit as DefaultPermit;
 use UAH\GestorActividadesBundle\Entity\Statusactivity as Statusactivity;
 use UAH\GestorActividadesBundle\Entity\Statuscategory as Statuscategory;
 use UAH\GestorActividadesBundle\Entity\Statusenrollment as Statusenrollment;
-use \UAH\GestorActividadesBundle\Entity\Statusdegree as Statusdegree;
+use UAH\GestorActividadesBundle\Entity\Statusdegree as Statusdegree;
 use UAH\GestorActividadesBundle\Entity\Statusapplication as Statusapplication;
 use UAH\GestorActividadesBundle\Entity\Category as Category;
 //use \Faker\Provider;
-use \Faker\Factory as FakerFactory;
+use Faker\Factory as FakerFactory;
 use DateTime;
 
 /**
@@ -32,13 +32,13 @@ use DateTime;
  *
  * @author xokas
  */
-class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
-
+class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface
+{
     /**
      * {@inheritDoc}
      */
-    public function load(ObjectManager $manager) {
-
+    public function load(ObjectManager $manager)
+    {
         echo "Creando los estados..";
         /**
          * ACTIVIDADES
@@ -200,16 +200,17 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         //Grados
         echo "Añadiendo grados...";
         $populator->addEntity('UAHGestorActividadesBundle:Degree', 20, array(
-            'name' => function() use ($faker) {
-        return "Grado en " . $faker->unique()->randomLetter();
+            'name' => function () use ($faker) {
+        return "Grado en ".$faker->unique()->randomLetter();
     },
-            'knowledgeArea' => function() use ($faker) {
+            'knowledgeArea' => function () use ($faker) {
         return $faker->knowledge_areas();
-    }, 'academicCode' => function() use ($faker) {
-        return "G" . $faker->unique()->numberBetween(0, 100);
-    }, 'status' => function() use ($faker, $statuses, $index_renewed, $index_non_renewed) {
+    }, 'academicCode' => function () use ($faker) {
+        return "G".$faker->unique()->numberBetween(0, 100);
+    }, 'status' => function () use ($faker, $statuses, $index_renewed, $index_non_renewed) {
         $new_status = $faker->statusDegree(array($statuses[$index_renewed],
-            $statuses[$index_non_renewed]));
+            $statuses[$index_non_renewed], ));
+
         return $new_status;
     },
         ));
@@ -217,13 +218,13 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         //Usuarios
         echo "Añadiendo usuarios!";
         $populator->addEntity('UAHGestorActividadesBundle:User', 10, array(
-            'name' => function() use ($faker) {
+            'name' => function () use ($faker) {
         return $faker->nomprs();
-    }, 'apellido_1' => function() use ($faker) {
+    }, 'apellido_1' => function () use ($faker) {
         return $faker->ll1prs();
-    }, 'apellido_2' => function() use ($faker) {
+    }, 'apellido_2' => function () use ($faker) {
         return $faker->ll2prs();
-    }, 'type' => function() use ($faker) {
+    }, 'type' => function () use ($faker) {
 
         return $faker->type();
     },
@@ -265,12 +266,12 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         echo "Añadidos usuarios!\n";
         echo "Añadiendo actividades...";
         $populator->addEntity('UAHGestorActividadesBundle:Activity', 100, array(
-            'name' => function() use($faker) {
+            'name' => function () use ($faker) {
         return $faker->sentence(10, true);
     },
-            'englishName' => function() use($faker) {
+            'englishName' => function () use ($faker) {
         return $faker->sentence(10, true);
-    }, 'celebrationDates' => function() use($faker) {
+    }, 'celebrationDates' => function () use ($faker) {
         $fechas = array();
         foreach (range(0, rand(1, 3)) as $i) {
             $fechas[] = strtotime($faker->dateTimeBetween('now', '+1 year')->format("Y-m-d")); //d-m-Y', '31/12/2014');
@@ -278,51 +279,53 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         sort($fechas);
         //var_dump("FECHAS CREADAS\n".print_r($fechas,true));
         return ($fechas);
-    }, 'url' => function() use($faker) {
-        return $faker->url; 
-    }, 'slug' => function() use($faker) {
+    }, 'url' => function () use ($faker) {
+        return $faker->url;
+    }, 'slug' => function () use ($faker) {
         $nbWords = (int) (6 * mt_rand(60, 140) / 100) + 1;
         $words = $faker->words($nbWords);
         $slug = join($words, '-');
+
         return $faker->slug;
-    }, 'cost' => function() use($faker) {
+    }, 'cost' => function () use ($faker) {
         return 0;
-    }, 'numberOfECTSCreditsMin' => function() use($faker) {
+    }, 'numberOfECTSCreditsMin' => function () use ($faker) {
         return $faker->randomFloat(1, 0.5, 2);
-    }, 'numberOfECTSCreditsMax' => function() use($faker) {
+    }, 'numberOfECTSCreditsMax' => function () use ($faker) {
         return $faker->randomFloat(1, 2.1, 4);
-    }, 'numberOfCreditsMin' => function() use($faker) {
+    }, 'numberOfCreditsMin' => function () use ($faker) {
         return $faker->randomFloat(1, 1, 4);
-    }, 'numberOfCreditsMax' => function() use($faker) {
+    }, 'numberOfCreditsMax' => function () use ($faker) {
         return $faker->randomFloat(1, 4.2, 8);
-    }, 'numberOfPlacesOccupied' => function() use($faker) {
+    }, 'numberOfPlacesOccupied' => function () use ($faker) {
         return 0;
-    }, 'numberOfPlacesOffered' => function() use($faker) {
+    }, 'numberOfPlacesOffered' => function () use ($faker) {
         return $faker->numberBetween(20, 100);
-    }, 'numberOfHours' => function() use($faker) {
+    }, 'numberOfHours' => function () use ($faker) {
         return $faker->randomFloat(1, 10, 30);
-    }, 'description' => function() use($faker) {
+    }, 'description' => function () use ($faker) {
         return $faker->realText(1000, 4);
-    }, 'image_path' => function() use($faker) {
+    }, 'image_path' => function () use ($faker) {
         $image_route = $faker->image("web/upload/images", 240, 320);
         $image_route = explode("web/upload/images/", $image_route);
         $image_route = $image_route[1];
+
         return $image_route;
-    }, 'publicityStartDate' => function() use($faker) {
+    }, 'publicityStartDate' => function () use ($faker) {
         return $faker->dateTimeBetween('-1 week', 'now');
-    }, 'status' => function() use($activity_status) {
+    }, 'status' => function () use ($activity_status) {
         return $activity_status[array_rand($activity_status)];
-    }, 'organizer_name' => function() use($faker) {
+    }, 'organizer_name' => function () use ($faker) {
         return $faker->company;
-    }, 'date_approved' => function() use($faker) {
-        return null;
-    }, 'date_created' => function() use($faker) {
+    }, 'date_approved' => function () use ($faker) {
+        return;
+    }, 'date_created' => function () use ($faker) {
         return $faker->dateTimeBetween('-2 month', '-1 month');
-    }, 'date_modified' => function() use($faker) {
+    }, 'date_modified' => function () use ($faker) {
         return $faker->dateTimeBetween('-1 month', 'now');
-    }, 'date_pending_approval' => function() use($faker) {
+    }, 'date_pending_approval' => function () use ($faker) {
         return $faker->dateTimeBetween('-1 week', 'now');
-    }, 'categories' => function() use($categories) {
+    }, 'categories' => function () use ($categories) {
         $randomInteger = rand(1, count($categories));
         $random_categories_key = array_rand($categories, $randomInteger);
         $random_categories = array();
@@ -333,27 +336,26 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         } else {
             $random_categories[] = $categories[$random_categories_key];
         }
+
         return $random_categories;
-    }
+    },
         ));
 
         echo "Actividades creadas!\n";
         echo "Añadiendo inscripciones...";
         $populator->addEntity('UAHGestorActividadesBundle:Enrollment', 400, array(
-            'dateRecognized' => function() {
-        return null;
-    }, 'recognizedCredits' => function() {
-        return null;
-    }, 'creditsType' => function() {
-        return null;
-    }
+            'dateRecognized' => function () {
+        return;
+    }, 'recognizedCredits' => function () {
+        return;
+    }, 'creditsType' => function () {
+        return;
+    },
         ));
         echo "inscripciones añadidas!\n";
         echo "Ejecutando el populator...";
         $populator->execute();
         echo "Populator ejecutado\n";
-
-
 
         echo "Creando los permisos...";
         $defaultpermits = array();
@@ -384,7 +386,6 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
         $defaultpermits[] = new DefaultPermit();
         $defaultpermits[count($defaultpermits) - 1]->addRole($roles[2]);
         $defaultpermits[count($defaultpermits) - 1]->setIdUsuldap("http://yo.rediris.es/soy/pedro.gullon@uah.es/");
-
 
         foreach ($defaultpermits as $defaultpermit) {
             $manager->persist($defaultpermit);
@@ -472,8 +473,8 @@ class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface {
     /**
      * {@inheritDoc}
      */
-    public function getOrder() {
+    public function getOrder()
+    {
         return 1;
     }
-
 }

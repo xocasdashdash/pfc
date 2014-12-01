@@ -8,7 +8,7 @@
 {% block stylesheets %}
     {{parent()}}
     {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/admin/*.less' %}
-    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
     {% endstylesheets %}
 {%endblock %}
 {% block acciones_datos %}
@@ -34,7 +34,7 @@
                     <th class="category-name">Nombre</th>
                     <th class="visible-md-up category-parent">Padre</th>
                     <th class="category-status">Estado</th>
-                    <th class="hidden-print">Acción</th>                
+                    <th class="hidden-print">Acción</th>
                 </tr>
             </thead>
             <tbody>
@@ -91,12 +91,12 @@
                         <input type="hidden" name="category-id" id="category-id">
                     </div>
                     <div class="modal-footer">
-                        <a class="btn btn-default" id="close_modal"  data-dismiss="modal">Cerrar</a>    
+                        <a class="btn btn-default" id="close_modal"  data-dismiss="modal">Cerrar</a>
                         <button class="btn btn-success" type="submit" id="btn_submit_category">Crear</button>
                     </div>
                 </form>
             </div>
         </div>
-    </div>                
+    </div>
 
 {% endblock %}

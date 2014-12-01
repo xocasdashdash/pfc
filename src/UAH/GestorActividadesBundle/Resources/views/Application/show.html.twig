@@ -1,9 +1,9 @@
 {% extends '::backend.html.twig' %}
 {% block stylesheets %}
     {{ parent() }}
-    {% stylesheets 
+    {% stylesheets
         '@UAHGestorActividadesBundle/Resources/public/css/backend/application.less'%}
-    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
     {% endstylesheets %}
 {% endblock %}
 {% block javascripts %}

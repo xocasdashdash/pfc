@@ -24,8 +24,8 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
  * @Entity(repositoryClass="UAH\GestorActividadesBundle\Repository\UserRepository")
  * @HasLifecycleCallbacks
  */
-class User implements UserInterface {
-
+class User implements UserInterface
+{
     /**
      * @var integer
      *
@@ -64,16 +64,16 @@ class User implements UserInterface {
     private $creationIp;
 
     /**
-     * 
-     * @var date Fecha en la que se creo el usuario. 
-     * @Column(name="date_created",type="datetime", nullable=false) 
+     *
+     * @var date Fecha en la que se creo el usuario.
+     * @Column(name="date_created",type="datetime", nullable=false)
      */
     private $date_created;
 
     /**
-     * 
-     * @var date Fecha en la que se modificó el usuario. 
-     * @Column(name="date_updated",type="datetime", nullable=false) 
+     *
+     * @var date Fecha en la que se modificó el usuario.
+     * @Column(name="date_updated",type="datetime", nullable=false)
      */
     private $date_updated;
 
@@ -103,13 +103,13 @@ class User implements UserInterface {
     private $documento_identidad;
 
     /**
-     * @var string Tipo de documento de identidad: Pasaporte, NIE o DNI 
+     * @var string Tipo de documento de identidad: Pasaporte, NIE o DNI
      * @Column(name="tipo_documento_identidad", type="string", length=255, nullable=true)
      */
     private $tipo_documento_identidad;
 
     /**
-     * @var integer 
+     * @var integer
      * @ManyToOne(targetEntity="Degree", inversedBy="degree_students")
      * @JoinColumn(name="degree_id", referencedColumnName="id", nullable=true,onDelete="SET NULL")
      */
@@ -125,7 +125,7 @@ class User implements UserInterface {
 
     /**
      * @var string Nombre de usuario interno de la UAH que saco de la conexión de REDIRIS
-     * @Column(name="ID_USULDAP", type="string", length= 255, nullable=true), 
+     * @Column(name="ID_USULDAP", type="string", length= 255, nullable=true),
      * options={"comments"="ID que me devuelve REDIRIS al hacer la autentificación por OpenId. Lo uso para buscar el resto de la información en UXXIAC.TUIB_PERSONA"})
      * @OneToOne(targetEntity="TuibPersonaUser",inversedBy="id_usuldap")
      * @JoinColumn(name="usuldap_id", referencedColumnName="id_usuldap")
@@ -134,19 +134,19 @@ class User implements UserInterface {
 
     /**
      * @OneToMany(targetEntity="Activity", mappedBy="Organizer")
-     * @var type 
+     * @var type
      */
     private $activities;
 
     /**
      * @OneToMany(targetEntity="Application", mappedBy="user")
-     * @var type 
+     * @var type
      */
     private $applications;
 
     /**
      * @OneToMany(targetEntity="Enrollment", mappedBy="user")
-     * @var type 
+     * @var type
      */
     private $enrollments;
 
@@ -159,19 +159,21 @@ class User implements UserInterface {
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
     /**
      * Set name
      *
-     * @param string $name
+     * @param  string $name
      * @return User
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
 
         return $this;
@@ -180,19 +182,21 @@ class User implements UserInterface {
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
     /**
      * Set email
      *
-     * @param string $email
+     * @param  string $email
      * @return User
      */
-    public function setEmail($email) {
+    public function setEmail($email)
+    {
         $this->email = $email;
 
         return $this;
@@ -201,19 +205,21 @@ class User implements UserInterface {
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
-    public function getEmail() {
+    public function getEmail()
+    {
         return $this->email;
     }
 
     /**
      * Set creationIp
      *
-     * @param string $creationIp
+     * @param  string $creationIp
      * @return User
      */
-    public function setCreationIp($creationIp) {
+    public function setCreationIp($creationIp)
+    {
         $this->creationIp = $creationIp;
 
         return $this;
@@ -222,19 +228,21 @@ class User implements UserInterface {
     /**
      * Get creationIp
      *
-     * @return string 
+     * @return string
      */
-    public function getCreationIp() {
+    public function getCreationIp()
+    {
         return $this->creationIp;
     }
 
     /**
      * Set degreeId
      *
-     * @param \UAH\GestorActividadesBundle\Entity\Degree $degree_id
+     * @param  \UAH\GestorActividadesBundle\Entity\Degree $degree_id
      * @return User
      */
-    public function setDegreeId(\UAH\GestorActividadesBundle\Entity\Degree $degree_id) {
+    public function setDegreeId(\UAH\GestorActividadesBundle\Entity\Degree $degree_id)
+    {
         $this->degree_id = $degree_id;
 
         return $this;
@@ -243,43 +251,48 @@ class User implements UserInterface {
     /**
      * Get degreeId
      *
-     * @return \UAH\GestorActividadesBundle\Entity\Degree 
+     * @return \UAH\GestorActividadesBundle\Entity\Degree
      */
-    public function getDegreeId() {
+    public function getDegreeId()
+    {
         return $this->degree_id;
     }
 
-    public function eraseCredentials() {
-        
+    public function eraseCredentials()
+    {
     }
 
-    public function getRoles() {
+    public function getRoles()
+    {
         $roles = array();
         foreach ($this->roles as $role) {
             $roles[] = $role->getRole();
         }
+
         return $roles;
     }
 
-    public function getUserRoles() {
+    public function getUserRoles()
+    {
         return $this->roles;
     }
 
-    public function getSalt() {
-        
+    public function getSalt()
+    {
     }
 
-    public function getUsername() {
-        
+    public function getUsername()
+    {
     }
 
     /**
      * Set uahName
      *
-     * @param string $uahName
+     * @param  string $uahName
      * @return User
      */
-    public function setUahName($uahName) {
+    public function setUahName($uahName)
+    {
         $this->uahName = $uahName;
 
         return $this;
@@ -288,26 +301,29 @@ class User implements UserInterface {
     /**
      * Get uahName
      *
-     * @return string 
+     * @return string
      */
-    public function getUahName() {
+    public function getUahName()
+    {
         return $this->uahName;
     }
 
     /**
      * Constructor
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
      * Add roles
      *
-     * @param \UAH\GestorActividadesBundle\Entity\Role $roles
+     * @param  \UAH\GestorActividadesBundle\Entity\Role $roles
      * @return User
      */
-    public function addRole(\UAH\GestorActividadesBundle\Entity\Role $roles) {
+    public function addRole(\UAH\GestorActividadesBundle\Entity\Role $roles)
+    {
         $this->roles[] = $roles;
 
         return $this;
@@ -318,17 +334,19 @@ class User implements UserInterface {
      *
      * @param \UAH\GestorActividadesBundle\Entity\Role $roles
      */
-    public function removeRole(\UAH\GestorActividadesBundle\Entity\Role $roles) {
+    public function removeRole(\UAH\GestorActividadesBundle\Entity\Role $roles)
+    {
         $this->roles->removeElement($roles);
     }
 
     /**
      * Set id_usuldap
      *
-     * @param string $idUsuldap
+     * @param  string $idUsuldap
      * @return User
      */
-    public function setIdUsuldap($idUsuldap) {
+    public function setIdUsuldap($idUsuldap)
+    {
         $this->id_usuldap = $idUsuldap;
 
         return $this;
@@ -337,23 +355,25 @@ class User implements UserInterface {
     /**
      * Get id_usuldap
      *
-     * @return string 
+     * @return string
      */
-    public function getIdUsuldap() {
+    public function getIdUsuldap()
+    {
         return $this->id_usuldap;
     }
 
-    public function getPassword() {
-        
+    public function getPassword()
+    {
     }
 
     /**
      * Set apellido_1
      *
-     * @param string $apellido1
+     * @param  string $apellido1
      * @return User
      */
-    public function setApellido1($apellido1) {
+    public function setApellido1($apellido1)
+    {
         $this->apellido_1 = $apellido1;
 
         return $this;
@@ -362,19 +382,21 @@ class User implements UserInterface {
     /**
      * Get apellido_1
      *
-     * @return string 
+     * @return string
      */
-    public function getApellido1() {
+    public function getApellido1()
+    {
         return $this->apellido_1;
     }
 
     /**
      * Set apellido_2
      *
-     * @param string $apellido2
+     * @param  string $apellido2
      * @return User
      */
-    public function setApellido2($apellido2) {
+    public function setApellido2($apellido2)
+    {
         $this->apellido_2 = $apellido2;
 
         return $this;
@@ -383,19 +405,21 @@ class User implements UserInterface {
     /**
      * Get apellido_2
      *
-     * @return string 
+     * @return string
      */
-    public function getApellido2() {
+    public function getApellido2()
+    {
         return $this->apellido_2;
     }
 
     /**
      * Set documento_identidad
      *
-     * @param string $documentoIdentidad
+     * @param  string $documentoIdentidad
      * @return User
      */
-    public function setDocumentoIdentidad($documentoIdentidad) {
+    public function setDocumentoIdentidad($documentoIdentidad)
+    {
         $this->documento_identidad = $documentoIdentidad;
 
         return $this;
@@ -404,19 +428,21 @@ class User implements UserInterface {
     /**
      * Get documento_identidad
      *
-     * @return string 
+     * @return string
      */
-    public function getDocumentoIdentidad() {
+    public function getDocumentoIdentidad()
+    {
         return $this->documento_identidad;
     }
 
     /**
      * Set tipo_documento_identidad
      *
-     * @param string $tipoDocumentoIdentidad
+     * @param  string $tipoDocumentoIdentidad
      * @return User
      */
-    public function setTipoDocumentoIdentidad($tipoDocumentoIdentidad) {
+    public function setTipoDocumentoIdentidad($tipoDocumentoIdentidad)
+    {
         $this->tipo_documento_identidad = $tipoDocumentoIdentidad;
 
         return $this;
@@ -425,19 +451,21 @@ class User implements UserInterface {
     /**
      * Get tipo_documento_identidad
      *
-     * @return string 
+     * @return string
      */
-    public function getTipoDocumentoIdentidad() {
+    public function getTipoDocumentoIdentidad()
+    {
         return $this->tipo_documento_identidad;
     }
 
     /**
      * Add activities
      *
-     * @param \UAH\GestorActividadesBundle\Entity\Activity $activities
+     * @param  \UAH\GestorActividadesBundle\Entity\Activity $activities
      * @return User
      */
-    public function addActivity(\UAH\GestorActividadesBundle\Entity\Activity $activities) {
+    public function addActivity(\UAH\GestorActividadesBundle\Entity\Activity $activities)
+    {
         $this->activities[] = $activities;
 
         return $this;
@@ -448,26 +476,29 @@ class User implements UserInterface {
      *
      * @param \UAH\GestorActividadesBundle\Entity\Activity $activities
      */
-    public function removeActivity(\UAH\GestorActividadesBundle\Entity\Activity $activities) {
+    public function removeActivity(\UAH\GestorActividadesBundle\Entity\Activity $activities)
+    {
         $this->activities->removeElement($activities);
     }
 
     /**
      * Get activities
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getActivities() {
+    public function getActivities()
+    {
         return $this->activities;
     }
 
     /**
      * Add applications
      *
-     * @param \UAH\GestorActividadesBundle\Entity\Application $applications
+     * @param  \UAH\GestorActividadesBundle\Entity\Application $applications
      * @return User
      */
-    public function addApplication(\UAH\GestorActividadesBundle\Entity\Application $applications) {
+    public function addApplication(\UAH\GestorActividadesBundle\Entity\Application $applications)
+    {
         $this->applications[] = $applications;
 
         return $this;
@@ -478,26 +509,29 @@ class User implements UserInterface {
      *
      * @param \UAH\GestorActividadesBundle\Entity\Application $applications
      */
-    public function removeApplication(\UAH\GestorActividadesBundle\Entity\Application $applications) {
+    public function removeApplication(\UAH\GestorActividadesBundle\Entity\Application $applications)
+    {
         $this->applications->removeElement($applications);
     }
 
     /**
      * Get applications
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getApplications() {
+    public function getApplications()
+    {
         return $this->applications;
     }
 
     /**
      * Add enrollments
      *
-     * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollments
+     * @param  \UAH\GestorActividadesBundle\Entity\Enrollment $enrollments
      * @return User
      */
-    public function addEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments) {
+    public function addEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments)
+    {
         $this->enrollments[] = $enrollments;
 
         return $this;
@@ -508,26 +542,29 @@ class User implements UserInterface {
      *
      * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollments
      */
-    public function removeEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments) {
+    public function removeEnrollment(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollments)
+    {
         $this->enrollments->removeElement($enrollments);
     }
 
     /**
      * Get enrollments
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getEnrollments() {
+    public function getEnrollments()
+    {
         return $this->enrollments;
     }
 
     /**
      * Add verifiedApplications
      *
-     * @param \UAH\GestorActividadesBundle\Entity\Application $verifiedApplications
+     * @param  \UAH\GestorActividadesBundle\Entity\Application $verifiedApplications
      * @return User
      */
-    public function addVerifiedApplication(\UAH\GestorActividadesBundle\Entity\Application $verifiedApplications) {
+    public function addVerifiedApplication(\UAH\GestorActividadesBundle\Entity\Application $verifiedApplications)
+    {
         $this->verifiedApplications[] = $verifiedApplications;
 
         return $this;
@@ -538,20 +575,23 @@ class User implements UserInterface {
      *
      * @param \UAH\GestorActividadesBundle\Entity\Application $verifiedApplications
      */
-    public function removeVerifiedApplication(\UAH\GestorActividadesBundle\Entity\Application $verifiedApplications) {
+    public function removeVerifiedApplication(\UAH\GestorActividadesBundle\Entity\Application $verifiedApplications)
+    {
         $this->verifiedApplications->removeElement($verifiedApplications);
     }
 
     /**
      * Get verifiedApplications
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function getVerifiedApplications() {
+    public function getVerifiedApplications()
+    {
         return $this->verifiedApplications;
     }
 
-    public function isProfileComplete() {
+    public function isProfileComplete()
+    {
         $resultado = true;
         $resultado &= strlen($this->getName()) > 0;
         $resultado &= strlen($this->getApellido1()) > 0;
@@ -559,10 +599,12 @@ class User implements UserInterface {
         $resultado &= strlen($this->getEmail()) > 0;
         $resultado &= (is_null($this->getDegreeId()) === false);
         $resultado &= strlen($this->getTipoDocumentoIdentidad()) > 0;
+
         return $resultado;
     }
 
-    public function getCreditsType() {
+    public function getCreditsType()
+    {
         $degree = $this->getDegreeId();
         if (!is_null($degree)) {
             if ($degree->getStatus()->getCode() === 'STATUS_RENEWED') {
@@ -572,17 +614,18 @@ class User implements UserInterface {
                 return 'LIBRE';
             }
         } else {
-            return null;
+            return;
         }
     }
 
     /**
      * Set type
      *
-     * @param string $type
+     * @param  string $type
      * @return User
      */
-    public function setType($type) {
+    public function setType($type)
+    {
         $this->type = $type;
 
         return $this;
@@ -591,19 +634,21 @@ class User implements UserInterface {
     /**
      * Get type
      *
-     * @return string 
+     * @return string
      */
-    public function getType() {
+    public function getType()
+    {
         return $this->type;
     }
 
     /**
      * Set date_created
      *
-     * @param \DateTime $dateCreated
+     * @param  \DateTime $dateCreated
      * @return User
      */
-    public function setDateCreated($dateCreated) {
+    public function setDateCreated($dateCreated)
+    {
         $this->date_created = $dateCreated;
 
         return $this;
@@ -612,19 +657,21 @@ class User implements UserInterface {
     /**
      * Get date_created
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
-    public function getDateCreated() {
+    public function getDateCreated()
+    {
         return $this->date_created;
     }
 
     /**
      * Set date_updated
      *
-     * @param \DateTime $dateUpdated
+     * @param  \DateTime $dateUpdated
      * @return User
      */
-    public function setDateUpdated($dateUpdated) {
+    public function setDateUpdated($dateUpdated)
+    {
         $this->date_updated = $dateUpdated;
 
         return $this;
@@ -633,13 +680,15 @@ class User implements UserInterface {
     /**
      * Get date_updated
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
-    public function getDateUpdated() {
+    public function getDateUpdated()
+    {
         return $this->date_updated;
     }
 
-    public function getUAHUser() {
+    public function getUAHUser()
+    {
         $pattern = '/^https?:\/\/yo\.rediris\.es\/soy\/(.+)@\w+\.+[a-z]{2,4}\/?/';
         if (preg_match($pattern, $this->getIdUsuldap(), $matches) === 1) {
             return $matches[0];
@@ -648,5 +697,4 @@ class User implements UserInterface {
             //return 'http://yo.rediris.es/soy/adrian.bolonio@uah.es';
         }
     }
-
 }

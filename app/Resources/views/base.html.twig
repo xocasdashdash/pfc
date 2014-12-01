@@ -1,162 +1,190 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-        <meta name="google-site-verification" content="3I8i2g1hcriT9J_u2Xf8ySu1_4zitJLFDEzJxr_K4cA" />
-        <title>{% block title %}{% endblock %} - Actividades de la UAH</title>
-        <link href="http://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed|Alegreya:700" rel="stylesheet" type="text/css" />
-        {% block stylesheets %}
-            {% stylesheets
-                '@UAHGestorActividadesBundle/Resources/public/vendor/normalize-css/normalize.css'
-                'bootstrap/css/bootstrap.css' 
-                '@UAHGestorActividadesBundle/Resources/public/css/base/*.less'
-                '@UAHGestorActividadesBundle/Resources/public/vendor/qTip2/jquery.qtip.min.css'
-                '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-select/dist/css/bootstrap-select.min.css' 
-                filter='cssrewrite' filter='?uglifycss'%}
-            <link href="{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ asset_url }}" rel="stylesheet" type="text/css" />          
-            {% endstylesheets %}
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="google-site-verification" content="3I8i2g1hcriT9J_u2Xf8ySu1_4zitJLFDEzJxr_K4cA"/>
+    <title>{% block title %}{% endblock %} - Actividades de la UAH</title>
+    <link href="http://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed|Alegreya:700" rel="stylesheet"
+          type="text/css"/>
+    {% block stylesheets %}
+        {% stylesheets
+        '@UAHGestorActividadesBundle/Resources/public/vendor/normalize-css/normalize.css'
+        'bootstrap/css/bootstrap.css'
+        '@UAHGestorActividadesBundle/Resources/public/css/base/*.less'
+        '@UAHGestorActividadesBundle/Resources/public/vendor/qTip2/jquery.qtip.min.css'
+        '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-select/dist/css/bootstrap-select.min.css'
+        filter='cssrewrite' filter='?uglifycss' %}
+        <link href="{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ asset_url }}" rel="stylesheet"
+              type="text/css"/>
+        {% endstylesheets %}
 
-        {% endblock %}
-        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        <div class="hide" id="csrf-ajax-token">{{csrf_token(csrf_initialize|default('basico'))}}</div>
-        {% block body %}
-            {% block navbar %}
-                <div class="navbar navbar-default navbar-fixed-top hidden-print" role="navigation">
-                    <div class="container">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">      
-                                <span class="sr-only">Ver navegación</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <a href="#">
-                                {% image '@UAHGestorActividadesBundle/Resources/public/images/logo.gif' %}
-                                <img height="59" src="{{asset_url}}" alt="Universidad de Alcala">
-                                {% endimage %}
-                            </a>
-                            {% if app.user %}
-                                <a class="enlace_navbar visible-xs" href="{{ path('uah_gestoractividades_login_logout') }}">Log out</a>                                    
-                            {% else %}
-                                <a class="enlace_navbar visible-xs" href="{{ path('uah_gestoractividades_login_login') }}">Log in</a>                                    
-                            {% endif %}
-
-                        </div>
-                        <div class="navbar-collapse collapse">
-                            <ul class="nav navbar-nav">
-                                <li class="pull-left">
-                                    <a href="{{ path('uah_gestoractividades_default_index') }}">Inicio</a>
-                                </li>
-                                <li class="pull-left">
-                                    <a href="{{ path('uah_gestoractividades_profile_index') }}">Perfil</a>
-                                </li>
-                                <li class="hidden-xs">
-                                    {% if app.user %}
-                                        <a href="{{ path("uah_gestoractividades_login_logout")}}" >Log out</a>
-                                    {% else %}
-                                        <a href="{{ path("uah_gestoractividades_login_login")}}" >Log in</a>
-                                    {% endif %}
-                                </li>
-                                {% if is_granted('ROLE_UAH_ADMIN') %}
-                                    <li class="dropdown pull-right">
-                                        <a id="dropdownMenu1" href="#" data-toggle="dropdown">
-                                            Administrar
-                                            <span class="caret"></span>
-                                        </a>
-                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-                                            <li role="presentation">
-                                                <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities')}}">Actividades</a>
-                                            </li>
-                                            <li role="presentation">
-                                                <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_users')}}">Usuarios</a>
-                                            </li>
-                                            <li role="presentation">
-                                                <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_degrees')}}">Titulaciones</a>
-                                            </li>
-                                            <li role="presentation">
-                                                <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_categories')}}">Categorías</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                {% endif %}
-                                {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
-                                    <li>
-                                        <a href="{{path('uah_gestoractividades_admin_activities', {_switch_user:'exit'}) }}">EXIT</a>
-                                    </li>
-                                {% endif %}
-                                <li class="hidden-sm hidden-xs navbar-right">
-                                    <form class="form-inline" action="{{path('uah_gestoractividades_default_search')}}" method="GET" role="form">
-                                        <div class="form-group">
-                                            <input type="text" class="form-control" placeholder="Buscar" name="q" value="{{query|default('')}}">
-                                        </div>
-                                    </form>
-                                </li>
-                            </ul>                    
-                        </div><!--/.nav-collapse -->
-                    </div>
-                </div>
-            {% endblock %}  
-            {% block flashmessages %}
-                {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
-                {% block notifications %}
-                    <div class="container flash-container">
-                        <div class="alert alert-dismissable hide message" id="notification">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                            <strong id="type"></strong>
-                            <span id="message"></span>
-                        </div>
-                    </div>
-                {% endblock %}
-            {% endblock %}
-
-        {% endblock %}
-        <div class="ajax-loading"></div>
-        {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/base/cookie-banner.js' %}
-        <script id="cookiebanner" type="text/javascript" src="{{ asset_url }}" data-height="40px" data-position="bottom"
-                data-message="Usamos cookies para mejorar la experiencia del usuario. Entendemos que las aceptas si sigues navegando por nuestra web."
-        data-linkmsg="Más información"></script>
-        {% endjavascripts %}
-    </body>
-    {% block javascripts %}
-        {% javascripts 
-            'bootstrap/js/jquery.js'
-            'bootstrap/js/bootstrap.js' filter='?uglifyjs2' %}                
-
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-
-        {% endjavascripts %}
-
-        {% javascripts 
-            '@UAHGestorActividadesBundle/Resources/public/js/detectmobilebrowser.js' filter='?uglifyjs2' %}
-        <script type="text/javascript" src="{{ asset_url}}"></script>
-        {% endjavascripts %}
-
-        {% javascripts
-            '@UAHGestorActividadesBundle/Resources/public/vendor/holderjs/holder.js'
-            '@UAHGestorActividadesBundle/Resources/public/vendor/jquery.cookie/jquery.cookie.js'
-            '@UAHGestorActividadesBundle/Resources/public/vendor/bootbox.js/bootbox.js'
-            '@UAHGestorActividadesBundle/Resources/public/js/base/base.js'
-            '@UAHGestorActividadesBundle/Resources/public/vendor/qTip2/jquery.qtip.min.js'
-            '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-select/dist/js/bootstrap-select.min.js' 
-            '@UAHGestorActividadesBundle/Resources/public/vendor/qTip2/jquery.qtip.min.js'
-        filter='?uglifyjs2' %}                
-        <script type="text/javascript" src="{{ asset_url }}" ></script>
-        {% endjavascripts %}
-        {% javascripts    '@UAHGestorActividadesBundle/Resources/public/js/enroll.js' filter='?uglifyjs2' %}
-        <script type="text/javascript" src="{{ asset_url }}" ></script>
-        {% endjavascripts %}
-        {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/base/sidebar.js' %}
-        <script type="text/javascript" src="{{ asset_url }}" ></script>
-        {% endjavascripts %}
-
-
-        <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-        <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/jquery.qtip.min.js" ></script>
     {% endblock %}
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+</head>
+<body>
+<div class="hide" id="csrf-ajax-token">{{ csrf_token(csrf_initialize|default('basico')) }}</div>
+{% block body %}
+    {% block navbar %}
+        <div class="navbar navbar-default navbar-fixed-top hidden-print" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Ver navegación</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="#">
+                        {% image '@UAHGestorActividadesBundle/Resources/public/images/logo.gif' %}
+                        <img height="59" src="{{ asset_url }}" alt="Universidad de Alcala">
+                        {% endimage %}
+                    </a>
+
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') == false %}
+                        <a class="enlace_navbar visible-xs" href="{{ path('uah_gestoractividades_login_login') }}">Log
+                            in</a>
+                    {% else %}
+                        <a class="enlace_navbar hidden-xs-up" href="{{ path('uah_gestoractividades_default_index') }}">Inicio</a>
+                    {% endif %}
+
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+
+
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') == false %}
+                            <li class="pull-left">
+                                <a href="{{ path('uah_gestoractividades_default_index') }}">Inicio</a>
+                            </li>
+                        {% else %}
+                            <li class="pull-left">
+                                <a class="visible-xs-up"
+                                   href="{{ path('uah_gestoractividades_default_index') }}">Inicio</a>
+                            </li>
+                        {% endif %}
+                        <li class="pull-left">
+                            <a href="{{ path('uah_gestoractividades_profile_index') }}">Perfil</a>
+                        </li>
+
+                        {% if app.user %}
+                            <li class="pull-left">
+                                <a class=" visible-xs" href="{{ path('uah_gestoractividades_login_logout') }}">Log
+                                    out</a>
+                            </li>
+                        {% endif %}
+
+                        <li class="hidden-xs">
+                            {% if app.user %}
+                                <a data-jaja="aa" href="{{ path("uah_gestoractividades_login_logout") }}">Log out</a>
+                            {% else %}
+                                <a href="{{ path("uah_gestoractividades_login_login") }}">Log in</a>
+                            {% endif %}
+                        </li>
+                        {% if is_granted('ROLE_UAH_ADMIN') %}
+                            <li class="dropdown pull-right">
+                                <a id="dropdownMenu1" href="#" data-toggle="dropdown">
+                                    Administrar
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                                    <li role="presentation">
+                                        <a role="menuitem" tabindex="-1"
+                                           href="{{ path('uah_gestoractividades_admin_activities') }}">Actividades</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a role="menuitem" tabindex="-1"
+                                           href="{{ path('uah_gestoractividades_admin_users') }}">Usuarios</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a role="menuitem" tabindex="-1"
+                                           href="{{ path('uah_gestoractividades_admin_degrees') }}">Titulaciones</a>
+                                    </li>
+                                    <li role="presentation">
+                                        <a role="menuitem" tabindex="-1"
+                                           href="{{ path('uah_gestoractividades_admin_categories') }}">Categorías</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
+                            <li>
+                                <a href="{{ path('uah_gestoractividades_admin_activities', {_switch_user:'exit'}) }}">EXIT</a>
+                            </li>
+                        {% endif %}
+                        <li class="hidden-sm hidden-xs navbar-right">
+                            <form class="form-inline" action="{{ path('uah_gestoractividades_default_search') }}"
+                                  method="GET" role="form">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Buscar" name="q"
+                                           value="{{ query|default('') }}">
+                                </div>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+    {% endblock %}
+    {% block flashmessages %}
+        {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
+        {% block notifications %}
+            <div class="container flash-container">
+                <div class="alert alert-dismissable hide message" id="notification">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong id="type"></strong>
+                    <span id="message"></span>
+                </div>
+            </div>
+        {% endblock %}
+    {% endblock %}
+
+{% endblock %}
+<div class="ajax-loading"></div>
+{% javascripts '@UAHGestorActividadesBundle/Resources/public/js/base/cookie-banner.js' %}
+<script id="cookiebanner" type="text/javascript" src="{{ asset_url }}" data-height="40px" data-position="bottom"
+        data-message="Usamos cookies para mejorar la experiencia del usuario. Entendemos que las aceptas si sigues navegando por nuestra web."
+        data-linkmsg="Más información"></script>
+{% endjavascripts %}
+</body>
+{% block javascripts %}
+    {% javascripts
+    'bootstrap/js/jquery.js'
+    'bootstrap/js/bootstrap.js' filter='?uglifyjs2' %}
+
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+
+    {% endjavascripts %}
+
+    {% javascripts
+    '@UAHGestorActividadesBundle/Resources/public/js/detectmobilebrowser.js' filter='?uglifyjs2' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    {% javascripts
+    '@UAHGestorActividadesBundle/Resources/public/vendor/holderjs/holder.js'
+    '@UAHGestorActividadesBundle/Resources/public/vendor/jquery.cookie/jquery.cookie.js'
+    '@UAHGestorActividadesBundle/Resources/public/vendor/bootbox.js/bootbox.js'
+    '@UAHGestorActividadesBundle/Resources/public/js/base/base.js'
+    '@UAHGestorActividadesBundle/Resources/public/vendor/qTip2/jquery.qtip.min.js'
+    '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-select/dist/js/bootstrap-select.min.js'
+    '@UAHGestorActividadesBundle/Resources/public/vendor/qTip2/jquery.qtip.min.js'
+    filter='?uglifyjs2' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts    '@UAHGestorActividadesBundle/Resources/public/js/enroll.js' filter='?uglifyjs2' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts '@UAHGestorActividadesBundle/Resources/public/js/base/sidebar.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/qtip2/2.2.0/jquery.qtip.min.js"></script>
+{% endblock %}
 </html>

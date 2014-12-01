@@ -9,7 +9,7 @@
     {{parent()}}
     {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/admin/*.less'
     '@UAHGestorActividadesBundle/Resources/public/css/backend/categories/*.less'%}
-    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
     {% endstylesheets %}
 {%endblock %}
 {% block acciones_datos %}
@@ -68,7 +68,7 @@
                     <th class="nombre-grado">Nombre</th>
                     <th class="visible-sm-up">Área</th>
                     <th>Código Académico</th>
-                    <th class="hidden-print">Acción</th>                
+                    <th class="hidden-print">Acción</th>
                 </tr>
             </thead>
             <tbody>
@@ -121,7 +121,7 @@
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="academic-code" name="academic-code" placeholder="G##">
                             </div>
-                        </div>                               
+                        </div>
                         <div class="form-group radio-div">
                             <label class="control-label col-sm-4">¿Es un plan de estudio renovado?</label>
                             <label class="radio col-sm-7 col-sm-offset-5">
@@ -134,12 +134,12 @@
                         <input type="hidden" name="degree-id" id="degree-id">
                     </div>
                     <div class="modal-footer">
-                        <a class="btn btn-default" id="close_modal" data-dismiss="modal">Cerrar</a>    
+                        <a class="btn btn-default" id="close_modal" data-dismiss="modal">Cerrar</a>
                         <button class="btn btn-success" type="submit" id="btn_submit_degree">Crear</button>
                     </div>
                 </form>
             </div>
         </div>
-    </div>                
+    </div>
 
 {% endblock %}

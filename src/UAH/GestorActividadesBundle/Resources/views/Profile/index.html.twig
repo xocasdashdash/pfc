@@ -13,7 +13,7 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/profile/*.less' %}
-    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
     {% endstylesheets %}
 {% endblock %}
 {% block acciones_datos %}
@@ -24,7 +24,7 @@
                 <button class="btn btn-primary btn-sm" data-toggle="offcanvas" type="button">Ver acciones</button>
             </p>
         </div>
-        <div class="col-xs-12 col-sm-9" id="left-block">                
+        <div class="col-xs-12 col-sm-9" id="left-block">
             <div>
                 <div class="form-group ">
                     <label for="inputNombre" class="col-sm-2 col-xs-3 control-label">Nombre</label>
@@ -54,7 +54,7 @@
         </div>
 
 
-        <div id="sidebar" class="col-xs-3 col-sm-3 sidebar-offcanvas" id="right-block" role="navigation">                
+        <div id="sidebar" class="col-xs-3 col-sm-3 sidebar-offcanvas" id="right-block" role="navigation">
             <div>
                 <a href="{{path("uah_gestoractividades_application_index")}}" class="btn btn-default btn-block" id="btn_my_applications">Mis justificantes</a>
                 <a href="{{path('uah_gestoractividades_profile_edit')}}" class="btn btn-default btn-block" id="btn_update_data">Actualizar datos</a>
@@ -108,7 +108,7 @@
                         {% elseif enrolled_activity.code == "STATUS_NOT_RECOGNIZED" %}
 
                             <td class="hidden-xs">Actividad no reconocida</td>
-                        {% else %}                            
+                        {% else %}
                             <td class="hidden-xs">Estado no reconocido</td>
                         {% endif %}
                         {#<td>{{ enrolled_activity.code }}</td>#}
@@ -117,7 +117,7 @@
                     {% else %}
                         <tr>
                             <td colspan="6" class="text-center">
-                                No hemos encontrado ningún dato tuyo de actividades. 
+                                No hemos encontrado ningún dato tuyo de actividades.
                                 Porque no pruebas a inscribirte en alguna
                             </td>
                         </tr>
@@ -154,5 +154,5 @@
                             </div>
                         </div>
                     </div>
-                </div>                
+                </div>
                 {% endblock %}

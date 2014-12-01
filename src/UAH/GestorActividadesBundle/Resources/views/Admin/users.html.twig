@@ -8,7 +8,7 @@
 {% block stylesheets %}
     {{parent()}}
     {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/admin/*.less' %}
-    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
     {% endstylesheets %}
 {%endblock %}
 {% block acciones_datos %}
@@ -70,7 +70,7 @@
                     <th class="nombre-actividad hidden-xs">Nombre</th>
                     <th class="hidden-print">Usuario UAH</th>
                     <th>Permisos</th>
-                    <th class="hidden-print">Acción</th>                
+                    <th class="hidden-print">Acción</th>
                 </tr>
             </thead>
             <tbody>
@@ -94,7 +94,7 @@
                                         <option value="{{role.role}}" {% if role in user_permit.default_permit.roles %} selected="true" {% endif %}>{{role.name}}</option>
                                     {% endif %}
                                 {% endfor %}
-                            </select>                            
+                            </select>
                         </td>
                         <td class="text-center">
                             <button class="btn btn-default update_permissions button-lg" data-default-permit-id="{{user_permit.default_permit.id}}" title="Actualiza los permisos que este usuario tiene disponibles">Actualizar</button>
@@ -137,12 +137,12 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a class="btn btn-default" data-dismiss="modal">Cerrar</a>    
+                        <a class="btn btn-default" data-dismiss="modal">Cerrar</a>
                         <button class="btn btn-success" type="submit">Crear</button>
                     </div>
                 </form>
             </div>
         </div>
-    </div>                
+    </div>
 
 {% endblock %}

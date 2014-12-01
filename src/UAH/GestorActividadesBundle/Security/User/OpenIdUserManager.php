@@ -6,16 +6,15 @@ use Fp\OpenIdBundle\Model\UserManager;
 use Fp\OpenIdBundle\Model\IdentityManagerInterface;
 use Doctrine\ORM\EntityManager;
 use UAH\GestorActividadesBundle\Entity\OpenIdIdentity;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
-use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationException;
 use UAH\GestorActividadesBundle\Entity\DefaultPermit as DefaultPermit;
 use UAH\GestorActividadesBundle\Entity\User as User;
 use DateTime;
 
-class OpenIdUserManager extends UserManager {
-
-// we will use an EntityManager, so inject it via constructor
-    public function __construct(IdentityManagerInterface $identityManager, EntityManager $entityManager) {
+class OpenIdUserManager extends UserManager
+{
+    // we will use an EntityManager, so inject it via constructor
+    public function __construct(IdentityManagerInterface $identityManager, EntityManager $entityManager)
+    {
         parent::__construct($identityManager);
 
         $this->entityManager = $entityManager;
@@ -23,17 +22,18 @@ class OpenIdUserManager extends UserManager {
 
     /**
      * @param string $identity
-     *  an OpenID token. With Google it looks like:
-     *  https://www.google.com/accounts/o8/id?id=SOME_RANDOM_USER_ID
-     * @param array $attributes
-     *  requested attributes (explained later). At the moment just
-     *  assume there's a 'contact/email' key
+     *                           an OpenID token. With Google it looks like:
+     *                           https://www.google.com/accounts/o8/id?id=SOME_RANDOM_USER_ID
+     * @param array  $attributes
+     *                           requested attributes (explained later). At the moment just
+     *                           assume there's a 'contact/email' key
      */
-    public function createUserFromIdentity($identity, array $attributes = array()) {
-//Capture the username and the domain
+    public function createUserFromIdentity($identity, array $attributes = array())
+    {
+        //Capture the username and the domain
         $reg_ex = '/^https?:\/\/yo\.rediris\.es\/soy\/((.+)\.(.+))@(\w+)\.+[a-z]{2,4}\/?/';
         preg_match($reg_ex, $identity, $matches);
-        $email = $matches[1] . '@edu.uah.es';
+        $email = $matches[1].'@edu.uah.es';
         $name = $matches[2];
         $apellido = $matches[3];
 // put your user creation logic here
@@ -43,7 +43,7 @@ class OpenIdUserManager extends UserManager {
 //        }
 // in this example, we fetch User entities by e-mail
         $user = $this->entityManager->getRepository('UAHGestorActividadesBundle:User')->findOneBy(array(
-            'id_usuldap' => $identity
+            'id_usuldap' => $identity,
         ));
 
         if (null === $user) {
@@ -81,9 +81,9 @@ class OpenIdUserManager extends UserManager {
             $this->entityManager->flush();
             $this->entityManager->clear();
         } catch (Exception $e) {
-            error_log("EXCEPCION" . print_r($e, true));
+            error_log("EXCEPCION".print_r($e, true));
         }
+
         return $user; // you must return an UserInterface instance (or throw an exception)
     }
-
 }

@@ -1,8 +1,8 @@
 {% extends '::backend.html.twig' %}
 {% block javascripts %}
     {{parent()}}
-    <script type="text/javascript" src="{{ asset('bundles/uahgestoractividades/vendor/zeroclipboard/dist/ZeroClipboard.min.js') }}"></script> 
-    {% javascripts 
+    <script type="text/javascript" src="{{ asset('bundles/uahgestoractividades/vendor/zeroclipboard/dist/ZeroClipboard.min.js') }}"></script>
+    {% javascripts
         '@UAHGestorActividadesBundle/Resources/public/js/backend/myactivities.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -11,9 +11,9 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {% stylesheets 
+    {% stylesheets
         '@UAHGestorActividadesBundle/Resources/public/css/backend/myactivities.less'%}
-    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
     {% endstylesheets %}
 {% endblock %}
 {% block title %}
@@ -37,7 +37,7 @@
             {% if is_granted('ROLE_UAH_ADMIN') %}
                 <div class="flex-item">
                     <button type="button" class="btn btn-default" id="btn_open" title="Abre una actividad que estuviese cerrada">Abrir una actividad</button>
-                </div>            
+                </div>
             {% endif %}
         </div>
     </div>
@@ -68,7 +68,7 @@
                     {% else %}
                         <tr>
                             <td colspan="5" class="text-center">
-                                No hemos encontrado ningún actividad tuya. 
+                                No hemos encontrado ningún actividad tuya.
                                 Porque no pruebas a <a href="{{path('uah_gestoractividades_activity_create')}}">crear</a> alguna
                             </td>
                         </tr>
