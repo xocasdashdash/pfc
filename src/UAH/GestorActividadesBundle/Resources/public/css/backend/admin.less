@@ -1,0 +1,133 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 26, 2014, 12:05:23 AM
+    Author     : xokas
+*/
+
+.flex-container {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+
+    -webkit-flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+.flex-item {
+    padding: 5px;
+    width: 200px;
+    height: 150px;
+    margin-top: 10px;
+    line-height: 150px;
+    color: white;
+    font-weight: bold;
+    font-size: 3em;
+    text-align: center;
+    button{
+        width:100%;
+        height: 100%;
+        white-space: normal;
+    }
+}
+.reconocer{
+    width: 12em;
+    height: 40px;
+    input{
+        width: 100%;
+    }
+    .ayuda{
+        display:none;
+        z-index:10;
+        padding:5px 20px;
+        margin-top:-30px;
+        margin-left:12em;
+        width:15em;
+        line-height:inherit;
+        span{
+            padding-top: 1px;
+            padding-bottom: 1px;
+        }
+    }
+    input:focus + .ayuda,
+        input:invalid + .ayuda,
+        input:hover + .ayuda{
+        //display:inline-block;
+        display:inline;
+        position:absolute;
+        color:#111;
+        border:1px solid #DCA;
+        background:#fffAF0;
+    }
+    input:invalid + .ayuda{
+        background:#ffdddd;
+    }
+    input:valid + .ayuda{
+        background:#ddffdd;
+    }
+}
+.reconocido{
+    .reconocer;
+}
+.unrecognize{
+    input{
+        width: 100%;
+    }
+}
+@media screen{
+    .print{
+        display:none;
+    }
+
+    td{
+        width: 40em;
+
+    }
+
+    th{
+        width: 40em;
+    }
+}  
+@media all {
+	.page-break	{ display: none; }
+}
+
+@media print {
+	.page-break	{ display: block; page-break-before: always; }
+}
+@media print{
+    .no-print{
+        display:none;
+    }
+    tr{
+        height: 30px;
+    }
+    td{
+        min-width: 50px;
+        min-height: 40px;
+    }
+    th{
+        min-width: 50px;
+        min-height: 40px;
+    }
+    td.print{
+        width: 170px;
+    }
+    th.print{
+        width: 170px;
+    }
+
+    .header-print{
+        padding-bottom:20px;
+        margin-bottom: 20px;
+    }
+}

@@ -418,8 +418,7 @@ class User implements UserInterface
      * @param  string $documentoIdentidad
      * @return User
      */
-    public function setDocumentoIdentidad($documentoIdentidad)
-    {
+    public function setDocumentoIdentidad($documentoIdentidad) {
         $this->documento_identidad = $documentoIdentidad;
 
         return $this;
@@ -430,8 +429,7 @@ class User implements UserInterface
      *
      * @return string
      */
-    public function getDocumentoIdentidad()
-    {
+    public function getDocumentoIdentidad() {
         return $this->documento_identidad;
     }
 
@@ -441,8 +439,7 @@ class User implements UserInterface
      * @param  string $tipoDocumentoIdentidad
      * @return User
      */
-    public function setTipoDocumentoIdentidad($tipoDocumentoIdentidad)
-    {
+    public function setTipoDocumentoIdentidad($tipoDocumentoIdentidad) {
         $this->tipo_documento_identidad = $tipoDocumentoIdentidad;
 
         return $this;
@@ -453,8 +450,7 @@ class User implements UserInterface
      *
      * @return string
      */
-    public function getTipoDocumentoIdentidad()
-    {
+    public function getTipoDocumentoIdentidad() {
         return $this->tipo_documento_identidad;
     }
 

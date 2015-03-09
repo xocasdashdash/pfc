@@ -463,7 +463,6 @@ class Activity
     public function setPublicityStartDate(\DateTime $publicityStartDate)
     {
         $this->publicityStartDate = $publicityStartDate;
-
         return $this;
     }
 
@@ -940,6 +939,28 @@ class Activity
         } else {
             $this->setIndexFilter('category-no-pillada');
         }
+        if (is_null($this->getStatus())) {
+            $em = $event->getEntityManager();
+            $default_status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getDefault();
+            $this->setStatus($default_status);
+        }
+        //Modifico la fecha de inicio teniendo en cuenta la primera que se pone como de celebracion
+        //$this->setCelebrationDates(json_encode($this->getCelebrationDatesUnencoded()));
+        if ($this->getPublicityStartDate() === null) {
+            $this->setPublicityStartDate(date("Y-m-d H:i:s"));
+        }
+        if ($this->getNumberOfPlacesOffered() === 0) {
+            $this->setNumberOfPlacesOffered(NULL);
+        }
+        $fechas = json_decode($this->getCelebrationDates());
+        try {
+            $this->setStartDate(\DateTime::createFromFormat("Y-m-d H:i:s", date("Y-m-d H:i:s", strtotime($fechas[0]->date)), new \DateTimeZone($fechas[0]->timezone)));
+            $this->setFinishDate(\DateTime::createFromFormat("Y-m-d H:i:s", date("Y-m-d H:i:s", strtotime($fechas[count($fechas) - 1]->date)), new \DateTimeZone($fechas[count($fechas) - 1]->timezone)));
+        } catch (Exception $e) {
+            var_dump($e);
+            var_dump($fechas[0]->date);
+        }
+        //Modifico la fecha de final teniendo en cuenta la última fecha que se pone como de celebracion
     }
 
     /**

@@ -8,8 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class DefaultController extends Controller
-{
     /**
      * @Route("/{pagina}", requirements={"pagina" = "\d+"}, defaults={"pagina" = 1},options={"expose"=true}))
      * @Route("/pag/{pagina}", requirements={"pagina" = "\d+"}, defaults={"pagina" = 1})
@@ -73,4 +71,5 @@ class DefaultController extends Controller
                     'categories' => $categories,
                     'query' => $query, ));
     }
+
 }

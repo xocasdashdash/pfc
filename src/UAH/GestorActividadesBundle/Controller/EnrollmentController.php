@@ -39,6 +39,18 @@ class EnrollmentController extends Controller
     const UNENROLLMENT_FAIL = 3;
     const UNENROLLMENT_OK = 3;
 
+    const ENROLLMENT_OK = 0;
+    //Error cuando ya estoy inscrito en la actividad
+    const ENROLLMENT_ERROR_ALREADY_ENROLLED = 1;
+    //Error cuando no me puedo inscribir en la actividad por que no hay más plazas
+    const ENROLLMENT_ERROR_NO_PLACES = 2;
+    //Error cuando no me puedo inscribir en la actividad por su estado
+    const ENROLLMENT_ERROR_INVALID_ACTIVITY = 4;
+    const ENROLLMENT_ERROR_UNKNOWN = 8;
+    const RECOGNIZEMENT_ERROR_CSRF_TOKEN_INVALID = 1;
+    const RECOGNIZEMENT_ERROR_BASIC = 2;
+    const RECOGNIZEMENT_ERROR_NO_DEGREE = 3;
+
     /**
      * @Route("/enroll/{activity_id}",requirements={"pagina" = "\d+"}, options={"expose"=true})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})

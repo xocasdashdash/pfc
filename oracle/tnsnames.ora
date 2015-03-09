@@ -1,0 +1,29 @@
+uxxiacp1.world =             (description = (address = (community = tcp.world) (protocol = tcp) (host = 192.168.153.25)                (port = 2585)) (connect_data = (sid = uxxiacp1)))
+XE =
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = 127.0.0.1)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = XE)
+    )
+  )
+uxxiac.world=
+  (DESCRIPTION=
+    (FAILOVER=on)
+    (ADDRESS=
+      (COMMUNITY=TCP.WORLD)
+      (PROTOCOL=TCP)
+      (HOST=rac-scan.uah.es)
+      (PORT=1521)
+    )
+    (CONNECT_DATA=
+      (FAILOVER_MODE=
+        (TYPE=select)
+        (METHOD=basic)
+        (RETRIES=10)
+        (DELAY=10)
+      )
+      (SERVER=dedicated)
+      (SERVICE_NAME=uxxiac)
+    )
+  )
