@@ -141,8 +141,5 @@ class Status
     {
     }
     
-    public function toString(){
-        
-    }
 
 }
