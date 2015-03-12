@@ -955,8 +955,8 @@ class Activity
         }
         $fechas = $this->getCelebrationDates();
         try {
-            $this->setStartDate(\DateTime::createFromFormat("Y-m-d H:i:s", date("Y-m-d H:i:s", strtotime($fechas[0]->date)), new \DateTimeZone($fechas[0]->timezone)));
-            $this->setFinishDate(\DateTime::createFromFormat("Y-m-d H:i:s", date("Y-m-d H:i:s", strtotime($fechas[count($fechas) - 1]->date)), new \DateTimeZone($fechas[count($fechas) - 1]->timezone)));
+            $this->setStartDate(\DateTime::createFromFormat("Y-m-d H:i:s", date("Y-m-d H:i:s", $fechas[0]), new \DateTimeZone($fechas[0]->timezone)));
+            $this->setFinishDate(\DateTime::createFromFormat("Y-m-d H:i:s", date("Y-m-d H:i:s", $fechas[count($fechas) - 1]), new \DateTimeZone($fechas[count($fechas) - 1]->timezone)));
         } catch (Exception $e) {
             var_dump($e);
             var_dump($fechas[0]->date);
