@@ -19,9 +19,9 @@ if (isset($_SERVER['HTTP_CLIENT_IP']) || isset($_SERVER['HTTP_X_FORWARDED_FOR'])
 
     $container->setParameter('database_host', "localhost");
     $container->setParameter('database_driver', "pdo_mysql");
-    $container->setParameter('database_port', "1521");
+    $container->setParameter('database_port', "3306");
     $container->setParameter('database_name', "symfony");
-    $container->setParameter('database_user', "root");
-    $container->setParameter('database_password', "toor");
+    $container->setParameter('database_user', "");
+    $container->setParameter('database_password', "");
 }
 $container->setParameter('uploadImagesDir', 'web/upload/images');
