@@ -8,17 +8,11 @@ if (isset($_SERVER['HTTP_CLIENT_IP']) || isset($_SERVER['HTTP_X_FORWARDED_FOR'])
     $container->setParameter('database_port', getEnv("MYSQL_DB_PORT"));
     $container->setParameter('database_name', getEnv("MYSQL_USER"));
     $container->setParameter('database_user', getEnv("MYSQL_DATABASE"));
-} else {
-    //Configuracion ORACLE
-//    $container->setParameter('database_driver', "oci8");
-//    $container->setParameter('database_name', "XE");
-//    $container->setParameter('database_service', "true");
-//    $container->setParameter('database_user', "uah_gat");
-//    $container->setParameter('database_password', "jfc$24uah");
-    //Configuracion MySQL
+    $container->setParameter('database_password', "");
 
+} else {
     $container->setParameter('database_host', "localhost");
-    $container->setParameter('database_port', "1521");
+    $container->setParameter('database_port', "3306");
     $container->setParameter('database_name', "symfony");
     $container->setParameter('database_user', "root");
     $container->setParameter('database_password', "toor");

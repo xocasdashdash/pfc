@@ -953,7 +953,7 @@ class Activity
         if ($this->getNumberOfPlacesOffered() === 0) {
             $this->setNumberOfPlacesOffered(null);
         }
-        $fechas = json_decode($this->getCelebrationDates());
+        $fechas = $this->getCelebrationDates();
         try {
             $this->setStartDate(\DateTime::createFromFormat("Y-m-d H:i:s", date("Y-m-d H:i:s", strtotime($fechas[0]->date)), new \DateTimeZone($fechas[0]->timezone)));
             $this->setFinishDate(\DateTime::createFromFormat("Y-m-d H:i:s", date("Y-m-d H:i:s", strtotime($fechas[count($fechas) - 1]->date)), new \DateTimeZone($fechas[count($fechas) - 1]->timezone)));
