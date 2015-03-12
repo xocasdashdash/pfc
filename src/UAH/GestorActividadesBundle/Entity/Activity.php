@@ -463,6 +463,7 @@ class Activity
     public function setPublicityStartDate(\DateTime $publicityStartDate)
     {
         $this->publicityStartDate = $publicityStartDate;
+
         return $this;
     }
 
@@ -950,7 +951,7 @@ class Activity
             $this->setPublicityStartDate(date("Y-m-d H:i:s"));
         }
         if ($this->getNumberOfPlacesOffered() === 0) {
-            $this->setNumberOfPlacesOffered(NULL);
+            $this->setNumberOfPlacesOffered(null);
         }
         $fechas = json_decode($this->getCelebrationDates());
         try {

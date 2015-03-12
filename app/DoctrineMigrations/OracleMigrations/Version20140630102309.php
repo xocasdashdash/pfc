@@ -14,7 +14,7 @@ class Version20140630102309 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "oracle", "Migration can only be executed safely on 'oracle'.");
-        
+
         $this->addSql("ALTER TABLE UAH_GAT_STATUS RENAME COLUMN status TO code");
     }
 
@@ -22,7 +22,7 @@ class Version20140630102309 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "oracle", "Migration can only be executed safely on 'oracle'.");
-        
+
         $this->addSql("ALTER TABLE UAH_GAT_Status RENAME COLUMN code TO STATUS");
     }
 }

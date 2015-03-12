@@ -11,7 +11,7 @@ security:
         # the order is important here
         OpenIdUserManager:
             id: UAH.GestorActividades.OpenIdUserManager # the name of the service
-        # keep your database provider below! it may look like this:        
+        # keep your database provider below! it may look like this:
         database:
             entity: { class: UAHGestorActividadesBundle:User, property: username }
     firewalls:
@@ -25,7 +25,7 @@ security:
             anonymous:  true
             switch_user: true
             form_login:
-                post_only: false                
+                post_only: false
             fp_openid:
                 login_path: /login
                 check_path: /login_check_openid
@@ -35,15 +35,15 @@ security:
                 # Please note that all OpenID providers may not be able to provide all fields.
                 # check the desired provider documentation
                 required_attributes:
-                    - contact/email     
+                    - contact/email
                     - namePerson/first
                     - namePerson/prefix
                 success_handler: UahAuthenticationHandler
 
-    
+
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/secured_area, role: IS_AUTHENTICATED_OPENID }    
+        - { path: ^/secured_area, role: IS_AUTHENTICATED_OPENID }
 
     access_control:
         - { path: ^/demo/secured/hello/admin/, roles: ROLE_ADMIN }

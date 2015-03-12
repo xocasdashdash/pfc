@@ -14,7 +14,7 @@ class Version20140815165825 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql", "Migration can only be executed safely on 'mysql'.");
-        
+
         $this->addSql("ALTER TABLE UAH_GAT_User ADD date_created DATETIME NOT NULL, ADD date_updated DATETIME NOT NULL");
     }
 
@@ -22,7 +22,7 @@ class Version20140815165825 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql", "Migration can only be executed safely on 'mysql'.");
-        
+
         $this->addSql("ALTER TABLE UAH_GAT_User DROP date_created, DROP date_updated");
     }
 }

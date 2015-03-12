@@ -24,5 +24,4 @@ if (isset($_SERVER['HTTP_CLIENT_IP']) || isset($_SERVER['HTTP_X_FORWARDED_FOR'])
     $container->setParameter('database_user', "root");
     $container->setParameter('database_password', "toor");
 }
-$container->setParameter('uploadImagesDir', 'web/upload/images')
-?>
+$container->setParameter('uploadImagesDir', 'web/upload/images');

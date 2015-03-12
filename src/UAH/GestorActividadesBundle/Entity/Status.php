@@ -68,7 +68,8 @@ class Status
      *
      * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
@@ -78,7 +79,8 @@ class Status
      * @param  string $nameEs
      * @return Status
      */
-    public function setNameEs($nameEs) {
+    public function setNameEs($nameEs)
+    {
         $this->name_es = $nameEs;
 
         return $this;
@@ -89,7 +91,8 @@ class Status
      *
      * @return string
      */
-    public function getNameEs() {
+    public function getNameEs()
+    {
         return $this->name_es;
     }
 
@@ -99,7 +102,8 @@ class Status
      * @param  string $nameEn
      * @return Status
      */
-    public function setNameEn($nameEn) {
+    public function setNameEn($nameEn)
+    {
         $this->name_en = $nameEn;
 
         return $this;
@@ -110,7 +114,8 @@ class Status
      *
      * @return string
      */
-    public function getNameEn() {
+    public function getNameEn()
+    {
         return $this->name_en;
     }
 
@@ -140,6 +145,4 @@ class Status
     public function toString()
     {
     }
-    
-
 }

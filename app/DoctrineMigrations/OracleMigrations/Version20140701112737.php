@@ -14,7 +14,7 @@ class Version20140701112737 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "oracle", "Migration can only be executed safely on 'oracle'.");
-        
+
         $this->addSql("ALTER TABLE UAH_GAT_ENROLLMENT RENAME COLUMN dateprocessed TO dateRecognized");
         $this->addSql("ALTER TABLE UAH_GAT_ENROLLMENT DROP (ISPROCESSED)");
         $this->addSql("ALTER TABLE UAH_GAT_ACTIVITY DROP (APPROVEDBYCOMITEE)");
@@ -28,7 +28,7 @@ class Version20140701112737 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "oracle", "Migration can only be executed safely on 'oracle'.");
-        
+
         $this->addSql("ALTER TABLE UAH_GAT_Enrollment ADD (ISPROCESSED NUMBER(1) NOT NULL)");
         $this->addSql("ALTER TABLE UAH_GAT_Enrollment RENAME COLUMN daterecognized TO DATEPROCESSED");
         $this->addSql("ALTER TABLE UAH_GAT_Activity ADD (APPROVEDBYCOMITEE NUMBER(1) NOT NULL)");

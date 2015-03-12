@@ -4,7 +4,7 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/frontend/*.less'%}
-    <link href="{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ asset_url }}" rel="stylesheet" type="text/css" />          
+    <link href="{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ asset_url }}" rel="stylesheet" type="text/css" />
     {% endstylesheets %}
 {% endblock %}
 {% block javascripts %}

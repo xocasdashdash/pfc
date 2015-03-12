@@ -21,7 +21,7 @@ framework:
     session:         ~
     fragments:       ~
     http_method_override: true
-    #Aqui va 
+    #Aqui va
     session:
         handler_id: session.handler.oci8
 
@@ -64,8 +64,8 @@ doctrine:
                 dbname:   "%database_name%"
                 user:     "%database_user%"
                 password: "%database_password%"
-                charset:  UTF8            
-            
+                charset:  UTF8
+
             # if using pdo_sqlite as your database driver, add the path in parameters.yml
             # e.g. database_path: "%kernel.root_dir%/data/data.db3"
             # path:     "%database_path%"
@@ -89,26 +89,26 @@ swiftmailer:
 sensio_framework_extra:
     router:  { annotations: true }
     security:   { annotations: true }
-     
+
 parameters:
     oci8.db_options:
         db_table:    UAH_GAT_Session
         db_id_col:   session_id
         db_data_col: session_value
         db_time_col: session_time
-    vendor_dir: %kernel.root_dir%/../src/UAH/GestorActividadesBundle/Resources/public/vendor    
+    vendor_dir: %kernel.root_dir%/../src/UAH/GestorActividadesBundle/Resources/public/vendor
     pdf_dir: %kernel.root_dir%/../web/upload/pdf/
     elements_per_page: 7
 
 services:
     session.handler.oci8:
         # Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
-        class:     UAH\GestorActividadesBundle\Services\DoctrineSessionHandler 
+        class:     UAH\GestorActividadesBundle\Services\DoctrineSessionHandler
         arguments: ["@doctrine.dbal.default_connection", "%oci8.db_options%"]
-    
+
     #Esto lo hago para evitar problemas con campos Date (https://github.com/doctrine/DoctrineBundle/issues/217)
     oracle.listener:
-        class: UAH\GestorActividadesBundle\Services\OracleSessionInit 
+        class: UAH\GestorActividadesBundle\Services\OracleSessionInit
         tags:
             - { name: doctrine.event_listener, event: postConnect, connection: default }
 braincrafted_bootstrap:
@@ -127,12 +127,12 @@ braincrafted_bootstrap:
         bootstrap_template: BraincraftedBootstrapBundle:Bootstrap:bootstrap.less.twig
 fp_open_id:
     db_driver: orm
-    identity_class: UAH\GestorActividadesBundle\Entity\OpenIdIdentity     
+    identity_class: UAH\GestorActividadesBundle\Entity\OpenIdIdentity
 knp_snappy:
     pdf:
         enabled:    true
         binary:     %kernel.root_dir%/../wkhtmltopdf/wkhtmltopdf
-        options:    
+        options:
             load-error-handling: ignore
             print-media-type: true
             disable-smart-shrinking: true
@@ -142,10 +142,10 @@ knp_snappy:
             load-error-handling: ignore
             dpi: 96
             javascript-delay: 100
-            
-            
+
+
         # ['--print-media-type','--disable-smart-shrinking','--page-width 21cm','--page-height 27cm','--dpi 96']
     image:
         enabled:    true
         binary:     /home/xokas/pfc/wkhtmltopdf/wkhtmltoimage
-        options:    []    
+        options:    []

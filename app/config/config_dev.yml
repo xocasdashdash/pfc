@@ -26,7 +26,7 @@ monolog:
 
 assetic:
     use_controller: true
-#bazinga_faker: 
+#bazinga_faker:
 #    orm: doctrine
 #    locale: es_ES
 #    seed: 1

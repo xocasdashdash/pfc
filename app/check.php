@@ -48,8 +48,8 @@ exit($checkPassed ? 0 : 1);
 function echo_requirement(Requirement $requirement)
 {
     $result = $requirement->isFulfilled() ? 'OK' : ($requirement->isOptional() ? 'WARNING' : 'ERROR');
-    echo ' ' . str_pad($result, 9);
-    echo $requirement->getTestMessage() . "\n";
+    echo ' '.str_pad($result, 9);
+    echo $requirement->getTestMessage()."\n";
 
     if (!$requirement->isFulfilled()) {
         echo sprintf("          %s\n\n", $requirement->getHelpText());

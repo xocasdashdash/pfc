@@ -55,17 +55,11 @@ class Degree
      * @JoinColumn(name="status_degree", referencedColumnName="id")
      */
     private $status;
-    
-       
-    /**
-     * @OneToMany(targetEntity="User", mappedBy="degree_id")
-     */
-    private $degree_students;
-    /**
-     * @OneToMany(targetEntity="User", mappedBy="degree_id")
-     */
-    private $degree_students;
 
+    /**
+     * @OneToMany(targetEntity="User", mappedBy="degree_id")
+     */
+    private $degree_students;
     /**
      * Get id
      *

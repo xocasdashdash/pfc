@@ -14,7 +14,7 @@ class Version20140617193547 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "oracle", "Migration can only be executed safely on 'oracle'.");
-        
+
         $this->addSql("ALTER TABLE UAH_GAT_ACTIVITY DROP (start_date );
                         ALTER TABLE UAH_GAT_ACTIVITY ADD (start_date TIMESTAMP(0) );
                         UPDATE UAH_GAT_ACTIVITY SET START_DATE=sysdate;
@@ -26,7 +26,7 @@ class Version20140617193547 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "oracle", "Migration can only be executed safely on 'oracle'.");
-        
+
         $this->addSql("ALTER TABLE UAH_GAT_Activity DROP (start_date)");
         $this->addSql("ALTER TABLE UAH_GAT_Session MODIFY (SESSION_VALUE  CLOB DEFAULT NULL)");
     }

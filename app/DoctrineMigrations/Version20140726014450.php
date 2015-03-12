@@ -14,7 +14,7 @@ class Version20140726014450 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql", "Migration can only be executed safely on 'mysql'.");
-        
+
         $this->addSql("ALTER TABLE UAH_GAT_Enrollment CHANGE creditsType creditsType VARCHAR(255) DEFAULT NULL");
     }
 
@@ -22,7 +22,7 @@ class Version20140726014450 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "mysql", "Migration can only be executed safely on 'mysql'.");
-        
+
         $this->addSql("ALTER TABLE UAH_GAT_Enrollment CHANGE creditsType creditsType DOUBLE PRECISION DEFAULT NULL");
     }
 }

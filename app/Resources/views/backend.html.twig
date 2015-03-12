@@ -3,9 +3,9 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {% stylesheets 
+    {% stylesheets
         '@UAHGestorActividadesBundle/Resources/public/css/backend/backend.less' filter='uglifycss'%}
-    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
     {% endstylesheets %}
 {% endblock %}
 {% block javascripts %}

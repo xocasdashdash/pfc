@@ -17,14 +17,13 @@ class Version20140621132427 extends AbstractMigration
         $this->addSql("ALTER TABLE UAH_GAT_ACTIVITY ADD (organizer_name VARCHAR2(255))");
         $this->addSql("UPDATE UAH_GAT_ACTIVITY SET ORGANIZER_NAME='Nombre de la Organización'");
         $this->addSql("ALTER TABLE UAH_GAT_ACTIVITY MODIFY (organizer_name NOT NULL)");
-        
     }
 
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "oracle", "Migration can only be executed safely on 'oracle'.");
-        
+
         $this->addSql("ALTER TABLE UAH_GAT_Activity DROP (organizer_name)");
     }
 }

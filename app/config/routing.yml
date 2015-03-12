@@ -4,7 +4,7 @@ UAHGestorActividadesBundle_annotation:
     resource: "@UAHGestorActividadesBundle/Controller"
     type: annotation
 fp_openid_security:
-    resource: "@FpOpenIdBundle/Resources/config/routing/security.xml" 
+    resource: "@FpOpenIdBundle/Resources/config/routing/security.xml"
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 EndroidQrCodeBundle:
@@ -13,4 +13,4 @@ EndroidQrCodeBundle:
     prefix:     /qrcode
 my_barcode_playground:
     resource: "@MopaBarcodeBundle/Resources/config/routing/barcode_playground.yml"
-    prefix:   /    
+    prefix:   /

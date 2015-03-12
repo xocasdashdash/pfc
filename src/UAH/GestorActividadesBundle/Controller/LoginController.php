@@ -16,7 +16,6 @@ class LoginController extends Controller
 {
     const LOGIN_ERROR_NOT_LOGGED_IN = 1;
 
-    const LOGIN_ERROR_NOT_LOGGED_IN = 1;
 
     /**
      *
