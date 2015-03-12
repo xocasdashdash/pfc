@@ -6,8 +6,8 @@ if (isset($_SERVER['HTTP_CLIENT_IP']) || isset($_SERVER['HTTP_X_FORWARDED_FOR'])
     
     $container->setParameter('database_host', getEnv("MYSQL_DB_HOST"));
     $container->setParameter('database_port', getEnv("MYSQL_DB_PORT"));
-    $container->setParameter('database_name', getEnv("MYSQL_USER"));
-    $container->setParameter('database_user', getEnv("MYSQL_DATABASE"));
+    $container->setParameter('database_name', getEnv("MYSQL_DATABASE"));
+    $container->setParameter('database_user', getEnv("MYSQL_USER"));
     $container->setParameter('database_password', "");
 
 } else {
