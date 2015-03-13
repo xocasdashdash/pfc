@@ -12,6 +12,8 @@ if (!isset($_GET['sat']) ||
         $_GET['sat'] !== SECRET_ACCESS_TOKEN ||
         SECRET_ACCESS_TOKEN === 'clavesupersecreta') {
     header('HTTP/1.0 403 Forbidden');
+    echo 'No tienes permiso para entrar aquí!';
+    exit;
 }
 /**
  * GIT DEPLOYMENT SCRIPT
