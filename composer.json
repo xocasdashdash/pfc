@@ -10,7 +10,7 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "2.5.*",
+        "symfony/symfony": "2.6.*",
         "doctrine/orm": "2.4.*@dev",
         "symfony/icu": "1.0.*",
         "doctrine/doctrine-bundle": "1.2.*",
@@ -46,13 +46,11 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install",
-            "echo 'Haciendo install...\n'",
+            "echo '------------------------'",
             "mkdir -p web/upload/images",
             "chmod -R 777 web/upload/",
             "php app/console doctrine:schema:drop --force",
-            "echo 'drop hecho\n'",
-            "php app/console doctrine:schema:create",
-            "echo 'Esquema creado\n'",
+            "echo '------------------------'",
             "php app/console doctrine:fixtures:load",
             "mkdir -p web/cache/barcode/code128"
         ],
@@ -73,6 +71,7 @@
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
+        "symfony-assets-install": "symlink",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         },
