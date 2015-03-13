@@ -15,6 +15,10 @@ if (!isset($_GET['sat']) ||
     echo 'No tienes permiso para entrar aquí!';
     exit;
 }
+$serverMethod = $_SERVER['REQUEST_METHOD'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    fastcgi_finish_request();
+}
 /**
  * GIT DEPLOYMENT SCRIPT
  *
@@ -24,15 +28,14 @@ if (!isset($_GET['sat']) ||
  */
 // The commands
 $commands = array(
-    'cd ..',
     'echo $PWD',
     'whoami',
     'git pull',
-    'git status',
-    'composer install --no-dev',
-    'cd -'
+    'git status'
 );
-
+if (isset($_GET['install']) && $_GET['install'] === 'si') {
+    $commands[] = 'composer install --no-dev -d ..';
+}
 // Run the commands for output
 $output = '';
 foreach ($commands AS $command) {
@@ -44,22 +47,25 @@ foreach ($commands AS $command) {
 }
 
 // Make it pretty for manual user access (and why not?)
-?>
-<!DOCTYPE HTML>
-<html lang="en-US">
-    <head>
-        <meta charset="UTF-8">
-        <title>GIT DEPLOYMENT SCRIPT</title>
-    </head>
-    <body style="background-color: #000000; color: #FFFFFF; font-weight: bold; padding: 0 10px;">
-        <pre>
- .  ____  .    ____________________________
- |/      \|   |                            |
-[| <span style="color: #FF0000;">&hearts;    &hearts;</span> |]  | Git Deployment Script v0.1 |
- |___==___|  /              &copy; oodavid 2012 |
-              |____________________________|
- 
-            <?php echo $output; ?>
-        </pre>
-    </body>
-</html>
+if ($serverMethod === 'POST') {
+    ?>
+    <!DOCTYPE HTML>
+    <html lang="en-US">
+        <head>
+            <meta charset="UTF-8">
+            <title>GIT DEPLOYMENT SCRIPT</title>
+        </head>
+        <body style="background-color: #000000; color: #FFFFFF; font-weight: bold; padding: 0 10px;">
+            <pre>
+             .  ____  .    ____________________________
+             |/      \|   |                            |
+            [| <span style="color: #FF0000;">&hearts;    &hearts;</span> |]  | Git Deployment Script v0.1 |
+             |___==___|  /              &copy; oodavid 2012 |
+                          |____________________________|
+             
+                <?php echo $output; ?>
+            </pre>
+        </body>
+    </html>
+    <?php
+} 
