@@ -1,1 +1,0 @@
--Download vagrant >= 1.6 de aqui http://www.vagrantup.com/downloads.html (https://dl.bintray.com/mitchellh/vagrant/vagrant_1.6.2_x86_64.deb)
