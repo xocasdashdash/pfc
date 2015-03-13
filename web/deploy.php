@@ -16,15 +16,15 @@ if (!isset($_GET['sat']) ||
     exit;
 }
 
-if(isset($_POST['payload'])){
-   $payload = json_decode($_POST['payload'],1);
-   var_dump($payload) or die;
-   if($payload === false || $payload['ref'] !== 'refs/heads/master'){
-      echo 'No hay nada que subir';
-      exit;
-   }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $payload = json_decode(file_get_contents('php://input'), true);
+    if ($payload === false || $payload['ref'] !== 'refs/heads/master') {
+        echo 'No hay nada que subir';
+        exit;
+    } else {
+        fastcgi_finish_request();
+    }
 }
-
 /**
  * GIT DEPLOYMENT SCRIPT
  *
