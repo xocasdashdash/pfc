@@ -18,7 +18,7 @@ if (!isset($_GET['sat']) ||
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $payload = json_decode(file_get_contents('php://input'), true);
-    if ($payload === false || $payload['ref'] !== 'refs/heads/master') {
+    if ($payload === false || $payload['ref'] !== 'refs/heads/' . BRANCH) {
         echo 'No hay nada que subir';
         exit;
     } else {
@@ -37,7 +37,9 @@ $commands = array(
     'echo $PWD',
     'whoami',
     'git pull',
-    'git status'
+    'git status',
+    'php ../app/console assets:install --symlink web',
+    'php ../app/console assetic:dump --env=prod',
 );
 if (isset($_GET['install']) && $_GET['install'] === 'si') {
     $commands[] = 'composer install --no-dev -d ..';

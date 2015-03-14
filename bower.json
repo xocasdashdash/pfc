@@ -26,6 +26,7 @@
     "bootbox.js": "https://github.com/makeusabrew/bootbox.git#~4.2.0",
     "qTip2": "~2.2.0",
     "bootstrap-select": "~1.6.1",
-    "zeroclipboard": "~2.1.6"
+    "zeroclipboard": "~2.1.6",
+    "bower-qtip2": "~2.1.1"
   }
 }
