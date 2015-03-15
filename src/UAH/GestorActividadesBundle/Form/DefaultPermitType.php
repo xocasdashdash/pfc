@@ -8,9 +8,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class DefaultPermitType extends AbstractType
 {
-    /**
+        /**
      * @param FormBuilderInterface $builder
-     * @param array                $options
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -19,14 +19,14 @@ class DefaultPermitType extends AbstractType
             ->add('roles')
         ;
     }
-
+    
     /**
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'UAH\GestorActividadesBundle\Entity\DefaultPermit',
+            'data_class' => 'UAH\GestorActividadesBundle\Entity\DefaultPermit'
         ));
     }
 

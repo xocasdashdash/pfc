@@ -8,7 +8,7 @@
 {% block stylesheets %}
     {{parent()}}
     {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/admin/*.less' %}
-    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
     {% endstylesheets %}
 {%endblock %}
 {% block acciones_datos %}
@@ -26,15 +26,15 @@
     Panel de administración de categorias
 {% endblock %}
 {% block content %}
-    <div class="row top-buffer table-style">
+    <div class="row top-buffer">
         <table class="table table-bordered tbl_enrolled">
             <thead>
                 <tr>
-                    <th class="visible-sm-up">#</th>
+                    <th>#</th>
                     <th class="category-name">Nombre</th>
-                    <th class="visible-md-up category-parent">Padre</th>
+                    <th class="category-parent">Padre</th>
                     <th class="category-status">Estado</th>
-                    <th class="hidden-print">Acción</th>
+                    <th class="hidden-print">Acción</th>                
                 </tr>
             </thead>
             <tbody>
@@ -48,9 +48,9 @@
                     {%endif%}
 
                     <tr id="category-{{category.obj.id}}" data-category-type="{{category.tipo}}">
-                        <td class="visible-sm-up index">{{loop.index}}</td>
+                        <td class="index">{{loop.index}}</td>
                         <td class="category-name">{{category.obj.name}}</td>
-                        <td class="visible-md-up category-parent" data-parent-category-id="{{category.obj.parentCategory.id|default('-1')}}">{{category.obj.parentCategory.name|default('-')}}</td>
+                        <td class="category-parent" data-parent-category-id="{{category.obj.parentCategory.id|default('-1')}}">{{category.obj.parentCategory.name|default('-')}}</td>
                         <td class="category-status">{{tipo}}</td>
                         <td class="text-center">
                             <button class="btn btn-default update_category" data-category-id="{{category.obj.id}}" title="Actualiza los datos de esta categoria">Actualizar</button>
@@ -91,12 +91,12 @@
                         <input type="hidden" name="category-id" id="category-id">
                     </div>
                     <div class="modal-footer">
-                        <a class="btn btn-default" id="close_modal"  data-dismiss="modal">Cerrar</a>
+                        <a class="btn btn-default" id="close_modal"  data-dismiss="modal">Cerrar</a>    
                         <button class="btn btn-success" type="submit" id="btn_submit_category">Crear</button>
                     </div>
                 </form>
             </div>
         </div>
-    </div>
+    </div>                
 
 {% endblock %}

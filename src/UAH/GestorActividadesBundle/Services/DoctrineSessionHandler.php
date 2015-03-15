@@ -11,8 +11,8 @@ namespace UAH\GestorActividadesBundle\Services;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 
-class DoctrineSessionHandler implements \SessionHandlerInterface
-{
+class DoctrineSessionHandler implements \SessionHandlerInterface {
+
     /**
      *
      * @var array Parametros de conexión de Doctrine a la base de datos
@@ -54,8 +54,7 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
      *
      * @throws \InvalidArgumentException When "doctrine_entity" option is not provided
      */
-    public function __construct(Connection $dbalConnection, array $dbOptions = array())
-    {
+    public function __construct(Connection $dbalConnection, array $dbOptions = array()) {
         if (!array_key_exists('db_table', $dbOptions)) {
             throw new \InvalidArgumentException('You must provide the "db_table" option for a DoctrineSessionStorage.');
         }
@@ -76,24 +75,21 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function open($savePath, $sessionName)
-    {
+    public function open($savePath, $sessionName) {
         return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function close()
-    {
+    public function close() {
         return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function destroy($sessionId)
-    {
+    public function destroy($sessionId) {
         // delete the record associated with this id
         $sql = "DELETE FROM $this->table WHERE $this->idCol = :id";
 
@@ -111,8 +107,7 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function gc($maxlifetime)
-    {
+    public function gc($maxlifetime) {
         // delete the session records that have expired
         $sql = "DELETE FROM $this->table WHERE $this->timeCol < :time";
 
@@ -130,8 +125,7 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function read($sessionId)
-    {
+    public function read($sessionId) {
         $sql = "SELECT $this->dataCol FROM $this->table WHERE $this->idCol = :id";
         try {
             $stmt = $this->getConnection()->prepare($sql);
@@ -152,8 +146,7 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function write($sessionId, $data)
-    {
+    public function write($sessionId, $data) {
         // Session data can contain non binary safe characters so we need to encode it.
         $encoded = base64_encode($data);
 
@@ -162,8 +155,8 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
         try {
             $mergeSql = $this->getMergeSql();
             if (null !== $mergeSql) {
-                error_log("Length data: ".strlen($encoded));
-                error_log("Length id: ".strlen($sessionId));
+                error_log("Length data: " . strlen($encoded));
+                error_log("Length id: " . strlen($sessionId));
                 $mergeStmt = $this->getConnection()->prepare($mergeSql);
                 $mergeStmt->bindParam(':id', $sessionId, \PDO::PARAM_STR);
                 $mergeStmt->bindParam(':data', $encoded, \PDO::PARAM_STR);
@@ -173,7 +166,6 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
                 } catch (Exception $e) {
                     error_log(print_r($e, true));
                 }
-
                 return true;
             }
             $this->getConnection()->beginTransaction();
@@ -210,25 +202,24 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
      *
      * @return string|null The SQL string or null when not supported
      */
-    private function getMergeSql()
-    {
+    private function getMergeSql() {
         $driver = $this->getConnection()->getDriver()->getName();
         switch ($driver) {
             case 'pdo_mysql':
-                return "INSERT INTO $this->table ($this->idCol, $this->dataCol, $this->timeCol) VALUES (:id, :data, :time) ".
+                return "INSERT INTO $this->table ($this->idCol, $this->dataCol, $this->timeCol) VALUES (:id, :data, :time) " .
                         "ON DUPLICATE KEY UPDATE $this->dataCol = VALUES($this->dataCol), $this->timeCol = VALUES($this->timeCol)";
             case 'oci8':
                 // DUAL is Oracle specific dummy table
                 //Bug de Oracle al hacer merge con clob
-                return;
+                return null;
 
-                return "MERGE INTO $this->table USING DUAL ON ($this->idCol = :id) ".
-                        "WHEN NOT MATCHED THEN INSERT ($this->idCol, $this->dataCol, $this->timeCol) VALUES (:id, :data, :time) ".
+                return "MERGE INTO $this->table USING DUAL ON ($this->idCol = :id) " .
+                        "WHEN NOT MATCHED THEN INSERT ($this->idCol, $this->dataCol, $this->timeCol) VALUES (:id, :data, :time) " .
                         "WHEN MATCHED THEN UPDATE SET $this->dataCol = :data";
             case 'sqlsrv':
                 // MS SQL Server requires MERGE be terminated by semicolon
-                return "MERGE INTO $this->table USING (SELECT 'x' AS dummy) AS src ON ($this->idCol = :id) ".
-                        "WHEN NOT MATCHED THEN INSERT ($this->idCol, $this->dataCol, $this->timeCol) VALUES (:id, :data, :time) ".
+                return "MERGE INTO $this->table USING (SELECT 'x' AS dummy) AS src ON ($this->idCol = :id) " .
+                        "WHEN NOT MATCHED THEN INSERT ($this->idCol, $this->dataCol, $this->timeCol) VALUES (:id, :data, :time) " .
                         "WHEN MATCHED THEN UPDATE SET $this->dataCol = :data;";
             case 'pdo_sqlite':
                 return "INSERT OR REPLACE INTO $this->table ($this->idCol, $this->dataCol, $this->timeCol) VALUES (:id, :data, :time)";
@@ -240,9 +231,10 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
      *
      * @return \PDO
      */
-    protected function getConnection()
-    {
+    protected function getConnection() {
+
         //$connection = DriverManager::getConnection($this->dbalConnectionParameters);
         return $this->dbalConnection;
     }
+
 }

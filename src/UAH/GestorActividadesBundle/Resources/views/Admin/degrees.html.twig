@@ -7,9 +7,8 @@
 {% endblock %}
 {% block stylesheets %}
     {{parent()}}
-    {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/admin/*.less'
-    '@UAHGestorActividadesBundle/Resources/public/css/backend/categories/*.less'%}
-    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
+    {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/backend/admin/*.less' %}
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />            
     {% endstylesheets %}
 {%endblock %}
 {% block acciones_datos %}
@@ -60,23 +59,32 @@
     Panel de administración de titulaciones
 {% endblock %}
 {% block content %}
-    <div class="row top-buffer table-style">
+    <div class="row top-buffer">
         <table class="table table-bordered tbl_enrolled">
             <thead>
                 <tr>
-                    <th class="visible-md-up">#</th>
+                    <th>#</th>
                     <th class="nombre-grado">Nombre</th>
-                    <th class="visible-sm-up">Área</th>
+                    <th>Área</th>
                     <th>Código Académico</th>
-                    <th class="hidden-print">Acción</th>
+                    <th class="hidden-print">Acción</th>                
                 </tr>
             </thead>
             <tbody>
                 {% for degree in degrees %}
+                    {#
+                    {% if degree.status.code = 'STATUS_RENEWED' %}
+                        {% set tipo = 'Plan Renovado'%}
+                    {% elseif degree.status.code = 'STATUS_NON_RENEWED' %}
+                        {% set tipo = 'Plan NO Renovado'%}
+                    {%else%}
+                        {% set tipo = 'Plan inactivo'%}
+                    {%endif%}
+                    #}
                     <tr id="degree-{{degree.obj.id}}" data-degree-type="{{degree.tipo}}">
-                        <td class="visible-md-up index">{{loop.index}}</td>
+                        <td class="index">{{loop.index}}</td>
                         <td class="degree-name">{{degree.obj.name}}</td>
-                        <td class="degree-knowledge-area visible-sm-up">{{degree.obj.knowledgeArea}}</td>
+                        <td class="degree-knowledge-area">{{degree.obj.knowledgeArea}}</td>
                         <td class="degree-academic-code">{{degree.obj.academicCode}}</td>
                         <td class="text-center">
                             <button class="btn btn-default update_degree" data-degree-id="{{degree.obj.id}}" title="Actualiza los datos de este plan de estudios">Actualizar</button>
@@ -121,25 +129,25 @@
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="academic-code" name="academic-code" placeholder="G##">
                             </div>
-                        </div>
+                        </div>                               
                         <div class="form-group radio-div">
                             <label class="control-label col-sm-4">¿Es un plan de estudio renovado?</label>
-                            <label class="radio col-sm-7 col-sm-offset-5">
+                            <label class="radio col-sm-7 col-sm-offset-1">
                                 <input type="radio" name="type" value="STATUS_RENEWED">Renovado
                             </label>
-                            <label class="radio col-sm-7 col-sm-offset-5">
+                            <label class="radio col-sm-7 col-sm-offset-1">
                                 <input type="radio" name="type" value="STATUS_NON_RENEWED">No renovado
                             </label>
                         </div>
                         <input type="hidden" name="degree-id" id="degree-id">
                     </div>
                     <div class="modal-footer">
-                        <a class="btn btn-default" id="close_modal" data-dismiss="modal">Cerrar</a>
+                        <a class="btn btn-default" id="close_modal" data-dismiss="modal">Cerrar</a>    
                         <button class="btn btn-success" type="submit" id="btn_submit_degree">Crear</button>
                     </div>
                 </form>
             </div>
         </div>
-    </div>
+    </div>                
 
 {% endblock %}

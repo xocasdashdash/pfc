@@ -1,8 +1,8 @@
 {% extends '::backend.html.twig' %}
 {% block javascripts %}
     {{parent()}}
-    <script type="text/javascript" src="{{ asset('bundles/uahgestoractividades/vendor/zeroclipboard/dist/ZeroClipboard.min.js') }}"></script>
-    {% javascripts
+    <script type="text/javascript" src="{{ asset('bundles/uahgestoractividades/vendor/zeroclipboard/dist/ZeroClipboard.min.js') }}"></script> 
+    {% javascripts 
         '@UAHGestorActividadesBundle/Resources/public/js/backend/myactivities.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -11,9 +11,9 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {% stylesheets
+    {% stylesheets 
         '@UAHGestorActividadesBundle/Resources/public/css/backend/myactivities.less'%}
-    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
     {% endstylesheets %}
 {% endblock %}
 {% block title %}
@@ -37,45 +37,37 @@
             {% if is_granted('ROLE_UAH_ADMIN') %}
                 <div class="flex-item">
                     <button type="button" class="btn btn-default" id="btn_open" title="Abre una actividad que estuviese cerrada">Abrir una actividad</button>
-                </div>
+                </div>            
             {% endif %}
         </div>
     </div>
-    <div class="row table-style">
-        <table class="table table-bordered top-buffer">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th class="nombre-actividad">Titulo</th>
-                    <th class="hidden-print">Estado</th>
-                    <th>Fecha de publicidad</th>
-                    <th>Seleccionar</th>
+    <table class="table table-bordered top-buffer">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th class="nombre-actividad">Titulo</th>
+                <th class="hidden-print">Estado</th>
+                <th>Fecha de publicidad</th>
+                <th>Seleccionar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for activity in activities %}
+                <tr id="activity-{{activity.id}}">
+                    <td class="index">{{loop.index}}</td>
+                    <td><a href="{{ path("uah_gestoractividades_activity_index",{"activity_id": activity.id})}}">{{activity.name}}</a></td>
+                    <td class="status">{{activity.status.nameEs}}</td>
+                    <td class="text-center">{{activity.publicityStartDate|date('d/m/Y')}}</td>
+                    <td class="text-center"><input type="checkbox" value="{{activity.id}}"></td>
                 </tr>
-            </thead>
-            <tbody>
-                {% for activity in activities %}
-
-                    <tr id="activity-{{activity.id}}">
-                        <td class="index">{{loop.index}}</td>
-                        <td>
-                            <a href="{{ path("uah_gestoractividades_activity_index",{"activity_id": activity.id})}}">{{activity.name}}</a>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            No hemos encontrado ningún actividad tuya. 
+                            Porque no pruebas a <a href="{{path('uah_gestoractividades_activity_create')}}">crear</a> alguna
                         </td>
-                        <td class="status">{{activity.status.nameEs}}</td>
-                        <td class="text-center">{{activity.publicityStartDate|date('d/m/Y')}}</td>
-                        <td class="text-center"><input type="checkbox" value="{{activity.id}}"></td>
                     </tr>
-
-                    {% else %}
-                        <tr>
-                            <td colspan="5" class="text-center">
-                                No hemos encontrado ningún actividad tuya.
-                                Porque no pruebas a <a href="{{path('uah_gestoractividades_activity_create')}}">crear</a> alguna
-                            </td>
-                        </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-
-
+                    {% endfor %}
+                    </tbody>
+                </table>
                 {% endblock %}

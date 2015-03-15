@@ -4,6 +4,7 @@ namespace UAH\GestorActividadesBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use UAH\GestorActividadesBundle\Entity\Enrollment;
@@ -13,8 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class ApplicationController extends Controller
-{
+class ApplicationController extends Controller {
+
     //Success constants
     const APPLICATION_SUCCESS_CREATED = 0;
     const APPLICATION_SUCCESS_DELETED = 5;
@@ -33,19 +34,17 @@ class ApplicationController extends Controller
      * @Route("/applications", options={"expose"=true})
      * @Security("is_fully_authenticated()")
      */
-    public function indexAction(Request $request)
-    {
+    public function indexAction(Request $request) {
         $filter = $request->query->get('filter', 'not_archived');
         $applications = $this->getDoctrine()
                 ->getManager()->getRepository('UAHGestorActividadesBundle:Application')
                 ->getUserApplications($this->getUser(), $filter);
 
         $response = $this->render('UAHGestorActividadesBundle:Application:index.html.twig', array(
-            'applications' => $applications, ));
+            'applications' => $applications));
         $token = $this->get('form.csrf_provider')->generateCsrfToken('application');
         $cookie = new Cookie('X-CSRFToken', $token, 0, '/', null, false, false);
         $response->headers->setCookie($cookie);
-
         return $response;
     }
 
@@ -54,8 +53,7 @@ class ApplicationController extends Controller
      * @Route("/applications/{id}", requirements={"id" = "\d+"}, defaults={"id" = -1}), options={"expose"=true})
      * @ParamConverter("application", class="UAHGestorActividadesBundle:Application", options={"id" = "application_id"})
      */
-    public function showAction(Application $application)
-    {
+    public function showAction(Application $application) {
         $enrollments = $application->getEnrollments();
         $typeOfCredits = $enrollments[0]->getCreditsType();
         $name = $this->getUser()->getName();
@@ -63,7 +61,6 @@ class ApplicationController extends Controller
         $apellido2 = $this->getUser()->getApellido2();
         $degree = $this->getUser()->getDegreeId()->getName();
         $show_verify = ($this->get('security.context')->isGranted('ROLE_UAH_STAFF_PAS') && $application->getStatus() === $this->getDoctrine()->getManager()->getRepository('UAHGestorActividadesBundle:Statusapplication')->getDefault());
-
         return $this->render('UAHGestorActividadesBundle:Application:show.html.twig', array(
                     'application' => $application,
                     'enrollments' => $enrollments,
@@ -72,26 +69,24 @@ class ApplicationController extends Controller
                     'apellido1' => $apellido1,
                     'apellido2' => $apellido2,
                     'degree' => $degree,
-                    'show_verify' => $show_verify,
+                    'show_verify' => $show_verify
         ));
     }
 
     /**
-     *
+     * 
      * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
      * @Route("/application/create/",options={"expose"=true})
      * @Security("is_granted('ROLE_UAH_STUDENT')")
      */
-    public function createAction(Request $request)
-    {
+    public function createAction(Request $request) {
         //Comprobación CSRF
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('profile', $request->headers->get('X-CSRFToken'))) {
-            $em = $this->getDoctrine()->getManager();
-
-            $enrollment_repository = $em->getRepository('UAHGestorActividadesBundle:Enrollment');
             $enrollments = $enrollment_repository->getEnrollmentsByID(json_decode($request->getContent()));
             if ($enrollments) {
+                $em = $this->getDoctrine()->getManager();
+                $enrollment_repository = $em->getRepository('UAHGestorActividadesBundle:Enrollment');
                 $status_recognized = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getRecognizedStatus();
                 $respuesta_json = array();
                 $application = new Application();
@@ -121,7 +116,7 @@ class ApplicationController extends Controller
                             break;
                         }
                         //Compruebo que el usuario es el del enrollment
-                        if ($enrollment->getUser() !== $this->getUser()) {
+                        if ($enrollment->getUser() != $user) {
                             $respuesta_json['type'] = 'error';
                             $respuesta_json['code'] = self::APPLICATION_ERROR_NOT_YOUR_OWN;
                             $respuesta_json['message'] = 'No es el tuyo';
@@ -152,17 +147,14 @@ class ApplicationController extends Controller
                         $respuesta_json['type'] = 'success';
                         $respuesta_json['code'] = self::APPLICATION_SUCCESS_CREATED;
                         $respuesta_json['message'] = $application->getId();
-
                         return new JsonResponse($respuesta_json, 200);
                     }
                 }
-
                 return new JsonResponse($respuesta_json, 400);
             } else {
                 $respuesta_json['type'] = 'error';
                 $respuesta_json['code'] = self::APPLICATION_EMPTY;
                 $respuesta_json['message'] = 'No hay inscripciones con esos id';
-
                 return new JsonResponse($respuesta_json, 400);
             }
         } else {
@@ -173,7 +165,6 @@ class ApplicationController extends Controller
             $json_response = new JsonResponse($response, 403);
             $cookie = new Cookie('X-CSRFToken', $this->get('form.csrf_provider')->generateCsrfToken('application'), 0, '/', null, false, false);
             $json_response->headers->setCookie($cookie);
-
             return $json_response;
         }
     }
@@ -182,8 +173,7 @@ class ApplicationController extends Controller
      * @Route("/application/delete/{id}", requirements={"id" = "\d+"}, defaults={"id" = -1}, options={"expose"=true}))
      * @ParamConverter("application", class="UAHGestorActividadesBundle:Application", options={"id" = "application_id"})
      */
-    public function deleteAction(Application $application, Request $request)
-    {
+    public function deleteAction(Application $application, Request $request) {
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('application', $request->headers->get('X-CSRFToken'))) {
             $em = $this->getDoctrine()->getManager();
@@ -225,7 +215,6 @@ class ApplicationController extends Controller
             } else {
                 $response_code = 400;
             }
-
             return new JSONResponse($response, $response_code);
         }
     }
@@ -234,8 +223,7 @@ class ApplicationController extends Controller
      * @Route("/application/archive/{id}", requirements={"id" = "\d+"}, defaults={"id" = -1}, options={"expose"=true}))
      * @ParamConverter("application", class="UAHGestorActividadesBundle:Application",options={"id" = "application_id"})
      */
-    public function archiveAction(Application $application, Request $request)
-    {
+    public function archiveAction(Application $application, Request $request) {
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('application', $request->headers->get('X-CSRFToken'))) {
             $em = $this->getDoctrine()->getManager();
@@ -272,7 +260,6 @@ class ApplicationController extends Controller
             } else {
                 $response_code = 400;
             }
-
             return new JSONResponse($response, $response_code);
         }
     }
@@ -281,13 +268,12 @@ class ApplicationController extends Controller
      * @Route("/application/check_code/{applicationCode}", defaults={"applicationCode" = -1}, options={"expose"=true}))
      * @Security("is_granted('ROLE_UAH_STAFF_PAS')")
      */
-    public function checkCodeAction($applicationCode)
-    {
+    public function checkCodeAction($applicationCode) {
         $em = $this->getDoctrine()->getManager();
         $app_repository = $em->getRepository('UAHGestorActividadesBundle:Application');
         $app_default_status = $em->getRepository('UAHGestorActividadesBundle:Statusapplication')->getDefault();
         $app = $app_repository->findOneBy(array('verificationCode' => $applicationCode,
-            'status' => $app_default_status, ));
+            'status' => $app_default_status));
         $response = array();
         if ($app) {
             $response['code'] = 200;
@@ -300,7 +286,6 @@ class ApplicationController extends Controller
             $response['message'] = 'Justificante no encontrado';
             $response['type'] = 'error';
         }
-
         return new JsonResponse($response, $response['code']);
     }
 
@@ -309,8 +294,7 @@ class ApplicationController extends Controller
      * @ParamConverter("application", class="UAHGestorActividadesBundle:Application",options={"id" = "application_id"})
      * @Security("is_granted('ROLE_UAH_STAFF_PAS')")
      */
-    public function verifyAppAction(Application $application)
-    {
+    public function verifyAppAction(Application $application) {
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
         $verifiedApplicationStatus = $em->getRepository('UAHGestorActividadesBundle:Statusapplication')->getVerified();
@@ -335,7 +319,7 @@ class ApplicationController extends Controller
             $response['message'] = 'Justificante no válido';
             $response['type'] = 'error';
         }
-
         return new JsonResponse($response, $response['code']);
     }
+
 }

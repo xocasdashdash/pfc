@@ -8,8 +8,8 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\SecurityContext;
 
-class ActivityVoter implements VoterInterface
-{
+class ActivityVoter implements VoterInterface {
+
     const VIEW = 'view';
     const EDIT = 'edit_activity';
     const ADMIN = 'admin_activity';
@@ -17,23 +17,20 @@ class ActivityVoter implements VoterInterface
     private $em;
     private $security;
 
-    public function __construct(\Doctrine\ORM\EntityManager $em, \Symfony\Component\Security\Core\SecurityContext $security = null)
-    {
+    public function __construct(\Doctrine\ORM\EntityManager $em, \Symfony\Component\Security\Core\SecurityContext $security = null) {
         $this->em = $em;
         $this->security = $security;
     }
 
-    public function supportsAttribute($attribute)
-    {
+    public function supportsAttribute($attribute) {
         return in_array($attribute, array(
             self::VIEW,
             self::EDIT,
-            self::ADMIN,
+            self::ADMIN
         ));
     }
 
-    public function supportsClass($class)
-    {
+    public function supportsClass($class) {
         $supportedClass = 'UAH\GestorActividadesBundle\Entity\Activity';
 
         return $supportedClass === $class || is_subclass_of($class, $supportedClass);
@@ -42,8 +39,7 @@ class ActivityVoter implements VoterInterface
     /**
      * @var \UAH\GestorActividadesBundle\Entity\Activity $activity
      */
-    public function vote(TokenInterface $token, $activity, array $attributes)
-    {
+    public function vote(TokenInterface $token, $activity, array $attributes) {
         // check if class of this object is supported by this voter
         if (!$this->supportsClass(get_class($activity))) {
             return VoterInterface::ACCESS_ABSTAIN;
@@ -90,4 +86,7 @@ class ActivityVoter implements VoterInterface
                 }
         }
     }
+    
+    
+
 }

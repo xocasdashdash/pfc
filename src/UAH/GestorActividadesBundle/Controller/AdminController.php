@@ -20,14 +20,13 @@ use Doctrine\DBAL\DBALException;
 /**
  * @Route("/admin")
  */
-class AdminController extends Controller
-{
+class AdminController extends Controller {
+
     /**
-     *
+     * 
      * @Security("has_role('ROLE_UAH_ADMIN')")
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         return new \Symfony\Component\HttpFoundation\Response("blank");
     }
 
@@ -35,22 +34,21 @@ class AdminController extends Controller
      * @Route("/activities",options={"expose"=true})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
-    public function activitiesAction(Request $request)
-    {
+    public function activitiesAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $filter = $request->get('filter', 'pending');
 
         if ($filter === 'pending') {
             $status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getPending();
-        } elseif ($filter === 'published') {
+        } else if ($filter === 'published') {
             $status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getPublished();
-        } elseif ($filter === 'closed') {
+        } else if ($filter === 'closed') {
             $status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getClosed();
-        } elseif ($filter === 'approved') {
+        } else if ($filter === 'approved') {
             $status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getApproved();
-        } elseif ($filter === 'draft') {
+        } else if ($filter === 'draft') {
             $status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getDraft();
-        } elseif ($filter === 'all') {
+        } else if ($filter === 'all') {
             $status = null;
         }
         if (is_null($status)) {
@@ -62,7 +60,6 @@ class AdminController extends Controller
         $cookie = new Cookie('X-CSRFToken', $token, 0, '/', null, false, false);
         $response = $this->render('UAHGestorActividadesBundle:Admin:activities.html.twig', array('activities' => $activities));
         $response->headers->setCookie($cookie);
-
         return $response;
     }
 
@@ -70,14 +67,14 @@ class AdminController extends Controller
      * @Route("/activities/exportCSV/{filter}", defaults={"filter" = "all"} ,options={"expose"=true})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
-    public function exportActivitiesAction($filter)
-    {
+    public function exportActivitiesAction($filter) {
+
         $em = $this->getDoctrine()->getManager();
         $results = $em->getRepository('UAHGestorActividadesBundle:Activity')->getExportData($filter, true);
-        $response = new StreamedResponse(function () use ($results) {
+        $response = new StreamedResponse(function() use($results) {
             $handle = fopen('php://output', 'r+');
             $titulos = array(
-                'Id', 'Nombre', 'Nombre en inglés', 'Trabajo Adicional', 'ECTS Min', 'ECTS Max', 'Libre Min', 'Libre Max', 'Inscripciones', 'ECTS Reconocidos', 'Libre Reconocidos', 'Fecha Creada', 'Fecha Solicitud Aprobación', 'Fecha Aprobación',
+                'Id', 'Nombre', 'Nombre en inglés', 'Trabajo Adicional', 'ECTS Min', 'ECTS Max', 'Libre Min', 'Libre Max', 'Inscripciones', 'ECTS Reconocidos', 'Libre Reconocidos', 'Fecha Creada', 'Fecha Solicitud Aprobación', 'Fecha Aprobación'
             );
             $titulos_printed = false;
 
@@ -92,7 +89,7 @@ class AdminController extends Controller
             fclose($handle);
         });
         $response->headers->set('Content-Type', 'application/force-download');
-        $response->headers->set('Content-Disposition', 'attachment; filename="Export de datos estádisticos -filtro-'.$filter.'.csv"');
+        $response->headers->set('Content-Disposition', 'attachment; filename="Export de datos estádisticos -filtro-' . $filter . '.csv"');
 
         return $response;
     }
@@ -101,8 +98,7 @@ class AdminController extends Controller
      * @Route("/activities/approve",options={"expose"=true})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
-    public function approveAction(Request $request)
-    {
+    public function approveAction(Request $request) {
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('uah_admin', $request->headers->get('X-CSRFToken'))) {
             $em = $this->getDoctrine()->getManager();
@@ -124,18 +120,15 @@ class AdminController extends Controller
                 $em->flush();
                 $response['type'] = 'success';
                 $response['message'] = 'OK';
-
                 return new JsonResponse($response, 200);
             } else {
                 $response['type'] = 'error';
                 $response['message'] = 'Ha habido un problema al realizar la solicitud';
-
                 return new JsonResponse($response, 400);
             }
         } else {
             $response['type'] = 'error';
             $response['message'] = 'Hay un problema con el token CSRF. Prueba a recargar la página';
-
             return new JsonResponse($response, 400);
         }
     }
@@ -144,27 +137,26 @@ class AdminController extends Controller
      * @Route("/activities/printpending",options={"expose"=true})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
-    public function printpendingAction(Request $request)
-    {
+    public function printpendingAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $activities = $em->getRepository('UAHGestorActividadesBundle:Activity')->getPending();
 
         $activities_url = array();
         foreach ($activities as $activity) {
             $url = $this->generateUrl('uah_gestoractividades_activity_index', array(
-                'activity_id' => $activity['id'], ), true);
+                'activity_id' => $activity['id']), true);
             $activities_url[] = $url;
         }
         if (!empty($activities_url)) {
             $pdf_dir = $this->container->getParameter('pdf_dir');
-            $result = $this->get('knp_snappy.pdf')->generate($activities_url, $pdf_dir.'Report.pdf', array(), true);
+            $result = $this->get('knp_snappy.pdf')->generate($activities_url, $pdf_dir . 'Report.pdf', array(), true);
             if (is_null($result)) {
-                $content = file_get_contents($pdf_dir.'Report.pdf');
+                $content = file_get_contents($pdf_dir . 'Report.pdf');
                 $response = new Response();
                 //set headers
                 $response->headers->set('Content-Type', 'application/pdf');
                 $response->headers->set('Content-Type', 'application/download');
-                $response->headers->set('Content-Length', filesize($pdf_dir.'Report.pdf'));
+                $response->headers->set('Content-Length', filesize($pdf_dir . 'Report.pdf'));
                 $response->headers->set('Content-Disposition', 'attachment;filename="Informe de actividades pendientes de aprobar.pdf"');
                 $response->setContent($content);
                 $response->setStatusCode(200);
@@ -174,7 +166,6 @@ class AdminController extends Controller
         } else {
             $response = new JsonResponse('Error', 400);
         }
-
         return $response;
     }
 
@@ -182,8 +173,7 @@ class AdminController extends Controller
      * @Route("/users")
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
-    public function usersAction(Request $request)
-    {
+    public function usersAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $filter = $request->get('filter', 'ALL');
 
@@ -192,9 +182,8 @@ class AdminController extends Controller
         $token = $this->get('form.csrf_provider')->generateCsrfToken('uah_admin');
         $cookie = new Cookie('X-CSRFToken', $token, 0, '/', null, false, false);
         $response = $this->render('UAHGestorActividadesBundle:Admin:users.html.twig', array('users_permits' => $users_permits,
-            'roles' => $roles, ));
+            'roles' => $roles));
         $response->headers->setCookie($cookie);
-
         return $response;
     }
 
@@ -204,8 +193,7 @@ class AdminController extends Controller
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      * @param type $identity
      */
-    public function updatePermissionsAction($identity, Role $role, Request $request)
-    {
+    public function updatePermissionsAction($identity, Role $role, Request $request) {
         //Leo el permiso
         //Si el permiso que voy a poner es de SUPER_ADMIN, miro que el usuario sea SUPER_ADMIN, y quito al que estaba de SUPER_ADMIN
         //Si voy a quitar permisos:
@@ -272,7 +260,6 @@ class AdminController extends Controller
             $response['message'] = 'Hay un problema con el token CSRF. Prueba a recargar la página';
             $code = 400;
         }
-
         return new JsonResponse($response, $code);
     }
 
@@ -281,8 +268,7 @@ class AdminController extends Controller
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      * @param type $identity
      */
-    public function deletePermissionsAction($identity, Request $request)
-    {
+    public function deletePermissionsAction($identity, Request $request) {
         //No puedo borrar los permisos de un usuario que fuera SUPER_ADMINISTRADOR
         //Al quitar permisos, lo que hago es dejarlos con los permisos por defecto, ROLE_UAH_STUDENT
         $response = array();
@@ -298,7 +284,6 @@ class AdminController extends Controller
                 $response['type'] = 'error';
                 $response['message'] = 'No te puedes borrar a ti mismo';
                 $code = 400;
-
                 return new JsonResponse($response, 400);
             }
             if ($user) {
@@ -313,7 +298,6 @@ class AdminController extends Controller
                         $response['type'] = 'error';
                         $response['message'] = 'Siempre tiene que haber un super administrador. Asigna otro antes de borrarlo';
                         $code = 400;
-
                         return new JsonResponse($response, $code);
                     } else {
                         $user->removeRole($user_role);
@@ -341,7 +325,6 @@ class AdminController extends Controller
             $response['message'] = 'Hay un problema con el token CSRF. Prueba a recargar la página';
             $code = 400;
         }
-
         return new JsonResponse($response, $code);
     }
 
@@ -349,18 +332,17 @@ class AdminController extends Controller
      * @Route("/users/new",options={"expose"=true})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
-    public function newUserAction(Request $request)
-    {
+    public function newUserAction(Request $request) {
         $response = array();
 
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('uah_admin', $request->headers->get('X-CSRFToken'))) {
             $em = $this->getDoctrine()->getManager();
             $role = $em->getRepository('UAHGestorActividadesBundle:Role')->findOneBy(array(
-                'role' => $request->get('uah_role'), ));
+                'role' => $request->get('uah_role')));
             $super_admin_role = $em->getRepository('UAHGestorActividadesBundle:Role')->getSuperAdmin();
 
-            $uah_name = 'http://yo.rediris.es/soy/'.$request->get('uah_name').'@uah.es/';
+            $uah_name = 'http://yo.rediris.es/soy/' . $request->get('uah_name') . '@uah.es/';
             $securityContext = $this->container->get('security.context');
             //Compruebo que sea el Super administrador
             if ($role !== $super_admin_role) {
@@ -381,7 +363,7 @@ class AdminController extends Controller
                 $response['type'] = 'success';
                 $response['message'] = 'Usuario creado!';
                 $code = 200;
-            } elseif ($securityContext->isGranted($super_admin_role->getRole())) {
+            } else if ($securityContext->isGranted($super_admin_role->getRole())) {
                 $default_permit = $em->getRepository('UAHGestorActividadesBundle:DefaultPermit')->findOneBy(
                         array('id_usuldap' => $uah_name));
                 if (!$default_permit) {
@@ -406,7 +388,6 @@ class AdminController extends Controller
             if ($code === 200) {
                 $em->flush();
             }
-
             return new JsonResponse($response, $code);
         }
     }
@@ -415,8 +396,7 @@ class AdminController extends Controller
      * @Route("/degrees")
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
-    public function degreesAction(Request $request)
-    {
+    public function degreesAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
         $filter = $request->get('filter', 'ALL');
 
@@ -425,7 +405,6 @@ class AdminController extends Controller
         $cookie = new Cookie('X-CSRFToken', $token, 0, '/', null, false, false);
         $response = $this->render('UAHGestorActividadesBundle:Admin:degrees.html.twig', array('degrees' => $degrees));
         $response->headers->setCookie($cookie);
-
         return $response;
     }
 
@@ -433,8 +412,7 @@ class AdminController extends Controller
      * @Route("/degrees/new", options={"expose"=true})
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
-    public function newDegreeAction(Request $request)
-    {
+    public function newDegreeAction(Request $request) {
         $response = array();
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('uah_admin', $request->headers->get('X-CSRFToken'))) {
@@ -471,20 +449,19 @@ class AdminController extends Controller
             $response['type'] = 'error';
             $code = 400;
         }
-
         return new JsonResponse($response, $code);
     }
 
     /**
      * @Route("/degrees/delete/{degree_id}", options={"expose"=true})
      * @ParamConverter("degree", class="UAHGestorActividadesBundle:Degree",options={"id":"degree_id"})
-     * @Security("is_granted('ROLE_UAH_ADMIN')")
+     * @Security("is_granted('ROLE_UAH_ADMIN')")     
      */
-    public function deleteDegreeAction(Degree $degree, Request $request)
-    {
+    public function deleteDegreeAction(Degree $degree, Request $request) {
         $response = array();
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('uah_admin', $request->headers->get('X-CSRFToken'))) {
+
             $em = $this->getDoctrine()->getManager();
             $status_inactivo = $em->getRepository('UAHGestorActividadesBundle:Statusdegree')->getInactive();
             $degree->setStatus($status_inactivo);
@@ -498,7 +475,6 @@ class AdminController extends Controller
             $response['type'] = 'error';
             $code = 400;
         }
-
         return new JsonResponse($response, $code);
     }
 
@@ -506,8 +482,8 @@ class AdminController extends Controller
      * @Route("/categories")
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
-    public function categoriesAction()
-    {
+    public function categoriesAction() {
+
         $em = $this->getDoctrine()->getManager();
 
         $categories = $em->getRepository('UAHGestorActividadesBundle:Category')->getAll();
@@ -516,10 +492,9 @@ class AdminController extends Controller
         $cookie = new Cookie('X-CSRFToken', $token, 0, '/', null, false, false);
         $response = $this->render('UAHGestorActividadesBundle:Admin:categories.html.twig', array(
             'categories' => $categories,
-            'parent_categories' => $parent_categories,
+            'parent_categories' => $parent_categories
         ));
         $response->headers->setCookie($cookie);
-
         return $response;
     }
 
@@ -527,8 +502,7 @@ class AdminController extends Controller
      * @Route("/categories/new", options={"expose"=true})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
-    public function newCategoryAction(Request $request)
-    {
+    public function newCategoryAction(Request $request) {
         $response = array();
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('uah_admin', $request->headers->get('X-CSRFToken'))) {
@@ -552,12 +526,11 @@ class AdminController extends Controller
                 $active_status = $em->getRepository('UAHGestorActividadesBundle:Statuscategory')
                         ->getActive();
                 $category->setStatus($active_status);
-                //}
+                //} 
                 if (trim($parameters['category-name']) === "") {
                     $response['message'] = 'Error al crear categoría: El nombre no puede estar vacío';
                     $response['type'] = 'error';
                     $code = 400;
-
                     return new JsonResponse($response, $code);
                 }
                 $category->setName(trim($parameters['category-name']));
@@ -570,7 +543,6 @@ class AdminController extends Controller
                         $response['message'] = 'Error al crear categoría. Una categoría no puede ser su propio padre';
                         $response['type'] = 'error';
                         $code = 400;
-
                         return new JsonResponse($response, $code);
                     }
                 } else {
@@ -579,8 +551,8 @@ class AdminController extends Controller
                 if (!is_null($parent_category)) {
                     $category->setParentCategory($parent_category);
                     $parent_category->addChildrenCategory($category);
-                    $em->persist($parent_category);
                 }
+                $em->persist($parent_category);
                 $em->persist($category);
                 try {
                     $em->flush();
@@ -588,7 +560,6 @@ class AdminController extends Controller
                     $response['message'] = 'Error al crear categoría, ya existe una con esa combinación';
                     $response['type'] = 'error';
                     $code = 400;
-
                     return new JsonResponse($response, $code);
                 }
                 $response['message'] = 'Categoría creada';
@@ -601,7 +572,6 @@ class AdminController extends Controller
             $response['type'] = 'error';
             $code = 400;
         }
-
         return new JsonResponse($response, $code);
     }
 
@@ -610,8 +580,7 @@ class AdminController extends Controller
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      * @ParamConverter("category", class="UAHGestorActividadesBundle:Category",options={"id":"category_id"})
      */
-    public function deleteCategoryAction(Category $category, Request $request)
-    {
+    public function deleteCategoryAction(Category $category, Request $request) {
         $response = array();
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('uah_admin', $request->headers->get('X-CSRFToken'))) {
@@ -628,7 +597,7 @@ class AdminController extends Controller
             $response['type'] = 'error';
             $code = 400;
         }
-
         return new JsonResponse($response, $code);
     }
+
 }

@@ -11,10 +11,9 @@ namespace UAH\GestorActividadesBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use UAH\GestorActividadesBundle\Entity\User;
 
-class ApplicationRepository extends EntityRepository
-{
-    public function getUserApplications(User $user, $filter = 'all')
-    {
+class ApplicationRepository extends EntityRepository {
+
+    public function getUserApplications(User $user, $filter = 'all') {
         $em = $this->getEntityManager();
         if ($filter === 'not_archived') {
             $archived_status = $em->getRepository('UAHGestorActividadesBundle:Statusapplication')->getArchived();
@@ -27,7 +26,7 @@ class ApplicationRepository extends EntityRepository
         }
         $consulta->setParameter('user', $user);
         $result = $consulta->getResult();
-
         return $result;
     }
+
 }

@@ -1,9 +1,9 @@
 {% extends '::backend.html.twig' %}
 {% block stylesheets %}
     {{ parent() }}
-    {% stylesheets
+    {% stylesheets 
         '@UAHGestorActividadesBundle/Resources/public/css/backend/application.less'%}
-    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
     {% endstylesheets %}
 {% endblock %}
 {% block javascripts %}
@@ -52,7 +52,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-12 table-style">
+        <div class="col-xs-12">
             <table class="table table-bordered tbl_activities">
                 <thead>
                     <tr>

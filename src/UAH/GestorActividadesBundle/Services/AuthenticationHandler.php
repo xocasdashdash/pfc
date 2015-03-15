@@ -10,21 +10,20 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Router;
 use Doctrine\ORM\EntityManager;
 
-class AuthenticationHandler implements AuthenticationSuccessHandlerInterface
-{
+class AuthenticationHandler implements AuthenticationSuccessHandlerInterface {
+
     protected $router;
     protected $security;
     protected $em;
 
-    public function __construct(Router $router, SecurityContext $security, EntityManager $entityManager)
-    {
+    public function __construct(Router $router, SecurityContext $security, EntityManager $entityManager) {
         $this->router = $router;
         $this->security = $security;
         $this->em = $entityManager;
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token)
-    {
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token) {
+
         $user = $token->getUser();
         if (!$user->isProfileComplete()) {
             $url = $this->router->generate('uah_gestoractividades_profile_edit');
@@ -38,7 +37,7 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface
         $identity = $user->getIdUsuldap();
         $default_permit = $this->em->getRepository('UAHGestorActividadesBundle:DefaultPermit')->findOneBy(
                 array('id_usuldap' => $identity));
-        if (!is_null($default_permit)) {
+        if(!is_null($default_permit)) {
             $default_roles = $default_permit->getRoles();
             $user_roles = $user->getUserRoles()->toArray();
             foreach ($default_roles as $default_role) {
@@ -53,4 +52,5 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface
 
         return $response;
     }
+
 }

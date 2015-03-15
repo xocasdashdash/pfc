@@ -16,6 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use UAH\GestorActividadesBundle\Repository\EnrollmentRepository;
 use Symfony\Component\HttpFoundation\Cookie;
 use NumberFormatter;
 
@@ -39,13 +40,30 @@ class EnrollmentController extends Controller
     const UNENROLLMENT_FAIL = 3;
     const UNENROLLMENT_OK = 3;
 
+    const ENROLLMENT_OK = 0;
+    //Error cuando ya estoy inscrito en la actividad
+    const ENROLLMENT_ERROR_ALREADY_ENROLLED = 1;
+    //Error cuando no me puedo inscribir en la actividad por que no hay más plazas
+    const ENROLLMENT_ERROR_NO_PLACES = 2;
+    //Error cuando no me puedo inscribir en la actividad por su estado
+    const ENROLLMENT_ERROR_INVALID_ACTIVITY = 4;
+    const ENROLLMENT_ERROR_NOT_FULL_PROFILE = 8;
+    const ENROLLMENT_ERROR_UNKNOWN = 16;
+    const RECOGNIZEMENT_ERROR_CSRF_TOKEN_INVALID = 1;
+    const RECOGNIZEMENT_ERROR_BASIC = 2;
+    const RECOGNIZEMENT_ERROR_NO_DEGREE = 3;
+    //Tipos de creditos
+    const ENROLLMENT_ECTS_CREDITS = "ECTS";
+    const ENROLLMENT_LIBRE_CREDITS = "LIBRE";
+    const UNENROLLMENT_FAIL = 3;
+    const UNENROLLMENT_OK = 3;
+
     /**
      * @Route("/enroll/{activity_id}",requirements={"pagina" = "\d+"}, options={"expose"=true})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("is_granted('ROLE_UAH_STUDENT')")
      */
-    public function enrollAction(Activity $activity, Request $request)
-    {
+    public function enrollAction(Activity $activity, Request $request) {
         /*
          *
          * Inscribo al usuario
@@ -58,7 +76,7 @@ class EnrollmentController extends Controller
         $em = $this->getDoctrine()->getManager();
         $valido = $this->get('form.csrf_provider')->isCsrfTokenValid('basico', $request->headers->get('X-CSRFToken'));
 
-        //Uso bitmasks para saber que tipo de error hay (si lo hay)
+        //Uso bitmasks para saber que tipo de error hay (si lo hay) 
         $check_enrolled = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->checkEnrolled($user, $activity);
         //Si el numero de plazas ofertadas es null siempre puedo inscribirme por esto
         $free_places = (is_null($activity->getNumberOfPlacesOffered()) ||
@@ -78,17 +96,17 @@ class EnrollmentController extends Controller
             $response['code'] = self::ENROLLMENT_ERROR_ALREADY_ENROLLED;
             $response['message'] = 'Ya estás inscrito!';
             $code = 403;
-        } elseif ($permissions & self::ENROLLMENT_ERROR_NO_PLACES) {
+        } else if ($permissions & self::ENROLLMENT_ERROR_NO_PLACES) {
             $response['type'] = 'notice';
             $response['code'] = self::ENROLLMENT_ERROR_NO_PLACES;
             $response['message'] = 'No hay plazas libres.';
             $code = 403;
-        } elseif ($permissions & self::ENROLLMENT_ERROR_INVALID_ACTIVITY) {
+        } else if ($permissions & self::ENROLLMENT_ERROR_INVALID_ACTIVITY) {
             $response['type'] = 'error';
             $response['code'] = self::ENROLLMENT_ERROR_INVALID_ACTIVITY;
             $response['message'] = 'Actividad no disponible.';
             $code = 403;
-        } elseif ($permissions & self::ENROLLMENT_ERROR_NOT_FULL_PROFILE) {
+        } else if ($permissions & self::ENROLLMENT_ERROR_NOT_FULL_PROFILE) {
             $response['type'] = 'error';
             $response['code'] = self::ENROLLMENT_ERROR_NOT_FULL_PROFILE;
             $response['message'] = 'Te faltan <a href="profile/update" class="alert-link">completar</a> datos de tu perfil!';
@@ -104,21 +122,19 @@ class EnrollmentController extends Controller
             $code = 200;
             $response = 'Enrolled';
         }
-
         return new JsonResponse($response, $code);
     }
 
     /**
-     *
+     * 
      * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
-     * @param \Symfony\Component\HttpFoundation\Request    $request
-     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * 
      * @Route("/enroll/recognize/{activity_id}",requirements={"activity_id" = "\d+"}, options={"expose"=true})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("(is_granted('edit_activity',activity) && has_role('ROLE_UAH_STAFF_PDI')) || has_role('ROLE_UAH_ADMIN')")
      */
-    public function recognizeAction(Activity $activity, Request $request)
-    {
+    public function recognizeAction(Activity $activity, Request $request) {
         //Comprobación CSRF
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('administracion', $request->headers->get('X-CSRFToken'))) {
@@ -196,7 +212,6 @@ class EnrollmentController extends Controller
             if (isset($valid_input) and $valid_input) {
                 $em->flush();
             }
-
             return new JsonResponse($respuesta_json, 200);
         } else {
             $response = array();
@@ -206,22 +221,20 @@ class EnrollmentController extends Controller
             $json_response = new JsonResponse($response, 403);
             $cookie = new Cookie('X-CSRFToken', $this->get('form.csrf_provider')->generateCsrfToken('administracion'), 0, '/', null, false, false);
             $json_response->headers->setCookie($cookie);
-
             return $json_response;
         }
     }
 
     /**
-     *
+     * 
      * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollment
-     * @param \Symfony\Component\HttpFoundation\Request      $request
-     *
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * 
      * @Route("/enroll/unrecognize/{activity_id}",requirements={"activity_id" = "\d+"}, options={"expose"=true})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("(is_granted('edit_activity',activity) && has_role('ROLE_UAH_STAFF_PDI')) || has_role('ROLE_UAH_ADMIN')")
      */
-    public function unrecognizeAction(Activity $activity, Request $request)
-    {
+    public function unrecognizeAction(Activity $activity, Request $request) {
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('administracion', $request->headers->get('X-CSRFToken'))) {
             $id_unrecognizements = json_decode($request->getContent());
@@ -229,14 +242,13 @@ class EnrollmentController extends Controller
             $enrollments = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrollmentsByID($id_unrecognizements);
             foreach ($enrollments as $enrollment) {
                 if ($enrollment->getActivity() === $activity) {
-                    $enrollment->setRecognizedCredits(null);
+                    $enrollment->setRecognizedCredits(NULL);
                     $enrollment->setStatus($em->getRepository('UAHGestorActividadesBundle:Statusenrollment')
                                     ->getDefault());
                     $em->persist($enrollment);
                 }
             }
             $em->flush();
-
             return new JsonResponse("OK", 200);
         } else {
             $response = array();
@@ -247,6 +259,33 @@ class EnrollmentController extends Controller
             //$cookie = new Cookie('X-CSRFToken', $this->get('form.csrf_provider')->generateCsrfToken('administracion'), 0, '/', null, false, false);
             //$json_response->headers->setCookie($cookie);
             return $json_response;
+        }
+    }
+
+    /**
+     * 
+     * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollment
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @Route("/enroll/unenroll/{enrollment_id}", requirements={"enrollment_id" = "\d+"}, options={"expose" = true})
+     * @ParamConverter("enrollment",  class="UAHGestorActividadesBundle:Enrollment",options={"id" = "enrollment_id"}))
+     * @Security("enrollment.getUser() === user")
+     */
+    public function unenrollAction(Enrollment $enrollment, Request $request) {
+        $response = array();
+        if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
+                $this->get('form.csrf_provider')->isCsrfTokenValid('profile', $request->headers->get('X-CSRFToken'))) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($enrollment);
+            $em->flush();
+            $response ['code'] = self::UNENROLLMENT_OK;
+            $response['message'] = 'Te has desinscrito correctamente';
+            $response['type'] = 'success';
+            return new JsonResponse($response, 200);
+        } else {
+            $response ['code'] = self::UNENROLLMENT_FAIL;
+            $response['message'] = 'Token de seguridad inválido. Prueba a recargar la página';
+            $response['type'] = 'error';
+            return new JsonResponse($response, 403);
         }
     }
 

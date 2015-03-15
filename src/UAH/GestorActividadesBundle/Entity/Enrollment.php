@@ -20,8 +20,8 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
  * @Entity(repositoryClass="UAH\GestorActividadesBundle\Repository\EnrollmentRepository")
  * @HasLifecycleCallbacks
  */
-class Enrollment
-{
+class Enrollment {
+
     /**
      * @var integer
      *
@@ -90,7 +90,7 @@ class Enrollment
     /**
      * @var User verifiedByUser
      * @ManyToOne(targetEntity="User", inversedBy="recognizedApplications")
-     * @JoinColumn(name="recognized_by_id", referencedColumnName="id", nullable=true,onDelete="SET NULL")
+     * @JoinColumn(name="recognized_by_id", referencedColumnName="id", nullable=true,onDelete="SET NULL")     
      */
     private $recognizedByUser;
     /**
@@ -106,11 +106,10 @@ class Enrollment
     /**
      * Set dateRecognized
      *
-     * @param  \DateTime  $dateRecognized
+     * @param \DateTime $dateRecognized
      * @return Enrollment
      */
-    public function setDateProcessed($dateRecognized)
-    {
+    public function setDateProcessed($dateRecognized) {
         $this->dateRecognized = $dateRecognized;
 
         return $this;
@@ -121,8 +120,7 @@ class Enrollment
      *
      * @return \DateTime
      */
-    public function getDateProcessed()
-    {
+    public function getDateProcessed() {
         return $this->dateRecognized;
     }
 
@@ -135,7 +133,6 @@ class Enrollment
     public function setDateRegistered($dateRegistered)
     {
         $this->dateRegistered = $dateRegistered;
-
         return $this;
     }
 
@@ -175,7 +172,7 @@ class Enrollment
     /**
      * Set creditsType
      *
-     * @param  string     $creditsType
+     * @param string $creditsType
      * @return Enrollment
      */
     public function setCreditsType($creditsType)
@@ -221,11 +218,10 @@ class Enrollment
     /**
      * Set application
      *
-     * @param  \UAH\GestorActividadesBundle\Entity\Application $application
+     * @param \UAH\GestorActividadesBundle\Entity\Application $application
      * @return Enrollment
      */
-    public function setApplication(\UAH\GestorActividadesBundle\Entity\Application $application = null)
-    {
+    public function setApplication(\UAH\GestorActividadesBundle\Entity\Application $application = null) {
         $this->application = $application;
 
         return $this;
@@ -236,8 +232,7 @@ class Enrollment
      *
      * @return \UAH\GestorActividadesBundle\Entity\Application
      */
-    public function getApplication()
-    {
+    public function getApplication() {
         return $this->application;
     }
 
@@ -247,8 +242,7 @@ class Enrollment
      * @param  \UAH\GestorActividadesBundle\Entity\User $user
      * @return Enrollment
      */
-    public function setUser(\UAH\GestorActividadesBundle\Entity\User $user = null)
-    {
+    public function setUser(\UAH\GestorActividadesBundle\Entity\User $user = null) {
         $this->user = $user;
 
         return $this;
@@ -259,8 +253,7 @@ class Enrollment
      *
      * @return \UAH\GestorActividadesBundle\Entity\User
      */
-    public function getUser()
-    {
+    public function getUser() {
         return $this->user;
     }
 
@@ -270,8 +263,7 @@ class Enrollment
      * @param  \UAH\GestorActividadesBundle\Entity\Statusenrollment $status
      * @return Enrollment
      */
-    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusenrollment $status = null)
-    {
+    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusenrollment $status = null) {
         $this->status = $status;
 
         return $this;
@@ -282,16 +274,14 @@ class Enrollment
      *
      * @return \UAH\GestorActividadesBundle\Entity\Statusenrollment
      */
-    public function getStatus()
-    {
+    public function getStatus() {
         return $this->status;
     }
 
     /**
      * @PrePersist
      */
-    public function prepare(LifecycleEventArgs $event)
-    {
+    public function prepare(LifecycleEventArgs $event) {
         if (is_null($this->getDateRegistered())) {
             $this->setDateRegistered(new \DateTime("now"));
         }
@@ -315,7 +305,7 @@ class Enrollment
 //            } elseif ($this->getStatus() === $em->
 //                            getRepository('UAHGestorActividadesBundle:Statusenrollment')->getDefault()) {
 //                $event->getEntity()->
-//
+//                
 //            }
 //        }
 //    }
@@ -323,7 +313,7 @@ class Enrollment
     /**
      * Set dateRecognized
      *
-     * @param  \DateTime  $dateRecognized
+     * @param \DateTime $dateRecognized
      * @return Enrollment
      */
     public function setDateRecognized($dateRecognized)
@@ -336,7 +326,7 @@ class Enrollment
     /**
      * Get dateRecognized
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
     public function getDateRecognized()
     {
@@ -346,7 +336,7 @@ class Enrollment
     /**
      * Set recognizedByUser
      *
-     * @param  \UAH\GestorActividadesBundle\Entity\User $recognizedByUser
+     * @param \UAH\GestorActividadesBundle\Entity\User $recognizedByUser
      * @return Enrollment
      */
     public function setRecognizedByUser(\UAH\GestorActividadesBundle\Entity\User $recognizedByUser = null)
@@ -359,7 +349,7 @@ class Enrollment
     /**
      * Get recognizedByUser
      *
-     * @return \UAH\GestorActividadesBundle\Entity\User
+     * @return \UAH\GestorActividadesBundle\Entity\User 
      */
     public function getRecognizedByUser()
     {

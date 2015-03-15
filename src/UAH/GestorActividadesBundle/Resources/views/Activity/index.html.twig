@@ -2,7 +2,7 @@
 {% block stylesheets %}
     {{ parent() }}
     {% stylesheets '@UAHGestorActividadesBundle/Resources/public/css/frontend/activity/activity.less' %}
-    <link href="{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ asset_url }}" rel="stylesheet" type="text/css" />
+    <link href="{{ app.request.scheme ~ '://' ~ app.request.httpHost ~ asset_url }}" rel="stylesheet" type="text/css" />          
     {% endstylesheets %}
     <link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
 {% endblock %}
@@ -14,7 +14,7 @@
 {% endblock %}
 {% block content %}
     <div class="container">
-        {% if app.user is not null and (activity.organizer == app.user or is_granted('ROLE_UAH_ADMIN')) %}
+        {% if app.user is not null and (activity.organizer == app.user or is_granted('ROLE_UAH_ADMIN')) %}        
             <div class="row hidden-print">
                 <div class="text-center col-xs-6">
                     <a href="{{path('uah_gestoractividades_activity_edit',{'activity_id': activity.id})}}">
@@ -84,7 +84,7 @@
                             {% elseif permissions == "ENROLLED" and app.user is not null %}
                                 <button class="btn btn-default center-block btn-success already-enrolled">
                                     <span class="texto">Inscrito!</span>
-                                    <i class="fa fa-check fa-2x"></i>
+                                    <i class="fa fa-check fa-2x"></i> 
                                 </button>
                             {% endif %}
                         </div>
@@ -110,7 +110,7 @@
                                     {% else %}
                                         <i class="fa fa-times fa-stack-1x"></i>
                                     {% endif %}
-                                </span>
+                                </span>                               
 
                             </div>
                         </div>
@@ -128,7 +128,7 @@
                                 </div>
 
                             {% endfor %}
-                        </div>
+                        </div>    
                     </div>
 
                 </div>

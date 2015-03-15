@@ -23,7 +23,7 @@ class Session
 
     /**
      * @Column(name="session_value", type="text")
-     *
+     * 
      */
     private $session_value;
 

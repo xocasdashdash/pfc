@@ -10,38 +10,33 @@ namespace UAH\GestorActividadesBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class StatusEnrollmentRepository extends EntityRepository
-{
+class StatusEnrollmentRepository extends EntityRepository {
+
     /**
-     *
+     * 
      * @return Esta funcion devuelve el valor por defecto que tienen los enrollment.
      */
-    public function getDefault()
-    {
+    public function getDefault() {
         $resultado = $this->findOneBy(array(
-            'code' => 'STATUS_ENROLLED', ));
-
+            'code' => 'STATUS_ENROLLED'));
         return $resultado;
     }
 
     /**
-     *
+     * 
      * @return Esta funcion devuelve el valor por defecto que tienen los enrollment inactivos.
      */
-    public function getInactive()
-    {
+    public function getInactive() {
         $resultado = $this->findOneBy(array(
-            'code' => 'STATUS_UNENROLLED', ));
-
+            'code' => 'STATUS_UNENROLLED'));
         return $resultado;
     }
 
     /**
-     *
+     * 
      * @return Esta funcion devuelve el valor por defecto que tienen los enrollment inactivos.
      */
-    public function getActive()
-    {
+    public function getActive() {
         $active_status = array();
         $active_status[] = "STATUS_ENROLLED";
         $active_status[] = "STATUS_RECOGNIZED";
@@ -57,59 +52,55 @@ class StatusEnrollmentRepository extends EntityRepository
     }
 
     /**
-     *
+     * 
      * @return Esta funcion devuelve el valor por defecto que tienen los enrollment reconocidos.
      */
-    public function getRecognizedStatus()
-    {
-        $resultado = $this->findOneBy(array(
-            'code' => 'STATUS_RECOGNIZED', ));
+    public function getRecognizedStatus() {
 
+        $resultado = $this->findOneBy(array(
+            'code' => 'STATUS_RECOGNIZED'));
         return $resultado;
     }
     /**
-     *
+     * 
      * @return Esta funcion devuelve el valor por defecto que tienen los enrollment reconocidos.
      */
-    public function getEnrolledStatus()
-    {
-        $resultado = $this->findOneBy(array(
-            'code' => 'STATUS_ENROLLED', ));
+    public function getEnrolledStatus() {
 
+        $resultado = $this->findOneBy(array(
+            'code' => 'STATUS_ENROLLED'));
         return $resultado;
     }
     /**
-     *
+     * 
      * @return Esta funcion devuelve el valor por defecto que tienen los enrollment reconocidos.
      */
-    public function getPendingVerificationStatus()
-    {
-        $resultado = $this->findOneBy(array(
-            'code' => 'STATUS_PENDING_VERIFICATION', ));
+    public function getPendingVerificationStatus() {
 
+        $resultado = $this->findOneBy(array(
+            'code' => 'STATUS_PENDING_VERIFICATION'));
         return $resultado;
     }
-
+    
     /**
-     *
+     * 
      * @return Esta funcion devuelve el valor por defecto que tienen los enrollment reconocidos.
      */
-    public function getNotRecognizedStatus()
-    {
-        $resultado = $this->findOneBy(array(
-            'code' => 'STATUS_NOT_RECOGNIZED', ));
+    public function getNotRecognizedStatus() {
 
+        $resultado = $this->findOneBy(array(
+            'code' => 'STATUS_NOT_RECOGNIZED'));
         return $resultado;
     }
     /**
-     *
+     * 
      * @return Esta funcion devuelve el valor por defecto que tienen los enrollment verificados.
      */
-    public function getVerified()
-    {
-        $resultado = $this->findOneBy(array(
-            'code' => 'STATUS_VERIFIED', ));
+    public function getVerified() {
 
+        $resultado = $this->findOneBy(array(
+            'code' => 'STATUS_VERIFIED'));
         return $resultado;
     }
+
 }

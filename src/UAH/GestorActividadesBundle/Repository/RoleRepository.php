@@ -4,42 +4,36 @@ namespace UAH\GestorActividadesBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class RoleRepository extends EntityRepository
-{
-    public function getAdmin()
-    {
+class RoleRepository extends EntityRepository {
+
+    public function getAdmin() {
         return $this->findRole('ROLE_UAH_ADMIN');
     }
 
-    public function getSuperAdmin()
-    {
+    public function getSuperAdmin() {
         return $this->findRole('ROLE_UAH_SUPER_ADMIN');
     }
 
-    public function getOrganizerPDI()
-    {
+    public function getOrganizerPDI() {
         return $this->findRole('ROLE_UAH_STAFF_PDI');
     }
 
-    public function getStaffSecretaria()
-    {
+    public function getStaffSecretaria() {
         return $this->findRole('ROLE_UAH_STAFF_PAS');
     }
 
-    public function getStudent()
-    {
+    public function getStudent() {
         return $this->findRole('ROLE_UAH_STUDENT');
     }
 
-    private function findRole($role)
-    {
+    private function findRole($role) {
         $em = $this->getEntityManager();
-        $dql = "SELECT r FROM UAHGestorActividadesBundle:Role r ".
+        $dql = "SELECT r FROM UAHGestorActividadesBundle:Role r " .
                 "WHERE r.role = :role";
         $consulta = $em->createQuery($dql);
         $consulta->setParameter('role', $role);
         $resultado = $consulta->getSingleResult();
-
         return $resultado;
     }
+
 }

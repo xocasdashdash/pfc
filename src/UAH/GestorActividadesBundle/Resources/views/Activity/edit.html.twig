@@ -1,7 +1,7 @@
 {% extends '::backend.html.twig' %}
 {% block javascripts %}
     {{parent()}}
-    {% javascripts
+    {% javascripts 
         '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js'
         '@UAHGestorActividadesBundle/Resources/public/js/backend/create_activity.js' filter='?uglifyjs2' %}
     <script type="text/javascript" src="{{ asset_url }}" ></script>
@@ -12,7 +12,7 @@
 {% block stylesheets %}
     {{parent()}}
     {% stylesheets '@UAHGestorActividadesBundle/Resources/public/vendor/bootstrap-datepicker/build/build3.less' %}
-    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
     {% endstylesheets %}
 {% endblock %}
 {% block title %}

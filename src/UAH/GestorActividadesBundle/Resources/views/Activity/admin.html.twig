@@ -1,8 +1,8 @@
 {% extends '::backend.html.twig' %}
 {% block javascripts %}
     {{parent()}}
-    <script type="text/javascript" src="{{ asset('bundles/uahgestoractividades/vendor/zeroclipboard/dist/ZeroClipboard.min.js') }}"></script>
-    {% javascripts
+    <script type="text/javascript" src="{{ asset('bundles/uahgestoractividades/vendor/zeroclipboard/dist/ZeroClipboard.min.js') }}"></script> 
+    {% javascripts 
         '@UAHGestorActividadesBundle/Resources/public/js/backend/admin.js'
     filter='?uglifyjs2' %}
     <script type="text/javascript" src="{{ asset_url }}" ></script>
@@ -11,9 +11,9 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    {% stylesheets
+    {% stylesheets 
         '@UAHGestorActividadesBundle/Resources/public/css/backend/activities/admin.less'%}
-    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
     {% endstylesheets %}
 {% endblock %}
 {% block title %}
@@ -28,6 +28,9 @@
             </div>
             <div class="flex-item">
                 <button type="button" class="btn btn-default" id="btn_unrecognize" data-activity-id="{{activity.id}}" title="Marca los inscritos a los que desees quitar el reconocimiento de los créditos">Eliminar reconocimiento</button>
+            </div>
+            <div class="flex-item">
+                <button type="button" class="btn btn-default" id="btn_present" data-activity-id="{{activity.id}}" title="Si te has equivocado y quieres marcar a alguien como inscrito de nuevo para reconocerle los créditos usa esta opción" >Marcar como asistente</button>
             </div>
             <div class="flex-item">
                 <button type="button" class="btn btn-default" id="btn_close_activity" data-activity-id="{{activity.id}}" title="Cierra la actividad. Si ya has marcado todos los reconocimientos y no quieres hacer más modificaciones, usa esta opción">Cerrar actividad</button>
@@ -56,10 +59,7 @@
         </div>
         <div class="row">
             <div class="col-xs-4">Título de la actividad(En):</div>
-            <div class="col-xs-8">{{activity.englishName|default('-')}}
-                <br>
-            </div>
-        </div>
+            <div class="col-xs-8">{{activity.englishName|default('-')}}<br></div></div>
         <div class="row">
             <div class="col-xs-4">Días de celebración:</div>
             <div class="col-xs-8">{{activity.celebrationDatesUnencoded()}}<br></div>
@@ -74,28 +74,25 @@
         </div>
 
     </div>
-    <div class="row table-style">
-        <div class="page-break"></div>
+    <div class="col-xs-12 visible-print-block print" style="height:20px;">
+
+    </div>
+    <div class="row" style="padding-top:20px;">
+        <div class="page-break">
+
+        </div>
 
         <table class="table table-bordered tbl_enrolled">
             <thead>
                 <tr>
-                    <th class="visible-md-up">#
-                    </th>
-                    <th class="nombre-actividad">Nombre y apellidos
-                    </th>
-                    <th class="visible-md-up  hidden-print">E-mail
-                    </th>
-                    <th class="visible-md-up" >Fecha Inscripción
-                    </th>
-                    <th class="visible-sm-up" >Tipo de plan de estudios
-                    </th>
-                    <th class="hidden-print">Acción
-                    </th>
-                    <th class="hidden-print">Créditos a reconocer
-                    </th>
-                    <th class="visible-print print">Firma
-                    </th>
+                    <th class="hidden-xs">#</th>
+                    <th class="nombre-actividad">Nombre y apellidos</th>
+                    <th class="visible-md  hidden-print">E-mail</th>
+                    <th class="visible-md" >Fecha Inscripción</th>
+                    <th class="visible-md" >Tipo de plan de estudios</th>
+                    <th class="hidden-print">Acción</th>
+                    <th class="hidden-print">Créditos a reconocer</th>
+                    <th class="visible-print print">Firma</th>
                 </tr>
             </thead>
 
@@ -103,7 +100,7 @@
 
                 {% for enrollment in enrollments %}
                     {% if loop.index % 13 == 0%}
-                    </tbody>
+
                 </table>
 
                 <div class="page-break"></div>
@@ -111,11 +108,11 @@
                 <table class="table table-bordered tbl_enrolled">
                     <thead>
                         <tr>
-                            <th class="visible-md-up">#</th>
+                            <th class="visible-sm">#</th>
                             <th class="nombre-actividad">Nombre y apellidos</th>
-                            <th class="visible-md-up hidden-print">E-mail</th>
-                            <th class="visible-md-up">Fecha Inscripción</th>
-                            <th class="visible-sm-up">Tipo de plan de estudios</th>
+                            <th class="visible-md hidden-print">E-mail</th>
+                            <th class="visible-md">Fecha Inscripción</th>
+                            <th class="visible-sm">Tipo de plan de estudios</th>
                             <th class="hidden-print">Acción</th>
                             <th class="hidden-print">Créditos a reconocer</th>
                             <th class="visible-print print" >Firma</th>
@@ -127,19 +124,11 @@
                     {% endif %}
 
                     <tr data-id-enrollment="{{enrollment.id}}">
-                        <td class="visible-md-up">
-                            #{{ loop.index }}
-                        </td>
-                        <td>
-                            {{ enrollment.name ~ " " ~ enrollment.apellido_1 ~ " " ~ enrollment.apellido_2}}
-                        </td>
-                        <td class="visible-md-up hidden-print email">
-                            {{ enrollment.email }}
-                        </td>
-                        <td class="visible-md-up" >
-                            {{ enrollment.dateRegistered |date('d/m/Y') }}
-                        </td>
-                        <td class="visible-sm-up">
+                        <td class="visible-sm">#{{ loop.index }}</td>
+                        <td>{{ enrollment.name ~ " " ~ enrollment.apellido_1 ~ " " ~ enrollment.apellido_2}}</td>
+                        <td class="visible-md hidden-print email">{{ enrollment.email }}</td>
+                        <td class="visible-md" >{{ enrollment.dateRegistered |date('d/m/Y') }}</td>
+                        <td class="visible-sm">
                             {% if enrollment.status_degree == "STATUS_RENEWED" %}
                                 Plan renovado
                             {% elseif enrollment.status_degree == "STATUS_NON_RENEWED" %}
@@ -149,7 +138,7 @@
                             {% endif %}
                         </td>
                         {% set min_step_credits = 0.05 %}
-                        {% if enrollment.status_enrollment == "STATUS_ENROLLED" %}
+                        {% if enrollment.status_enrollment == "STATUS_ENROLLED" %}      
 
                             {% if enrollment.status_degree is defined %}
 
@@ -169,42 +158,24 @@
 
                             {% endif %}
 
-                            <td class="reconocer no-print">
-                                <input type="checkbox" class="check_reconocer" value="{{enrollment.id}}">
-                            </td>
-                            {# Alternativa para reconocimiento de numeros ^[0-9]{1,2}\,[0-9]{1}[0,5]{1}$|^[0-9]{1,2}\.[0-9]{1}[0,5]{1}$ #}
+                            <td class="reconocer no-print"><input type="checkbox" class="check_reconocer" value="{{enrollment.id}}"> </td>
+                                {# Alternativa para reconocimiento de numeros ^[0-9]{1,2}\,[0-9]{1}[0,5]{1}$|^[0-9]{1,2}\.[0-9]{1}[0,5]{1}$ #}
                             <td class="reconocer no-print ayuda" >
                                 <input type="number" step="{{ min_step_credits }}"  data-content="Mín.:{{min_credits}}<br>Máx.:{{max_credits}}" data-toggle="popover" pattern="[0-9]+([\.|,][0-9]+)?" min="{{ min_credits}}" max="{{ max_credits }}" class="numero_de_creditos" placeholder="Número de créditos" tabindex="{{loop.index}}">
                             </td>
-                        {% elseif enrollment.status_enrollment =="STATUS_RECOGNIZED" %}
-                            <td class="unrecognize hidden-print">
-                                <input type="checkbox" class="check_unrecognize" value="{{enrollment.id}}">
-                            </td>
-                            <td class="unrecognize hidden-print">
-                                <input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled value="{{enrollment.recognizedCredits}}">
-                            </td>
-                        {% elseif enrollment.status_enrollment == "STATUS_NOT_RECOGNIZED" %}
-                            <td class="not-present hidden-print">
-                                <input type="checkbox" value="{{enrollment.id}}">
-                            </td>
-                            <td class="not-present hidden-print">
-                                <input type="text" disabled value="0">
-                            </td>
-                        {% elseif enrollment.status_enrollment == "STATUS_PENDING_VERIFICATION" %}
-                            <td>
-                                <input type="checkbox" class="check_reconocer" disabled checked>
-                            </td>
-                            <td class="unrecognize hidden-print">
-                                <input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled value="{{enrollment.recognizedCredits}}">
-                            </td>
-                        {% elseif enrollment.status_enrollment == "STATUS_VERIFIED" %}
-                            <td class="hidden-print">
-                                <input type="checkbox" class="check_reconocer"  disabled checked>
-                            </td>
-                            <td class="unrecognize hidden-print">
-                                <input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled value="{{enrollment.recognizedCredits}}">
-                            </td>
-                        {% endif %}
+                        {% elseif enrollment.status_enrollment =="STATUS_RECOGNIZED" %}                            
+                            <td class="unrecognize hidden-print"><input type="checkbox" class="check_unrecognize" value="{{enrollment.id}}"></td>
+                            <td class="unrecognize hidden-print"><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled value="{{enrollment.recognizedCredits}}"></td>
+                            {% elseif enrollment.status_enrollment == "STATUS_NOT_RECOGNIZED" %}
+                            <td class="not-present hidden-print"><input type="checkbox" value="{{enrollment.id}}"></td>
+                            <td class="not-present hidden-print"><input type="text" disabled value="0"></td>
+                            {% elseif enrollment.status_enrollment == "STATUS_PENDING_VERIFICATION" %}
+                            <td><input type="checkbox" class="check_reconocer" disabled checked></td>
+                            <td class="unrecognize hidden-print"><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled value="{{enrollment.recognizedCredits}}"></td>
+                            {% elseif enrollment.status_enrollment == "STATUS_VERIFIED" %}
+                            <td class="hidden-print"><input type="checkbox" class="check_reconocer"  disabled checked> </td>
+                            <td class="unrecognize hidden-print"><input type="text" class="numero_de_creditos" placeholder="Número de créditos" disabled value="{{enrollment.recognizedCredits}}"></td>
+                            {% endif %}
                         <td class="visible-print-block print"></td>
 
 
@@ -219,6 +190,10 @@
                         </tr>
 
                         {% endfor %}
+                            <tr class="visible-print-block print"><td></td><td></td><td></td><td></td><td></td></tr>
+                            <tr class="visible-print-block print"><td></td><td></td><td></td><td></td><td></td></tr>
+                            <tr class="visible-print-block print"><td></td><td></td><td></td><td></td><td></td></tr>
+                            <tr class="visible-print-block print"><td></td><td></td><td></td><td></td><td></td></tr>
 
                         </tbody>
                     </table>

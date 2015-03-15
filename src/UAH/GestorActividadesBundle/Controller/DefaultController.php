@@ -8,14 +8,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class DefaultController extends Controller
-{
+class DefaultController extends Controller {
+
     /**
      * @Route("/{pagina}", requirements={"pagina" = "\d+"}, defaults={"pagina" = 1},options={"expose"=true}))
      * @Route("/pag/{pagina}", requirements={"pagina" = "\d+"}, defaults={"pagina" = 1})
      */
-    public function indexAction($pagina, Request $request)
-    {
+    public function indexAction($pagina, Request $request) {
+
         $em = $this->getDoctrine()->getManager();
         $activity_repository = $em->getRepository('UAHGestorActividadesBundle:Activity');
         $category_repository = $em->getRepository('UAHGestorActividadesBundle:Category');
@@ -31,14 +31,13 @@ class DefaultController extends Controller
                     'activities' => $activities,
                     'enrollments' => $enrolled_activities,
                     'categories' => $categories,
-                    'num_activities' => $num_activities, ));
+                    'num_activities' => $num_activities));
     }
 
     /**
      * @Route("/ajax/{page}", requirements={"pagina" = "\d+"}, defaults={"page" = 1},options={"expose"=true}))
      */
-    public function ajaxActivities($page)
-    {
+    public function ajaxActivities($page) {
         $em = $this->getDoctrine()->getManager();
         $activity_repository = $em->getRepository('UAHGestorActividadesBundle:Activity');
         $elements_per_page = $this->container->getParameter('elements_per_page');
@@ -46,19 +45,17 @@ class DefaultController extends Controller
         $enrolled_activities = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrolledActivitiesId($this->getUser(), $page);
         $html = $this->renderView('UAHGestorActividadesBundle:Activity:activity-pagination.html.twig', array(
             'activities' => $activities,
-            'enrollments' => $enrolled_activities, ));
+            'enrollments' => $enrolled_activities));
         $response = array();
         $response['html'] = $html;
         $response['last_page'] = count($activities) < $elements_per_page;
-
         return new JsonResponse($response);
     }
 
     /**
      * @Route("/search")
      */
-    public function searchAction(Request $request)
-    {
+    public function searchAction(Request $request) {
         $query = $request->get('q');
         $em = $this->getDoctrine()->getManager();
         $activity_repository = $em->getRepository('UAHGestorActividadesBundle:Activity');
@@ -66,11 +63,11 @@ class DefaultController extends Controller
         $category_repository = $em->getRepository('UAHGestorActividadesBundle:Category');
         $categories = $category_repository->getFrontPage();
         $activities = $activity_repository->searchActivities($query);
-
         return $this->render('UAHGestorActividadesBundle:Activity:activity-search.html.twig', array(
                     'activities' => $activities,
                     'enrollments' => $enrolled_activities,
                     'categories' => $categories,
-                    'query' => $query, ));
+                    'query' => $query));
     }
+
 }

@@ -13,8 +13,7 @@ class UAHActivityProvider extends \Faker\Provider\Base
         "Cerrada",
     );
 
-    public function statusActivity()
-    {
+    public function statusActivity(){
         return static::randomElement(static::$status);
     }
 }

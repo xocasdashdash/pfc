@@ -7,6 +7,6 @@ use Doctrine\ORM\Mapping\Entity;
 /**
  * @Entity(repositoryClass="UAH\GestorActividadesBundle\Repository\StatusApplicationRepository")
  */
-class Statusapplication extends Status
-{
+class Statusapplication extends Status {
+    
 }

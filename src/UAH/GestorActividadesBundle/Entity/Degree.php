@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Entity;
@@ -146,8 +147,7 @@ class Degree
      * @param  \UAH\GestorActividadesBundle\Entity\Statusdegree $status
      * @return Degree
      */
-    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusdegree $status = null)
-    {
+    public function setStatus(\UAH\GestorActividadesBundle\Entity\Statusdegree $status = null) {
         $this->status = $status;
 
         return $this;
@@ -158,27 +158,24 @@ class Degree
      *
      * @return \UAH\GestorActividadesBundle\Entity\Statusdegree
      */
-    public function getStatus()
-    {
+    public function getStatus() {
         return $this->status;
     }
 
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->degree_students = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
      * Add degree_students
      *
-     * @param  \UAH\GestorActividadesBundle\Entity\User $degreeStudents
+     * @param \UAH\GestorActividadesBundle\Entity\User $degreeStudents
      * @return Degree
      */
-    public function addDegreeStudent(\UAH\GestorActividadesBundle\Entity\User $degreeStudents)
-    {
+    public function addDegreeStudent(\UAH\GestorActividadesBundle\Entity\User $degreeStudents) {
         $this->degree_students[] = $degreeStudents;
 
         return $this;
@@ -189,18 +186,17 @@ class Degree
      *
      * @param \UAH\GestorActividadesBundle\Entity\User $degreeStudents
      */
-    public function removeDegreeStudent(\UAH\GestorActividadesBundle\Entity\User $degreeStudents)
-    {
+    public function removeDegreeStudent(\UAH\GestorActividadesBundle\Entity\User $degreeStudents) {
         $this->degree_students->removeElement($degreeStudents);
     }
 
     /**
      * Get degree_students
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getDegreeStudents()
-    {
+    public function getDegreeStudents() {
         return $this->degree_students;
     }
+
 }

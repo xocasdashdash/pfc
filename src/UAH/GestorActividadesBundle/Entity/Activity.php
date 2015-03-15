@@ -20,6 +20,7 @@ use Doctrine\ORM\Mapping\PostUpdate;
 use Doctrine\ORM\Mapping\PostRemove;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use UAH\GestorActividadesBundle\Entity\Degree as Degree;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use UAH\GestorActividadesBundle\Repository\ActivityRepository;
 
@@ -151,7 +152,7 @@ class Activity
      *
      * @Column(name="numberOfPlacesOffered", type="integer", nullable=true)
      */
-    private $numberOfPlacesOffered = null;
+    private $numberOfPlacesOffered = NULL;
 
     /**
      * @var integer
@@ -183,7 +184,7 @@ class Activity
 
     /**
      * @var string Path a la imagen que voy a guardar
-     *
+     * 
      * @Column(name="image_path", type="string")
      */
     private $image_path;
@@ -201,16 +202,16 @@ class Activity
     private $enrollees;
 
     /**
-     *
+     * 
      * @var date Fecha en la que comienza la actividad. Una vez comenzada nadie se puede desapuntar
-     * @Column(name="start_date",type="datetime", nullable=false)
+     * @Column(name="start_date",type="datetime", nullable=false) 
      */
     private $start_date;
 
     /**
-     *
+     * 
      * @var date Fecha en la que comienza la actividad. Una vez comenzada nadie se puede desapuntar
-     * @Column(name="finish_date",type="datetime", nullable=false)
+     * @Column(name="finish_date",type="datetime", nullable=false) 
      */
     private $finish_date;
 
@@ -222,13 +223,13 @@ class Activity
     private $organizer_name;
 
     /**
-     * @var string Columna que utilizo para cargar las fechas de celebración
+     * @var string Columna que utilizo para cargar las fechas de celebración 
      */
     private $celebrationDatesUnencoded;
 
     /**
      *
-     * @var string Uso este valor para cargar la fecha de publicidad
+     * @var string Uso este valor para cargar la fecha de publicidad 
      */
     private $publicityStartDateUnencoded;
 
@@ -239,30 +240,30 @@ class Activity
     private $socialMessage = "He encontrado esta actividad!";
 
     /**
-     *
-     * @var date Fecha en la que se creo la actividad.
-     * @Column(name="date_created",type="datetime", nullable=false)
+     * 
+     * @var date Fecha en la que se creo la actividad. 
+     * @Column(name="date_created",type="datetime", nullable=false) 
      */
     private $date_created;
 
     /**
-     *
+     * 
      * @var date Fecha en la que modificó por última vez la actividad.
-     * @Column(name="date_modified",type="datetime", nullable=false)
+     * @Column(name="date_modified",type="datetime", nullable=false) 
      */
     private $date_modified;
 
     /**
-     *
+     * 
      * @var date Fecha en la que se aprueba la actividad.
-     * @Column(name="date_approved",type="datetime", nullable=true)
+     * @Column(name="date_approved",type="datetime", nullable=true) 
      */
     private $date_approved;
 
     /**
-     *
-     * @var date Fecha en la que se solicita el aprobar la actividad.
-     * @Column(name="date_pending_approval",type="datetime", nullable=false)
+     * 
+     * @var date Fecha en la que se solicita el aprobar la actividad. 
+     * @Column(name="date_pending_approval",type="datetime", nullable=false) 
      */
     private $date_pending_approval;
 
@@ -460,10 +461,8 @@ class Activity
      * @param  \DateTime $publicityStartDate
      * @return Activity
      */
-    public function setPublicityStartDate(\DateTime $publicityStartDate)
-    {
+    public function setPublicityStartDate(\DateTime $publicityStartDate) {
         $this->publicityStartDate = $publicityStartDate;
-
         return $this;
     }
 
@@ -804,8 +803,7 @@ class Activity
      *
      * @return string
      */
-    public function getImagePath()
-    {
+    public function getImagePath() {
         return $this->getImageWebPath(); //image_path;
     }
 
@@ -860,8 +858,8 @@ class Activity
      * @PrePersist
      * @PreUpdate
      */
-    public function preUpload(LifecycleEventArgs $event)
-    {
+    public function preUpload(LifecycleEventArgs $event) {
+
         // Genero un slug para cada actividad
         // replace non letter or digits by -
         $slug = preg_replace('~[^\\pL\d]+~u', '-', $this->getName());
@@ -875,7 +873,7 @@ class Activity
         $slug = preg_replace('~[^-\w]+~', '', $slug);
 
         if (empty($slug)) {
-            $slug = 'n-a'.uniqid();
+            $slug = 'n-a' . uniqid();
         }
         $this->setSlug($slug);
 
@@ -940,6 +938,62 @@ class Activity
         } else {
             $this->setIndexFilter('category-no-pillada');
         }
+        if (is_null($this->getStatus())) {
+            $em = $event->getEntityManager();
+            $default_status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getDefault();
+            $this->setStatus($default_status);
+        }
+        //Modifico la fecha de inicio teniendo en cuenta la primera que se pone como de celebracion
+        //$this->setCelebrationDates(json_encode($this->getCelebrationDatesUnencoded()));
+        if ($this->getNumberOfPlacesOffered() === 0) {
+            $this->setNumberOfPlacesOffered(NULL);
+        }
+        $fechas = ($this->getCelebrationDates());
+        sort($fechas);
+        $this->setStartDate(new \DateTime(date("c", $fechas[0])));
+        $this->setFinishDate(new \DateTime(date("c", end($fechas))));
+
+        if ($this->getPublicityStartDate() === null) {
+            $this->setPublicityStartDate(new \DateTime(date("c", time())));
+        }
+
+        if (!is_null($this->getCategories())) {
+            $index_filter = '';
+            $category_slug = '';
+            foreach ($this->getCategories() as $category) {
+                if (!is_null($category->getParentCategory())) {
+                    $index_filter .= " category-" . $category->getParentCategory()->getId();
+                    $category_slug .= $category->getParentCategory()->getName() . ", ";
+                }
+            }
+            //var_dump($this->getCategories());
+            if (!is_array($this->getCategories())) {
+                $this->setIndexFilter($index_filter . " " .
+                        implode(" ", array_map(function($category) {
+                                    return "category-" . $category->getId();
+                                }, $this->getCategories()->toArray())
+                ));
+                $this->setCategorySlug(chop($category_slug . " " .
+                                implode(" ", array_map(function($category) {
+                                            return $category->getName() . ", ";
+                                        }, $this->getCategories()->toArray())
+                                ), ", "));
+            } else {
+                $this->setIndexFilter($index_filter . " " .
+                        implode(" ", array_map(function($category) {
+                                    return "category-" . $category->getId();
+                                }, $this->getCategories())
+                ));
+                $this->setCategorySlug(chop($category_slug . " " .
+                                implode(" ", array_map(function($category) {
+                                            return $category->getName() . ", ";
+                                        }, $this->getCategories())
+                                ), ", "));
+                $this->setCategorySlug($this->getCategorySlug());
+            }
+        } else {
+            $this->setIndexFilter('category-no-pillada');
+        }
     }
 
     /**
@@ -980,11 +1034,11 @@ class Activity
     /**
      * Set start_date
      *
-     * @param  \DateTime $startDate
+     * @param \DateTime $startDate
      * @return Activity
      */
-    public function setStartDate(\Datetime $startDate)
-    {
+    public function setStartDate(\Datetime $startDate) {
+
         $this->start_date = $startDate;
 
         return $this;
@@ -993,21 +1047,19 @@ class Activity
     /**
      * Get start_date
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
-    public function getStartDate()
-    {
+    public function getStartDate() {
         return $this->start_date;
     }
 
     /**
      * Add enrollees
      *
-     * @param  \UAH\GestorActividadesBundle\Entity\Enrollment $enrollees
+     * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollees
      * @return Activity
      */
-    public function addEnrollee(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollees)
-    {
+    public function addEnrollee(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollees) {
         $this->enrollees[] = $enrollees;
 
         return $this;
@@ -1018,29 +1070,26 @@ class Activity
      *
      * @param \UAH\GestorActividadesBundle\Entity\Enrollment $enrollees
      */
-    public function removeEnrollee(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollees)
-    {
+    public function removeEnrollee(\UAH\GestorActividadesBundle\Entity\Enrollment $enrollees) {
         $this->enrollees->removeElement($enrollees);
     }
 
     /**
      * Get enrollees
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getEnrollees()
-    {
+    public function getEnrollees() {
         return $this->enrollees;
     }
 
     /**
      * Set finish_date
      *
-     * @param  \DateTime $finishDate
+     * @param \DateTime $finishDate
      * @return Activity
      */
-    public function setFinishDate($finishDate)
-    {
+    public function setFinishDate($finishDate) {
         $this->finish_date = $finishDate;
 
         return $this;
@@ -1049,21 +1098,19 @@ class Activity
     /**
      * Get finish_date
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
-    public function getFinishDate()
-    {
+    public function getFinishDate() {
         return $this->finish_date;
     }
 
     /**
      * Set organizer_name
      *
-     * @param  string   $organizerName
+     * @param string $organizerName
      * @return Activity
      */
-    public function setOrganizerName($organizerName)
-    {
+    public function setOrganizerName($organizerName) {
         $this->organizer_name = $organizerName;
 
         return $this;
@@ -1072,15 +1119,13 @@ class Activity
     /**
      * Get organizer_name
      *
-     * @return string
+     * @return string 
      */
-    public function getOrganizerName()
-    {
+    public function getOrganizerName() {
         return $this->organizer_name;
     }
 
-    public function setCelebrationDatesUnencoded($celebrationDatesUnencoded)
-    {
+    public function setCelebrationDatesUnencoded($celebrationDatesUnencoded) {
         $this->celebrationDatesUnencoded = $celebrationDatesUnencoded;
         $fechas = split(",", $celebrationDatesUnencoded);
         $fechas_encoded = array();
@@ -1088,41 +1133,36 @@ class Activity
             $fechas_encoded[] = \DateTime::createFromFormat("d/m/Y", $fecha)->getTimeStamp();
         }
         $this->setCelebrationDates($fechas_encoded);
-
         return $this;
     }
 
-    public function getCelebrationDatesUnencoded()
-    {
+    public function getCelebrationDatesUnencoded() {
+
         $fechas = $this->getCelebrationDates();
         $resultado = '';
         if ($fechas !== null) {
             foreach ($fechas as $fecha) {
-                $resultado .= date("d/m/Y", $fecha).(($fecha === end($fechas)) ? "" : ",");
+                $resultado.=date("d/m/Y", $fecha) . (($fecha === end($fechas)) ? "" : ",");
             }
         }
-
         return $resultado;
     }
 
-    public function setPublicityStartDateUnencoded($publicityStartDateUnencoded)
-    {
+    public function setPublicityStartDateUnencoded($publicityStartDateUnencoded) {
         if ($publicityStartDateUnencoded === null) {
             $this->setPublicityStartDate(new \DateTime(date("c", time())));
         } else {
             $this->publicityStartDateUnencoded = $publicityStartDateUnencoded;
             $this->setPublicityStartDate(\DateTime::createFromFormat("d/m/Y", $publicityStartDateUnencoded));
         }
-
         return $this;
     }
 
-    public function getPublicityStartDateUnencoded()
-    {
+    public function getPublicityStartDateUnencoded() {
         $fecha = $this->getPublicityStartDate();
         if ($fecha instanceof \DateTime) {
             return $fecha->format("d/m/Y");
-        } elseif ($fecha != null) {
+        } else if ($fecha != null) {
             return date("d/m/Y", $fecha);
         }
     }
@@ -1130,11 +1170,10 @@ class Activity
     /**
      * Set socialMessage
      *
-     * @param  string   $socialMessage
+     * @param string $socialMessage
      * @return Activity
      */
-    public function setSocialMessage($socialMessage)
-    {
+    public function setSocialMessage($socialMessage) {
         $this->socialMessage = $socialMessage;
 
         return $this;
@@ -1143,21 +1182,19 @@ class Activity
     /**
      * Get socialMessage
      *
-     * @return string
+     * @return string 
      */
-    public function getSocialMessage()
-    {
+    public function getSocialMessage() {
         return $this->socialMessage;
     }
 
     /**
      * Set date_created
      *
-     * @param  \DateTime $dateCreated
+     * @param \DateTime $dateCreated
      * @return Activity
      */
-    public function setDateCreated($dateCreated)
-    {
+    public function setDateCreated($dateCreated) {
         $this->date_created = $dateCreated;
 
         return $this;
@@ -1166,21 +1203,19 @@ class Activity
     /**
      * Get date_created
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
-    public function getDateCreated()
-    {
+    public function getDateCreated() {
         return $this->date_created;
     }
 
     /**
      * Set date_modified
      *
-     * @param  \DateTime $dateModified
+     * @param \DateTime $dateModified
      * @return Activity
      */
-    public function setDateModified($dateModified)
-    {
+    public function setDateModified($dateModified) {
         $this->date_modified = $dateModified;
 
         return $this;
@@ -1189,21 +1224,19 @@ class Activity
     /**
      * Get date_modified
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
-    public function getDateModified()
-    {
+    public function getDateModified() {
         return $this->date_modified;
     }
 
     /**
      * Set date_approved
      *
-     * @param  \DateTime $dateApproved
+     * @param \DateTime $dateApproved
      * @return Activity
      */
-    public function setDateApproved($dateApproved)
-    {
+    public function setDateApproved($dateApproved) {
         $this->date_approved = $dateApproved;
 
         return $this;
@@ -1212,21 +1245,19 @@ class Activity
     /**
      * Get date_approved
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
-    public function getDateApproved()
-    {
+    public function getDateApproved() {
         return $this->date_approved;
     }
 
     /**
      * Set date_pending_approval
      *
-     * @param  \DateTime $datePendingApproval
+     * @param \DateTime $datePendingApproval
      * @return Activity
      */
-    public function setDatePendingApproval($datePendingApproval)
-    {
+    public function setDatePendingApproval($datePendingApproval) {
         $this->date_pending_approval = $datePendingApproval;
 
         return $this;
@@ -1235,21 +1266,19 @@ class Activity
     /**
      * Get date_pending_approval
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
-    public function getDatePendingApproval()
-    {
+    public function getDatePendingApproval() {
         return $this->date_pending_approval;
     }
 
     /**
      * Add categories
      *
-     * @param  \UAH\GestorActividadesBundle\Entity\Category $categories
+     * @param \UAH\GestorActividadesBundle\Entity\Category $categories
      * @return Activity
      */
-    public function addCategory(\UAH\GestorActividadesBundle\Entity\Category $categories)
-    {
+    public function addCategory(\UAH\GestorActividadesBundle\Entity\Category $categories) {
         $this->categories[] = $categories;
 
         return $this;
@@ -1260,29 +1289,26 @@ class Activity
      *
      * @param \UAH\GestorActividadesBundle\Entity\Category $categories
      */
-    public function removeCategory(\UAH\GestorActividadesBundle\Entity\Category $categories)
-    {
+    public function removeCategory(\UAH\GestorActividadesBundle\Entity\Category $categories) {
         $this->categories->removeElement($categories);
     }
 
     /**
      * Get categories
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getCategories()
-    {
+    public function getCategories() {
         return $this->categories;
     }
 
     /**
      * Set index_filter
      *
-     * @param  string   $indexFilter
+     * @param string $indexFilter
      * @return Activity
      */
-    public function setIndexFilter($indexFilter)
-    {
+    public function setIndexFilter($indexFilter) {
         $this->index_filter = $indexFilter;
 
         return $this;
@@ -1291,21 +1317,19 @@ class Activity
     /**
      * Get index_filter
      *
-     * @return string
+     * @return string 
      */
-    public function getIndexFilter()
-    {
+    public function getIndexFilter() {
         return $this->index_filter;
     }
 
     /**
      * Set category_slug
      *
-     * @param  string   $categorySlug
+     * @param string $categorySlug
      * @return Activity
      */
-    public function setCategorySlug($categorySlug)
-    {
+    public function setCategorySlug($categorySlug) {
         $this->category_slug = $categorySlug;
 
         return $this;
@@ -1314,10 +1338,10 @@ class Activity
     /**
      * Get category_slug
      *
-     * @return string
+     * @return string 
      */
-    public function getCategorySlug()
-    {
+    public function getCategorySlug() {
         return $this->category_slug;
     }
+
 }

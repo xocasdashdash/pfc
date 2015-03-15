@@ -1,9 +1,9 @@
 {% extends '::backend.html.twig' %}
 {% block stylesheets %}
     {{ parent() }}
-    {% stylesheets
+    {% stylesheets 
         '@UAHGestorActividadesBundle/Resources/public/css/backend/application.less'%}
-    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />          
     {% endstylesheets %}
 {% endblock %}
 {% block javascripts %}
@@ -35,7 +35,7 @@
     </div>
 {% endblock %}
 {% block content %}
-    <div class="row table-style">
+    <div class="row" style="padding-top:20px;">
         <div class="page-break"></div>
 
         <table class="table table-bordered tbl_applications">
@@ -44,8 +44,8 @@
                     <th>#</th>
                     <th>Justificante...</th>
                     <th>Número de cŕeditos del justificante</th>
-                    <th>Fecha de creación</th>
-                    <th>Fecha de verificación</th>
+                    <th>Fecha de creación</th>                    
+                    <th>Fecha de verificación</th>                    
                     <th>Seleccionar</th>
                 </tr>
             </thead>
