@@ -32,6 +32,7 @@ use UAH\GestorActividadesBundle\Repository\ActivityRepository;
  */
 class Activity
 {
+
     /**
      * @var integer
      *
@@ -543,7 +544,7 @@ class Activity
      */
     public function getNumberOfPlacesOffered()
     {
-        return $this->numberOfPlacesOffered;
+        return is_null($this->numberOfPlacesOffered) ? 0 : $this->numberOfPlacesOffered;
     }
 
     /**
@@ -834,19 +835,19 @@ class Activity
 
     public function getAbsolutePath()
     {
-        return null === $this->image_path ? null : $this->getUploadRootDir().'/'.$this->image_path;
+        return null === $this->image_path ? null : $this->getUploadRootDir() . '/' . $this->image_path;
     }
 
     public function getImageWebPath()
     {
-        return null === $this->image_path ? null : $this->getUploadDir().'/'.$this->image_path;
+        return null === $this->image_path ? null : $this->getUploadDir() . '/' . $this->image_path;
     }
 
     protected function getUploadRootDir()
     {
         // the absolute directory path where uploaded
         // documents should be saved
-        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+        return __DIR__ . '/../../../../web/' . $this->getUploadDir();
     }
 
     protected function getUploadDir()
@@ -875,14 +876,14 @@ class Activity
         $slug = preg_replace('~[^-\w]+~', '', $slug);
 
         if (empty($slug)) {
-            $slug = 'n-a'.uniqid();
+            $slug = 'n-a' . uniqid();
         }
         $this->setSlug($slug);
 
         if (null !== $this->getImageBlob()) {
             // do whatever you want to generate a unique name
-            $filename = sha1($this->getSlug().uniqid(mt_rand(), true));
-            $this->image_path = $filename.'.'.$this->getImageBlob()->guessExtension();
+            $filename = sha1($this->getSlug() . uniqid(mt_rand(), true));
+            $this->image_path = $filename . '.' . $this->getImageBlob()->guessExtension();
         }
         if (is_null($this->getStatus())) {
             $em = $event->getEntityManager();
@@ -908,31 +909,31 @@ class Activity
             $category_slug = '';
             foreach ($this->getCategories() as $category) {
                 if (!is_null($category->getParentCategory())) {
-                    $index_filter .= " category-".$category->getParentCategory()->getId();
-                    $category_slug .= $category->getParentCategory()->getName().", ";
+                    $index_filter .= " category-" . $category->getParentCategory()->getId();
+                    $category_slug .= $category->getParentCategory()->getName() . ", ";
                 }
             }
             //var_dump($this->getCategories());
             if (!is_array($this->getCategories())) {
-                $this->setIndexFilter($index_filter." ".
+                $this->setIndexFilter($index_filter . " " .
                         implode(" ", array_map(function ($category) {
-                                    return "category-".$category->getId();
+                                    return "category-" . $category->getId();
                                 }, $this->getCategories()->toArray())
                 ));
-                $this->setCategorySlug(chop($category_slug." ".
+                $this->setCategorySlug(chop($category_slug . " " .
                                 implode(" ", array_map(function ($category) {
-                                            return $category->getName().", ";
+                                            return $category->getName() . ", ";
                                         }, $this->getCategories()->toArray())
                                 ), ", "));
             } else {
-                $this->setIndexFilter($index_filter." ".
+                $this->setIndexFilter($index_filter . " " .
                         implode(" ", array_map(function ($category) {
-                                    return "category-".$category->getId();
+                                    return "category-" . $category->getId();
                                 }, $this->getCategories())
                 ));
-                $this->setCategorySlug(chop($category_slug." ".
+                $this->setCategorySlug(chop($category_slug . " " .
                                 implode(" ", array_map(function ($category) {
-                                            return $category->getName().", ";
+                                            return $category->getName() . ", ";
                                         }, $this->getCategories())
                                 ), ", "));
                 $this->setCategorySlug($this->getCategorySlug());
@@ -960,7 +961,7 @@ class Activity
         // check if we have an old image
         if (isset($this->temp)) {
             // delete the old image
-            unlink($this->getUploadRootDir().'/'.$this->temp);
+            unlink($this->getUploadRootDir() . '/' . $this->temp);
             // clear the temp image path
             $this->temp = null;
         }
@@ -1098,7 +1099,7 @@ class Activity
         $resultado = '';
         if ($fechas !== null) {
             foreach ($fechas as $fecha) {
-                $resultado .= date("d/m/Y", $fecha).(($fecha === end($fechas)) ? "" : ",");
+                $resultado .= date("d/m/Y", $fecha) . (($fecha === end($fechas)) ? "" : ",");
             }
         }
 
@@ -1320,4 +1321,10 @@ class Activity
     {
         return $this->category_slug;
     }
+
+    public function hasFreePlaces()
+    {
+        return $this->getNumberOfPlacesOccupied() < $this->getNumberOfPlacesOffered();
+    }
+
 }

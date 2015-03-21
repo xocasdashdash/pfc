@@ -9,22 +9,34 @@ namespace UAH\GestorActividadesBundle\Services;
  */
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class JSONHelperService
 {
 
     const ERROR_CSRF_TOKEN_INVALID = -3;
 
-    protected $container;
+    protected $csrf_provider;
 
-    public function __construct(Container $container)
+    public function setCSRFProvider(CsrfTokenManagerInterface $csrf_provider)
     {
-        $this->container = $container;
+        $this->csrf_provider = $csrf_provider;
+    }
+
+    /**
+     * 
+     * @return CsrfTokenManagerInterface
+     */
+    public function getCSRFProvider()
+    {
+        return $this->csrf_provider;
     }
 
     public function generateResponseFromException(\Exception $ex)
     {
+        if (is_subclass_of($ex, '\UAH\GestorActividadesBundle\Exceptions\AbstractException')) {
+            return JsonResponse($ex->getJSONResponse(), $ex->getHttpCode());
+        }
         $response = array();
         $response['message'] = $ex->getMessage();
         $response['code'] = $ex->getCode();
@@ -34,9 +46,7 @@ class JSONHelperService
     public function generateInvalidCSRFTokenResponse($intention)
     {
         $response = array();
-        /* @var $formCSRFProvider \Symfony\Component\Form\Extension\Csrf\CsrfProvider\CsrfTokenManagerAdapter */
-        $formCSRFProvider = $this->container->get('form.csrf_provider');
-        $token = $formCSRFProvider->generateCsrfToken($intention);
+        $token = $this->getCSRFProvider()->getToken($intention);
         $response['code'] = self::ERROR_CSRF_TOKEN_INVALID;
         $response['message'] = 'El token CSRF no es válido. Intentalo de nuevo';
         $response['type'] = 'error';

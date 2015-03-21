@@ -12,6 +12,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class StatusDegreeRepository extends EntityRepository
 {
+
+    /**
+     * 
+     * @return \UAH\GestorActividadesBundle\Entity\Statusdegree[]
+     */
     public function getActive()
     {
         $dql = "SELECT sd from UAHGestorActividadesBundle:Statusdegree sd where sd.code = 'STATUS_RENEWED' or sd.code ='STATUS_NON_RENEWED'";
@@ -20,21 +25,37 @@ class StatusDegreeRepository extends EntityRepository
         return $consulta->getResult();
     }
 
+    /**
+     * 
+     * @return \UAH\GestorActividadesBundle\Entity\Statusdegree
+     */
     public function getRenewed()
     {
         return $this->getByStatus('STATUS_RENEWED');
     }
 
+    /**
+     * 
+     * @return \UAH\GestorActividadesBundle\Entity\Statusdegree
+     */
     public function getNotRenewed()
     {
         return $this->getByStatus('STATUS_NON_RENEWED');
     }
 
+    /**
+     * 
+     * @return \UAH\GestorActividadesBundle\Entity\Statusdegree
+     */
     public function getInactive()
     {
         return $this->getByStatus('STATUS_INACTIVE');
     }
 
+    /**
+     * 
+     * @return \UAH\GestorActividadesBundle\Entity\Statusdegree
+     */
     private function getByStatus($status)
     {
         $dql = "SELECT sd from UAHGestorActividadesBundle:Statusdegree sd where sd.code = :code";
@@ -43,4 +64,5 @@ class StatusDegreeRepository extends EntityRepository
 
         return $consulta->getSingleResult();
     }
+
 }

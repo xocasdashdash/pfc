@@ -21,10 +21,10 @@ class ApplicationService
     protected $applicationRepository;
     protected $em;
 
-    public function __construct(EntityManager $em, ApplicationRepository $ar, EnrollmentService $es)
+    public function __construct(EntityManager $em, ApplicationRepository $applicationRepository)
     {
         $this->em = $em;
-        $this->applicationRepository = $ar;
+        $this->applicationRepository = $applicationRepository;
     }
 
     /**
