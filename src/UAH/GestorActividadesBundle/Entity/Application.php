@@ -19,7 +19,10 @@ use Doctrine\ORM\Mapping\Entity;
  */
 class Application
 {
-    //put your code here
+
+    const APPLICATION_TYPE_OF_CREDITS_ECTS = 'ECTS';
+    const APPLICATION_TYPE_OF_CREDITS_LIBRE = 'LIBRE';
+
     /**
      * @var integer Id
      * @Column(name="id", type="integer")
@@ -72,6 +75,13 @@ class Application
      * @JoinColumn(name="verified_by_id", referencedColumnName="id", nullable=true,onDelete="SET NULL")
      */
     private $verifiedByUser;
+
+    /**
+     *
+     * @var string 
+     * @Column(name="typeOfCredits", type="string")
+     */
+    private $typeOfCredits;
 
     /**
      * Get id
@@ -141,7 +151,7 @@ class Application
         end($arr_resultado);
         $end_key = key($arr_resultado);
         foreach ($arr_resultado as $key => $arr) {
-            $resultado .= $arr.($key === $end_key ? "" : $separador);
+            $resultado .= $arr . ($key === $end_key ? "" : $separador);
         }
 
         return $resultado;
@@ -181,7 +191,7 @@ class Application
     /**
      * Get enrollments
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Enrollment[]
      */
     public function getEnrollments()
     {
@@ -290,4 +300,19 @@ class Application
     {
         return $this->verifiedByUser;
     }
+
+    public function getTypeOfCredits()
+    {
+        return $this->typeOfCredits;
+    }
+
+    /**
+     * 
+     * @param string $typeOfCredits
+     */
+    public function setTypeOfCredits($typeOfCredits)
+    {
+        $this->typeOfCredits = $typeOfCredits;
+    }
+
 }

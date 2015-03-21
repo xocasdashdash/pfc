@@ -145,33 +145,10 @@ class EnrollmentRepository extends EntityRepository
         return $results;
     }
 
-    /**
-     *
-     * @param \UAH\GestorActividadesBundle\Entity\Activity $activity Actividad que voy a cargar
-     */
-    /*
-      SELECT e.id, e.activity, se.status as status_enrollment, sd.status as status_degree FROM UAHGestorActividadesBundle:Enrollment e JOIN UAHGestorActividadesBundle:User u WITH u.id = e.user JOIN UAHGestorActividadesBundle:Statusenrollment se WITH e.status = se.id JOIN UAHGestorActividadesBundle:Degree d WITH d.id = u.degree_id JOIN UAHGestorActividadesBundle:Statusdegree sd WITH d.status = sd.id JOIN UAHGestorActividadesBundle:Activity a WITH e.activity = a.id WHERE e.enrollment.id IN (:enrollments)
-     */
     public function getEnrollmentsByID($enrollments)
     {
         $em = $this->getEntityManager();
         if (count($enrollments) > 0) {
-            //        $dql = " SELECT e.id, a, " .
-//                " se.code as status_enrollment, " .
-//                " sd.code as status_degree " .
-//                " FROM UAHGestorActividadesBundle:Enrollment e " .
-//                " JOIN UAHGestorActividadesBundle:User u " .
-//                " WITH u.id = e.user " .
-//                " JOIN UAHGestorActividadesBundle:Statusenrollment se " .
-//                " WITH e.status = se.id " .
-//                " JOIN UAHGestorActividadesBundle:Degree d " .
-//                " WITH d.id = u.degree_id " .
-//                " JOIN UAHGestorActividadesBundle:Statusdegree sd " .
-//                " WITH d.status = sd.id " .
-//                " JOIN UAHGestorActividadesBundle:Activity a " .
-//                " WITH e.activity = a.id " .
-//                " WHERE e IN (:enrollments) " .
-//                " ORDER BY e.id ASC";
             $dql = " SELECT e ".
                     " FROM UAHGestorActividadesBundle:Enrollment e ".
                     " WHERE e IN (:enrollments) ".
@@ -179,10 +156,9 @@ class EnrollmentRepository extends EntityRepository
             $consulta = $em->createQuery($dql);
             $consulta->setParameter('enrollments', $enrollments);
             $results = $consulta->getResult();
-
             return $results;
         } else {
-            return;
+            return array();
         }
     }
 }

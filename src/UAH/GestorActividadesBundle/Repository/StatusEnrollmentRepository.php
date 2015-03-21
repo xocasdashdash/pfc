@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityRepository;
 
 class StatusEnrollmentRepository extends EntityRepository
 {
+
     /**
      *
      * @return Esta funcion devuelve el valor por defecto que tienen los enrollment.
@@ -19,7 +20,7 @@ class StatusEnrollmentRepository extends EntityRepository
     public function getDefault()
     {
         $resultado = $this->findOneBy(array(
-            'code' => 'STATUS_ENROLLED', ));
+            'code' => 'STATUS_ENROLLED',));
 
         return $resultado;
     }
@@ -31,7 +32,7 @@ class StatusEnrollmentRepository extends EntityRepository
     public function getInactive()
     {
         $resultado = $this->findOneBy(array(
-            'code' => 'STATUS_UNENROLLED', ));
+            'code' => 'STATUS_UNENROLLED',));
 
         return $resultado;
     }
@@ -57,16 +58,17 @@ class StatusEnrollmentRepository extends EntityRepository
     }
 
     /**
-     *
-     * @return Esta funcion devuelve el valor por defecto que tienen los enrollment reconocidos.
+     * Esta funcion devuelve el valor por defecto que tienen los enrollment reconocidos.
+     * @return \UAH\GestorActividadesBundle\Entity\Statusenrollment
      */
     public function getRecognizedStatus()
     {
         $resultado = $this->findOneBy(array(
-            'code' => 'STATUS_RECOGNIZED', ));
-
+            'code' => 'STATUS_RECOGNIZED',));
+        /* @var $resultado \UAH\GestorActividadesBundle\Entity\Statusenrollment */
         return $resultado;
     }
+
     /**
      *
      * @return Esta funcion devuelve el valor por defecto que tienen los enrollment reconocidos.
@@ -74,10 +76,11 @@ class StatusEnrollmentRepository extends EntityRepository
     public function getEnrolledStatus()
     {
         $resultado = $this->findOneBy(array(
-            'code' => 'STATUS_ENROLLED', ));
+            'code' => 'STATUS_ENROLLED',));
 
         return $resultado;
     }
+
     /**
      *
      * @return Esta funcion devuelve el valor por defecto que tienen los enrollment reconocidos.
@@ -85,7 +88,7 @@ class StatusEnrollmentRepository extends EntityRepository
     public function getPendingVerificationStatus()
     {
         $resultado = $this->findOneBy(array(
-            'code' => 'STATUS_PENDING_VERIFICATION', ));
+            'code' => 'STATUS_PENDING_VERIFICATION',));
 
         return $resultado;
     }
@@ -97,10 +100,11 @@ class StatusEnrollmentRepository extends EntityRepository
     public function getNotRecognizedStatus()
     {
         $resultado = $this->findOneBy(array(
-            'code' => 'STATUS_NOT_RECOGNIZED', ));
+            'code' => 'STATUS_NOT_RECOGNIZED',));
 
         return $resultado;
     }
+
     /**
      *
      * @return Esta funcion devuelve el valor por defecto que tienen los enrollment verificados.
@@ -108,8 +112,9 @@ class StatusEnrollmentRepository extends EntityRepository
     public function getVerified()
     {
         $resultado = $this->findOneBy(array(
-            'code' => 'STATUS_VERIFIED', ));
+            'code' => 'STATUS_VERIFIED',));
 
         return $resultado;
     }
+
 }

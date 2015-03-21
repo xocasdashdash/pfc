@@ -26,6 +26,8 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
  */
 class User implements UserInterface
 {
+    const CREDIT_TYPE_ECTS = 'ECTS';
+    const CREDIT_TYPE_LIBRE = 'LIBRE';
     /**
      * @var integer
      *
@@ -113,7 +115,7 @@ class User implements UserInterface
      * @ManyToOne(targetEntity="Degree", inversedBy="degree_students")
      * @JoinColumn(name="degree_id", referencedColumnName="id", nullable=true,onDelete="SET NULL")
      */
-    private $degree_id;
+    private $degree;
 
     /**
      * @ManyToMany(targetEntity="Role", inversedBy="users",cascade={"persist"})
@@ -238,12 +240,12 @@ class User implements UserInterface
     /**
      * Set degreeId
      *
-     * @param  \UAH\GestorActividadesBundle\Entity\Degree $degree_id
+     * @param  \UAH\GestorActividadesBundle\Entity\Degree $degree
      * @return User
      */
-    public function setDegreeId(\UAH\GestorActividadesBundle\Entity\Degree $degree_id)
+    public function setDegree(\UAH\GestorActividadesBundle\Entity\Degree $degree)
     {
-        $this->degree_id = $degree_id;
+        $this->degree = $degree;
 
         return $this;
     }
@@ -253,9 +255,9 @@ class User implements UserInterface
      *
      * @return \UAH\GestorActividadesBundle\Entity\Degree
      */
-    public function getDegreeId()
+    public function getDegree()
     {
-        return $this->degree_id;
+        return $this->degree;
     }
 
     public function eraseCredentials()
@@ -597,7 +599,7 @@ class User implements UserInterface
         $resultado &= strlen($this->getApellido1()) > 0;
         $resultado &= strlen($this->getDocumentoIdentidad()) > 0;
         $resultado &= strlen($this->getEmail()) > 0;
-        $resultado &= (is_null($this->getDegreeId()) === false);
+        $resultado &= (is_null($this->getDegree()) === false);
         $resultado &= strlen($this->getTipoDocumentoIdentidad()) > 0;
 
         return $resultado;
@@ -605,13 +607,13 @@ class User implements UserInterface
 
     public function getCreditsType()
     {
-        $degree = $this->getDegreeId();
+        $degree = $this->getDegree();
         if (!is_null($degree)) {
             if ($degree->getStatus()->getCode() === 'STATUS_RENEWED') {
-                return 'ECTS';
+                return self::CREDIT_TYPE_ECTS;
             }
             if ($degree->getStatus()->getCode() === 'STATUS_NON_RENEWED') {
-                return 'LIBRE';
+                return self::CREDIT_TYPE_LIBRE;
             }
         } else {
             return;

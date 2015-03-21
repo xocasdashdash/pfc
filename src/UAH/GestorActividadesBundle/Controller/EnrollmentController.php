@@ -141,8 +141,8 @@ class EnrollmentController extends Controller
                     continue;
                 }
                 //Compruebo el estado del grado. Grados no activos no pueden calcular sus créditos
-                if (!($enrollment->getUser()->getDegreeId()->getStatus()->getCode() == "STATUS_RENEWED") &&
-                        !($enrollment->getUser()->getDegreeId()->getStatus()->getCode() == "STATUS_NON_RENEWED")) {
+                if (!($enrollment->getUser()->getDegree()->getStatus()->getCode() == "STATUS_RENEWED") &&
+                        !($enrollment->getUser()->getDegree()->getStatus()->getCode() == "STATUS_NON_RENEWED")) {
                     $respuesta['type'] = 'error';
                     $respuesta['code'] = self::RECOGNIZEMENT_ERROR_NO_DEGREE;
                     $respuesta['message'] = 'No tiene un plan de estudios valido';
@@ -164,7 +164,7 @@ class EnrollmentController extends Controller
                         continue;
                     }
                 }
-                if ($enrollment->getUser()->getDegreeId()->getStatus()->getCode() == "STATUS_RENEWED") {
+                if ($enrollment->getUser()->getDegree()->getStatus()->getCode() == "STATUS_RENEWED") {
                     $num_credits_min = $activity->getNumberOfECTSCreditsMin();
                     $num_credits_max = $activity->getNumberOfECTSCreditsMax();
                     $creditsType = self::ENROLLMENT_ECTS_CREDITS;

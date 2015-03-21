@@ -24,7 +24,7 @@ class ProfileController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         if ($user) {
-            $degree = $user->getDegreeId();
+            $degree = $user->getDegree();
         }
         $roles = $this->getUser()->getUserRoles();
         $enrolled_activities = $em->getRepository('UAHGestorActividadesBundle:Enrollment')

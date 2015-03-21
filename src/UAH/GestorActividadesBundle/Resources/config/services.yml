@@ -29,3 +29,16 @@ services:
         class: UAH\GestorActividadesBundle\Twig\UAHNameExtension
         tags:
             - { name: twig.extension }
+    UAH.services.repository.ApplicationRepository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments:
+            - UAHGestorActividadesBundle\Application
+    uah.services.response_from_exception: "@uah.services.json_helper"
+    uah.services.invalid_token_response: "@uah.services.json_helper"
+    uah.services.json_helper:
+        class: UAH\GestorActividadesBundle\JSONHelperService
+    uah.services.application_service:
+        class: UAH\GestorActividadesBundle\ApplicationService
+        arguments: ['@doctrine.orm.entity_manager', '@UAH.services.repository.ApplicationRepository']
