@@ -9,15 +9,21 @@ use UAH\GestorActividadesBundle\Entity\OpenIdIdentity;
 use UAH\GestorActividadesBundle\Entity\DefaultPermit as DefaultPermit;
 use UAH\GestorActividadesBundle\Entity\User as User;
 use DateTime;
+use Psr\Log\LoggerInterface;
 
 class OpenIdUserManager extends UserManager
 {
+
+    protected $entityManager;
+    protected $logger;
+
     // we will use an EntityManager, so inject it via constructor
-    public function __construct(IdentityManagerInterface $identityManager, EntityManager $entityManager)
+    public function __construct(IdentityManagerInterface $identityManager, EntityManager $entityManager, LoggerInterface $logger)
     {
         parent::__construct($identityManager);
 
         $this->entityManager = $entityManager;
+        $this->logger = $logger;
     }
 
     /**
@@ -30,10 +36,11 @@ class OpenIdUserManager extends UserManager
      */
     public function createUserFromIdentity($identity, array $attributes = array())
     {
+        $this->logger->debug('Creando usuario...');
         //Capture the username and the domain
         $reg_ex = '/^https?:\/\/yo\.rediris\.es\/soy\/((.+)\.(.+))@(\w+)\.+[a-z]{2,4}\/?/';
         preg_match($reg_ex, $identity, $matches);
-        $email = $matches[1].'@edu.uah.es';
+        $email = $matches[1] . '@edu.uah.es';
         $name = $matches[2];
         $apellido = $matches[3];
 // put your user creation logic here
@@ -47,6 +54,7 @@ class OpenIdUserManager extends UserManager
         ));
 
         if (null === $user) {
+            $this->logger('Usuario no encontrado. Creandolo desde 0');
             $user = new User();
             $user->setEmail($email);
             $user->setName($name);
@@ -81,9 +89,10 @@ class OpenIdUserManager extends UserManager
             $this->entityManager->flush();
             $this->entityManager->clear();
         } catch (Exception $e) {
-            error_log("EXCEPCION".print_r($e, true));
+            error_log("EXCEPCION" . print_r($e, true));
         }
 
         return $user; // you must return an UserInterface instance (or throw an exception)
     }
+
 }

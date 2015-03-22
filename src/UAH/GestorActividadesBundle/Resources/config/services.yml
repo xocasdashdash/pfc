@@ -10,7 +10,7 @@ services:
         class: UAH\GestorActividadesBundle\Security\User\OpenIdUserManager
         # we used an EntityManager, so don't forget it in dependency injection
         # you may want to adapt it, only the IdentityManager is mandatory
-        arguments: [@fp_openid.identity_manager, @doctrine.orm.entity_manager]
+        arguments: [@fp_openid.identity_manager, @doctrine.orm.entity_manager, @logger]
 #    faker.provider.UAHStudentProvider:
 #        class: UAH\GestorActividadesBundle\DataFixtures\FakerProviders\UAHStudentProvider
 #        arguments: [@faker.generator]
