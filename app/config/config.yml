@@ -23,7 +23,7 @@ framework:
     http_method_override: true
     #Aqui va 
     session:
-        handler_id: session.handler.doctrine
+        handler_id: session.handler.pdo
 
 # Twig Configuration
 twig:
@@ -104,6 +104,12 @@ services:
         # Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
         class:     UAH\GestorActividadesBundle\Services\DoctrineSessionHandler 
         arguments: ["@doctrine.dbal.default_connection", "%doctrine.session.db_options%"]
+    session.handler.pdo:
+        class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        public:    false
+        arguments:
+            - "mysql:host=%database_host%;port=%database_port%;dbname=%database_name%"
+            - { db_username: %database_user%, db_password: %database_password%, db_table: 'UAH_GAT_Session'}        
 braincrafted_bootstrap:
     output_dir: bootstrap
     assets_dir: %vendor_dir%/bootstrap
