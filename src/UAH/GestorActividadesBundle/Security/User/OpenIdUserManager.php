@@ -88,8 +88,8 @@ class OpenIdUserManager extends UserManager
             $this->entityManager->persist($openIdIdentity);
             $this->entityManager->flush();
             $this->entityManager->clear();
-        } catch (Exception $e) {
-            error_log("EXCEPCION" . print_r($e, true));
+        } catch (\Exception $e) {
+            $this->logger->error("Excepcion al guardar identidad.Mensaje: {$e->getMessage()}, codigo: {$e->getCode()}");
         }
 
         return $user; // you must return an UserInterface instance (or throw an exception)

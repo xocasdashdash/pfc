@@ -70,7 +70,6 @@ class ActivityVoter implements VoterInterface
         if (!$user instanceof UserInterface) {
             return VoterInterface::ACCESS_DENIED;
         }
-        //error_log(strlen(($user,true)));
         switch ($attribute) {
             case 'view_':
                 // the data object could have for example a method isPrivate()
