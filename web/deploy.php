@@ -40,6 +40,8 @@ $commands = array(
     'git status',
     'php ../app/console assets:install --symlink web',
     'php ../app/console assetic:dump --env=prod',
+    'php ../app/console cache:clear --env=prod',
+    'bower install --config.cwd=..'
 );
 if (isset($_GET['install']) && $_GET['install'] === 'si') {
     $commands[] = 'composer install --no-dev -d ..';
