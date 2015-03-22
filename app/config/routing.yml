@@ -4,7 +4,9 @@ UAHGestorActividadesBundle_annotation:
     resource: "@UAHGestorActividadesBundle/Controller"
     type: annotation
 fp_openid_security:
-    resource: "@FpOpenIdBundle/Resources/config/routing/security.xml" 
+    resource: "@FpOpenIdBundle/Resources/config/routing/security.xml"
+    options:
+        expose: true
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 EndroidQrCodeBundle:

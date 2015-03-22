@@ -1,5 +1,5 @@
-$(window).load(function() {
-    $('.activities, .activity-modal, .activity').on('click', '.enroll-button', function(event) {
+$(window).load(function () {
+    $('.activities, .activity-modal, .activity').on('click', '.enroll-button', function (event) {
         var $id = $(this).data('activity-id');
         var $boton = $(this);
         $boton.html($('#ajax-loading-image').clone());
@@ -7,21 +7,21 @@ $(window).load(function() {
             type: "POST",
             url: Routing.generate('uah_gestoractividades_enrollment_enroll', {activity_id: $id}),
             statusCode: {
-                200: function() {
+                200: function () {
                     console.log('Inscrito en la actividad:' + $id);
                     $boton.addClass('btn-success  already-enrolled').removeClass('btn-primary enroll-button');
                     $boton.html('<span class="texto">Inscrito!</span><span class="fa fa-check fa-2x"></span>');
                     $('#modal-enrollment-button').data('enrolled-in', true);
                 },
-                401: function() {
+                401: function () {
                     $('#notification').removeClass('hide');
                     $('#notification').addClass('alert-info');
                     $('#notification #type').text('Atención');
-                    $('#notification #message').html('Tienes que hacer  <a href="login" class="alert-link">login</a>!');
+                    $('#notification #message').html('Tienes que hacer  <a href="' + Routing.generate('fp_openid_security_check', {openid_identifier: 'http://yo.rediris.es/soy/@uah.es'}) + '" class="alert-link">login</a>!');
                     $boton.html('<span class="texto">Inscribete!</span><span class="glyphicon glyphicon-pencil"></span>');
 
                 },
-                403: function(data) {
+                403: function (data) {
                     console.log('Error al inscribirse');
                     $boton.html('<span class="texto">Inscribete!</span><span class="glyphicon glyphicon-pencil"></span>');
 

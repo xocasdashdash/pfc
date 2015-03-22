@@ -32,7 +32,7 @@ class LoginController extends Controller
         }
         $openid_identifier = $this->container->getParameter("default_openid_connector");
 
-        return $this->redirect($this->generateUrl("fp_openid_security_check", array('openid_identifier' => $openid_identifier), "301"));
+        return $this->redirect($this->generateUrl("fp_openid_security_check", array('openid_identifier' => $openid_identifier), "302"));
     }
 
     /**

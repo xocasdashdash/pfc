@@ -44,9 +44,8 @@
                             </a>
 
                             {% if is_granted('IS_AUTHENTICATED_FULLY') == false %}
-                                <a class="enlace_navbar visible-xs" href="{{ path('uah_gestoractividades_login_login') }}">Log
-                                    in</a>
-                                {% else %}
+                                <a class="enlace_navbar visible-xs" href="{{ path("fp_openid_security_check", {'openid_identifier': 'http://yo.rediris.es/soy/@uah.es'}) }}">Log in</a>
+                            {% else %}
                                 <a class="enlace_navbar hidden-xs-up" href="{{ path('uah_gestoractividades_default_index') }}">Inicio</a>
                             {% endif %}
 
@@ -80,7 +79,7 @@
                                     {% if app.user %}
                                         <a data-jaja="aa" href="{{ path("uah_gestoractividades_login_logout") }}">Log out</a>
                                     {% else %}
-                                        <a href="{{ path("uah_gestoractividades_login_login") }}">Log in</a>
+                                        <a href="{{ path("fp_openid_security_check", {'openid_identifier': 'http://yo.rediris.es/soy/@uah.es'})  }}">Log in</a>
                                     {% endif %}
                                 </li>
                                 {% if is_granted('ROLE_UAH_ADMIN') %}
