@@ -72,6 +72,9 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
+    dbal:
+      # standard database config here
+      schema_filter: ~^(?!Session)~
 doctrine_migrations:
     dir_name: %kernel.root_dir%/DoctrineMigrations
     namespace: Application\Migrations
