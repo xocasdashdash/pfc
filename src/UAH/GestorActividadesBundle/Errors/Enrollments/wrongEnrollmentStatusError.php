@@ -1,6 +1,6 @@
 <?php
 
-namespace UAH\GestorActividadesBundle\Exceptions\Enrollments;
+namespace UAH\GestorActividadesBundle\Errors\Enrollments;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -8,18 +8,13 @@ namespace UAH\GestorActividadesBundle\Exceptions\Enrollments;
  * and open the template in the editor.
  */
 
-class invalidRecognizementException extends \UAH\GestorActividadesBundle\Exceptions\AbstractException
+class wrongEnrollmentStatusError extends \UAH\GestorActividadesBundle\Errors\AbstractError
 {
 
     protected $message = 'Estado de inscripción no válido';
     protected $code = 2;
     protected $type = 'error';
-
-    public function __construct($message, $code, $previous)
-    {
-        parent::__construct($message, null, null);
-    }
-
+    protected $httpCode = 400;
     public function getJSONResponse()
     {
         $response = parent::getJSONResponse();
@@ -27,9 +22,5 @@ class invalidRecognizementException extends \UAH\GestorActividadesBundle\Excepti
         return $response;
     }
 
-    public function getHttpCode()
-    {
-        return 400;
-    }
 
 }

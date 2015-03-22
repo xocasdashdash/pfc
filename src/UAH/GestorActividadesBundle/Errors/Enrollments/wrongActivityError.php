@@ -1,6 +1,6 @@
 <?php
 
-namespace UAH\GestorActividadesBundle\Exceptions\Enrollments;
+namespace UAH\GestorActividadesBundle\Errors\Enrollments;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -8,23 +8,19 @@ namespace UAH\GestorActividadesBundle\Exceptions\Enrollments;
  * and open the template in the editor.
  */
 
-class invalidActivityException extends \UAH\GestorActividadesBundle\Exceptions\AbstractException
+class wrongActivityError extends \UAH\GestorActividadesBundle\Errors\AbstractError
 {
 
-    protected $message = 'Actividad no disponible';
-    protected $code = 4;
+    protected $message = 'La actividad no se corresponde';
+    protected $code = 2;
     protected $type = 'error';
+    protected $httpCode = 400;
 
     public function getJSONResponse()
     {
         $response = parent::getJSONResponse();
         $response['type'] = $this->type;
         return $response;
-    }
-
-    public function getHttpCode()
-    {
-        return 403;
     }
 
 }

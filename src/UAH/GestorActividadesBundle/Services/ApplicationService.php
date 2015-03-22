@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityManager;
 use UAH\GestorActividadesBundle\Entity\Application;
 use UAH\GestorActividadesBundle\Entity\User;
 use UAH\GestorActividadesBundle\Entity\Enrollment;
-use UAH\GestorActividadesBundle\Exceptions\Applications as ApplicationExceptions;
+use UAH\GestorActividadesBundle\Errors\Applications as ApplicationErrors;
 
 class ApplicationService
 {
@@ -31,9 +31,6 @@ class ApplicationService
      * 
      * @param array $enrollment_ids
      * @param User $user
-     * @throws ApplicationExceptions\enrollmentNotRecognizedException
-     * @throws ApplicationExceptions\enrollmentAlreadyUsed
-     * @throws ApplicationExceptions\notYourEnrollmentException
      * @return Application
      */
     public function createApplication(array $enrollment_ids, User $user)
@@ -72,8 +69,6 @@ class ApplicationService
      * @param Application $application
      * @param User $user
      * @return boolean
-     * @throws ApplicationExceptions\notYourApplicationException
-     * @throws ApplicationExceptions\applicationNotArchived
      */
     public function archiveApplication(Application $application, User $user)
     {
@@ -88,11 +83,11 @@ class ApplicationService
             $this->em->flush();
             return true;
         } elseif ($application->getStatus() === $statusVerified && $application->getUser() !== $user) {
-            throw new ApplicationExceptions\notYourApplicationException();
+            return new ApplicationErrors\notYourApplicationError();
         } elseif ($application->getStatus() === $statusArchived && $application->getUser() === $user) {
-            throw new ApplicationExceptions\applicationNotArchived();
+            return new ApplicationErrors\applicationNotArchivedError();
         } elseif ($application->getStatus() === $statusArchived && $application->getUser() !== $user) {
-            throw new ApplicationExceptions\notYourApplicationException();
+            return new ApplicationErrors\notYourApplicationError();
         }
     }
 
@@ -101,9 +96,6 @@ class ApplicationService
      * @param Application $application
      * @param Enrollment $enrollment
      * @param User $u
-     * @throws ApplicationExceptions\enrollmentNotRecognizedException
-     * @throws ApplicationExceptions\enrollmentAlreadyUsed
-     * @throws ApplicationExceptions\notYourEnrollmentException
      */
     private function addEnrollment(Application $application, Enrollment $enrollment, User $u)
     {
@@ -111,11 +103,11 @@ class ApplicationService
         $statusEnrollmentRepo = $this->em->getRepository('UAHGestorActividadesBundle:Statusenrollment');
         $status_recognized = $statusEnrollmentRepo->getRecognizedStatus();
         if ($enrollment->getStatus() !== $status_recognized) {
-            throw new ApplicationExceptions\enrollmentNotRecognizedException();
+            return new ApplicationErrors\enrollmentNotRecognizedError();
         } else if (false === is_null($enrollment->getApplication())) {
-            throw new ApplicationExceptions\enrollmentAlreadyUsed();
+            return new ApplicationErrors\enrollmentAlreadyUsedError();
         } else if ($u !== $enrollment->getUser()) {
-            throw new ApplicationExceptions\notYourEnrollmentException();
+            return new ApplicationErrors\notYourEnrollmentError();
         }
         $application->addEnrollment($enrollment);
         $enrollment->setStatus($statusEnrollmentRepo->getPendingVerificationStatus());
@@ -126,13 +118,12 @@ class ApplicationService
      * 
      * @param Enrollment $enrollment
      * @param User $user
-     * @throws ApplicationExceptions\applicationNotDeleted
      * @return boolean
      */
     private function removeEnrollment(Enrollment $enrollment, User $user)
     {
         if ($enrollment->getUser() !== $user) {
-            throw new ApplicationExceptions\notYourEnrollmentException();
+            return new ApplicationErrors\notYourEnrollmentError();
         }
         /* @var $statusEnrollmentRepo \UAH\GestorActividadesBundle\Repository\StatusEnrollmentRepository */
         $statusEnrollmentRepo = $this->em->getRepository('UAHGestorActividadesBundle:Statusenrollment');
@@ -147,8 +138,6 @@ class ApplicationService
      * @param array $enrollment_ids
      * @param type $creditType
      * @return Enrollment[]
-     * @throws ApplicationExceptions\applicationMixedTypeOfCredits
-     * @throws ApplicationExceptions\noEnrollmentsWithThoseIDsException
      */
     private function checkEnrollmentCredits(array $enrollment_ids, $creditType)
     {
@@ -156,16 +145,16 @@ class ApplicationService
         /* @var $enrollments Enrollment[] */
         foreach ($enrollments as $enrollment) {
             if ($creditType !== $enrollment->getCreditsType()) {
-                throw new ApplicationExceptions\applicationMixedTypeOfCredits();
+                return new ApplicationErrors\applicationMixedTypeOfCreditsError();
             }
         }
         if (count($enrollments) === 0) {
-            throw new ApplicationExceptions\noEnrollmentsWithThoseIDsException();
+            return new ApplicationErrors\noEnrollmentsWithThoseIDsError();
         }
         return $enrollments;
     }
 
-    public function verifyApplication(Application $application, User $user)
+    public function verifyApplication(Application $application, User $verifiedBy)
     {
         /* @var $statusApplicationRepository \UAH\GestorActividadesBundle\Repository\StatusApplicationRepository */
         $statusApplicationRepository = $this->em->getRepository('UAHGestorActividadesBundle:Statusapplication');
@@ -173,17 +162,18 @@ class ApplicationService
         $verifiedApplicationStatus = $statusApplicationRepository->getVerified();
 
         if ($application->getStatus() !== $defaultStatus) {
-            throw new ApplicationExceptions\applicationNotVerified();
+            return new ApplicationErrors\applicationNotVerifiedError();
         }
         $application->setStatus($verifiedApplicationStatus);
+        $application->setVerifiedByUser($verifiedBy);
         $application->setApplicationDateVerified(new \DateTime());
-        $verifiedEnrollmentStatus = $em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getVerified();
+        $verifiedEnrollmentStatus = $this->em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getVerified();
         foreach ($application->getEnrollments() as $enrollment) {
             $enrollment->setStatus($verifiedEnrollmentStatus);
             $this->em->persist($enrollment);
         }
-        $em->persist($application);
-        $em->flush();
+        $this->em->persist($application);
+        $this->em->flush();
         return true;
     }
 

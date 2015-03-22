@@ -5,11 +5,11 @@ namespace UAH\GestorActividadesBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use UAH\GestorActividadesBundle\Entity\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @Route("/application")
@@ -61,8 +61,7 @@ class ApplicationController extends Controller
     }
 
     /**
-     *
-     * @Route("/create",options={"expose"=true})
+     * @Route("/create.{_format}",options={"expose"=true}, defaults={"_format"="json"})
      * @Security("is_granted('ROLE_UAH_STUDENT')")
      */
     public function createAction(Request $request)
@@ -72,28 +71,22 @@ class ApplicationController extends Controller
                 $this->get('form.csrf_provider')->isCsrfTokenValid('profile', $request->headers->get('X-CSRFToken'))) {
             $enrollment_ids = json_decode($request->getContent(), true);
             if ($enrollment_ids === false) {
-                $response['type'] = 'error';
-                $response['message'] = 'Mensaje erroneo';
-                return new JsonResponse($response, 400);
+                return $this->get('uah.services.response_handling')->createJSONResponse(false);
             }
             /* @var $applicationService \UAH\GestorActividadesBundle\Services\ApplicationService */
             $applicationService = $this->get('uah.services.application_service');
-            try {
-                $application = $applicationService->createApplication($enrollment_ids, $this->getUser());
-                $response['type'] = 'success';
-                $response['code'] = 0;
-                $response['message'] = $application->getId();
-                return new JsonResponse($response, 200);
-            } catch (\Exception $ex) {
-                return $this->get('uah.services.response_from_exception')->generateResponseFromException($ex);
-            }
+            $application = $applicationService->createApplication($enrollment_ids, $this->getUser());
+            $response['type'] = 'success';
+            $response['code'] = 0;
+            $response['message'] = $application->getId();
+            return $this->get('uah.services.response_handling')->createJSONResponse($response);
         } else {
             return $this->get('uah.services.invalid_token_response')->generateInvalidCSRFTokenResponse('application');
         }
     }
 
     /**
-     * @Route("/delete/{id}", requirements={"id" = "\d+"}, defaults={"id" = -1}, options={"expose"=true}))
+     * @Route("/delete/{id}.{_format}", requirements={"id" = "\d+"}, defaults={"id" = -1,"_format"="json"}, options={"expose"=true}))
      * @ParamConverter("application", class="UAHGestorActividadesBundle:Application")
      */
     public function deleteAction(Application $application, Request $request)
@@ -102,46 +95,30 @@ class ApplicationController extends Controller
                 $this->get('form.csrf_provider')->isCsrfTokenValid('application', $request->headers->get('X-CSRFToken'))) {
             /* @var $applicationService \UAH\GestorActividadesBundle\Services\ApplicationService */
             $applicationService = $this->get('uah.services.application_service');
-            try {
-                $applicationService->deleteApplication($application, $this->getUser());
-                $response = array();
-                $response['code'] = 0;
-                $response['message'] = 'Justificante borrado!';
-                $response['type'] = 'success';
-                return new JsonResponse($respuesta_json);
-            } catch (Exception $ex) {
-                return $this->get('uah.services.response_from_exception')->generateResponseFromException($ex);
-            }
+            $response = $applicationService->deleteApplication($application, $this->getUser());
+            return $this->get('uah.services.response_handling')->createJSONResponse($response);
         }
     }
 
     /**
-     * @Route("/archive/{id}", requirements={"id" = "\d+"}, defaults={"id" = -1}, options={"expose"=true}))
+     * @Route("/archive/{id}.{_format}", requirements={"id" = "\d+"}, defaults={"id" = -1,"_format"="json"}, options={"expose"=true}))
      * @ParamConverter("application", class="UAHGestorActividadesBundle:Application")
      */
     public function archiveAction(Application $application, Request $request)
     {
-        $response = array();
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('application', $request->headers->get('X-CSRFToken'))) {
             /* @var $applicationService \UAH\GestorActividadesBundle\Services\ApplicationService */
             $applicationService = $this->get('uah.services.application_service');
-            try {
-                $applicationService->archiveApplication($application, $this->getUser());
-                $response['code'] = 0;
-                $response['message'] = 'Justificante archivado!';
-                $response['type'] = 'success';
-                return new JsonResponse($response);
-            } catch (Exception $ex) {
-                return $this->get('uah.services.response_from_exception')->generateResponseFromException($ex);
-            }
+            $response = $applicationService->archiveApplication($application, $this->getUser());
+            return $this->get('uah.services.response_handling')->createJSONResponse($response);
         } else {
             return $this->get('uah.services.invalid_token_response')->generateInvalidCSRFTokenResponse('application');
         }
     }
 
     /**
-     * @Route("/check_code/{applicationCode}", defaults={"applicationCode" = -1}, options={"expose"=true}))
+     * @Route("/check_code/{applicationCode}.{_format}", defaults={"applicationCode" = -1,"_format"="json"}, options={"expose"=true}))
      * @Security("is_granted('ROLE_UAH_STAFF_PAS')")
      */
     public function checkCodeAction($applicationCode)
@@ -159,16 +136,14 @@ class ApplicationController extends Controller
             );
             $response['type'] = 'success';
         } else {
-            $response['code'] = 400;
-            $response['message'] = 'Justificante no encontrado';
-            $response['type'] = 'error';
+            $response = false;
         }
 
-        return new JsonResponse($response, $response['code']);
+        return $this->get('uah.services.response_handling')->createJSONResponse($response);
     }
 
     /**
-     * @Route("/verify/{id}", requirements={"id" = "\d+"}, defaults={"id" = -1}, options={"expose"=true}))
+     * @Route("/verify/{id}.{_format}", requirements={"id" = "\d+"}, defaults={"id" = -1,"_format"="json"}, options={"expose"=true}))
      * @ParamConverter("application", class="UAHGestorActividadesBundle:Application")
      * @Security("is_granted('ROLE_UAH_STAFF_PAS')")
      */
@@ -178,21 +153,11 @@ class ApplicationController extends Controller
                 $this->get('form.csrf_provider')->isCsrfTokenValid('application', $request->headers->get('X-CSRFToken'))) {
             /* @var $applicationService \UAH\GestorActividadesBundle\Services\ApplicationService */
             $applicationService = $this->get('uah.services.application_service');
-            $response = array();
-            try {
-                $applicationService->archiveApplication($application, $this->getUser());
-                $response['code'] = 0;
-                $response['message'] = 'Justificante verificado';
-                $response['type'] = 'success';
-                return new JsonResponse($response);
-            } catch (Exception $ex) {
-                return $this->get('uah.services.response_from_exception')->generateResponseFromException($ex);
-            }
+            $response = $applicationService->verifyApplication($application, $this->getUser());
+            return $this->get('uah.services.response_handling')->createJSONResponse($response);
         } else {
             return $this->get('uah.services.invalid_token_response')->generateInvalidCSRFTokenResponse('application');
         }
-
-        return new JsonResponse($response, $response['code']);
     }
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace UAH\GestorActividadesBundle\Exceptions\Applications;
+namespace UAH\GestorActividadesBundle\Errors\Applications;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -8,10 +8,13 @@ namespace UAH\GestorActividadesBundle\Exceptions\Applications;
  * and open the template in the editor.
  */
 
-class notYourApplicationException extends \Exception
+use UAH\GestorActividadesBundle\Errors\AbstractError;
+
+class notYourApplicationError extends AbstractError
 {
 
     protected $message = 'No es el tuyo';
     protected $code = 1;
+    protected $httpCode = 400;
 
 }

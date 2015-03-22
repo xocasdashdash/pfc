@@ -11,7 +11,7 @@ namespace UAH\GestorActividadesBundle\Services;
 use UAH\GestorActividadesBundle\Repository\EnrollmentRepository;
 use Doctrine\ORM\EntityManager;
 use UAH\GestorActividadesBundle\Entity\Enrollment;
-use UAH\GestorActividadesBundle\Exceptions\Enrollments as EnrollmentsExceptions;
+use UAH\GestorActividadesBundle\Errors\Enrollments as EnrollmentsErrors;
 use UAH\GestorActividadesBundle\Entity\User;
 use UAH\GestorActividadesBundle\Entity\Activity;
 
@@ -32,16 +32,16 @@ class EnrollmentService
     public function createEnrollment(Activity $activity, User $user)
     {
         if (false === $activity->hasFreePlaces()) {
-            throw new EnrollmentsExceptions\activityWithouFreeSpotsException();
+            return new EnrollmentsErrors\activityWithouFreeSpotsError();
         }
         if (false === $user->isProfileComplete()) {
-            throw new EnrollmentsExceptions\invalidProfileException();
+            return new EnrollmentsErrors\invalidProfileError();
         }
         if ($this->em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getValidStatus() !== $activity->getStatus()) {
-            throw new EnrollmentsExceptions\invalidActivityException();
+            return new EnrollmentsErrors\invalidActivityError();
         }
-        if (false === $this->enrollmentRepository->checkEnrolled($user, $activity)) {
-            throw new EnrollmentsExceptions\userAlreadyEnrolledException();
+        if (true === $this->enrollmentRepository->checkEnrolled($user, $activity)) {
+            return new EnrollmentsErrors\userAlreadyEnrolledError();
         }
         $enrollment = new Enrollment();
         $enrollment->setActivity($activity);
@@ -57,13 +57,12 @@ class EnrollmentService
      * 
      * @param Enrollment $enrollment
      * @return boolean
-     * @throws EnrollmentsExceptions\wrongEnrollmentStatusException
      */
     public function removeEnrollment(Enrollment $enrollment)
     {
         $statusEnrolled = $this->em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getEnrolledStatus();
         if ($enrollment->getStatus() !== $statusEnrolled) {
-            throw new EnrollmentsExceptions\wrongEnrollmentStatusException();
+            return new EnrollmentsErrors\wrongEnrollmentStatusError();
         }
         $this->em->remove($enrollment);
         $this->em->flush();
@@ -72,20 +71,19 @@ class EnrollmentService
 
     /**
      * 
-     * @param array $recognizements
+     * @param array $enrollmentsToRecognize
      * @param Activity $activity
      * @param User $recognizedBy
      * @return boolean
-     * @throws EnrollmentsExceptions\invalidRecognizementException
      */
-    public function recognizeEnrollments(array $recognizements, Activity $activity, User $recognizedBy)
+    public function recognizeEnrollments(array $enrollmentsToRecognize, Activity $activity, User $recognizedBy)
     {
         $enrollment_ids = array_map(function($e) {
             return isset($e['id']) ? $e['id'] : null;
-        }, $recognizements);
-        $assocRecognizements = array();
-        foreach ($recognizements as $recognizement) {
-            $assocRecognizements[$recognizement['id']] = $recognizement;
+        }, $enrollmentsToRecognize);
+        $assocEnrollmentsToRecognize = array();
+        foreach ($enrollmentsToRecognize as $enrollment) {
+            $assocEnrollmentsToRecognize[$enrollment['id']] = $enrollment;
         }
         /* @var $enrollments Enrollment[] */
         $enrollments = $this->enrollmentRepository->getEnrollmentsByID($enrollment_ids);
@@ -99,27 +97,23 @@ class EnrollmentService
         foreach ($enrollments as $enrollment) {
             $response = array();
             $user = $enrollment->getUser();
-            $numberOfCredits = $this->parseNumberOfCredits($assocRecognizements[$enrollment->getId()]);
+            $numberOfCredits = $this->parseNumberOfCredits($assocEnrollmentsToRecognize[$enrollment->getId()]);
             $creditRange = $user->getCreditsRange($activity);
             if (false === $creditRange) {
                 $response ['type'] = 'error';
                 $response ['message'] = 'Usuario sin formato de créditos reconocido';
-                $responses[$enrollment->getId()] = $response;
             } else if ($enrollment->getStatus() !== $statusEnrolled ||
                     $enrollment->getActivity() !== $activity) {
                 $response['type'] = 'error';
                 $response['code'] = self::RECOGNIZEMENT_ERROR_BASIC;
                 $response['message'] = 'El estado no es el correcto';
-                $responses[$enrollment->getId()] = $response;
             } elseif (!in_array($user->getDegree()->getStatus(), $validDegreeStatusArray)) {
                 $response['type'] = 'error';
                 $response['code'] = self::RECOGNIZEMENT_ERROR_NO_DEGREE;
                 $response['message'] = 'No tiene un plan de estudios valido';
-                $responses[$recognizement->id] = $response;
             } elseif (false === $numberOfCredits) {
                 $response['type'] = 'error';
                 $response['message'] = 'Formato de número incorrecto';
-                $responses[$enrollment->getId()] = $response;
             } elseif ($numberOfCredits >= $creditRange['min'] &&
                     $numberOfCredits <= $creditRange['max']) {
                 $enrollment->setRecognizedCredits($numberOfCredits);
@@ -131,11 +125,13 @@ class EnrollmentService
             } else {
                 $response['type'] = 'error';
                 $response['message'] = 'Número de créditos fuera de rango';
+            }
+            if (!empty($response)) {
                 $responses[$enrollment->getId()] = $response;
             }
         }
         if (count($responses) > 0) {
-            throw new EnrollmentsExceptions\invalidRecognizementException($responses, null, null);
+            return new EnrollmentsErrors\invalidRecognizementError($responses);
         } else {
             $this->em->flush();
             return true;
@@ -165,7 +161,7 @@ class EnrollmentService
                 ->getDefault();
         foreach ($enrollments as $enrollment) {
             if ($enrollment->getActivity() !== $activity) {
-                throw new EnrollmentsExceptions\wrongActivityException();
+                return new EnrollmentsErrors\wrongActivityError();
             }
             $enrollment->setStatus($defaultStatus);
             $this->em->persist($enrollment);

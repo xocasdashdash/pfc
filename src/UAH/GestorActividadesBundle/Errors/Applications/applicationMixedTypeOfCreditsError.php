@@ -1,6 +1,6 @@
 <?php
 
-namespace UAH\GestorActividadesBundle\Exceptions\Applications;
+namespace UAH\GestorActividadesBundle\Errors\Applications;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -8,9 +8,13 @@ namespace UAH\GestorActividadesBundle\Exceptions\Applications;
  * and open the template in the editor.
  */
 
-class applicationMixedTypeOfCredits extends \Exception
+use UAH\GestorActividadesBundle\Errors\AbstractError;
+
+class applicationMixedTypeOfCreditsError extends AbstractError
 {
 
     protected $message = 'Hay una mezcla entre créditos de libre y créditos ECTS. \n Ponte en contacto con el administrador';
     protected $code = 9;
+    protected $httpCode = 400;
+
 }
