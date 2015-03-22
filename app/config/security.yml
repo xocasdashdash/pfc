@@ -27,7 +27,7 @@ security:
                 post_only: false                
             fp_openid:
                 login_path: /login
-                check_path: /login_check_openid
+                check_path: /login_check_openid?openid_identifier=%default_openid_connector%
                 create_user_if_not_exists: true # so createUserFromIdentity method will be called
                 provider: OpenIdUserManager # cf below
                 # previously we used 'contact/email' field. So we have to request it!
@@ -42,6 +42,7 @@ security:
     
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login_check_openid, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/secured_area, role: IS_AUTHENTICATED_OPENID }    
 
     access_control:
