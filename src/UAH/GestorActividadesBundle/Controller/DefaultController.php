@@ -35,7 +35,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/ajax/{page}", requirements={"pagina" = "\d+"}, defaults={"page" = 1},options={"expose"=true}))
+     * @Route("/ajax/{page}.{_format}", requirements={"pagina" = "\d+"}, defaults={"page" = 1, "_format"= "json"},options={"expose"=true}))
      */
     public function ajaxActivities($page)
     {

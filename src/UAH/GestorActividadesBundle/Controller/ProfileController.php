@@ -11,10 +11,13 @@ use UAH\GestorActividadesBundle\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Cookie;
 
+/**
+ * @Route("/profile")
+ */
 class ProfileController extends Controller
 {
     /**
-     * @Route("/profile")
+     * @Route("/")
      * @Method({"GET"})
      * @Security("is_fully_authenticated()")
      */
@@ -41,7 +44,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * @Route("/profile/update")
+     * @Route("/update")
      */
     public function editAction(Request $request)
     {
@@ -66,8 +69,8 @@ class ProfileController extends Controller
      *
      * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
      * @param \Symfony\Component\HttpFoundation\Request    $request
-     * @Route("/profile/activities/",options={"expose"=true})
-     * @Route("/profile/activities/{user_id}", requirements={"user_id" = "\d+"}, defaults={"user_id"=-1}, options={"expose"=true})
+     * @Route("/activities/",options={"expose"=true})
+     * @Route("/activities/{user_id}", requirements={"user_id" = "\d+"}, defaults={"user_id"=-1}, options={"expose"=true})
      * @Security("is_granted('ROLE_UAH_STAFF_PDI') || is_granted('ROLE_UAH_ADMIN')")
      */
     public function myactivitiesAction($user_id = -1, Request $request)

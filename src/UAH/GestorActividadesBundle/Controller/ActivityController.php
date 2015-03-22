@@ -13,6 +13,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+/**
+ * @Route("/activity")
+ */
 class ActivityController extends Controller
 {
     const ERROR_CSRF_TOKEN_INVALID = 1;
@@ -22,7 +25,7 @@ class ActivityController extends Controller
     const ACTIVITY_OPENED = 5;
 
     /**
-     * @Route("/activity/{activity_id}-{slug}",requirements={"activity_id" = "\d+"}, defaults={"slug" = ""}, options={"expose"=true}))
+     * @Route("/{activity_id}-{slug}",requirements={"activity_id" = "\d+"}, defaults={"slug" = ""}, options={"expose"=true}))
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Method({"GET"})
      */
@@ -65,7 +68,7 @@ class ActivityController extends Controller
     }
 
     /**
-     * @Route("/activity/create",options={"expose"=true})
+     * @Route("/create",options={"expose"=true})
      * @Method({"GET","POST"})
      * @Security("is_granted('ROLE_UAH_STAFF_PDI')")
      */
@@ -91,7 +94,7 @@ class ActivityController extends Controller
     }
 
     /**
-     * @Route("/activity/edit/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1})
+     * @Route("/edit/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("(is_granted('edit_activity',activity) && is_granted('ROLE_UAH_STAFF_PDI')) || is_granted('ROLE_UAH_ADMIN')")
      */
@@ -122,7 +125,7 @@ class ActivityController extends Controller
     }
 
     /**
-     * @Route("/activity/update/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1})
+     * @Route("/update/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("(is_granted('edit_activity',activity) && is_granted('ROLE_UAH_STAFF_PDI')) || is_granted('ROLE_UAH_ADMIN')")
      */
@@ -134,6 +137,7 @@ class ActivityController extends Controller
 
         $editForm->handleRequest($request);
         if ($editForm->isValid()) {
+            $em = $this->getDoctrine()->getManager();            
             $em->persist($activity);
             $em->flush();
 
@@ -145,7 +149,7 @@ class ActivityController extends Controller
     }
 
     /**
-     * @Route("/activity/admin/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1})
+     * @Route("/admin/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("(is_granted('edit_activity',activity) && is_granted('ROLE_UAH_STAFF_PDI')) || is_granted('ROLE_UAH_ADMIN')")
      */
@@ -173,7 +177,7 @@ class ActivityController extends Controller
      *
      * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
      * @param \Symfony\Component\HttpFoundation\Request    $request
-     * @Route("/activity/close/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1}, options={"expose"=true})
+     * @Route("/close/{activity_id}.{_format}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1,"format"="json"}, options={"expose"=true})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("(is_granted('edit_activity',activity) && is_granted('ROLE_UAH_STAFF_PDI')) || is_granted('ROLE_UAH_ADMIN')")
      */
@@ -212,7 +216,7 @@ class ActivityController extends Controller
      *
      * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
      * @param \Symfony\Component\HttpFoundation\Request    $request
-     * @Route("/activity/open/{activity_id}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1}, options={"expose"=true})
+     * @Route("/open/{activity_id}.{format}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1, "_format"="json"}, options={"expose"=true})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
@@ -256,7 +260,7 @@ class ActivityController extends Controller
     }
 
     /**
-     * @Route("/activities/askapproval", options={"expose"=true})
+     * @Route("/askapproval.{_format}", options={"expose"=true}, default={"_format"="json"})
      * @Security("is_granted('ROLE_UAH_STAFF_PDI') || is_granted('ROLE_UAH_ADMIN')")
      */
     public function askApprovalAction(Request $request)

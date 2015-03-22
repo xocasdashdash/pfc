@@ -34,13 +34,13 @@ services:
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments:
-            - UAHGestorActividadesBundle\Application
+            - UAH\GestorActividadesBundle\Entity\Application
     uah.services.repository.enrollment_repository:
         class: Doctrine\ORM\EntityRepository
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments:
-            - UAHGestorActividadesBundle\Enrollment
+            - UAH\GestorActividadesBundle\Entity\Enrollment
             
     uah.services.response_from_exception: "@uah.services.json_helper"
     uah.services.invalid_token_response: 
@@ -48,10 +48,13 @@ services:
         calls:
             - [setCSRFProvider,["@form.csrf_provider"]]
     uah.services.json_helper:
-        class: UAH\GestorActividadesBundle\JSONHelperService
+        class: UAH\GestorActividadesBundle\Services\JSONHelperService
     uah.services.application_service:
-        class: UAH\GestorActividadesBundle\ApplicationService
+        class: UAH\GestorActividadesBundle\Services\ApplicationService
         arguments: ['@doctrine.orm.entity_manager', '@uah.services.repository.application_repository']
     uah.services.enrollment_service:
-        class: UAH\GestorActividadesBundle\EnrollmentService
+        class: UAH\GestorActividadesBundle\Services\EnrollmentService
         arguments: ['@doctrine.orm.entity_manager', '@uah.services.repository.enrollment_repository']
+    uah.services.response_handling:
+        class: UAH\GestorActividadesBundle\Services\ResponseHandlingService
+        arguments: ['@logger']

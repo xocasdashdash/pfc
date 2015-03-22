@@ -7,13 +7,13 @@ $(window).load(function() {
             type: "POST",
             url: Routing.generate('uah_gestoractividades_enrollment_enroll', {activity_id: $id}),
             statusCode: {
-                200: function(data) {
+                200: function() {
                     console.log('Inscrito en la actividad:' + $id);
                     $boton.addClass('btn-success  already-enrolled').removeClass('btn-primary enroll-button');
                     $boton.html('<span class="texto">Inscrito!</span><span class="fa fa-check fa-2x"></span>');
                     $('#modal-enrollment-button').data('enrolled-in', true);
                 },
-                401: function(data) {
+                401: function() {
                     $('#notification').removeClass('hide');
                     $('#notification').addClass('alert-info');
                     $('#notification #type').text('Atención');

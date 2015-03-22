@@ -23,7 +23,7 @@ framework:
     http_method_override: true
     #Aqui va 
     session:
-        handler_id: session.handler.oci8
+        handler_id: session.handler.doctrine
 
 # Twig Configuration
 twig:
@@ -69,7 +69,6 @@ doctrine:
             # if using pdo_sqlite as your database driver, add the path in parameters.yml
             # e.g. database_path: "%kernel.root_dir%/data/data.db3"
             # path:     "%database_path%"
-
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
@@ -91,7 +90,7 @@ sensio_framework_extra:
     security:   { annotations: true }
      
 parameters:
-    oci8.db_options:
+    doctrine.session.db_options:
         db_table:    UAH_GAT_Session
         db_id_col:   session_id
         db_data_col: session_value
@@ -99,18 +98,12 @@ parameters:
     vendor_dir: %kernel.root_dir%/../src/UAH/GestorActividadesBundle/Resources/public/vendor    
     pdf_dir: %kernel.root_dir%/../web/upload/pdf/
     elements_per_page: 7
-
+    
 services:
-    session.handler.oci8:
+    session.handler.doctrine:
         # Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
         class:     UAH\GestorActividadesBundle\Services\DoctrineSessionHandler 
-        arguments: ["@doctrine.dbal.default_connection", "%oci8.db_options%"]
-    
-    #Esto lo hago para evitar problemas con campos Date (https://github.com/doctrine/DoctrineBundle/issues/217)
-    oracle.listener:
-        class: UAH\GestorActividadesBundle\Services\OracleSessionInit 
-        tags:
-            - { name: doctrine.event_listener, event: postConnect, connection: default }
+        arguments: ["@doctrine.dbal.default_connection", "%doctrine.session.db_options%"]
 braincrafted_bootstrap:
     output_dir: bootstrap
     assets_dir: %vendor_dir%/bootstrap
@@ -141,8 +134,7 @@ knp_snappy:
             stop-slow-scripts: true
             load-error-handling: ignore
             dpi: 96
-            javascript-delay: 100
-            
+            javascript-delay: 100            
             
         # ['--print-media-type','--disable-smart-shrinking','--page-width 21cm','--page-height 27cm','--dpi 96']
     image:

@@ -32,7 +32,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/activities",options={"expose"=true})
+     * @Route("/activities",options={"expose"=true},defaults={"_format": "html"})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
     public function activitiesAction(Request $request)
@@ -67,7 +67,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/activities/exportCSV/{filter}", defaults={"filter" = "all"} ,options={"expose"=true})
+     * @Route("/activities/exportCSV/{filter}", defaults={"filter" = "all","_format": "html"} ,options={"expose"=true})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
     public function exportActivitiesAction($filter)
@@ -98,7 +98,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/activities/approve",options={"expose"=true})
+     * @Route("/activities/approve",options={"expose"=true},defaults={"_format": "html"})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
     public function approveAction(Request $request)
@@ -141,7 +141,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/activities/printpending",options={"expose"=true})
+     * @Route("/activities/printpending",options={"expose"=true},defaults={"_format": "html"})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
     public function printpendingAction(Request $request)
@@ -179,7 +179,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/users")
+     * @Route("/users",defaults={"_format": "html"})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
     public function usersAction(Request $request)
@@ -199,7 +199,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/users/updatepermissions/{identity}/{permits}", defaults={"identity":"-1","permits":"ROLE_UAH_STUDENT"},options={"expose"=true})
+     * @Route("/users/updatepermissions/{identity}/{permits}", defaults={"identity":"-1","permits":"ROLE_UAH_STUDENT","_format": "html"},options={"expose"=true})
      * @ParamConverter("role", class="UAHGestorActividadesBundle:Role",options={"mapping": {"permits": "role"}})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      * @param type $identity
@@ -277,7 +277,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/users/deletepermissions/{identity}", defaults={"identity":"-1"},options={"expose"=true})
+     * @Route("/users/deletepermissions/{identity}", defaults={"identity":"-1","_format":"html"},options={"expose"=true})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      * @param type $identity
      */
@@ -346,7 +346,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/users/new",options={"expose"=true})
+     * @Route("/users/new",options={"expose"=true},defaults={"_format": "html"})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
     public function newUserAction(Request $request)
@@ -412,7 +412,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/degrees")
+     * @Route("/degrees",defaults={"_format": "html"})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
     public function degreesAction(Request $request)
@@ -430,7 +430,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/degrees/new", options={"expose"=true})
+     * @Route("/degrees/new.{_format}", options={"expose"=true},defaults={"_format": "json"})
      * @param \Symfony\Component\HttpFoundation\Request $request
      */
     public function newDegreeAction(Request $request)
@@ -476,7 +476,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/degrees/delete/{degree_id}", options={"expose"=true})
+     * @Route("/degrees/delete/{degree_id}.{_format}", options={"expose"=true}, default={"_format"="json"})
      * @ParamConverter("degree", class="UAHGestorActividadesBundle:Degree",options={"id":"degree_id"})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
@@ -524,7 +524,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/categories/new", options={"expose"=true})
+     * @Route("/categories/new.{_format}", options={"expose"=true}, default={"_format"="json"})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
     public function newCategoryAction(Request $request)
@@ -606,7 +606,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/categories/delete/{category_id}", options={"expose"=true})
+     * @Route("/categories/delete/{category_id}.{_format}", options={"expose"=true}, default={"_format"="json"})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      * @ParamConverter("category", class="UAHGestorActividadesBundle:Category",options={"id":"category_id"})
      */
