@@ -285,6 +285,7 @@ class User implements UserInterface
 
     public function getUsername()
     {
+        return $this->id_usuldap;
     }
 
     /**
