@@ -260,7 +260,7 @@ class ActivityController extends Controller
     }
 
     /**
-     * @Route("/askapproval.{_format}", options={"expose"=true}, default={"_format"="json"})
+     * @Route("/askapproval.{_format}", options={"expose"=true}, defaults={"_format"="json"})
      * @Security("is_granted('ROLE_UAH_STAFF_PDI') || is_granted('ROLE_UAH_ADMIN')")
      */
     public function askApprovalAction(Request $request)

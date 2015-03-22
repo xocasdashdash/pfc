@@ -476,7 +476,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/degrees/delete/{degree_id}.{_format}", options={"expose"=true}, default={"_format"="json"})
+     * @Route("/degrees/delete/{degree_id}.{_format}", options={"expose"=true}, defaults={"_format"="json"})
      * @ParamConverter("degree", class="UAHGestorActividadesBundle:Degree",options={"id":"degree_id"})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
@@ -524,7 +524,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/categories/new.{_format}", options={"expose"=true}, default={"_format"="json"})
+     * @Route("/categories/new.{_format}", options={"expose"=true}, defaults={"_format"="json"})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      */
     public function newCategoryAction(Request $request)
@@ -606,7 +606,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/categories/delete/{category_id}.{_format}", options={"expose"=true}, default={"_format"="json"})
+     * @Route("/categories/delete/{category_id}.{_format}", options={"expose"=true}, defaults={"_format"="json"})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      * @ParamConverter("category", class="UAHGestorActividadesBundle:Category",options={"id":"category_id"})
      */
