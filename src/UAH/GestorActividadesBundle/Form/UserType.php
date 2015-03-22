@@ -63,7 +63,7 @@ class UserType extends AbstractType
                         'widget_col' => 8,
                         'col_size' => 'xs',
                         'multiple' => true, )))
-                ->add('degree_id', 'entity', array(
+                ->add('degree', 'entity', array(
                     'required' => true,
                     'class' => 'UAHGestorActividadesBundle:Degree',
                     'choices' => $degrees,
