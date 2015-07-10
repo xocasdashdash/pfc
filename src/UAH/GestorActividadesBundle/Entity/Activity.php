@@ -69,6 +69,12 @@ class Activity
      *
      * @Column(name="numberOfECTSCreditsMin", type="float")
      * @Assert\NotBlank(message = "activity.minCreditsECTS.not-blank")
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 10,
+     *      minMessage = "activity.credits.min-value",
+     *      maxMessage = "activity.credits.max-value"
+     * ) 
      */
     private $numberOfECTSCreditsMin;
 
@@ -77,6 +83,12 @@ class Activity
      *
      * @Column(name="numberOfECTSCreditsMax", type="float")
      * @Assert\NotBlank(message = "activity.maxCreditsECTS.not-blank")
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 10,
+     *      minMessage = "activity.credits.min-value",
+     *      maxMessage = "activity.credits.max-value"
+     * ) 
      */
     private $numberOfECTSCreditsMax;
 
@@ -85,6 +97,12 @@ class Activity
      *
      * @Column(name="numberOfCreditsMin", type="float")
      * @Assert\NotBlank(message = "activity.minCredits.not-blank")
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 10,
+     *      minMessage = "activity.credits.min-value",
+     *      maxMessage = "activity.credits.max-value"
+     * ) 
      */
     private $numberOfCreditsMin;
 
@@ -96,9 +114,10 @@ class Activity
      * @Assert\Range(
      *      min = 0,
      *      max = 10,
-     *      minMessage = "",
-     *      maxMessage = "You cannot be taller than {{ limit }}cm to enter"
-     * )     */
+     *      minMessage = "activity.credits.min-value",
+     *      maxMessage = "activity.credits.max-value"
+     * )     
+     */
     private $numberOfCreditsMax;
 
     /**
