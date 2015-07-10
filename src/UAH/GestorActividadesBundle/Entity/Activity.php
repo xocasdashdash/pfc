@@ -298,7 +298,8 @@ class Activity
     {
         $this->studentProfile = new \Doctrine\Common\Collections\ArrayCollection();
         $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->setDateCreated(new \DateTime());
+        $today = new \DateTime();
+        $this->setDateCreated($today)->setDateModified($today);
     }
 
     /**
@@ -1333,4 +1334,5 @@ class Activity
     {
         return $this->getNumberOfPlacesOccupied() < $this->getNumberOfPlacesOffered();
     }
+
 }
