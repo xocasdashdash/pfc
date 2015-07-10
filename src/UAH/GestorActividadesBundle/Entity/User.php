@@ -378,7 +378,6 @@ class User implements UserInterface
 
     public function getPassword()
     {
-        throw new \LogicException('Users don\' have passwords');
     }
 
     /**
