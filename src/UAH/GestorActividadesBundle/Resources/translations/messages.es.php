@@ -6,6 +6,6 @@
  * and open the template in the editor.
  */
 return array(
-  '' 
+  'Nombre' => 'NombreTrans'
 );
 

@@ -21,6 +21,17 @@
     <div class="row bottom-buffer">
         {{ form(form, { 'style': 'horizontal' }) }}
         {{ form_start(form)}}
+        {{ form_row(form.name) }}
+        {{ form_row(form.englishName) }}
+        {% if isAdmin or fullyEditable %}
+            {{form_row(form.numberOfECTSCreditsMin)}}
+            {{form_row(form.numberOfECTSCreditsMax)}}
+            {{form_row(form.numberOfCreditsMin)}}
+            {{form_row(form.numberOfCreditsMax)}}
+            {{form_row(form.hasAdditionalWorkload)}}
+            {{form_row(form.numberOfHours)}}
+        {% endif %}
+        {{ form_row(form.organizerName) }}
         {{ form_rest(form) }}
         {{ form_end(form) }}
     </div>
