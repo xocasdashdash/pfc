@@ -378,6 +378,7 @@ class User implements UserInterface
 
     public function getPassword()
     {
+        
     }
 
     /**
@@ -726,4 +727,5 @@ class User implements UserInterface
         }
         return $credit_range;
     }
+
 }

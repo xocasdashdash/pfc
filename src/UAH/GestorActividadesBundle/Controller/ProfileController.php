@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use UAH\GestorActividadesBundle\Entity\User as User;
+use UAH\GestorActividadesBundle\Entity\User;
 use UAH\GestorActividadesBundle\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -53,7 +53,11 @@ class ProfileController extends Controller
         $form = $this->createForm(new UserType(), $this->getUser(), array('degrees' => $degrees));
         $form->handleRequest($request);
         if ($form->isValid()) {
+            /* @var $user User */
             $user = $form->getData();
+            $user->setCreationIp($request->getClientIp());
+            $user->setDateCreated(new \DateTime());
+            
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
