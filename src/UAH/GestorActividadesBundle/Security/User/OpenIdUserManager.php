@@ -53,7 +53,7 @@ class OpenIdUserManager extends UserManager
         ));
 
         if (null === $user) {
-            $this->logger('Usuario no encontrado. Creandolo desde 0');
+            $this->logger->debug('Usuario no encontrado. Creandolo desde 0');
             $user = new User();
             $user->setEmail($email);
             $user->setName($name);
