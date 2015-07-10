@@ -10,7 +10,6 @@ namespace UAH\GestorActividadesBundle\Errors\Enrollments;
 
 class invalidDegreeError extends \UAH\GestorActividadesBundle\Errors\AbstractError
 {
-
     protected $message = 'No tiene un plan de estudios valido';
     protected $code = 1;
     protected $type = 'error';
@@ -21,5 +20,4 @@ class invalidDegreeError extends \UAH\GestorActividadesBundle\Errors\AbstractErr
         $response = parent::getJSONResponse();
         $response['type'] = $this->type;
     }
-
 }

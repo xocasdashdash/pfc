@@ -10,7 +10,6 @@ namespace UAH\GestorActividadesBundle\Errors\Enrollments;
 
 class wrongEnrollmentStatusError extends \UAH\GestorActividadesBundle\Errors\AbstractError
 {
-
     protected $message = 'Estado de inscripción no válido';
     protected $code = 2;
     protected $type = 'error';
@@ -21,6 +20,4 @@ class wrongEnrollmentStatusError extends \UAH\GestorActividadesBundle\Errors\Abs
         $response['type'] = $this->type;
         return $response;
     }
-
-
 }

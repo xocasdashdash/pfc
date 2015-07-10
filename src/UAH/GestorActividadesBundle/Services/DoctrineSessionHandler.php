@@ -13,7 +13,6 @@ use Doctrine\DBAL\DriverManager;
 
 class DoctrineSessionHandler implements \SessionHandlerInterface
 {
-
     /**
      *
      * @var array Parametros de conexión de Doctrine a la base de datos
@@ -244,5 +243,4 @@ class DoctrineSessionHandler implements \SessionHandlerInterface
         //$connection = DriverManager::getConnection($this->dbalConnectionParameters);
         return $this->dbalConnection;
     }
-
 }

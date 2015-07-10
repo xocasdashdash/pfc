@@ -111,7 +111,7 @@ class EnrollmentRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $dql = " SELECT u.name,u.apellido_1,u.apellido_2 ,u.email,e.dateRegistered, e.id,".
-                " se.code as status_enrollment, e.recognizedCredits, IDENTITY(u.degree_id) as degree_id, ".
+                " se.code as status_enrollment, e.recognizedCredits, IDENTITY(u.degree) as degree_id, ".
                 " sd.code as status_degree ".
                 " FROM UAHGestorActividadesBundle:Enrollment e ".
                 " JOIN UAHGestorActividadesBundle:User u ".
@@ -119,7 +119,7 @@ class EnrollmentRepository extends EntityRepository
                 " JOIN UAHGestorActividadesBundle:Statusenrollment se ".
                 " WITH e.status = se.id ".
                 " JOIN UAHGestorActividadesBundle:Degree d ".
-                " WITH d.id = u.degree_id ".
+                " WITH d.id = u.degree ".
                 " JOIN UAHGestorActividadesBundle:Statusdegree sd ".
                 " WITH d.status = sd.id ".
                 " WHERE e.activity = :activity ";

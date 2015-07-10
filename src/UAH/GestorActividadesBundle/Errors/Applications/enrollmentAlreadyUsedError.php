@@ -11,7 +11,6 @@ use UAH\GestorActividadesBundle\Errors\AbstractError;
 
 class enrollmentAlreadyUsedError extends AbstractError
 {
-
     protected $message = 'Alguna de las inscripciones esta ya en otro justificante';
     protected $code = 6;
     protected $httpCode = 400;

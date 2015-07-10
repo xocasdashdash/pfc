@@ -12,9 +12,7 @@ use UAH\GestorActividadesBundle\Errors\AbstractError;
 
 class notYourApplicationError extends AbstractError
 {
-
     protected $message = 'No es el tuyo';
     protected $code = 1;
     protected $httpCode = 400;
-
 }

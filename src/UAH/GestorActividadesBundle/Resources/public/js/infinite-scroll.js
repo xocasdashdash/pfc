@@ -31,7 +31,7 @@ function addMoreActivities() {
         }
     });
 }
-addMoreActivities();
+//addMoreActivities();
 
 $(window).scroll(function() {
     var wintop = $(window).scrollTop(), docheight = $(document).height(), winheight = $(window).height();

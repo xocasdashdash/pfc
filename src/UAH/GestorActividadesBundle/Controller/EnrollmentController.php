@@ -21,7 +21,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  */
 class EnrollmentController extends Controller
 {
-
     /**
      * @Route("/{activity_id}.{_format}",requirements={"pagina" = "\d+"}, options={"expose"=true}, defaults={"_format"="json"})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
@@ -101,5 +100,4 @@ class EnrollmentController extends Controller
             return $this->get('uah.services.invalid_token_response')->generateInvalidCSRFTokenResponse('profile');
         }
     }
-
 }

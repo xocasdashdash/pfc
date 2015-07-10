@@ -13,7 +13,6 @@ use Psr\Log\LoggerInterface;
 
 class AuthenticationHandler implements AuthenticationSuccessHandlerInterface
 {
-
     protected $router;
     protected $security;
     protected $em;
@@ -60,5 +59,4 @@ class AuthenticationHandler implements AuthenticationSuccessHandlerInterface
 
         return $response;
     }
-
 }

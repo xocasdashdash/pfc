@@ -10,7 +10,6 @@ namespace UAH\GestorActividadesBundle\Errors\Enrollments;
 
 class wrongNumberFormatError extends \UAH\GestorActividadesBundle\Errors\AbstractError
 {
-
     protected $message = 'Formato de número incorrecto';
     protected $code = 2;
     protected $type = 'error';
@@ -22,5 +21,4 @@ class wrongNumberFormatError extends \UAH\GestorActividadesBundle\Errors\Abstrac
         $response['type'] = $this->type;
         return $response;
     }
-
 }

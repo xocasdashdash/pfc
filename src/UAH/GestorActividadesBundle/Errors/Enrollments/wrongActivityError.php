@@ -10,7 +10,6 @@ namespace UAH\GestorActividadesBundle\Errors\Enrollments;
 
 class wrongActivityError extends \UAH\GestorActividadesBundle\Errors\AbstractError
 {
-
     protected $message = 'La actividad no se corresponde';
     protected $code = 2;
     protected $type = 'error';
@@ -22,5 +21,4 @@ class wrongActivityError extends \UAH\GestorActividadesBundle\Errors\AbstractErr
         $response['type'] = $this->type;
         return $response;
     }
-
 }

@@ -11,7 +11,6 @@ use UAH\GestorActividadesBundle\Errors\AbstractError;
 
 class applicationNotArchivedError extends AbstractError
 {
-
     protected $message = 'Error al archivar el justificante';
     protected $code = 8;
     protected $httpCode = 400;

@@ -11,19 +11,22 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/{pagina}", requirements={"pagina" = "\d+"}, defaults={"pagina" = 1},options={"expose"=true}))
-     * @Route("/pag/{pagina}", requirements={"pagina" = "\d+"}, defaults={"pagina" = 1})
+     * @Route("/{page}", requirements={"page" = "\d+"}, defaults={"page" = 1},options={"expose"=true}))
+     * @Route("/pag/{page}", requirements={"page" = "\d+"}, defaults={"page" = 1})
      */
-    public function indexAction($pagina, Request $request)
+    public function indexAction($page, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        /* @var $activity_repository \UAH\GestorActividadesBundle\Repository\ActivityRepository*/
         $activity_repository = $em->getRepository('UAHGestorActividadesBundle:Activity');
         $category_repository = $em->getRepository('UAHGestorActividadesBundle:Category');
         $activity_repository->updatePublished();
-        $activities = null;
+        $elements_per_page = $this->container->getParameter('elements_per_page');
+        $activities = $activity_repository->getPublishedActivities($page, $elements_per_page);
         $categories = $category_repository->getFrontPage();
         $num_activities = $activity_repository->getCountPublishedActivities();
-        $enrolled_activities = $em->getRepository('UAHGestorActividadesBundle:Enrollment')->getEnrolledActivitiesId($this->getUser(), $pagina);
+        $enrolled_activities = $em->getRepository('UAHGestorActividadesBundle:Enrollment')
+                ->getEnrolledActivitiesId($this->getUser(), $page);
         $session = $this->get("session");
         $session->set("num_pagina", 0);
 

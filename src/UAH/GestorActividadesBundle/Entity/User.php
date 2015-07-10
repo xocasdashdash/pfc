@@ -700,15 +700,16 @@ class User implements UserInterface
             //return 'http://yo.rediris.es/soy/adrian.bolonio@uah.es';
         }
     }
-    public function getCreditsRange(Activity $activity){
+    public function getCreditsRange(Activity $activity)
+    {
         $credit_range = array();
-        if($this->getCreditsType() === self::CREDIT_TYPE_ECTS){
+        if ($this->getCreditsType() === self::CREDIT_TYPE_ECTS) {
             $credit_range['min'] = $activity->getNumberOfECTSCreditsMin();
             $credit_range['max'] = $activity->getNumberOfECTSCreditsMax();
-        }else if($this->getCreditsType() === self::CREDIT_TYPE_LIBRE){
+        } elseif ($this->getCreditsType() === self::CREDIT_TYPE_LIBRE) {
             $credit_range['min'] = $activity->getNumberOfCreditsMin();
             $credit_range['max'] = $activity->getNumberOfCreditsMax();
-        }else{
+        } else {
             return false;
         }
         return $credit_range;

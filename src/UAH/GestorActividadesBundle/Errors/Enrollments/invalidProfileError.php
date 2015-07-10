@@ -10,7 +10,6 @@ namespace UAH\GestorActividadesBundle\Errors\Enrollments;
 
 class invalidProfileError extends \UAH\GestorActividadesBundle\Errors\AbstractError
 {
-
     protected $message = 'Te faltan <a href="profile/update" class="alert-link">completar</a> datos de tu perfil!';
     protected $code = 8;
     protected $type = 'error';
@@ -22,5 +21,4 @@ class invalidProfileError extends \UAH\GestorActividadesBundle\Errors\AbstractEr
         $response['type'] = 'error';
         return $response;
     }
-
 }

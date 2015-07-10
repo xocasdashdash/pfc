@@ -12,9 +12,8 @@ use Doctrine\ORM\EntityRepository;
  */
 class StatusDegreeRepository extends EntityRepository
 {
-
     /**
-     * 
+     *
      * @return \UAH\GestorActividadesBundle\Entity\Statusdegree[]
      */
     public function getActive()
@@ -26,7 +25,7 @@ class StatusDegreeRepository extends EntityRepository
     }
 
     /**
-     * 
+     *
      * @return \UAH\GestorActividadesBundle\Entity\Statusdegree
      */
     public function getRenewed()
@@ -35,7 +34,7 @@ class StatusDegreeRepository extends EntityRepository
     }
 
     /**
-     * 
+     *
      * @return \UAH\GestorActividadesBundle\Entity\Statusdegree
      */
     public function getNotRenewed()
@@ -44,7 +43,7 @@ class StatusDegreeRepository extends EntityRepository
     }
 
     /**
-     * 
+     *
      * @return \UAH\GestorActividadesBundle\Entity\Statusdegree
      */
     public function getInactive()
@@ -53,7 +52,7 @@ class StatusDegreeRepository extends EntityRepository
     }
 
     /**
-     * 
+     *
      * @return \UAH\GestorActividadesBundle\Entity\Statusdegree
      */
     private function getByStatus($status)
@@ -64,5 +63,4 @@ class StatusDegreeRepository extends EntityRepository
 
         return $consulta->getSingleResult();
     }
-
 }

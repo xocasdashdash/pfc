@@ -137,7 +137,7 @@ class ActivityController extends Controller
 
         $editForm->handleRequest($request);
         if ($editForm->isValid()) {
-            $em = $this->getDoctrine()->getManager();            
+            $em = $this->getDoctrine()->getManager();
             $em->persist($activity);
             $em->flush();
 
