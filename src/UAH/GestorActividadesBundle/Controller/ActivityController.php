@@ -76,7 +76,8 @@ class ActivityController extends Controller
     {
         $activity = new \UAH\GestorActividadesBundle\Entity\Activity();
         $form = $this->createForm(new ActivityType($this->getDoctrine()->getManager()
-                        ->getRepository('UAHGestorActividadesBundle:Category')), $activity);
+                        ->getRepository('UAHGestorActividadesBundle:Category')), $activity,
+                array('isAdmin' => $this->isGranted('ROLE_UAH_ADMIN'), 'fullyEditable' => true));
         $form->handleRequest($request);
         if ($form->isValid()) {
             $activity = $form->getData();
@@ -105,7 +106,7 @@ class ActivityController extends Controller
         $form = $this->createForm(new ActivityType($this->getDoctrine()->getManager()
                         ->getRepository('UAHGestorActividadesBundle:Category')), $activity, array(
             'fullyEditable' => $fullyEditable,
-            'isAdmin' => $this->get('security.context')->isGranted('ROLE_UAH_ADMIN'),
+            'isAdmin' => $this->isGranted('ROLE_UAH_ADMIN'),
         ));
         $form->handleRequest($request);
         if ($form->isValid()) {
