@@ -269,7 +269,7 @@ class Activity
     /**
      *
      * @var date Fecha en la que se solicita el aprobar la actividad.
-     * @Column(name="date_pending_approval",type="datetime", nullable=false)
+     * @Column(name="date_pending_approval",type="datetime", nullable=true)
      */
     private $date_pending_approval;
 
