@@ -50,6 +50,7 @@
             "mkdir -p web/upload/images",
             "chmod -R 777 web/upload/",
             "php app/console doctrine:schema:drop --force",
+            "php app/console doctrine:schema:create",
             "echo '------------------------'",
             "php app/console doctrine:fixtures:load",
             "mkdir -p web/cache/barcode/code128"
