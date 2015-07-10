@@ -45,7 +45,7 @@ class Activity
      * @var string
      *
      * @Column(name="name", type="string", length=500)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message = 'activity.name.not-blank')
      */
     private $name;
 
@@ -53,7 +53,7 @@ class Activity
      * @var string
      *
      * @Column(name="englishName", type="string", length=500)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message = 'activity.nameEnglish.not-blank')
      */
     private $englishName;
 
@@ -68,7 +68,7 @@ class Activity
      * @var float
      *
      * @Column(name="numberOfECTSCreditsMin", type="float")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message = 'activity.minCreditsECTS.not-blank')
      */
     private $numberOfECTSCreditsMin;
 
@@ -76,7 +76,7 @@ class Activity
      * @var float
      *
      * @Column(name="numberOfECTSCreditsMax", type="float")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message = 'activity.maxCreditsECTS.not-blank')
      */
     private $numberOfECTSCreditsMax;
 
@@ -84,7 +84,7 @@ class Activity
      * @var float
      *
      * @Column(name="numberOfCreditsMin", type="float")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message = 'activity.minCredits.not-blank')
      */
     private $numberOfCreditsMin;
 
@@ -92,7 +92,7 @@ class Activity
      * @var float
      *
      * @Column(name="numberOfCreditsMax", type="float")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message = 'activity.maxCredits.not-blank')
      */
     private $numberOfCreditsMax;
 
@@ -100,7 +100,7 @@ class Activity
      * @var array
      *
      * @Column(name="celebrationDates", type="json_array")
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message = 'activity.celebrationDates.not-blank')
      */
     private $celebrationDates;
 
