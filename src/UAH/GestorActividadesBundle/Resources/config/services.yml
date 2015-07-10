@@ -46,7 +46,7 @@ services:
     uah.services.invalid_token_response:
         class: UAH\GestorActividadesBundle\Services\JSONHelperService
         calls:
-            - [setCSRFProvider,["@form.csrf_provider"]]
+            - [setCSRFProvider,["@security.csrf.token_manager"]]
     uah.services.json_helper:
         class: UAH\GestorActividadesBundle\Services\JSONHelperService
     uah.services.application_service:
