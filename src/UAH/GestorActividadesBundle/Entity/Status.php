@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping\DiscriminatorMap;
  * @DiscriminatorColumn(name="discr", type="string")
  * @DiscriminatorMap({"activity" = "Statusactivity", "enrollment" = "Statusenrollment", "degree" ="Statusdegree", "application" = "Statusapplication", "category" = "Statuscategory"})
  */
-class Status
+abstract class Status
 {
     /**
      * @Column(name="id",type="integer")
