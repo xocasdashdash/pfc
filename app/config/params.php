@@ -15,7 +15,7 @@ if (isset($_SERVER['HTTP_CLIENT_IP']) ||
     $container->setParameter('database_user', getEnv("MYSQL_USER"));
     $container->setParameter('database_password', "");
 } else {
-    $container->setParameter('database_host', "localhost");
+    $container->setParameter('database_host', "127.0.0.1");
     $container->setParameter('database_port', "3306");
     $container->setParameter('database_name', "symfony");
     $container->setParameter('database_user', "root");
