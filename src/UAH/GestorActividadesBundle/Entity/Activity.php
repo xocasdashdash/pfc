@@ -298,6 +298,7 @@ class Activity
     {
         $this->studentProfile = new \Doctrine\Common\Collections\ArrayCollection();
         $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->setDateCreated(new \DateTime());
     }
 
     /**
