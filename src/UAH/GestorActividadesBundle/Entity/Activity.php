@@ -45,7 +45,7 @@ class Activity
      * @var string
      *
      * @Column(name="name", type="string", length=500)
-     * @Assert\NotBlank(message = 'activity.name.not-blank')
+     * @Assert\NotBlank(message = "activity.name.not-blank")
      */
     private $name;
 
@@ -53,7 +53,7 @@ class Activity
      * @var string
      *
      * @Column(name="englishName", type="string", length=500)
-     * @Assert\NotBlank(message = 'activity.nameEnglish.not-blank')
+     * @Assert\NotBlank(message = "activity.nameEnglish.not-blank")
      */
     private $englishName;
 
@@ -68,7 +68,7 @@ class Activity
      * @var float
      *
      * @Column(name="numberOfECTSCreditsMin", type="float")
-     * @Assert\NotBlank(message = 'activity.minCreditsECTS.not-blank')
+     * @Assert\NotBlank(message = "activity.minCreditsECTS.not-blank")
      */
     private $numberOfECTSCreditsMin;
 
@@ -76,7 +76,7 @@ class Activity
      * @var float
      *
      * @Column(name="numberOfECTSCreditsMax", type="float")
-     * @Assert\NotBlank(message = 'activity.maxCreditsECTS.not-blank')
+     * @Assert\NotBlank(message = "activity.maxCreditsECTS.not-blank")
      */
     private $numberOfECTSCreditsMax;
 
@@ -84,7 +84,7 @@ class Activity
      * @var float
      *
      * @Column(name="numberOfCreditsMin", type="float")
-     * @Assert\NotBlank(message = 'activity.minCredits.not-blank')
+     * @Assert\NotBlank(message = "activity.minCredits.not-blank")
      */
     private $numberOfCreditsMin;
 
@@ -92,7 +92,7 @@ class Activity
      * @var float
      *
      * @Column(name="numberOfCreditsMax", type="float")
-     * @Assert\NotBlank(message = 'activity.maxCredits.not-blank')
+     * @Assert\NotBlank(message = "activity.maxCredits.not-blank")
      */
     private $numberOfCreditsMax;
 
@@ -100,7 +100,7 @@ class Activity
      * @var array
      *
      * @Column(name="celebrationDates", type="json_array")
-     * @Assert\NotBlank(message = 'activity.celebrationDates.not-blank')
+     * @Assert\NotBlank(message = "activity.celebrationDates.not-blank")
      */
     private $celebrationDates;
 
@@ -841,26 +841,26 @@ class Activity
 
     public function getAbsolutePath()
     {
-        return null === $this->image_path ? null : $this->getUploadRootDir() . '/' . $this->image_path;
+        return null === $this->image_path ? null : $this->getUploadRootDir() . "/" . $this->image_path;
     }
 
     public function getImageWebPath()
     {
-        return null === $this->image_path ? null : $this->getUploadDir() . '/' . $this->image_path;
+        return null === $this->image_path ? null : $this->getUploadDir() . "/" . $this->image_path;
     }
 
     protected function getUploadRootDir()
     {
         // the absolute directory path where uploaded
         // documents should be saved
-        return __DIR__ . '/../../../../web/' . $this->getUploadDir();
+        return __DIR__ . "/../../../../web/" . $this->getUploadDir();
     }
 
     protected function getUploadDir()
     {
         // get rid of the __DIR__ so it doesn't screw up
         // when displaying uploaded doc/image in the view.
-        return 'upload/images';
+        return "upload/images";
     }
 
     /**
@@ -871,29 +871,29 @@ class Activity
     {
         // Genero un slug para cada actividad
         // replace non letter or digits by -
-        $slug = preg_replace('~[^\\pL\d]+~u', '-', $this->getName());
+        $slug = preg_replace("~[^\\pL\d]+~u", "-", $this->getName());
         // trim
-        $slug = trim($slug, '-');
+        $slug = trim($slug, "-");
         // transliterate
-        $slug = iconv('utf-8', 'us-ascii//TRANSLIT', $slug);
+        $slug = iconv("utf-8", "us-ascii//TRANSLIT", $slug);
         // lowercase
         $slug = strtolower($slug);
         // remove unwanted characters
-        $slug = preg_replace('~[^-\w]+~', '', $slug);
+        $slug = preg_replace("~[^-\w]+~", "", $slug);
 
         if (empty($slug)) {
-            $slug = 'n-a' . uniqid();
+            $slug = "n-a" . uniqid();
         }
         $this->setSlug($slug);
 
         if (null !== $this->getImageBlob()) {
             // do whatever you want to generate a unique name
             $filename = sha1($this->getSlug() . uniqid(mt_rand(), true));
-            $this->image_path = $filename . '.' . $this->getImageBlob()->guessExtension();
+            $this->image_path = $filename . "." . $this->getImageBlob()->guessExtension();
         }
         if (is_null($this->getStatus())) {
             $em = $event->getEntityManager();
-            $default_status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getDefault();
+            $default_status = $em->getRepository("UAHGestorActividadesBundle:Statusactivity")->getDefault();
             $this->setStatus($default_status);
         }
         //Modifico la fecha de inicio teniendo en cuenta la primera que se pone como de celebracion
@@ -911,8 +911,8 @@ class Activity
         }
 
         if (!is_null($this->getCategories())) {
-            $index_filter = '';
-            $category_slug = '';
+            $index_filter = "";
+            $category_slug = "";
             foreach ($this->getCategories() as $category) {
                 if (!is_null($category->getParentCategory())) {
                     $index_filter .= " category-" . $category->getParentCategory()->getId();
@@ -945,7 +945,7 @@ class Activity
                 $this->setCategorySlug($this->getCategorySlug());
             }
         } else {
-            $this->setIndexFilter('category-no-pillada');
+            $this->setIndexFilter("category-no-pillada");
         }
     }
 
@@ -967,7 +967,7 @@ class Activity
         // check if we have an old image
         if (isset($this->temp)) {
             // delete the old image
-            unlink($this->getUploadRootDir() . '/' . $this->temp);
+            unlink($this->getUploadRootDir() . "/" . $this->temp);
             // clear the temp image path
             $this->temp = null;
         }
@@ -1102,7 +1102,7 @@ class Activity
     public function getCelebrationDatesUnencoded()
     {
         $fechas = $this->getCelebrationDates();
-        $resultado = '';
+        $resultado = "";
         if ($fechas !== null) {
             foreach ($fechas as $fecha) {
                 $resultado .= date("d/m/Y", $fecha) . (($fecha === end($fechas)) ? "" : ",");
