@@ -91,7 +91,8 @@ class ActivityController extends Controller
         }
 
         return $this->render('UAHGestorActividadesBundle:Activity:create.html.twig', array(
-                    'form' => $form->createView(), ));
+                    'form' => $form->createView(),'fullyEditable' => true,
+                    'isAdmin' =>$this->isGranted('ROLE_UAH_ADMIN')  ));
     }
 
     /**
