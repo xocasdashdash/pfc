@@ -57,6 +57,7 @@ class ProfileController extends Controller
             $user = $form->getData();
             $user->setCreationIp($request->getClientIp());
             $user->setDateCreated(new \DateTime());
+            $user->setDateUpdated(new \DateTime());
             
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
