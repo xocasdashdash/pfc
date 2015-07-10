@@ -81,6 +81,7 @@ class ActivityController extends Controller
         $form->handleRequest($request);
         if ($form->isValid()) {
             $activity = $form->getData();
+            $activity->setDateCreated(new \DateTime());
             $em = $this->getDoctrine()->getManager();
             $activity->setOrganizer($this->getUser());
             $activity->setNumberOfPlacesOccupied(0);
