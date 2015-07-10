@@ -54,7 +54,7 @@
                     <div class="col-xs-12 activity category-all {{activity.indexfilter}}" id="activity-{{activity.id}}" >
                         <div class="row">
                             <div class="col-xs-8">
-                                <h3 class="titulo-actividad"><a href="{{path('uah_gestoractividades_activity_index',{'activity_id': activity.id,'slug':activity.slug})}}">{{activity.name}}</a></h3>
+                                <h1 class="titulo-actividad"><a href="{{path('uah_gestoractividades_activity_index',{'activity_id': activity.id,'slug':activity.slug})}}">{{activity.name}}</a></h1>
                                 <div class="abstract-actividad ocultado-vertical">
                                     {{activity.description|raw('html')}}
                                 </div>

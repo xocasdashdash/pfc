@@ -10,7 +10,6 @@ namespace UAH\GestorActividadesBundle\Errors\Enrollments;
 
 class userAlreadyEnrolledError extends \UAH\GestorActividadesBundle\Errors\AbstractError
 {
-
     protected $message = 'Ya estás inscrito';
     protected $code = 1;
     protected $type = 'notice';
@@ -22,5 +21,4 @@ class userAlreadyEnrolledError extends \UAH\GestorActividadesBundle\Errors\Abstr
         $response['type'] = $this->type;
         return $response;
     }
-
 }

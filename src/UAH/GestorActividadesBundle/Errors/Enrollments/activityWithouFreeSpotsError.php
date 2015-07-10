@@ -10,7 +10,6 @@ namespace UAH\GestorActividadesBundle\Errors\Enrollments;
 
 class activityWithouFreeSpotsError extends \UAH\GestorActividadesBundle\Errors\AbstractError
 {
-
     protected $message = 'No hay plazas libres';
     protected $code = 2;
     protected $type = 'notice';
@@ -22,5 +21,4 @@ class activityWithouFreeSpotsError extends \UAH\GestorActividadesBundle\Errors\A
         $response['type'] = $this->type;
         return $response;
     }
-
 }

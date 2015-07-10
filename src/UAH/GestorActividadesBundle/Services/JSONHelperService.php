@@ -9,22 +9,21 @@ namespace UAH\GestorActividadesBundle\Services;
  */
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
 class JSONHelperService
 {
-
     const ERROR_CSRF_TOKEN_INVALID = -3;
 
     protected $csrf_provider;
 
-    public function setCSRFProvider(CsrfTokenManagerInterface $csrf_provider)
+    public function setCSRFProvider(CsrfTokenManager $csrf_provider)
     {
         $this->csrf_provider = $csrf_provider;
     }
 
     /**
-     * 
+     *
      * @return CsrfTokenManagerInterface
      */
     public function getCSRFProvider()
@@ -55,5 +54,4 @@ class JSONHelperService
         $jsonResponse->headers->setCookie($cookie);
         return $jsonResponse;
     }
-
 }

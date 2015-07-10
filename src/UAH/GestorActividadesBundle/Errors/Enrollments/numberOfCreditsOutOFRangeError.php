@@ -10,7 +10,6 @@ namespace UAH\GestorActividadesBundle\Errors\Enrollments;
 
 class numberOfCreditsOutOFRangeError extends \UAH\GestorActividadesBundle\Errors\AbstractError
 {
-
     protected $message = 'Número de créditos fuera de rango';
     protected $code = 2;
     protected $type = 'error';
@@ -22,5 +21,4 @@ class numberOfCreditsOutOFRangeError extends \UAH\GestorActividadesBundle\Errors
         $response['type'] = $this->type;
         return $response;
     }
-
 }

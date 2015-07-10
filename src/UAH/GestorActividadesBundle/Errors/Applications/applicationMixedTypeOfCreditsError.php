@@ -12,9 +12,7 @@ use UAH\GestorActividadesBundle\Errors\AbstractError;
 
 class applicationMixedTypeOfCreditsError extends AbstractError
 {
-
     protected $message = 'Hay una mezcla entre créditos de libre y créditos ECTS. \n Ponte en contacto con el administrador';
     protected $code = 9;
     protected $httpCode = 400;
-
 }

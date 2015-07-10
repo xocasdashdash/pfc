@@ -11,7 +11,6 @@ use UAH\GestorActividadesBundle\Errors\AbstractError;
 
 class enrollmentNotRecognizedError extends AbstractError
 {
-
     protected $message = 'El estado no es el correcto';
     protected $code = 2;
     protected $httpCode = 400;

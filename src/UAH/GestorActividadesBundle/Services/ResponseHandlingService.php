@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class ResponseHandlingService
 {
-
     protected $logger;
 
     public function __construct(LoggerInterface $logger)
@@ -38,5 +37,4 @@ class ResponseHandlingService
             return new JsonResponse($response_data);
         }
     }
-
 }

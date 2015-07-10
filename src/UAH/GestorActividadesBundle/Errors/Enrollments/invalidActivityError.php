@@ -10,7 +10,6 @@ namespace UAH\GestorActividadesBundle\Errors\Enrollments;
 
 class invalidActivityError extends \UAH\GestorActividadesBundle\Errors\AbstractError
 {
-
     protected $message = 'Actividad no disponible';
     protected $code = 4;
     protected $type = 'error';
@@ -22,5 +21,4 @@ class invalidActivityError extends \UAH\GestorActividadesBundle\Errors\AbstractE
         $response['type'] = $this->type;
         return $response;
     }
-
 }

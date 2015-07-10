@@ -19,7 +19,6 @@ use Doctrine\ORM\Mapping\Entity;
  */
 class Application
 {
-
     const APPLICATION_TYPE_OF_CREDITS_ECTS = 'ECTS';
     const APPLICATION_TYPE_OF_CREDITS_LIBRE = 'LIBRE';
 
@@ -78,7 +77,7 @@ class Application
 
     /**
      *
-     * @var string 
+     * @var string
      * @Column(name="typeOfCredits", type="string")
      */
     private $typeOfCredits;
@@ -307,12 +306,11 @@ class Application
     }
 
     /**
-     * 
+     *
      * @param string $typeOfCredits
      */
     public function setTypeOfCredits($typeOfCredits)
     {
         $this->typeOfCredits = $typeOfCredits;
     }
-
 }

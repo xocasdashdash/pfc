@@ -14,6 +14,7 @@ use UAH\GestorActividadesBundle\Entity\Enrollment;
 use UAH\GestorActividadesBundle\Errors\Enrollments as EnrollmentsErrors;
 use UAH\GestorActividadesBundle\Entity\User;
 use UAH\GestorActividadesBundle\Entity\Activity;
+use NumberFormatter;
 
 class EnrollmentService
 {
@@ -54,7 +55,7 @@ class EnrollmentService
     }
 
     /**
-     * 
+     *
      * @param Enrollment $enrollment
      * @return boolean
      */
@@ -70,7 +71,7 @@ class EnrollmentService
     }
 
     /**
-     * 
+     *
      * @param array $enrollmentsToRecognize
      * @param Activity $activity
      * @param User $recognizedBy
@@ -78,7 +79,7 @@ class EnrollmentService
      */
     public function recognizeEnrollments(array $enrollmentsToRecognize, Activity $activity, User $recognizedBy)
     {
-        $enrollment_ids = array_map(function($e) {
+        $enrollment_ids = array_map(function ($e) {
             return isset($e['id']) ? $e['id'] : null;
         }, $enrollmentsToRecognize);
         $assocEnrollmentsToRecognize = array();
@@ -102,7 +103,7 @@ class EnrollmentService
             if (false === $creditRange) {
                 $response ['type'] = 'error';
                 $response ['message'] = 'Usuario sin formato de créditos reconocido';
-            } else if ($enrollment->getStatus() !== $statusEnrolled ||
+            } elseif ($enrollment->getStatus() !== $statusEnrolled ||
                     $enrollment->getActivity() !== $activity) {
                 $response['type'] = 'error';
                 $response['code'] = self::RECOGNIZEMENT_ERROR_BASIC;
@@ -169,5 +170,4 @@ class EnrollmentService
         $this->em->flush();
         return true;
     }
-
 }

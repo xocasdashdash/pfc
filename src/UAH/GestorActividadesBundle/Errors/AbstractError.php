@@ -15,7 +15,6 @@ namespace UAH\GestorActividadesBundle\Errors;
  */
 abstract class AbstractError
 {
-
     protected $httpCode = 400;
     protected $code = -1;
     protected $message = 'Error';
@@ -28,22 +27,22 @@ abstract class AbstractError
         return $response;
     }
 
-    function getCode()
+    public function getCode()
     {
         return $this->code;
     }
 
-    function getMessage()
+    public function getMessage()
     {
         return $this->message;
     }
 
-    function setCode($code)
+    public function setCode($code)
     {
         $this->code = $code;
     }
 
-    function setMessage($message)
+    public function setMessage($message)
     {
         $this->message = $message;
     }
@@ -60,5 +59,4 @@ abstract class AbstractError
         $respuesta = "[{$fecha->format('c')}] Error. Codigo: {$this->code}| Mensaje: {$stringMessage} | Codigo Http: {$this->httpCode}";
         return $respuesta;
     }
-
 }

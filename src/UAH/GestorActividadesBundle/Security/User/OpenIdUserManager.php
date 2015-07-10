@@ -13,7 +13,6 @@ use Psr\Log\LoggerInterface;
 
 class OpenIdUserManager extends UserManager
 {
-
     protected $entityManager;
     protected $logger;
 
@@ -94,5 +93,4 @@ class OpenIdUserManager extends UserManager
 
         return $user; // you must return an UserInterface instance (or throw an exception)
     }
-
 }

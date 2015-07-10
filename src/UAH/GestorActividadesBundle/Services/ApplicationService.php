@@ -17,7 +17,6 @@ use UAH\GestorActividadesBundle\Errors\Applications as ApplicationErrors;
 
 class ApplicationService
 {
-
     protected $applicationRepository;
     protected $em;
 
@@ -28,7 +27,7 @@ class ApplicationService
     }
 
     /**
-     * 
+     *
      * @param array $enrollment_ids
      * @param User $user
      * @return Application
@@ -65,7 +64,7 @@ class ApplicationService
     }
 
     /**
-     * 
+     *
      * @param Application $application
      * @param User $user
      * @return boolean
@@ -92,7 +91,7 @@ class ApplicationService
     }
 
     /**
-     * 
+     *
      * @param Application $application
      * @param Enrollment $enrollment
      * @param User $u
@@ -104,9 +103,9 @@ class ApplicationService
         $status_recognized = $statusEnrollmentRepo->getRecognizedStatus();
         if ($enrollment->getStatus() !== $status_recognized) {
             return new ApplicationErrors\enrollmentNotRecognizedError();
-        } else if (false === is_null($enrollment->getApplication())) {
+        } elseif (false === is_null($enrollment->getApplication())) {
             return new ApplicationErrors\enrollmentAlreadyUsedError();
-        } else if ($u !== $enrollment->getUser()) {
+        } elseif ($u !== $enrollment->getUser()) {
             return new ApplicationErrors\notYourEnrollmentError();
         }
         $application->addEnrollment($enrollment);
@@ -115,7 +114,7 @@ class ApplicationService
     }
 
     /**
-     * 
+     *
      * @param Enrollment $enrollment
      * @param User $user
      * @return boolean
@@ -134,7 +133,7 @@ class ApplicationService
     }
 
     /**
-     * 
+     *
      * @param array $enrollment_ids
      * @param type $creditType
      * @return Enrollment[]
@@ -176,5 +175,4 @@ class ApplicationService
         $this->em->flush();
         return true;
     }
-
 }

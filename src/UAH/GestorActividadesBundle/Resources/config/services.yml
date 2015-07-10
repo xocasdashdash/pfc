@@ -43,8 +43,8 @@ services:
             - UAH\GestorActividadesBundle\Entity\Enrollment
             
     uah.services.response_from_exception: "@uah.services.json_helper"
-    uah.services.invalid_token_response: 
-        class: UAH\GestorActividadesBundle\JSONHelperService
+    uah.services.invalid_token_response:
+        class: UAH\GestorActividadesBundle\Services\JSONHelperService
         calls:
             - [setCSRFProvider,["@form.csrf_provider"]]
     uah.services.json_helper:

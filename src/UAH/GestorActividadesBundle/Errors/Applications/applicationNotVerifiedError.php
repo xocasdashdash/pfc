@@ -12,9 +12,7 @@ use UAH\GestorActividadesBundle\Errors\AbstractError;
 
 class applicationNotVerifiedError extends AbstractError
 {
-
     protected $message = 'Error al verificar el justificante';
     protected $code = 10;
     protected $httpCode = 400;
-
 }

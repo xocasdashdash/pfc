@@ -9,9 +9,8 @@ namespace UAH\GestorActividadesBundle\Errors\Applications;
  */
 use UAH\GestorActividadesBundle\Errors\AbstractError;
 
-class noEnrollmentsWithThoseIDsError extends AbstractError
+class noEnrollmentWithThoseIDsError extends AbstractError
 {
-
     protected $message = 'No hay inscripciones con esos id';
     protected $code = 10;
     protected $httpCode = 400;

@@ -11,7 +11,6 @@ use UAH\GestorActividadesBundle\Errors\AbstractError;
 
 class applicationNotDeletedError extends AbstractError
 {
-
     protected $message = 'Justificante NO borrado!';
     protected $code = 4;
     protected $httpCode = 400;

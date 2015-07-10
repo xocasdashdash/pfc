@@ -32,7 +32,6 @@ use UAH\GestorActividadesBundle\Repository\ActivityRepository;
  */
 class Activity
 {
-
     /**
      * @var integer
      *
@@ -1326,5 +1325,4 @@ class Activity
     {
         return $this->getNumberOfPlacesOccupied() < $this->getNumberOfPlacesOffered();
     }
-
 }

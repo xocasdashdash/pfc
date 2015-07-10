@@ -40,9 +40,9 @@ class ActivityRepository extends EntityRepository
 //                " WITH e.activity = a.id " .
 //                " WHERE e IN (:enrollments) " .
 //                " ORDER BY e.id ASC";
-            $dql = " SELECT a ".
-                    " FROM UAHGestorActividadesBundle:Activity a ".
-                    " WHERE a IN (:activities) ".
+            $dql = " SELECT a " .
+                    " FROM UAHGestorActividadesBundle:Activity a " .
+                    " WHERE a IN (:activities) " .
                     " ORDER BY a.id ASC";
             $consulta = $em->createQuery($dql);
             $consulta->setParameter('activities', $activities);
@@ -63,10 +63,10 @@ class ActivityRepository extends EntityRepository
     public function getNotClosedActivities(\UAH\GestorActividadesBundle\Entity\User $user)
     {
         $em = $this->getEntityManager();
-        $dql = " SELECT a ".
-                " FROM UAHGestorActividadesBundle:Activity a ".
-                " WHERE a.Organizer = :user ".
-                " AND a.status != :closed_status".
+        $dql = " SELECT a " .
+                " FROM UAHGestorActividadesBundle:Activity a " .
+                " WHERE a.Organizer = :user " .
+                " AND a.status != :closed_status" .
                 " ORDER BY a.id ASC";
 
         $a = "SELECT a FROM UAHGestorActividadesBundle:Activity a WHEREa a.User = :user AND WHEREr a.Status != :closed_status ORDER BY a.id ASC";
@@ -94,9 +94,9 @@ class ActivityRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $pending_status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getPending();
-        $dql = ' SELECT a.id '.
-                ' FROM UAHGestorActividadesBundle:Activity a '.
-                ' WHERE a.status = :pending_status '.
+        $dql = ' SELECT a.id ' .
+                ' FROM UAHGestorActividadesBundle:Activity a ' .
+                ' WHERE a.status = :pending_status ' .
                 ' ORDER BY a.date_pending_approval DESC';
         $consulta = $em->createQuery($dql);
         $consulta->setParameter('pending_status', $pending_status);
@@ -109,9 +109,9 @@ class ActivityRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $pending_status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getPending();
-        $dql = ' SELECT a '.
-                ' FROM UAHGestorActividadesBundle:Activity a '.
-                ' WHERE a.status = :pending_status '.
+        $dql = ' SELECT a ' .
+                ' FROM UAHGestorActividadesBundle:Activity a ' .
+                ' WHERE a.status = :pending_status ' .
                 ' ORDER BY a.date_pending_approval DESC';
         $consulta = $em->createQuery($dql);
         $consulta->setParameter('pending_status', $pending_status);
@@ -123,8 +123,8 @@ class ActivityRepository extends EntityRepository
     public function getAll()
     {
         $em = $this->getEntityManager();
-        $dql = ' SELECT a '.
-                ' FROM UAHGestorActividadesBundle:Activity a '.
+        $dql = ' SELECT a ' .
+                ' FROM UAHGestorActividadesBundle:Activity a ' .
                 ' ORDER BY a.date_created DESC';
         $consulta = $em->createQuery($dql);
         $resultado = $consulta->getArrayResult();
@@ -138,9 +138,9 @@ class ActivityRepository extends EntityRepository
             return $this->getAll();
         } else {
             $em = $this->getEntityManager();
-            $dql = ' SELECT a '.
-                    ' FROM UAHGestorActividadesBundle:Activity a '.
-                    ' WHERE a.status = :status '.
+            $dql = ' SELECT a ' .
+                    ' FROM UAHGestorActividadesBundle:Activity a ' .
+                    ' WHERE a.status = :status ' .
                     ' ORDER BY a.date_created DESC';
             $consulta = $em->createQuery($dql);
             $consulta->setParameter('status', $status);
@@ -180,18 +180,18 @@ class ActivityRepository extends EntityRepository
                 $year0 = true;
                 break;
         }
-        $dql = "SELECT a.id AS Id_Actividad  , a.name Nombre , a.englishName NombreEn".
-                " ,a.hasAdditionalWorkload TrabajoAdicional,a.numberOfECTSCreditsMin ECTSminimos, ".
-                " a.numberOfECTSCreditsMax ECTSMaximos, a.numberOfCreditsMin LibreMinimo, ".
-                " a.numberOfCreditsMax LibreMaximo, ".
-                " COUNT( e.id ) inscripciones, ".
-                " (select sum(e1.recognizedCredits) from UAHGestorActividadesBundle:Enrollment e1 where e1.creditsType = 'ECTS' ".
-                " and e1.activity = a.id) ECTSReconocidos, ".
-                " (select sum(e2.recognizedCredits) from UAHGestorActividadesBundle:Enrollment e2 where e2.creditsType = 'LIBRE' ".
-                " and e2.activity = a.id) CreditosLibreReconocidos, ".
-                " a.date_created FechaCreada, a.date_pending_approval FechaSolicitudAprobacion, ".
-                " a.date_approved FechaAprobacion ".
-                " FROM UAHGestorActividadesBundle:Activity a JOIN UAHGestorActividadesBundle:Enrollment e ".
+        $dql = "SELECT a.id AS Id_Actividad  , a.name Nombre , a.englishName NombreEn" .
+                " ,a.hasAdditionalWorkload TrabajoAdicional,a.numberOfECTSCreditsMin ECTSminimos, " .
+                " a.numberOfECTSCreditsMax ECTSMaximos, a.numberOfCreditsMin LibreMinimo, " .
+                " a.numberOfCreditsMax LibreMaximo, " .
+                " COUNT( e.id ) inscripciones, " .
+                " (select sum(e1.recognizedCredits) from UAHGestorActividadesBundle:Enrollment e1 where e1.creditsType = 'ECTS' " .
+                " and e1.activity = a.id) ECTSReconocidos, " .
+                " (select sum(e2.recognizedCredits) from UAHGestorActividadesBundle:Enrollment e2 where e2.creditsType = 'LIBRE' " .
+                " and e2.activity = a.id) CreditosLibreReconocidos, " .
+                " a.date_created FechaCreada, a.date_pending_approval FechaSolicitudAprobacion, " .
+                " a.date_approved FechaAprobacion " .
+                " FROM UAHGestorActividadesBundle:Activity a JOIN UAHGestorActividadesBundle:Enrollment e " .
                 " WITH a.id = e.activity ";
         if ($all & $year0) {
             //No hago nada
@@ -223,9 +223,9 @@ class ActivityRepository extends EntityRepository
     public function getPublishedActivities($page = 1, $page_length = 20)
     {
         $em = $this->getEntityManager();
-        $dql = "SELECT a from UAHGestorActividadesBundle:Activity a ".
-                " LEFT JOIN a.status s ".
-                " WHERE s.code = 'STATUS_PUBLISHED' ".
+        $dql = "SELECT a from UAHGestorActividadesBundle:Activity a " .
+                " LEFT JOIN a.status s " .
+                " WHERE s.code = 'STATUS_PUBLISHED' " .
                 " ORDER BY a.publicityStartDate ASC";
         $consulta = $em->createQuery($dql);
         $firstResult = ($page - 1) * $page_length;
@@ -239,9 +239,9 @@ class ActivityRepository extends EntityRepository
     public function getCountPublishedActivities()
     {
         $em = $this->getEntityManager();
-        $dql = "SELECT count(a) num_activities from UAHGestorActividadesBundle:Activity a ".
-                " LEFT JOIN a.status s ".
-                " WHERE s.code = 'STATUS_PUBLISHED' ".
+        $dql = "SELECT count(a) num_activities from UAHGestorActividadesBundle:Activity a " .
+                " LEFT JOIN a.status s " .
+                " WHERE s.code = 'STATUS_PUBLISHED' " .
                 " ORDER BY a.publicityStartDate ASC";
         $consulta = $em->createQuery($dql);
         $resultado = $consulta->getSingleScalarResult();
@@ -252,8 +252,8 @@ class ActivityRepository extends EntityRepository
     public function updatePublished()
     {
         $em = $this->getEntityManager();
-        $dql = " UPDATE UAHGestorActividadesBundle:Activity a ".
-                " set a.status = :status_published ".
+        $dql = " UPDATE UAHGestorActividadesBundle:Activity a " .
+                " set a.status = :status_published " .
                 " WHERE a.status = :status_approved and a.publicityStartDate < :fecha ";
         $status_published = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getPublished();
         $status_approved = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getApproved();
@@ -269,15 +269,15 @@ class ActivityRepository extends EntityRepository
     public function searchActivities($query)
     {
         $em = $this->getEntityManager();
-        $dql = "SELECT a from UAHGestorActividadesBundle:Activity a ".
-                " LEFT JOIN a.status s ".
-                " WHERE s.code = 'STATUS_PUBLISHED' ".
-                " AND ( a.name LIKE :name OR ".
-                " a.description LIKE :description) ".
+        $dql = "SELECT a from UAHGestorActividadesBundle:Activity a " .
+                " LEFT JOIN a.status s " .
+                " WHERE s.code = 'STATUS_PUBLISHED' " .
+                " AND ( a.name LIKE :name OR " .
+                " a.description LIKE :description) " .
                 " ORDER BY a.publicityStartDate ASC";
         $consulta = $em->createQuery($dql);
-        $consulta->setParameter('name', '%'.$query.'%');
-        $consulta->setParameter('description', '%'.$query.'%');
+        $consulta->setParameter('name', '%' . $query . '%');
+        $consulta->setParameter('description', '%' . $query . '%');
         $resultado = $consulta->getResult();
 
         return $resultado;

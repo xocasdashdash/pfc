@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\Cookie;
  */
 class ApplicationController extends Controller
 {
-
     /**
      * @Route(options={"expose"=true})
      * @Security("is_fully_authenticated()")
@@ -28,7 +27,7 @@ class ApplicationController extends Controller
                 ->getManager()->getRepository('UAHGestorActividadesBundle:Application')
                 ->getUserApplications($this->getUser(), $filter);
         $response = $this->render('UAHGestorActividadesBundle:Application:index.html.twig', array(
-            'applications' => $applications,));
+            'applications' => $applications, ));
         $token = $this->get('form.csrf_provider')->generateCsrfToken('application');
         $cookie = new Cookie('X-CSRFToken', $token, 0, '/', null, false, false);
         $response->headers->setCookie($cookie);
@@ -127,7 +126,7 @@ class ApplicationController extends Controller
         $applicationRepository = $em->getRepository('UAHGestorActividadesBundle:Application');
         $applicationDefaultStatus = $em->getRepository('UAHGestorActividadesBundle:Statusapplication')->getDefault();
         $app = $applicationRepository->findOneBy(array('verificationCode' => $applicationCode,
-            'status' => $applicationDefaultStatus,));
+            'status' => $applicationDefaultStatus, ));
         $response = array();
         if ($app) {
             $response['code'] = 200;
@@ -159,5 +158,4 @@ class ApplicationController extends Controller
             return $this->get('uah.services.invalid_token_response')->generateInvalidCSRFTokenResponse('application');
         }
     }
-
 }
