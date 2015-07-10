@@ -1,3 +1,4 @@
+{% trans_default_domain "gat_activity" %}
 {% extends '::frontend.html.twig' %}
 {% block javascripts %}
     {{ parent() }}
@@ -15,20 +16,20 @@
     {{parent()}}
 {% endblock %}
 {% block title %}
-    Resultados de búsqueda de {{query}}
+    {{'Resultados de búsqueda de {{query}}'|trans}}
 {% endblock %}
 {% block content %}
     <div class="container">
         <div class="row row-offcanvas row-offcanvas-left" id="cont-basico">
             <div id="sidebar" class="col-xs-6 col-sm-3 sidebar-offcanvas lista-categorias" role="navigation">
-                <h4>Elige las categorías que te interesen</h4>
+                <h4>{{'Elige las categorías que te interesen'|trans}}</h4>
                 <div class="lista-categorias">
                     <ul class="no-bullets">
                         <li data-id="-1" class="category">
                             <div class="checkbox-column">
-                                <input id="checkbox--1" class="all-categories" type="checkbox" checked="checked" aria-label="Todas las categorias" value="-1"/>
+                                <input id="checkbox--1" class="all-categories" type="checkbox" checked="checked" aria-label="{{'Todas las categorias'|trans}}" value="-1"/>
                             </div>
-                            <div class="category-name"><label for="checkbox--1">Todas las categorias</label></div>
+                            <div class="category-name"><label for="checkbox--1">{{'Todas las categorias'|trans}}</label></div>
 
                         </li>
                         {% for category in categories %}
@@ -45,7 +46,7 @@
             </div>
             <div class="col-md-8 col-xs-12 activities">
                 <p class="pull-left visible-xs">
-                    <button class="btn btn-primary btn-lg" data-toggle="offcanvas" type="button">Ver categorias</button>
+                    <button class="btn btn-primary btn-lg" data-toggle="offcanvas" type="button">{{'Ver categorias'|trans}}</button>
                 </p>
                 {% for activity in activities %}
                     <div class="col-lg-12 col-md-12 col-xs-12 activity category-all {{activity.indexfilter}}" id="activity-{{activity.id}}" >
@@ -66,9 +67,9 @@
                                 <div class="credits-index text-center">
                                     Créditos: <span class="badge">
                                         {% if activity.numberOfCreditsMax != 0 or activity.numberOfECTSCreditsMax != 0 %}
-                                            Si
+                                            {{'Si'|trans}}
                                         {% else %}
-                                            No
+                                            {{'No'|trans}}
                                         {% endif %}
                                     </span>
                                 </div>
@@ -80,12 +81,12 @@
                                         </button>
                                     {% elseif activity.numberOfPlacesOffered <= activity.numberOfPlacesOccupied %}
                                         <button class="btn btn-default center-block btn-info no-places">
-                                            <span class="texto">No hay plazas!</span>
+                                            <span class="texto">{{'No hay plazas!'|trans}}</span>
                                             <i class="fa fa-times fa-2x"></i>
                                         </button>
                                     {% else %}
                                         <button class="btn btn-default center-block btn-primary enroll-button" data-activity-id="{{activity.id}}">
-                                            <span class="texto">Inscribete!</span>
+                                            <span class="texto">{{'Inscribete!'|trans}}</span>
                                             <i class="fa fa-pencil-square-o fa-2x"></i>
                                         </button>
                                     {% endif %}
@@ -127,7 +128,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{'Cerrar'|trans}}</button>
                 </div>
             </div>
         </div>
@@ -140,7 +141,7 @@
             <img src="">
         </div>
         <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button class="btn" data-dismiss="modal" aria-hidden="true">{{'Close'|trans}}</button>
         </div>
     </div>
 

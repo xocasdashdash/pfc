@@ -1,3 +1,4 @@
+{% trans_default_domain "gat_admin" %}
 {% extends "::backend.html.twig" %}
 {% block javascripts %}
     {{parent()}}
@@ -21,35 +22,35 @@
                     <div class="dropdown"> #}
                 <li class="dropdown">
                     <button id="dropdownMenu1" href="#" data-toggle="dropdown" class="btn btn-default">
-                        Filtra las titulaciones
+                        {{'Filtra las titulaciones'|trans}}
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_degrees', {filter: 'CIENCIAS'})}}">Ciencias</a>
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_degrees', {filter: 'CIENCIAS'})}}">{{'Ciencias'|trans}}</a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_degrees', {filter: 'SALUD'})}}">Ciencias de la Salud</a>
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_degrees', {filter: 'SALUD'})}}">{{'Ciencias de la Salud'|trans}}</a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_degrees', {filter: 'CCSSYJJ'})}}">Ciencias Sociales y Jurídicas</a>
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_degrees', {filter: 'CCSSYJJ'})}}">{{'Ciencias Sociales y Jurídicas'|trans}}</a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_degrees', {filter: 'HUMANIDADES'})}}">Humanidades</a>
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_degrees', {filter: 'HUMANIDADES'})}}">{{'Humanidades'|trans}}</a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_degrees', {filter: 'INGYARQ'})}}">Ingeniería y Arquitectura</a>
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_degrees', {filter: 'INGYARQ'})}}">{{'Ingeniería y Arquitectura'|trans}}</a>
                         </li>
                         <li role="presentation" class="divider"></li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_degrees', {filter: 'ALL'})}}">Todos</a>
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_degrees', {filter: 'ALL'})}}">{{'Todos'|trans}}</a>
                         </li>
                     </ul>
                 </li>
             </div>
 
             <div class="flex-item">
-                <button class="btn btn-default" id="btn_create_new_degree" title="Mostrar el formulario para dar de alta nuevas titulaciones" data-toggle="modal" data-target="#modal-create-degree">Dar de alta nueva titulacion</button>
+                <button class="btn btn-default" id="btn_create_new_degree" title="{{'Mostrar el formulario para dar de alta nuevas titulaciones'|trans}}" data-toggle="modal" data-target="#modal-create-degree">{{'Dar de alta nueva titulacion'|trans}}</button>
             </div>
         </div>
 
@@ -57,7 +58,7 @@
 
 {% endblock %}
 {% block title %}
-    Panel de administración de titulaciones
+    {{'Panel de administración de titulaciones'|trans}}
 {% endblock %}
 {% block content %}
     <div class="row top-buffer table-style">
@@ -65,10 +66,10 @@
             <thead>
                 <tr>
                     <th class="visible-md-up">#</th>
-                    <th class="nombre-grado">Nombre</th>
-                    <th class="visible-sm-up">Área</th>
-                    <th>Código Académico</th>
-                    <th class="hidden-print">Acción</th>
+                    <th class="nombre-grado">{{'Nombre'|trans}}</th>
+                    <th class="visible-sm-up">{{'Área'|trans}}</th>
+                    <th>{{'Código Académico'|trans}}</th>
+                    <th class="hidden-print">{{'Acción'}}</th>
                 </tr>
             </thead>
             <tbody>
@@ -79,8 +80,8 @@
                         <td class="degree-knowledge-area visible-sm-up">{{degree.obj.knowledgeArea}}</td>
                         <td class="degree-academic-code">{{degree.obj.academicCode}}</td>
                         <td class="text-center">
-                            <button class="btn btn-default update_degree" data-degree-id="{{degree.obj.id}}" title="Actualiza los datos de este plan de estudios">Actualizar</button>
-                            <button class="btn btn-default delete_degree" data-degree-id="{{degree.obj.id}}" title="Desactiva este plan de estudios y deja a los que están en él, en el mismo">Eliminar</button>
+                            <button class="btn btn-default update_degree" data-degree-id="{{degree.obj.id}}" title="{{'Actualiza los datos de este plan de estudios'|trans}}">{{'Actualizar'|trans}}</button>
+                            <button class="btn btn-default delete_degree" data-degree-id="{{degree.obj.id}}" title="{{'Desactiva este plan de estudios y deja a los que están en él, en el mismo'|trans}}">{{'Eliminar'|trans}}</button>
                         </td>
                     </tr>
 
@@ -94,48 +95,48 @@
             <div class="modal-content">
                 <form class="form-horizontal" id="form-create-degree">
                     <div class="modal-header">
-                        <h4>Crear una nueva titulación</h4>
+                        <h4>{{'Crear una nueva titulación'|trans}}</h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="degree-name" class="col-sm-4 control-label">Nombre Titulación:</label>
+                            <label for="degree-name" class="col-sm-4 control-label">{{'Nombre Titulación:'|trans}}</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="degree-name" name="degree-name" placeholder="Grado en ...">
+                                <input type="text" class="form-control" id="degree-name" name="degree-name" placeholder="{{'Grado en ...'|trans}}">
                             </div>
                         </div>
                         <div class="form-group">
 
-                            <label for="knowledge-area" class="col-sm-4 control-label">Áreas de conocimiento:</label>
+                            <label for="knowledge-area" class="col-sm-4 control-label">{{'Áreas de conocimiento:'|trans}}</label>
                             <div class="col-sm-8">
-                                <select class="selectpicker" name="knowledge-area" title="Area de conocimiento" id="knowledge-area" data-width="100%">
+                                <select class="selectpicker" name="knowledge-area" title="{{'Area de conocimiento'|trans}}" id="knowledge-area" data-width="100%">
                                     {% set knowledge_areas = ['Artes y Humanidades','Ciencias', 'Ciencias de la Salud','Ciencias Sociales y Jurídicas','Ingeniería y Arquitectura'] %}
                                     {% for knowledge_area in knowledge_areas %}
-                                        <option value="{{knowledge_area}}">{{knowledge_area}}</option>
+                                        <option value="{{knowledge_area|trans}}">{{knowledge_area|trans}}</option>
                                     {% endfor %}
                                 </select>
                             </div>
 
                         </div>
                         <div class="form-group">
-                            <label for="academic-code" class="col-sm-4 control-label">Código Académico</label>
+                            <label for="academic-code" class="col-sm-4 control-label">{{'Código Académico'|trans}}</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="academic-code" name="academic-code" placeholder="G##">
                             </div>
                         </div>
                         <div class="form-group radio-div">
-                            <label class="control-label col-sm-4">¿Es un plan de estudio renovado?</label>
+                            <label class="control-label col-sm-4">{{'¿Es un plan de estudio renovado?'|trans}}</label>
                             <label class="radio col-sm-7 col-sm-offset-5">
-                                <input type="radio" name="type" value="STATUS_RENEWED">Renovado
+                                <input type="radio" name="type" value="STATUS_RENEWED">{{'Renovado'|trans}}
                             </label>
                             <label class="radio col-sm-7 col-sm-offset-5">
-                                <input type="radio" name="type" value="STATUS_NON_RENEWED">No renovado
+                                <input type="radio" name="type" value="STATUS_NON_RENEWED">{{'No renovado'|trans}}
                             </label>
                         </div>
                         <input type="hidden" name="degree-id" id="degree-id">
                     </div>
                     <div class="modal-footer">
-                        <a class="btn btn-default" id="close_modal" data-dismiss="modal">Cerrar</a>
-                        <button class="btn btn-success" type="submit" id="btn_submit_degree">Crear</button>
+                        <a class="btn btn-default" id="close_modal" data-dismiss="modal">{{'Cerrar'|trans}}</a>
+                        <button class="btn btn-success" type="submit" id="btn_submit_degree">{{'Crear'|trans}}</button>
                     </div>
                 </form>
             </div>

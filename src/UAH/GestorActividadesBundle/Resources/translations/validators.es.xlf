@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="es" target-language="es" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="14f2cbc1cade60840c8d93070206d05e" resname="activity.name.not-blank">
+        <source>activity.name.not-blank</source>
+        <target>El nombre no puede estar vacío</target>
+      </trans-unit>
+      <trans-unit id="aa6dfbc4db6baa5aa6784f700b215c69" resname="activity.nameEnglish.not-blank">
+        <source>activity.nameEnglish.not-blank</source>
+        <target>El nombre en inglés no puede estar vacío</target>
+      </trans-unit>
+      <trans-unit id="24a3964e0ba3b69e1173b2b1a79498af" resname="activity.minCreditsECTS.not-blank">
+        <source>activity.minCreditsECTS.not-blank</source>
+        <target>El nombre mínimo de créditos ECTS no puede estar vacio</target>
+      </trans-unit>
+      <trans-unit id="d950f295679699996d3565f1b15a390e" resname="activity.maxCreditsECTS.not-blank">
+        <source>activity.maxCreditsECTS.not-blank</source>
+        <target>El número máximo de créditos ECTS no puede estar vacio</target>
+      </trans-unit>
+      <trans-unit id="53809e3d95a957e5578b9badeba85cb9" resname="activity.minCredits.not-blank">
+        <source>activity.minCredits.not-blank</source>
+        <target>El número mínimo de créditos no puede estar vacio</target>
+      </trans-unit>
+      <trans-unit id="9a0df3c39db5edafd5f9f43e77857e0e" resname="activity.maxCredits.not-blank">
+        <source>activity.maxCredits.not-blank</source>
+        <target>El número máximo de créditos no puede estar vacio</target>
+      </trans-unit>
+      <trans-unit id="6d10ffaf4fbd82277e524d7a57f10157" resname="activity.credits.min-value">
+        <source>activity.credits.min-value</source>
+        <target>Esta número no puede ser inferior a {{ limit }}</target>
+      </trans-unit>
+      <trans-unit id="c294196bc17e2a5461699f7fabcf96eb" resname="activity.credits.max-value">
+        <source>activity.credits.max-value</source>
+        <target>Esta número no puede ser superior a {{ limit }}</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

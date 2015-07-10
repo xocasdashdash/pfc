@@ -1,3 +1,4 @@
+{% trans_default_domain "gat_activity" %}
 {% extends '::backend.html.twig' %}
 {% block javascripts %}
     {{parent()}}
@@ -15,7 +16,7 @@
     {% endstylesheets %}
 {% endblock %}
 {% block title %}
-    Crear nueva actividad
+    {{'Crear nueva actividad'|trans}}
 {% endblock %}
 {% block content %}
     <div class="row bottom-buffer">

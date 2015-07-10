@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="es" target-language="es" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="29bf7a323f1088692c1ad29f08f4f573" resname="Si">
+        <source>Si</source>
+        <target>__Si</target>
+      </trans-unit>
+      <trans-unit id="bafd7322c6e97d25b6299b5d6fe8920b" resname="No">
+        <source>No</source>
+        <target>__No</target>
+      </trans-unit>
+      <trans-unit id="34a374858ff5fecc7a60524fbf20c26a" resname="No hay plazas!">
+        <source>No hay plazas!</source>
+        <target>__No hay plazas!</target>
+      </trans-unit>
+      <trans-unit id="8538a1dd801103098ca62c876fe64f61" resname="Inscribete!">
+        <source>Inscribete!</source>
+        <target>__Inscribete!</target>
+      </trans-unit>
+      <trans-unit id="fb9f7a909ab18f8a7a0e2e30115f3fbc" resname="EDITAR">
+        <source>EDITAR</source>
+        <target>__EDITAR</target>
+      </trans-unit>
+      <trans-unit id="ea26831d7500ab5dd367e32bdf817d7e" resname="ADMINISTRAR">
+        <source>ADMINISTRAR</source>
+        <target>__ADMINISTRAR</target>
+      </trans-unit>
+      <trans-unit id="c89f7fdd35b1f941eb670367debe023a" resname="Organizado por:">
+        <source>Organizado por:</source>
+        <target>__Organizado por:</target>
+      </trans-unit>
+      <trans-unit id="dd59ab3b316f97dee3c6e9bb7bd1e4e9" resname="Categorias:">
+        <source>Categorias:</source>
+        <target>__Categorias:</target>
+      </trans-unit>
+      <trans-unit id="0223fefb693a351b492fe1125bc793e9" resname="Inscrito!">
+        <source>Inscrito!</source>
+        <target>__Inscrito!</target>
+      </trans-unit>
+      <trans-unit id="998d93febfb39309b3b93aece38c6aae" resname="Créditos (min-max)">
+        <source>Créditos (min-max)</source>
+        <target>__Créditos (min-max)</target>
+      </trans-unit>
+      <trans-unit id="4e47fc74692a02ac333c87e4f7aa60f7" resname="Libre">
+        <source>Libre</source>
+        <target>__Libre</target>
+      </trans-unit>
+      <trans-unit id="fc0fe47b55404e30ad5eb50ed9596f2c" resname="ECTS">
+        <source>ECTS</source>
+        <target>__ECTS</target>
+      </trans-unit>
+      <trans-unit id="fd3cae75bb05f76777f50a26cf7f596f" resname="Trabajo adicional">
+        <source>Trabajo adicional</source>
+        <target>__Trabajo adicional</target>
+      </trans-unit>
+      <trans-unit id="7d42502e8c07430ca858d3d49d96fbfa" resname="Horas">
+        <source>Horas</source>
+        <target>__Horas</target>
+      </trans-unit>
+      <trans-unit id="6924620a913ebec9c2b19c961aa29ff0" resname="Fechas">
+        <source>Fechas</source>
+        <target>__Fechas</target>
+      </trans-unit>
+      <trans-unit id="2a5bffd30236d61f0a289dfccd3e0c85" resname="Foto a tamaño completo">
+        <source>Foto a tamaño completo</source>
+        <target>__Foto a tamaño completo</target>
+      </trans-unit>
+      <trans-unit id="92eb39a1407d02c39fc0403548241472" resname="Cerrar">
+        <source>Cerrar</source>
+        <target>__Cerrar</target>
+      </trans-unit>
+      <trans-unit id="9aafb48ad933ff3ffe66a462c790b148" resname="Crear nueva actividad">
+        <source>Crear nueva actividad</source>
+        <target>__Crear nueva actividad</target>
+      </trans-unit>
+      <trans-unit id="f10586faf7ae0a1a67b0d75b7e8655bc" resname="Administrar actividad">
+        <source>Administrar actividad</source>
+        <target>__Administrar actividad</target>
+      </trans-unit>
+      <trans-unit id="12a184cf43e91680e28d2b4dad03ab34" resname="Resultados de búsqueda de {{query}}">
+        <source>Resultados de búsqueda de {{query}}</source>
+        <target>__Resultados de búsqueda de {{query}}</target>
+      </trans-unit>
+      <trans-unit id="602ff1c6f38f0db1e7dfdbdb26a7306e" resname="Elige las categorías que te interesen">
+        <source>Elige las categorías que te interesen</source>
+        <target>__Elige las categorías que te interesen</target>
+      </trans-unit>
+      <trans-unit id="1a49cf87992f805cc3f0e2ed8cd8e651" resname="Todas las categorias">
+        <source>Todas las categorias</source>
+        <target>__Todas las categorias</target>
+      </trans-unit>
+      <trans-unit id="24296317c9c78ab48c29a49bdb460432" resname="Ver categorias">
+        <source>Ver categorias</source>
+        <target>__Ver categorias</target>
+      </trans-unit>
+      <trans-unit id="d3d2e617335f08df83599665eef8a418" resname="Close">
+        <source>Close</source>
+        <target>__Close</target>
+      </trans-unit>
+      <trans-unit id="33e2e92b376546cf94a415e7b874256f" resname="Editar esta actividad">
+        <source>Editar esta actividad</source>
+        <target>__Editar esta actividad</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

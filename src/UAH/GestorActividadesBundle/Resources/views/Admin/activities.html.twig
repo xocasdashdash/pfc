@@ -1,3 +1,4 @@
+{% trans_default_domain "gat_admin" %}
 {% extends "::backend.html.twig" %}
 {% block javascripts %}
     {{parent()}}
@@ -17,70 +18,70 @@
             <div class="flex-item">
                 <li class="dropdown">
                     <button id="dropdownMenu1" href="#" data-toggle="dropdown" class="btn btn-default">
-                        Filtra las actividades
+                        {{'Filtra las actividades'|trans}}
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'pending'})}}">Pendientes</a>
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'pending'})}}">{{'Pendientes'|trans}}</a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'approved'})}}">Aprobadas</a>
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'approved'})}}">{{'Aprobadas'|trans}}</a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'published'})}}">Publicadas</a>
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'published'})}}">{{'Publicadas'|trans}}</a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'closed'})}}">Cerradas</a>
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'closed'})}}">{{'Cerradas'|trans}}</a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'draft'})}}">Borrador</a>
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'draft'})}}">{{'Borrador'|trans}}</a>
                         </li>
                         <li role="presentation" class="divider"></li>
 
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'all'})}}">Todas</a>
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_activities', {filter: 'all'})}}">{{'Todas'|trans}}</a>
                         </li>
                     </ul>
                 </li>
             </div>
 
             <div class="flex-item">
-                <button type="button" class="btn btn-default" id="btn_approve_selected" title="Aprueba todas las actividades seleccionadas">Aprobar actividades seleccionadas</button>
+                <button type="button" class="btn btn-default" id="btn_approve_selected" title="Aprueba todas las actividades seleccionadas">{{'Aprobar actividades seleccionadas'|trans}}</button>
             </div>
             <div class="flex-item">
-                <button type="button" class="btn btn-default" id="btn_print_pending_report" title="Descarga un pdf con todas las actividades pendientes de aprobar">Imprimir informe actividades pendientes</button>
+                <button type="button" class="btn btn-default" id="btn_print_pending_report" title="{{'Descarga un pdf con todas las actividades pendientes de aprobar'|trans}}">{{'Imprimir informe actividades pendientes'|trans}}</button>
             </div>
             <div class="flex-item">
                 <li class="dropdown">
                     <button id="dropdownMenu1" href="#" data-toggle="dropdown" class="btn btn-default">
-                        Descargar CSV
+                        {{'Descargar CSV'|trans}}
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right filter-csv" role="menu" aria-labelledby="dropdownMenu1">
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" data-filter="pending" >Pendientes</a>
+                            <a role="menuitem" tabindex="-1" data-filter="pending" >{{'Pendientes'|trans}}</a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" data-filter="approved" >Aprobadas</a>
+                            <a role="menuitem" tabindex="-1" data-filter="approved" >{{'Aprobadas'|trans}}</a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" data-filter="published">Publicadas</a>
+                            <a role="menuitem" tabindex="-1" data-filter="published">{{'Publicadas'|trans}}</a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" data-filter="closed" >Cerradas</a>
+                            <a role="menuitem" tabindex="-1" data-filter="closed" >{{'Cerradas'|trans}}</a>
                         </li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" data-filter="draft" >Borrador</a>
+                            <a role="menuitem" tabindex="-1" data-filter="draft" >{{'Borrador'|trans}}</a>
                         </li>
                         <li role="presentation" class="divider"></li>
 
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" data-filter="all" >Todas del año</a>
+                            <a role="menuitem" tabindex="-1" data-filter="all" >{{'Todas del año'|trans}}</a>
                         </li>
                         <li role="presentation" class="divider"></li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" data-filter="year0">Año 0</a>
+                            <a role="menuitem" tabindex="-1" data-filter="year0">{{'Año 0'|trans}}</a>
                         </li>
                     </ul>
                 </li>
@@ -91,7 +92,7 @@
 
 {% endblock %}
 {% block title %}
-    Panel de administración de actividades
+    {{'Panel de administración de actividades'|trans}}
 {% endblock %}
 {% block content %}
     <div class="row top-buffer table-style">
@@ -99,10 +100,10 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th class="nombre-actividad">Nombre</th>
-                    <th class="hidden-print">Fecha de creación</th>
-                    <th>Fecha de solicitud</th>
-                    <th class="hidden-print">Acción</th>
+                    <th class="nombre-actividad">{{'Nombre'|trans}}</th>
+                    <th class="hidden-print">{{'Fecha de creación'|trans}}</th>
+                    <th>{{'Fecha de solicitud'|trans}}</th>
+                    <th class="hidden-print">{{'Acción'|trans}}</th>
                 </tr>
             </thead>
             <tbody>

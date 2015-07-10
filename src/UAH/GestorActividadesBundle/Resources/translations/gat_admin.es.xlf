@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="es" target-language="es" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="1fbcb0ef777e7a32f91c30728bc5760a" resname="Filtra las titulaciones">
+        <source>Filtra las titulaciones</source>
+        <target>__Filtra las titulaciones</target>
+      </trans-unit>
+      <trans-unit id="fdab3f533b973190b5bcd15259c9225a" resname="Ciencias">
+        <source>Ciencias</source>
+        <target>__Ciencias</target>
+      </trans-unit>
+      <trans-unit id="102dd7c415a1cae3bd97a2028ad6b902" resname="Ciencias de la Salud">
+        <source>Ciencias de la Salud</source>
+        <target>__Ciencias de la Salud</target>
+      </trans-unit>
+      <trans-unit id="e3989c6dedd9b824106b734e68dccaad" resname="Ciencias Sociales y Jurídicas">
+        <source>Ciencias Sociales y Jurídicas</source>
+        <target>__Ciencias Sociales y Jurídicas</target>
+      </trans-unit>
+      <trans-unit id="fb26254559968ff1ebb55db0af319b65" resname="Humanidades">
+        <source>Humanidades</source>
+        <target>__Humanidades</target>
+      </trans-unit>
+      <trans-unit id="99977b0378e8f1669bf4ec7cf4455547" resname="Ingeniería y Arquitectura">
+        <source>Ingeniería y Arquitectura</source>
+        <target>__Ingeniería y Arquitectura</target>
+      </trans-unit>
+      <trans-unit id="32630ca913d01c4fee71bbe8ef28edea" resname="Todos">
+        <source>Todos</source>
+        <target>__Todos</target>
+      </trans-unit>
+      <trans-unit id="fe0e8359b7adf30854532e8a2f72b7b9" resname="Mostrar el formulario para dar de alta nuevas titulaciones">
+        <source>Mostrar el formulario para dar de alta nuevas titulaciones</source>
+        <target>__Mostrar el formulario para dar de alta nuevas titulaciones</target>
+      </trans-unit>
+      <trans-unit id="4c228df69d3fd53671d2c3d32b3ee21d" resname="Dar de alta nueva titulacion">
+        <source>Dar de alta nueva titulacion</source>
+        <target>__Dar de alta nueva titulacion</target>
+      </trans-unit>
+      <trans-unit id="13089387974f4c5d963ae1b4a26530d0" resname="Panel de administración de titulaciones">
+        <source>Panel de administración de titulaciones</source>
+        <target>__Panel de administración de titulaciones</target>
+      </trans-unit>
+      <trans-unit id="4777bbaaa0aebe104606b77947d0e22d" resname="Nombre">
+        <source>Nombre</source>
+        <target>__Nombre</target>
+      </trans-unit>
+      <trans-unit id="2910f719538f9eb4fe633827cc6de0e8" resname="Área">
+        <source>Área</source>
+        <target>__Área</target>
+      </trans-unit>
+      <trans-unit id="2a60e5574c5d4dc6f8392f876fb235bf" resname="Código Académico">
+        <source>Código Académico</source>
+        <target>__Código Académico</target>
+      </trans-unit>
+      <trans-unit id="8eecf553deb831a28d2bac42195bb6c3" resname="Actualiza los datos de este plan de estudios">
+        <source>Actualiza los datos de este plan de estudios</source>
+        <target>__Actualiza los datos de este plan de estudios</target>
+      </trans-unit>
+      <trans-unit id="2e7be17f876ce903bc63690b2ab8cb40" resname="Actualizar">
+        <source>Actualizar</source>
+        <target>__Actualizar</target>
+      </trans-unit>
+      <trans-unit id="d4eb7460d19b57a13bcc5edc54637140" resname="Desactiva este plan de estudios y deja a los que están en él, en el mismo">
+        <source>Desactiva este plan de estudios y deja a los que están en él, en el mismo</source>
+        <target>__Desactiva este plan de estudios y deja a los que están en él, en el mismo</target>
+      </trans-unit>
+      <trans-unit id="5b5c9f9dc839dcc858b3c4371b014930" resname="Eliminar">
+        <source>Eliminar</source>
+        <target>__Eliminar</target>
+      </trans-unit>
+      <trans-unit id="f61db1cb6ff7c41f78eb70e814057438" resname="Crear una nueva titulación">
+        <source>Crear una nueva titulación</source>
+        <target>__Crear una nueva titulación</target>
+      </trans-unit>
+      <trans-unit id="9ebd77e1f93abc8743fd4ba033f136be" resname="Nombre Titulación:">
+        <source>Nombre Titulación:</source>
+        <target>__Nombre Titulación:</target>
+      </trans-unit>
+      <trans-unit id="46f59a77eef5fef07a75eb99f3bb4c2d" resname="Grado en ...">
+        <source>Grado en ...</source>
+        <target>__Grado en ...</target>
+      </trans-unit>
+      <trans-unit id="1fc8c07985397e7f9e5238762305e06c" resname="Áreas de conocimiento:">
+        <source>Áreas de conocimiento:</source>
+        <target>__Áreas de conocimiento:</target>
+      </trans-unit>
+      <trans-unit id="0038d704f3542519448f0e9ca9bce061" resname="Area de conocimiento">
+        <source>Area de conocimiento</source>
+        <target>__Area de conocimiento</target>
+      </trans-unit>
+      <trans-unit id="be024ea0ea84a8d50541bcef601a78f4" resname="¿Es un plan de estudio renovado?">
+        <source>¿Es un plan de estudio renovado?</source>
+        <target>__¿Es un plan de estudio renovado?</target>
+      </trans-unit>
+      <trans-unit id="00bdc81970cbe6779092a61e634917e5" resname="Renovado">
+        <source>Renovado</source>
+        <target>__Renovado</target>
+      </trans-unit>
+      <trans-unit id="a6773ad8708aebcad5065f724ef93ba5" resname="No renovado">
+        <source>No renovado</source>
+        <target>__No renovado</target>
+      </trans-unit>
+      <trans-unit id="92eb39a1407d02c39fc0403548241472" resname="Cerrar">
+        <source>Cerrar</source>
+        <target>__Cerrar</target>
+      </trans-unit>
+      <trans-unit id="4f74549a5b17e88d7dd15b2fd7789a59" resname="Crear">
+        <source>Crear</source>
+        <target>__Crear</target>
+      </trans-unit>
+      <trans-unit id="a9353240a9833ee70d6208a6c1141cb5" resname="Filtra las actividades">
+        <source>Filtra las actividades</source>
+        <target>__Filtra las actividades</target>
+      </trans-unit>
+      <trans-unit id="b4188c1005d6392044c1cccb2229b164" resname="Pendientes">
+        <source>Pendientes</source>
+        <target>__Pendientes</target>
+      </trans-unit>
+      <trans-unit id="1652d6611f4812635a646c5b4e1e2261" resname="Aprobadas">
+        <source>Aprobadas</source>
+        <target>__Aprobadas</target>
+      </trans-unit>
+      <trans-unit id="6311cc50000c45e1b32a8ae7c2f08ad7" resname="Publicadas">
+        <source>Publicadas</source>
+        <target>__Publicadas</target>
+      </trans-unit>
+      <trans-unit id="c2337593bf5c728451f8845353db74be" resname="Cerradas">
+        <source>Cerradas</source>
+        <target>__Cerradas</target>
+      </trans-unit>
+      <trans-unit id="a1c7b53d72d9db871a2f3ea94d06f113" resname="Borrador">
+        <source>Borrador</source>
+        <target>__Borrador</target>
+      </trans-unit>
+      <trans-unit id="f28c2b459d8f54b08080c78a5599e3a8" resname="Todas">
+        <source>Todas</source>
+        <target>__Todas</target>
+      </trans-unit>
+      <trans-unit id="5a6d739b564d3518131caa3c03644650" resname="Aprobar actividades seleccionadas">
+        <source>Aprobar actividades seleccionadas</source>
+        <target>__Aprobar actividades seleccionadas</target>
+      </trans-unit>
+      <trans-unit id="4c1591a2c22e1dcabd7d12220b02d983" resname="Descarga un pdf con todas las actividades pendientes de aprobar">
+        <source>Descarga un pdf con todas las actividades pendientes de aprobar</source>
+        <target>__Descarga un pdf con todas las actividades pendientes de aprobar</target>
+      </trans-unit>
+      <trans-unit id="09027a48b1557d7de81f5770a0624ca4" resname="Imprimir informe actividades pendientes">
+        <source>Imprimir informe actividades pendientes</source>
+        <target>__Imprimir informe actividades pendientes</target>
+      </trans-unit>
+      <trans-unit id="574bc368eab1e0b04f7cda4d3ccb3a7e" resname="Descargar CSV">
+        <source>Descargar CSV</source>
+        <target>__Descargar CSV</target>
+      </trans-unit>
+      <trans-unit id="2d17b551f63922dfe695be3d31078e0d" resname="Todas del año">
+        <source>Todas del año</source>
+        <target>__Todas del año</target>
+      </trans-unit>
+      <trans-unit id="48f1f422d543ac8a1d333d40ac2748d7" resname="Año 0">
+        <source>Año 0</source>
+        <target>__Año 0</target>
+      </trans-unit>
+      <trans-unit id="7ba729f9cadbdf31c949f3eae4e57b7c" resname="Panel de administración de actividades">
+        <source>Panel de administración de actividades</source>
+        <target>__Panel de administración de actividades</target>
+      </trans-unit>
+      <trans-unit id="4777e05c24f22fb50d474443745bbc33" resname="Fecha de creación">
+        <source>Fecha de creación</source>
+        <target>__Fecha de creación</target>
+      </trans-unit>
+      <trans-unit id="363a2b78556c3429439a5c2111e4a22f" resname="Fecha de solicitud">
+        <source>Fecha de solicitud</source>
+        <target>__Fecha de solicitud</target>
+      </trans-unit>
+      <trans-unit id="05e7d63e6cc8246292efcaf6bc1bda43" resname="Acción">
+        <source>Acción</source>
+        <target>__Acción</target>
+      </trans-unit>
+      <trans-unit id="4d6936762fca90a2bfc4a51bd671507d" resname="Panel de administración de categorias">
+        <source>Panel de administración de categorias</source>
+        <target>__Panel de administración de categorias</target>
+      </trans-unit>
+      <trans-unit id="092508bc77552efc0e4b5361433cfb80" resname="Padre">
+        <source>Padre</source>
+        <target>__Padre</target>
+      </trans-unit>
+      <trans-unit id="3397e69cce37e37c8605f57b367d6b33" resname="Estado">
+        <source>Estado</source>
+        <target>__Estado</target>
+      </trans-unit>
+      <trans-unit id="41fb55d93d53c0b6ffc702db9795a461" resname="Inactiva">
+        <source>Inactiva</source>
+        <target>__Inactiva</target>
+      </trans-unit>
+      <trans-unit id="24ea3fcbad735ef3a81e275c28ec6923" resname="Activa">
+        <source>Activa</source>
+        <target>__Activa</target>
+      </trans-unit>
+      <trans-unit id="336d5ebc5436534e61d16e63ddfca327" resname="-">
+        <source>-</source>
+        <target>__-</target>
+      </trans-unit>
+      <trans-unit id="457761b64166dd7e6c2a18abda8ba0d4" resname="Actualiza los datos de esta categoria">
+        <source>Actualiza los datos de esta categoria</source>
+        <target>__Actualiza los datos de esta categoria</target>
+      </trans-unit>
+      <trans-unit id="0fcbf21bd3a8b972a65d47a3a9eddd83" resname="Desactiva esta categoría">
+        <source>Desactiva esta categoría</source>
+        <target>__Desactiva esta categoría</target>
+      </trans-unit>
+      <trans-unit id="7e2860c3250948a9c35f2017ceaf1a3e" resname="Crear una nueva categoría">
+        <source>Crear una nueva categoría</source>
+        <target>__Crear una nueva categoría</target>
+      </trans-unit>
+      <trans-unit id="ad9d6b40d4e1cbc99669738034d87d73" resname="Nombre categoría:">
+        <source>Nombre categoría:</source>
+        <target>__Nombre categoría:</target>
+      </trans-unit>
+      <trans-unit id="199066bf9cb6b8e4e4fb14d56fc0cc74" resname="Categoría padre (Deja vacio para crear una categoría padre):">
+        <source>Categoría padre (Deja vacio para crear una categoría padre):</source>
+        <target>__Categoría padre (Deja vacio para crear una categoría padre):</target>
+      </trans-unit>
+      <trans-unit id="354d8d55171935d1ea2e4c1c22081962" resname="Filtra los usuarios">
+        <source>Filtra los usuarios</source>
+        <target>__Filtra los usuarios</target>
+      </trans-unit>
+      <trans-unit id="df0955c21763c7abe494e2ec05dd91cb" resname="Estudiantes">
+        <source>Estudiantes</source>
+        <target>__Estudiantes</target>
+      </trans-unit>
+      <trans-unit id="c8d47648e60633bb4e5cba973b14dbfe" resname="Secretarias de alumnos - PAS">
+        <source>Secretarias de alumnos - PAS</source>
+        <target>__Secretarias de alumnos - PAS</target>
+      </trans-unit>
+      <trans-unit id="e06b10789d10e5cea91c22c870bfc9cf" resname="PDI y Organizadores">
+        <source>PDI y Organizadores</source>
+        <target>__PDI y Organizadores</target>
+      </trans-unit>
+      <trans-unit id="e3afed0047b08059d0fada10f400c1e5" resname="Admin">
+        <source>Admin</source>
+        <target>__Admin</target>
+      </trans-unit>
+      <trans-unit id="0b28a5799a32c687dad2c5183718ceac" resname="SuperAdmin">
+        <source>SuperAdmin</source>
+        <target>__SuperAdmin</target>
+      </trans-unit>
+      <trans-unit id="548bdf89ac79c0c2d22d106dc24a0e9e" resname="Mostrar el formulario para dar de alta nuevos permisos">
+        <source>Mostrar el formulario para dar de alta nuevos permisos</source>
+        <target>__Mostrar el formulario para dar de alta nuevos permisos</target>
+      </trans-unit>
+      <trans-unit id="25b0cbfe26f60214e5dc258930dc166e" resname="Dar de alta nuevo usuario">
+        <source>Dar de alta nuevo usuario</source>
+        <target>__Dar de alta nuevo usuario</target>
+      </trans-unit>
+      <trans-unit id="e1deb50bf14649e828065579555298f4" resname="Panel de administración de permisos de usuarios">
+        <source>Panel de administración de permisos de usuarios</source>
+        <target>__Panel de administración de permisos de usuarios</target>
+      </trans-unit>
+      <trans-unit id="d3438c401324150f75f528ab3db9720b" resname="Usuario UAH">
+        <source>Usuario UAH</source>
+        <target>__Usuario UAH</target>
+      </trans-unit>
+      <trans-unit id="df2d307f98ca850af6537bf200a1fc9e" resname="Permisos">
+        <source>Permisos</source>
+        <target>__Permisos</target>
+      </trans-unit>
+      <trans-unit id="b3f5424eb1f59ca19abd8066d3fb87ee" resname="Cambiarte a este usuario">
+        <source>Cambiarte a este usuario</source>
+        <target>__Cambiarte a este usuario</target>
+      </trans-unit>
+      <trans-unit id="dc596eb960ec6358bcd5c3eed931582a" resname="Cambiar roles de los usuarios">
+        <source>Cambiar roles de los usuarios</source>
+        <target>__Cambiar roles de los usuarios</target>
+      </trans-unit>
+      <trans-unit id="41f8101c3d89228044c6ccd39308c25f" resname="Actualiza los permisos que este usuario tiene disponibles">
+        <source>Actualiza los permisos que este usuario tiene disponibles</source>
+        <target>__Actualiza los permisos que este usuario tiene disponibles</target>
+      </trans-unit>
+      <trans-unit id="27101de2be25289394d2ae646c6d844b" resname="Deja a este usuario con los permisos por defecto (Estudiante) y lo borra de aquí">
+        <source>Deja a este usuario con los permisos por defecto (Estudiante) y lo borra de aquí</source>
+        <target>__Deja a este usuario con los permisos por defecto (Estudiante) y lo borra de aquí</target>
+      </trans-unit>
+      <trans-unit id="f46b3218fb60a330a700c675596ac0e0" resname="Quitar">
+        <source>Quitar</source>
+        <target>__Quitar</target>
+      </trans-unit>
+      <trans-unit id="f6dd9ecf935a3de440b842a66f2ef8af" resname="Crear permisos para usuario">
+        <source>Crear permisos para usuario</source>
+        <target>__Crear permisos para usuario</target>
+      </trans-unit>
+      <trans-unit id="06046111c09b5522e9dcfa35867df5f5" resname="Nombre UAH:">
+        <source>Nombre UAH:</source>
+        <target>__Nombre UAH:</target>
+      </trans-unit>
+      <trans-unit id="cf079ddedaf5f5cd15208cbf1022122f" resname="nombre.apellido">
+        <source>nombre.apellido</source>
+        <target>__nombre.apellido</target>
+      </trans-unit>
+      <trans-unit id="5f0f15990e4d8accb7ef83e8d4465bbc" resname="Permisos:">
+        <source>Permisos:</source>
+        <target>__Permisos:</target>
+      </trans-unit>
+      <trans-unit id="43c74df8f75d9fbacca0437d3936fc96" resname="Elegir un los usuarios">
+        <source>Elegir un los usuarios</source>
+        <target>__Elegir un los usuarios</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

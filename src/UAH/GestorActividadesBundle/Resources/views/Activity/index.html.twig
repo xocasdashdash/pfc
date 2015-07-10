@@ -1,3 +1,4 @@
+{% trans_default_domain "gat_activity" %}
 {% extends '::frontend.html.twig' %}
 {% block stylesheets %}
     {{ parent() }}
@@ -21,12 +22,12 @@
             <div class="row hidden-print">
                 <div class="text-center col-xs-6">
                     <a href="{{path('uah_gestoractividades_activity_edit',{'activity_id': activity.id})}}">
-                        <h4>EDITAR</h4>
+                        <h4>{{'EDITAR'|trans}}</h4>
                     </a>
                 </div>
                 <div class="text-center col-xs-6">
                     <a href="{{path('uah_gestoractividades_activity_admin',{'activity_id': activity.id})}}">
-                        <h4>ADMINISTRAR</h4>
+                        <h4>{{'ADMINISTRAR'|trans}}</h4>
                     </a>
                 </div>
             </div>
@@ -40,7 +41,7 @@
                 </div>
                 <div class="row sub-title">
                     <div class="left-column col-lg-8 col-xs-8">
-                        <span class="organizador pull-left">Organizado por:<span><a href="{{activity.url}}">{{activity.organizername}}</a></span></span>
+                        <span class="organizador pull-left">{{'Organizado por:'|trans}}<span><a href="{{activity.url}}">{{activity.organizername}}</a></span></span>
                     </div>
                     <div class="left-column col-lg-4 col-xs-4 text-center">
                         <div class="row">
@@ -69,7 +70,7 @@
                             <span>
                                 {{activity.description|raw('html')}}
                             </span>
-                            <div class="categories-activity hidden-print"><span>Categorias:</span>{{activity.CategorySlug}}</div>
+                            <div class="categories-activity hidden-print"><span>{{'Categorias:'|trans}}</span>{{activity.CategorySlug}}</div>
 
                         </div>
                     </div>
@@ -81,12 +82,12 @@
                         <div class="enrollment-button row hidden-print">
                             {% if permissions == "ENROLLABLE" %}
                                 <button class="btn btn-default center-block btn-primary enroll-button" data-activity-id="{{activity.id}}">
-                                    <span class="texto">Inscribete!</span>
+                                    <span class="texto">{{'Inscribete!'|trans}}</span>
                                     <i class="fa fa-pencil-square-o fa-2x"></i>
                                 </button>
                             {% elseif permissions == "ENROLLED" and app.user is not null %}
                                 <button class="btn btn-default center-block btn-success already-enrolled">
-                                    <span class="texto">Inscrito!</span>
+                                    <span class="texto">{{'Inscrito!'|trans}}</span>
                                     <i class="fa fa-check fa-2x"></i>
                                 </button>
                             {% endif %}
@@ -95,16 +96,16 @@
                         {% if activity.numberOfCreditsMax != 0 or activity.numberOfECTSCreditsMax != 0 %}
                             <div class="separator-row row center-block"></div>
                             <div class="credits row">
-                                <div class="col-xs-12 credits-text">Créditos (min-max)</div>
-                                <div class="col-xs-3 text-justify">Libre</div>
+                                <div class="col-xs-12 credits-text">{{'Créditos (min-max)'|trans}}</div>
+                                <div class="col-xs-3 text-justify">{{'Libre'|trans}}</div>
                                 <div class="col-xs-8 col-xs-offset-1 text-center">{{activity.numberOfCreditsMin}} - {{activity.numberOfCreditsMax}}</div>
-                                <div class="col-xs-3 text-justify">ECTS</div>
+                                <div class="col-xs-3 text-justify">{{'ECTS'|trans}}</div>
                                 <div class="col-xs-8 col-xs-offset-1 text-center">{{activity.numberOfECTSCreditsMin}} - {{activity.numberOfECTSCreditsMax}}</div>
                             </div>
                         {% endif %}
                         <div class="separator-row row center-block"></div>
                         <div class="workload row">
-                            <div class="col-xs-4 text-center">Trabajo adicional</div>
+                            <div class="col-xs-4 text-center">{{'Trabajo adicional'|trans}}</div>
                             <div class="col-xs-6 col-xs-offset-2">
                                 <span class="fa-stack">
                                     <i class="fa fa-square-o fa-stack-2x"></i>
@@ -119,12 +120,12 @@
                         </div>
                         <div class="separator-row row center-block"></div>
                         <div class="hours row">
-                            <div class="col-xs-4 text-left">Horas</div>
+                            <div class="col-xs-4 text-left">{{'Horas'|trans}}</div>
                             <div class="col-xs-6 col-xs-offset-2 text-center"> {{activity.numberOfHours}} </div>
                         </div>
                         <div class="separator-row row center-block"></div>
                         <div class="dates row">
-                            <div class="col-xs-12 text-center">Fechas</div>
+                            <div class="col-xs-12 text-center">{{'Fechas'|trans}}</div>
                             {% for fecha in activity.celebrationDates %}
                                 <div class="col-xs-12 text-center date">
                                     {{fecha|date('d/m/Y')}}
@@ -148,13 +149,13 @@
             <div class="modal-content ">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h3 class="modal-title" id="modalFoto">Foto a tamaño completo</h3>
+                    <h3 class="modal-title" id="modalFoto">{{'Foto a tamaño completo'|trans}}</h3>
                 </div>
                 <div class="modal-body">
                     <img class="center-block img-rounded img-activity" src="">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{'Cerrar'|trans}}</button>
                 </div>
             </div>
         </div>

@@ -1,3 +1,4 @@
+{% trans_default_domain "gat_activity" %}
 {% extends '::backend.html.twig' %}
 {% block javascripts %}
     {{parent()}}
@@ -17,7 +18,7 @@
     {% endstylesheets %}
 {% endblock %}
 {% block title %}
-    Administrar actividad
+    {{'Administrar actividad'|trans}}
 {% endblock %}
 {% block acciones_datos %}
     <div class="row acciones_datos hidden-print">

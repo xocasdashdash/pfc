@@ -1,3 +1,4 @@
+{% trans_default_domain "gat_activity" %}
 {# Tengo que pasarle activities, enrollments#}
 {% for activity in activities %}
     <div id="activity-{{activity.id}}" class="col-xs-12 activity category-all {{activity.indexfilter}}"  style="display:none;"  >
@@ -18,9 +19,9 @@
                 <div class="credits-index text-center">
                     Créditos: <span class="badge">
                         {% if activity.numberOfCreditsMax != 0 or activity.numberOfECTSCreditsMax != 0 %}
-                            Si
+                            {{'Si'|trans}}
                         {% else %}
-                            No
+                            {{'No'|trans}}
                         {% endif %}
                     </span>
                 </div>
@@ -32,12 +33,12 @@
                         </button>
                     {% elseif activity.numberOfPlacesOffered <= activity.numberOfPlacesOccupied %}
                         <button class="btn btn-default center-block btn-info no-places">
-                            <span class="texto">No hay plazas!</span>
+                            <span class="texto">{{'No hay plazas!'|trans}}</span>
                             <i class="fa fa-times fa-2x"></i>
                         </button>
                     {% else %}
                         <button class="btn btn-default center-block btn-primary enroll-button" data-activity-id="{{activity.id}}">
-                            <span class="texto">Inscribete!</span>
+                            <span class="texto">{{'Inscribete!'|trans}}</span>
                             <i class="fa fa-pencil-square-o fa-2x"></i>
                         </button>
                     {% endif %}

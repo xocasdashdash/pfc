@@ -1,3 +1,4 @@
+{% trans_default_domain "gat_admin" %}
 {% extends "::backend.html.twig" %}
 {% block javascripts %}
     {{parent()}}
@@ -23,7 +24,7 @@
 
 {% endblock %}
 {% block title %}
-    Panel de administración de categorias
+    {{'Panel de administración de categorias'|trans}}
 {% endblock %}
 {% block content %}
     <div class="row top-buffer table-style">
@@ -31,20 +32,20 @@
             <thead>
                 <tr>
                     <th class="visible-sm-up">#</th>
-                    <th class="category-name">Nombre</th>
-                    <th class="visible-md-up category-parent">Padre</th>
-                    <th class="category-status">Estado</th>
-                    <th class="hidden-print">Acción</th>
+                    <th class="category-name">{{'Nombre'|trans}}</th>
+                    <th class="visible-md-up category-parent">{{'Padre'|trans}}</th>
+                    <th class="category-status">{{'Estado'|trans}}</th>
+                    <th class="hidden-print">{{'Acción'|trans}}</th>
                 </tr>
             </thead>
             <tbody>
                 {% for category in categories %}
                     {% if category.tipo == 'STATUS_INACTIVE' %}
-                        {% set tipo = 'Inactiva' %}
+                        {% set tipo = 'Inactiva'|trans %}
                     {% elseif category.tipo == 'STATUS_ACTIVE' %}
-                        {% set tipo = 'Activa' %}
+                        {% set tipo = 'Activa'|trans %}
                     {%else%}
-                        {% set tipo = '-'%}
+                        {% set tipo = '-'|trans%}
                     {%endif%}
 
                     <tr id="category-{{category.obj.id}}" data-category-type="{{category.tipo}}">
@@ -53,8 +54,8 @@
                         <td class="visible-md-up category-parent" data-parent-category-id="{{category.obj.parentCategory.id|default('-1')}}">{{category.obj.parentCategory.name|default('-')}}</td>
                         <td class="category-status">{{tipo}}</td>
                         <td class="text-center">
-                            <button class="btn btn-default update_category" data-category-id="{{category.obj.id}}" title="Actualiza los datos de esta categoria">Actualizar</button>
-                            <button class="btn btn-default delete_category" data-category-id="{{category.obj.id}}" title="Desactiva esta categoría">Eliminar</button>
+                            <button class="btn btn-default update_category" data-category-id="{{category.obj.id}}" title="{{'Actualiza los datos de esta categoria'|trans}}">Actualizar</button>
+                            <button class="btn btn-default delete_category" data-category-id="{{category.obj.id}}" title="{{'Desactiva esta categoría'|trans}}">{{'Eliminar'|trans}}</button>
                         </td>
                     </tr>
 
@@ -68,19 +69,19 @@
             <div class="modal-content">
                 <form class="form-horizontal" id="form-create-category">
                     <div class="modal-header">
-                        <h4>Crear una nueva categoría</h4>
+                        <h4>{{'Crear una nueva categoría'|trans}}</h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="category-name" class="col-sm-4 control-label">Nombre categoría:</label>
+                            <label for="category-name" class="col-sm-4 control-label">{{'Nombre categoría:'|trans}}</label>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="category-name" name="category-name" placeholder="">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="parent-category" class="col-sm-4 control-label">Categoría padre (Deja vacio para crear una categoría padre):</label>
+                            <label for="parent-category" class="col-sm-4 control-label">{{'Categoría padre (Deja vacio para crear una categoría padre):'|trans}}</label>
                             <div class="col-sm-8">
-                                <select class="selectpicker" name="parent-category" title="Categoria padre" id="parent-category" data-width="100%">
+                                <select class="selectpicker" name="parent-category" title="{{'Categoria padre'}}" id="parent-category" data-width="100%">
                                     <option data-hidden="true"></option>
                                     {% for category in parent_categories %}
                                         <option value="{{category.id}}">{{category.name}}</option>
@@ -91,8 +92,8 @@
                         <input type="hidden" name="category-id" id="category-id">
                     </div>
                     <div class="modal-footer">
-                        <a class="btn btn-default" id="close_modal"  data-dismiss="modal">Cerrar</a>
-                        <button class="btn btn-success" type="submit" id="btn_submit_category">Crear</button>
+                        <a class="btn btn-default" id="close_modal"  data-dismiss="modal">{{'Cerrar'|trans}}</a>
+                        <button class="btn btn-success" type="submit" id="btn_submit_category">{{'Crear'|trans}}</button>
                     </div>
                 </form>
             </div>
