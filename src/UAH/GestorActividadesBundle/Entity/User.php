@@ -28,6 +28,7 @@ class User implements UserInterface
 {
     const CREDIT_TYPE_ECTS = 'ECTS';
     const CREDIT_TYPE_LIBRE = 'LIBRE';
+
     /**
      * @var integer
      *
@@ -159,6 +160,12 @@ class User implements UserInterface
     private $verifiedApplications;
 
     /**
+     * @OneToMany(targetEntity="Enrollment", mappedBy="recognizedByUser")
+     * @var Enrollemtns
+     */
+    private $recognizedEnrollments;
+
+    /**
      * Get id
      *
      * @return integer
@@ -262,6 +269,7 @@ class User implements UserInterface
 
     public function eraseCredentials()
     {
+        return null;
     }
 
     public function getRoles()
@@ -281,6 +289,7 @@ class User implements UserInterface
 
     public function getSalt()
     {
+        return '';
     }
 
     public function getUsername()
@@ -317,6 +326,8 @@ class User implements UserInterface
     public function __construct()
     {
         $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->verifiedApplications = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->recognizedEnrollments = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -367,6 +378,7 @@ class User implements UserInterface
 
     public function getPassword()
     {
+        throw new \LogicException('Users don\' have passwords');
     }
 
     /**
@@ -700,6 +712,7 @@ class User implements UserInterface
             //return 'http://yo.rediris.es/soy/adrian.bolonio@uah.es';
         }
     }
+
     public function getCreditsRange(Activity $activity)
     {
         $credit_range = array();

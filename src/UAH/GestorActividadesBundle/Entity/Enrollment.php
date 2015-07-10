@@ -88,8 +88,8 @@ class Enrollment
     private $application;
 
     /**
-     * @var User verifiedByUser
-     * @ManyToOne(targetEntity="User", inversedBy="recognizedApplications")
+     * @var User recognizedByUser
+     * @ManyToOne(targetEntity="User", inversedBy="recognizedEnrollments")
      * @JoinColumn(name="recognized_by_id", referencedColumnName="id", nullable=true,onDelete="SET NULL")
      */
     private $recognizedByUser;

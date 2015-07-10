@@ -57,7 +57,7 @@ class Degree
     private $status;
 
     /**
-     * @OneToMany(targetEntity="User", mappedBy="degree_id")
+     * @OneToMany(targetEntity="User", mappedBy="degree")
      */
     private $degree_students;
 
