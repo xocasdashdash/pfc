@@ -45,6 +45,7 @@ class Activity
      * @var string
      *
      * @Column(name="name", type="string", length=500)
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -52,6 +53,7 @@ class Activity
      * @var string
      *
      * @Column(name="englishName", type="string", length=500)
+     * @Assert\NotBlank()
      */
     private $englishName;
 
@@ -66,6 +68,7 @@ class Activity
      * @var float
      *
      * @Column(name="numberOfECTSCreditsMin", type="float")
+     * @Assert\NotBlank()
      */
     private $numberOfECTSCreditsMin;
 
@@ -73,6 +76,7 @@ class Activity
      * @var float
      *
      * @Column(name="numberOfECTSCreditsMax", type="float")
+     * @Assert\NotBlank()
      */
     private $numberOfECTSCreditsMax;
 
@@ -80,6 +84,7 @@ class Activity
      * @var float
      *
      * @Column(name="numberOfCreditsMin", type="float")
+     * @Assert\NotBlank()
      */
     private $numberOfCreditsMin;
 
@@ -87,6 +92,7 @@ class Activity
      * @var float
      *
      * @Column(name="numberOfCreditsMax", type="float")
+     * @Assert\NotBlank()
      */
     private $numberOfCreditsMax;
 
@@ -94,6 +100,7 @@ class Activity
      * @var array
      *
      * @Column(name="celebrationDates", type="json_array")
+     * @Assert\NotBlank()
      */
     private $celebrationDates;
 
