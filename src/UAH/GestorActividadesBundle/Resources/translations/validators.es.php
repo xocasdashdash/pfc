@@ -14,6 +14,6 @@ return array(
     'activity.maxCreditsECTS.not-blank' => 'El número máximo de créditos ECTS no puede estar vacio',
     'activity.minCredits.not-blank' => 'El número mínimo de créditos no puede estar vacio',
     'activity.maxCredits.not-blank' => 'El número máximo de créditos no puede estar vacio',
-    'activity.credits.min-value' => 'Esta número no puede ser inferior a 0',
-    'activity.credits.max-value' => 'Esta número no puede ser superior a %limit%'
+    'activity.credits.min-value' => 'Esta número no puede ser inferior a {{ limit }}',
+    'activity.credits.max-value' => 'Esta número no puede ser superior a {{ limit }}'
 );
