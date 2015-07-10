@@ -93,7 +93,12 @@ class Activity
      *
      * @Column(name="numberOfCreditsMax", type="float")
      * @Assert\NotBlank(message = "activity.maxCredits.not-blank")
-     */
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 10,
+     *      minMessage = "",
+     *      maxMessage = "You cannot be taller than {{ limit }}cm to enter"
+     * )     */
     private $numberOfCreditsMax;
 
     /**
