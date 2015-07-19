@@ -13,7 +13,7 @@ $(window).on('load', function() {
     position: {
       my: 'top center', // Position my top left...
       at: 'bottom center', // at the bottom right of...
-      //target: $('.selector') // my target 
+      //target: $('.selector') // my target
     },
     style: {
       classes: 'hidden-print'
@@ -39,12 +39,12 @@ $(window).on('load', function() {
             url: Routing.generate('uah_gestoractividades_admin_updatepermissions', {
               identity: encodeURIComponent($idLdap),
               permits: $role
-            }))
+            })
+          })
           .done(function(data) {
-              bootbox.alert(data.message);
-            }.fail(function(data) {
-              bootbox.alert("Ha habido un error: " + data.responseJSON.message);
-            });
+            bootbox.alert(data.message);
+          }).fail(function(data) {
+            bootbox.alert("Ha habido un error: " + data.responseJSON.message);
           });
       }
     });
@@ -81,31 +81,31 @@ $(window).on('load', function() {
   });
 
   $('#form-create-new-user').on('submit', function(evt) {
-      evt.preventDefault();
-      $uah_name = $('#uah-name').val();
-      $uah_role = $('#uah-roles :selected').val();
-      $uah_role_name = $('#uah-roles :selected').text();
-      $('#modal-create-user').modal('hide')
+    evt.preventDefault();
+    $uah_name = $('#uah-name').val();
+    $uah_role = $('#uah-roles :selected').val();
+    $uah_role_name = $('#uah-roles :selected').text();
+    $('#modal-create-user').modal('hide');
 
-      bootbox.confirm('¿Estás seguro que quieres crear este usuario (' + $uah_name + ') con estos permisos: ' + $uah_role_name + ' ?', function(result) {
-          if (result) {
-            $.ajax({
-                type: 'POST',
-                url: Routing.generate('uah_gestoractividades_admin_newuser', {
-                  uah_name: encodeURI($uah_name),
-                  uah_role: $uah_role
-                })).done(function(data) {
-                bootbox.alert('Usuario creado!');
-                $('#uah-name').val('');
-                $('#uah-roles :selected').val('');
-              }).fail(function(data) {
-                bootbox.alert('Ha habido un error al crear el usuario:' + data.responseJSON.message);
-              });
-            });
-        } else {
-          $('#modal-create-user').modal('show');
-        }
-      });
+    bootbox.confirm('¿Estás seguro que quieres crear este usuario (' + $uah_name + ') con estos permisos: ' + $uah_role_name + ' ?', function(result) {
+      if (result) {
+        $.ajax({
+          type: 'POST',
+          url: Routing.generate('uah_gestoractividades_admin_newuser', {
+            uah_name: encodeURI($uah_name),
+            uah_role: $uah_role
+          })
+        }).done(function(data) {
+          bootbox.alert('Usuario creado!');
+          $('#uah-name').val('');
+          $('#uah-roles :selected').val('');
+        }).fail(function(data) {
+          bootbox.alert('Ha habido un error al crear el usuario:' + data.responseJSON.message);
+        });
+      } else {
+        $('#modal-create-user').modal('show');
+      }
+    });
 
   });
 });
