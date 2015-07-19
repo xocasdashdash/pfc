@@ -1,11 +1,11 @@
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
 
-$(window).load(function() {
+$(function() {
     function getSelectedIds() {
         var $activities_id = [];
         $filas_seleccionadas = $('table input[type=checkbox]:checked');
@@ -23,8 +23,8 @@ $(window).load(function() {
         $.ajax({
             type: "POST",
             url: Routing.generate('uah_gestoractividades_admin_approve'),
-            data: JSON.stringify($activities_id),
-            success: function(data) {
+            data: JSON.stringify($activities_id)}).done(
+              function(data) {
                 bootbox.alert("Actividades aprobadas", function() {
                     //location.reload(true);
                     $tbody = $('#activity-' + $activities_id[0]).closest('tbody');
@@ -33,7 +33,7 @@ $(window).load(function() {
                         location.reload(true);
                     }
                     //Quito las filas
-                    $.each($activities_id, function(index, value) {
+                    $activities_id.map(function (value) {
                         $('#activity-' + value).remove();
                     });
                     //Cambio los valores del indice
@@ -41,12 +41,10 @@ $(window).load(function() {
                         $(value).find('.index').text(index + 1);
                     });
                 });
-            },
-            error: function(data) {
+            }).fail(function(data) {
                 bootbox.alert("Ha habido un problema :S", function() {
-//                        location.reload(true);
                 });
-            }
+            });
         });
     });
     $('#btn_print_pending_report').on('click', function() {
@@ -60,5 +58,4 @@ $(window).load(function() {
         var frame = $('<iframe>', {'src': Routing.generate('uah_gestoractividades_admin_exportactivities', {filter: $filter})}).hide();
         $('body').append(frame);
     });
-
 });
