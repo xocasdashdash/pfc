@@ -13,9 +13,6 @@
     <link href="{{ asset_url }}" rel="stylesheet" type="text/css" />
     {% endstylesheets %}
 {% endblock %}
-{% block flashmessages %}
-    {{parent()}}
-{% endblock %}
 {% block title %}
     Portal
 {% endblock %}
@@ -46,7 +43,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12  activities">
+            <div class="col-sm-8 col-xs-12  activities">
                 <p class="pull-left visible-xs">
                     <button class="btn btn-primary btn-lg" data-toggle="offcanvas" type="button">Ver categorias</button>
                 </p>

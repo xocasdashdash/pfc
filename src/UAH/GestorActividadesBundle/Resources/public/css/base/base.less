@@ -21,16 +21,16 @@ body{
     left:       0;
     height:     100%;
     width:      100%;
-    background: rgba( 255, 255, 255, .8 ) 
-        url('http://i.stack.imgur.com/FhHRx.gif') 
-        50% 50% 
+    background: rgba( 255, 255, 255, .8 )
+        url('http://i.stack.imgur.com/FhHRx.gif')
+        50% 50%
         no-repeat;
 }
 
 /* When the body has the loading class, we turn
    the scrollbar off with overflow:hidden */
 body.loading {
-    overflow: hidden;   
+    overflow: hidden;
 }
 
 /* Anytime the body has the loading class, our
@@ -52,7 +52,7 @@ body.loading .ajax-loading {
 a.enlace_navbar{
     margin-left: 10px;
     color: #777;
-    text-decoration: none;    
+    text-decoration: none;
     display:none;
 }
 .enlace_navbar.a:hover{
@@ -69,7 +69,7 @@ a.enlace_navbar{
 }
 
 .cookiebanner{
-    text-align: center;  
+    text-align: center;
 }
 @media print {
     .cookiebanner {
@@ -83,4 +83,15 @@ a.enlace_navbar{
     margin-left:7px;
     margin-right:7px;
     padding-top:20px;
+}
+@media screen and (max-width:768px) {
+  h1:extend(h1){
+    font-size: 24px;
+  }
+  h2:extend(h2){
+    font-size: 20px;
+  }
+  h3:extend(h3){
+    font-size: 16px;
+  }
 }
