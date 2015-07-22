@@ -151,10 +151,4 @@ knp_snappy:
         binary:     /home/xokas/pfc/wkhtmltopdf/wkhtmltoimage
         options:    []    
 monolog:
-    handlers:
-        main:
-            type: fingers_crossed
-            action_level: warning
-            handler: file
-            path: "%kernel.logs_dir%/%kernel.environment%.log"
-            channels: ["!event"]
+    channels: ["gat"]
