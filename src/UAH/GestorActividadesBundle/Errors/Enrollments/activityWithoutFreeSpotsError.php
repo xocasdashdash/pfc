@@ -8,7 +8,7 @@ namespace UAH\GestorActividadesBundle\Errors\Enrollments;
  * and open the template in the editor.
  */
 
-class activityWithouFreeSpotsError extends \UAH\GestorActividadesBundle\Errors\AbstractError
+class activityWithoutFreeSpotsError extends \UAH\GestorActividadesBundle\Errors\AbstractError
 {
     protected $message = 'No hay plazas libres';
     protected $code = 2;

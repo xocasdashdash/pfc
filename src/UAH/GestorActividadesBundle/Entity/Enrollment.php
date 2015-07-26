@@ -32,6 +32,21 @@ class Enrollment
     private $id;
 
     /**
+     * @var int Estado del registro
+     * @ManyToOne(targetEntity="Statusenrollment")
+     * @JoinColumn(name="status", referencedColumnName="id")
+     */
+    private $status;
+
+    /**
+     *
+     * @var usuario
+     * @ManyToOne(targetEntity="User", inversedBy="enrollments")
+     * @JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
+     */
+    private $user;
+
+    /**
      * @var datetime
      * @Column(name="dateRecognized", type="datetime",nullable=true)
      */
@@ -58,21 +73,6 @@ class Enrollment
     private $creditsType;
 
     /**
-     * @var int Estado del registro
-     * @ManyToOne(targetEntity="Statusenrollment")
-     * @JoinColumn(name="status", referencedColumnName="id")
-     */
-    private $status;
-
-    /**
-     *
-     * @var usuario
-     * @ManyToOne(targetEntity="User", inversedBy="enrollments")
-     * @JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
-     */
-    private $user;
-
-    /**
      *
      * @var integer
      * @ManyToOne(targetEntity="Activity", inversedBy="enrollees")
@@ -93,6 +93,7 @@ class Enrollment
      * @JoinColumn(name="recognized_by_id", referencedColumnName="id", nullable=true,onDelete="SET NULL")
      */
     private $recognizedByUser;
+
     /**
      * Get id
      *
@@ -301,25 +302,7 @@ class Enrollment
             $this->setStatus($default_status);
         }
     }
-
-    /**
-     * PreUpdate
-     */
-//    public function preupdate(LifecycleEventArgs $event) {
-//
-//        if ($event->hasChangedField('status')) {
-//            $em = $event->getEntityManager();
-//            if ($this->getStatus() === $em->
-//                            getRepository('UAHGestorActividadesBundle:Statusenrollment')->getRecognizedStatus()) {
-//                $this->setDateProcessed(new \DateTime("now"));
-//            } elseif ($this->getStatus() === $em->
-//                            getRepository('UAHGestorActividadesBundle:Statusenrollment')->getDefault()) {
-//                $event->getEntity()->
-//
-//            }
-//        }
-//    }
-
+    
     /**
      * Set dateRecognized
      *

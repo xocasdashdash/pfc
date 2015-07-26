@@ -13,11 +13,13 @@ use UAH\GestorActividadesBundle\Entity\Enrollment;
 use UAH\GestorActividadesBundle\Entity\Activity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/enroll")
+ * @Method("POST")
  */
 class EnrollmentController extends Controller
 {

@@ -16,10 +16,9 @@ use UAH\GestorActividadesBundle\Entity\User;
 use UAH\GestorActividadesBundle\Entity\Activity;
 use NumberFormatter;
 
-class EnrollmentService
+class EnrollmentService implements EnrollmentInterface
 {
     /* @var $enrollmentRepository EnrollmentRepository */
-
     protected $enrollmentRepository;
     /* @var $em EntityManager */
     protected $em;
@@ -33,7 +32,7 @@ class EnrollmentService
     public function createEnrollment(Activity $activity, User $user)
     {
         if (false === $activity->hasFreePlaces()) {
-            return new EnrollmentsErrors\activityWithouFreeSpotsError();
+            return new EnrollmentsErrors\activityWithoutFreeSpotsError();
         }
         if (false === $user->isProfileComplete()) {
             return new EnrollmentsErrors\invalidProfileError();
@@ -65,6 +64,9 @@ class EnrollmentService
         if ($enrollment->getStatus() !== $statusEnrolled) {
             return new EnrollmentsErrors\wrongEnrollmentStatusError();
         }
+        $activity = $enrollment->getActivity();
+        $activity->setNumberOfPlacesOccupied($activity->getNumberOfPlacesOccupied() - 1);
+        $this->em->persist($activity);
         $this->em->remove($enrollment);
         $this->em->flush();
         return true;
