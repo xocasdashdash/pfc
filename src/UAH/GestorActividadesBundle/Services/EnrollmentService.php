@@ -94,7 +94,7 @@ class EnrollmentService
         $statusEnrolled = $this->em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getEnrolledStatus();
         $statusRecognized = $this->em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getRecognizedStatus();
         $renewedDegreeStatus = $this->em->getRepository('UAHGestorActividadesBundle:Statusdegree')->getRenewed();
-        $notRenewedDegreeStatus = $this->em->getRepository('UAHGestorActividadesBundle:Statusdegree')->getRenewed();
+        $notRenewedDegreeStatus = $this->em->getRepository('UAHGestorActividadesBundle:Statusdegree')->getNotRenewed();
         $validDegreeStatusArray = array($renewedDegreeStatus, $notRenewedDegreeStatus);
         $responses = array();
         foreach ($enrollments as $enrollment) {

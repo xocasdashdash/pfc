@@ -55,7 +55,7 @@ abstract class AbstractError
     public function __toString()
     {
         $fecha = new \DateTime();
-        $stringMessage = is_array($this->message) ? implode(';', $this->message) : $this->message;
+        $stringMessage = print_r($this->message,1);
         $fechaString = $fecha->format('c');
         $respuesta = "[{$fechaString}] Error. Codigo: {$this->code}| Mensaje: {$stringMessage} | Codigo Http: {$this->httpCode}";
         return $respuesta;

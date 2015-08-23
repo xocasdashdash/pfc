@@ -205,6 +205,8 @@ $(function() {
               bootbox.alert('No tienes permiso para realizar esta acción.', function() {
                 window.location.href = '/';
               });
+            } else if (data.status === 400) {
+              bootbox.alert('Hay algún problema con alguno de los usuarios, prueba con otros');
             }
           });
         }

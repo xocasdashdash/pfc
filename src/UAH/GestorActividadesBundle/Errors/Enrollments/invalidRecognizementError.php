@@ -15,11 +15,6 @@ class invalidRecognizementError extends \UAH\GestorActividadesBundle\Errors\Abst
     protected $type = 'error';
     protected $httpCode = 400;
 
-    public function __construct($message)
-    {
-        $this->message = $message;
-    }
-
     public function getJSONResponse()
     {
         $response = parent::getJSONResponse();
