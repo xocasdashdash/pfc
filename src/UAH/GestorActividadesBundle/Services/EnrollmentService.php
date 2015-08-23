@@ -143,15 +143,15 @@ class EnrollmentService
     {
         $numberFormatter = new \NumberFormatter('es_ES', NumberFormatter::DECIMAL);
         $num_credits = $numberFormatter->parse($number_of_credits);
-
         if (!$num_credits) {
             $numberFormatter = new \NumberFormatter('en_US', NumberFormatter::DECIMAL);
             $num_credits = $numberFormatter->parse($number_of_credits);
             if (!$num_credits) {
                 return false;
             }
-            return $num_credits;
         }
+        return $num_credits;
+        
     }
 
     public function unrecognizeEnrollments(array $unrecognizements_ids, Activity $activity)
