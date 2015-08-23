@@ -9,6 +9,7 @@ namespace UAH\GestorActividadesBundle\Services;
  */
 
 use UAH\GestorActividadesBundle\Repository\ApplicationRepository;
+use UAH\GestorActividadesBundle\Repository\EnrollmentRepository;
 use Doctrine\ORM\EntityManager;
 use UAH\GestorActividadesBundle\Entity\Application;
 use UAH\GestorActividadesBundle\Entity\User;
@@ -19,11 +20,13 @@ class ApplicationService
 {
     protected $applicationRepository;
     protected $em;
+    private $enrollmentRepository;
 
-    public function __construct(EntityManager $em, ApplicationRepository $applicationRepository)
+    public function __construct(EntityManager $em, ApplicationRepository $applicationRepository, EnrollmentRepository $enrollmentRepository)
     {
         $this->em = $em;
         $this->applicationRepository = $applicationRepository;
+        $this->enrollmentRepository = $enrollmentRepository;
     }
 
     /**

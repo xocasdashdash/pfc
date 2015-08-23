@@ -51,7 +51,7 @@ services:
         class: UAH\GestorActividadesBundle\Services\JSONHelperService
     uah.services.application_service:
         class: UAH\GestorActividadesBundle\Services\ApplicationService
-        arguments: ['@doctrine.orm.entity_manager', '@uah.services.repository.application_repository']
+        arguments: ['@doctrine.orm.entity_manager', '@uah.services.repository.application_repository','@uah.services.repository.enrollment_repository']
     uah.services.enrollment_service:
         class: UAH\GestorActividadesBundle\Services\EnrollmentService
         arguments: ['@doctrine.orm.entity_manager', '@uah.services.repository.enrollment_repository']
