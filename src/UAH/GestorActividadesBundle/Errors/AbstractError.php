@@ -56,7 +56,8 @@ abstract class AbstractError
     {
         $fecha = new \DateTime();
         $stringMessage = is_array($this->message) ? implode(';', $this->message) : $this->message;
-        $respuesta = "[{$fecha->format('c')}] Error. Codigo: {$this->code}| Mensaje: {$stringMessage} | Codigo Http: {$this->httpCode}";
+        $fechaString = $fecha->format('c');
+        $respuesta = "[{$fechaString}] Error. Codigo: {$this->code}| Mensaje: {$stringMessage} | Codigo Http: {$this->httpCode}";
         return $respuesta;
     }
 }
