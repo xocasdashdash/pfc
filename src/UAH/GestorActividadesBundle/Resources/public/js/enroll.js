@@ -1,5 +1,11 @@
+var enrollInAction = false;
 $(function() {
   $('.activities, .activity-modal, .activity').on('click', '.enroll-button', function(event) {
+    if(enrollInAction === false){
+        enrollInAction = true
+    }else{
+        return;
+    }
     var $id = $(this).data('activity-id');
     var $boton = $(this);
     $boton.html($('#ajax-loading-image').clone());
@@ -9,11 +15,13 @@ $(function() {
         activity_id: $id
       })
     }).done(function(data) {
+        enrollInAction = false;
       $boton.addClass('btn-success  already-enrolled').removeClass('btn-primary enroll-button');
       $boton.html('<span class="texto">Inscrito!</span><span class="fa fa-check fa-2x"></span>');
       $('#modal-enrollment-button').data('enrolled-in', true);
     }).
     fail(function(data) {
+        enrollInAction = false;
       if (data.status === 401) {
         $('#notification').removeClass('hide');
         $('#notification').addClass('alert-info');
