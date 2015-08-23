@@ -30,6 +30,8 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     cache:  false
+    globals:
+        application_subdirectory: "%application_subdirectory%"
 # Assetic Configuration
 assetic:
     debug:          "%kernel.debug%"

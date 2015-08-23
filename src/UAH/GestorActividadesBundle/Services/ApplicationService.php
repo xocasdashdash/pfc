@@ -112,6 +112,7 @@ class ApplicationService
             return new ApplicationErrors\notYourEnrollmentError();
         }
         $application->addEnrollment($enrollment);
+        $enrollment->setApplication($application);
         $enrollment->setStatus($statusEnrollmentRepo->getPendingVerificationStatus());
         $this->em->persist($enrollment);
     }

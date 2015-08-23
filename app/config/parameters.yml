@@ -12,3 +12,4 @@ parameters:
     mailer_password: null
     locale: es
     secret: kljbaeljakjakjdkjljq21323
+    application_subdirectory: 

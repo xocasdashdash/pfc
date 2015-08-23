@@ -36,7 +36,7 @@
         <div class="col-xs-5 text-center">
             {#<div class="col-xs-12"><img src="{{ qrcode_url(application.verificationCode) }}"></div>#}
             <div class="col-xs-12">
-                <img src="{{ mopa_barcode_url('code128', application.verificationCode, {'barcodeOptions': {
+                <img src="{{application_subdirectory}}{{ mopa_barcode_url('code128', application.verificationCode, {'barcodeOptions': {
                     barThickWidth: 5,barThinWidth:2.2,
                     barHeight: 160,drawText: false,
                 }, 'rendererOptions':  {height:0,width:0} })}}">
