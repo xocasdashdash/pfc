@@ -44,7 +44,7 @@ class ApplicationService
         $application->setApplicationDateCreated(new \DateTime(date("c", time())));
         $sr = new \Symfony\Component\Security\Core\Util\SecureRandom();
         $application->setVerificationCode(bin2hex($sr->nextBytes(10)));
-        $application->setUser($this->getUser());
+        $application->setUser($user);
         foreach ($enrollments as $enrollment) {
             $this->addEnrollment($application, $enrollment, $user);
         }
