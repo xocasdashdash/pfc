@@ -19,7 +19,8 @@ monolog:
         fileStream:
             type:  stream
             path:  "%kernel.logs_dir%/%kernel.environment%.log"
-            level: debug            
+            level: debug
+            channels: "!event"
         loggly:
             type: loggly
             token: b962de48-3388-4912-b859-b705d9e12e41
@@ -30,6 +31,7 @@ monolog:
             type: fingers_crossed
             action_level: error
             handler: group
+            channels: "!event"
         firephp:
             type:  firephp
             level: info

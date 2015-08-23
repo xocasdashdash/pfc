@@ -86,7 +86,7 @@ class EnrollmentService
         }, $enrollmentsToRecognize);
         $assocEnrollmentsToRecognize = array();
         foreach ($enrollmentsToRecognize as $enrollment) {
-            $assocEnrollmentsToRecognize[$enrollment['id']] = $enrollment;
+            $assocEnrollmentsToRecognize[$enrollment['id']] = $enrollment['number_of_credits'];
         }
         /* @var $enrollments Enrollment[] */
         $enrollments = $this->enrollmentRepository->getEnrollmentsByID($enrollment_ids);
