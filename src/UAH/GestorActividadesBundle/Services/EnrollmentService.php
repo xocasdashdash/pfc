@@ -108,11 +108,9 @@ class EnrollmentService
             } elseif ($enrollment->getStatus() !== $statusEnrolled ||
                     $enrollment->getActivity() !== $activity) {
                 $response['type'] = 'error';
-                $response['code'] = self::RECOGNIZEMENT_ERROR_BASIC;
                 $response['message'] = 'El estado no es el correcto';
             } elseif (!in_array($user->getDegree()->getStatus(), $validDegreeStatusArray)) {
                 $response['type'] = 'error';
-                $response['code'] = self::RECOGNIZEMENT_ERROR_NO_DEGREE;
                 $response['message'] = 'No tiene un plan de estudios valido';
             } elseif (false === $numberOfCredits) {
                 $response['type'] = 'error';
