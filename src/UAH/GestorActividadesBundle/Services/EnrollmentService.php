@@ -16,7 +16,7 @@ use UAH\GestorActividadesBundle\Entity\User;
 use UAH\GestorActividadesBundle\Entity\Activity;
 use NumberFormatter;
 
-class EnrollmentService implements EnrollmentInterface
+class EnrollmentService
 {
     /* @var $enrollmentRepository EnrollmentRepository */
     protected $enrollmentRepository;
@@ -172,4 +172,5 @@ class EnrollmentService implements EnrollmentInterface
         $this->em->flush();
         return true;
     }
+
 }
