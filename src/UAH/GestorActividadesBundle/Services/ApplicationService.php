@@ -170,8 +170,14 @@ class ApplicationService
         $application->setStatus($verifiedApplicationStatus);
         $application->setVerifiedByUser($verifiedBy);
         $application->setApplicationDateVerified(new \DateTime());
-        $verifiedEnrollmentStatus = $this->em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getVerified();
+        /* @var $statusEnrollmentRepo \UAH\GestorActividadesBundle\Repository\StatusEnrollmentRepository */
+        $statusEnrollmentRepo = $this->em->getRepository('UAHGestorActividadesBundle:Statusenrollment');
+        $verifiedEnrollmentStatus = $statusEnrollmentRepo->getVerified();
+        $pendingVerificationStatus = $statusEnrollmentRepo->getPendingVerificationStatus();
         foreach ($application->getEnrollments() as $enrollment) {
+            if($enrollment->getStatus() !== $pendingVerificationStatus){
+                return new ApplicationErrors\wrongEnrollmentStatusInApplication();
+            }
             $enrollment->setStatus($verifiedEnrollmentStatus);
             $this->em->persist($enrollment);
         }

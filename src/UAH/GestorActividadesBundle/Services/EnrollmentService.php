@@ -93,6 +93,7 @@ class EnrollmentService
         /* @var $statusEnrolled \UAH\GestorActividadesBundle\Entity\Statusenrollment */
         $statusEnrolled = $this->em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getEnrolledStatus();
         $statusRecognized = $this->em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getRecognizedStatus();
+        $statusNotRecognized = $this->em->getRepository('UAHGestorActividadesBundle:Statusenrollment')->getNotRecognizedStatus();
         $renewedDegreeStatus = $this->em->getRepository('UAHGestorActividadesBundle:Statusdegree')->getRenewed();
         $notRenewedDegreeStatus = $this->em->getRepository('UAHGestorActividadesBundle:Statusdegree')->getNotRenewed();
         $validDegreeStatusArray = array($renewedDegreeStatus, $notRenewedDegreeStatus);
@@ -105,10 +106,12 @@ class EnrollmentService
             if (false === $creditRange) {
                 $response ['type'] = 'error';
                 $response ['message'] = 'Usuario sin formato de créditos reconocido';
-            } elseif ($enrollment->getStatus() !== $statusEnrolled ||
-                    $enrollment->getActivity() !== $activity) {
+            } elseif ($enrollment->getStatus() !== $statusEnrolled || $enrollment->getStatus() !== $statusNotRecognized) {
                 $response['type'] = 'error';
                 $response['message'] = 'El estado no es el correcto';
+            } elseif ($enrollment->getActivity() !== $activity) {
+                $response['type'] = 'error';
+                $response['message'] = 'La actividad no es la correcta';
             } elseif (!in_array($user->getDegree()->getStatus(), $validDegreeStatusArray)) {
                 $response['type'] = 'error';
                 $response['message'] = 'No tiene un plan de estudios valido';
@@ -158,11 +161,20 @@ class EnrollmentService
     {
         /* @var $enrollments Enrollment[] */
         $enrollments = $this->enrollmentRepository->getEnrollmentsByID($unrecognizements_ids);
-        $defaultStatus = $this->em->getRepository('UAHGestorActividadesBundle:Statusenrollment')
+        /* @var $statusEnrollmentRepo \UAH\GestorActividadesBundle\Repository\StatusEnrollmentRepository */
+        $statusEnrollmentRepo = $this->em->getRepository('UAHGestorActividadesBundle:Statusenrollment');
+        $defaultStatus = $statusEnrollmentRepo
                 ->getDefault();
+        $validStatuses = array();
+        $validStatuses[] = $statusEnrollmentRepo->getRecognizedStatus();
+        $validStatuses[] = $statusEnrollmentRepo->getPendingVerificationStatus();
+        
         foreach ($enrollments as $enrollment) {
             if ($enrollment->getActivity() !== $activity) {
                 return new EnrollmentsErrors\wrongActivityError();
+            }
+            if (!in_array($enrollment->getStatus(), $validStatuses)){
+                return new EnrollmentsErrors\wrongEnrollmentStatusError();
             }
             $enrollment->setStatus($defaultStatus);
             $this->em->persist($enrollment);
