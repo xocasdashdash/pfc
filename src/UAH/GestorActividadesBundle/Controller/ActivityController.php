@@ -238,8 +238,16 @@ class ActivityController extends Controller
                 }
             }
 
-            $statusOpened = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getApproved();
-            $activity->setStatus($statusOpened);
+            $statusActivityRepo = $em->getRepository('UAHGestorActividadesBundle:Statusactivity');
+
+            if(!is_null($activity->getDateApproved())){
+                $statusOpened = $statusActivityRepo ->getApproved();
+                $activity->setStatus($statusOpened);                
+            }else{
+                $statusPending = $statusActivityRepo->getPending();
+                $activity->setStatus($statusPending);
+            }
+
             $em->persist($activity);
             $em->flush();
 
