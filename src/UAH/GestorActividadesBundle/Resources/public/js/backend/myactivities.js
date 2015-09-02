@@ -87,7 +87,7 @@ $(function() {
         $.ajax({
           type: "POST",
           url: Routing.generate('uah_gestoractividades_activity_open', {
-            'activity_id': $selected_activity
+            activity_id: $selected_activity
           }),
           data: $selected_activity
         }).done(function(data) {
