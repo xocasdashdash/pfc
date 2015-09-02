@@ -241,20 +241,19 @@ class ActivityController extends Controller
             $statusActivityRepo = $em->getRepository('UAHGestorActividadesBundle:Statusactivity');
 
             if(!is_null($activity->getDateApproved())){
-                $statusOpened = $statusActivityRepo ->getApproved();
-                $activity->setStatus($statusOpened);                
+                $activity->setStatus($status);                
             }else{
-                $statusPending = $statusActivityRepo->getPending();
-                $activity->setStatus($statusPending);
+                $status = $statusActivityRepo->getPending();
+                
             }
-
+            $activity->setStatus($status);
             $em->persist($activity);
             $em->flush();
 
             $response = array();
             $response['code'] = self::ACTIVITY_OPENED;
             $response['message'] = array();
-            $response['message']['status'] = $statusOpened->getNameEs();
+            $response['message']['status'] = $status->getNameEs();
             $response['type'] = 'success';
 
             return new JsonResponse($response, 200);
