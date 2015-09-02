@@ -137,7 +137,8 @@ $(function() {
           $.ajax({
             type: "POST",
             url: Routing.generate('uah_gestoractividades_enrollment_unrecognize', {
-              activity_id: $activity_id
+              activity_id: $activity_id,
+              _format: 'json'
             }),
             data: JSON.stringify($checked_rows)
           }).done(function(data) {

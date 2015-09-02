@@ -179,7 +179,7 @@ class ActivityController extends Controller
      *
      * @param \UAH\GestorActividadesBundle\Entity\Activity $activity
      * @param \Symfony\Component\HttpFoundation\Request    $request
-     * @Route("/close/{activity_id}.{_format}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1,"format"="json"}, options={"expose"=true})
+     * @Route("/close/{activity_id}.{_format}", requirements={"activity_id" = "\d+"}, defaults={"activity_id"=-1,"_format"="json"}, options={"expose"=true})
      * @ParamConverter("activity", class="UAHGestorActividadesBundle:Activity",options={"id" = "activity_id"})
      * @Security("(is_granted('edit_activity',activity) && is_granted('ROLE_UAH_STAFF_PDI')) || is_granted('ROLE_UAH_ADMIN')")
      */
