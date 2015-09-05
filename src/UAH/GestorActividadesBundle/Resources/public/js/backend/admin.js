@@ -16,7 +16,7 @@ $(function() {
     client.on('ready', function(event) {
       client.on('copy', function(event) {
         event.clipboardData.setData('text/plain', $(".email").map(function() {
-          return $(this).text();
+          return $(this).text().trim();
         }).get().join(';'));
       });
       client.on('aftercopy', function(event) {
