@@ -121,7 +121,11 @@ class ActivityType extends AbstractType
                     //'group_by' => 'parent_category.getname',
                     'multiple' => 'true',
                     'label' => 'Categoría(s)',
-                    'attr' => array('help_text' => 'Elige la o las categorías', 'class' => 'selectpicker', 'data-live-search' => 'true'),
+                    'attr' => array(
+                        'help_text' => 'Elige la o las categorías', 
+                        'title' => 'Ninguna categoría elegida',
+                        'class' => 'selectpicker', 
+                        'data-live-search' => 'true'),
                 ))
                 ->add('socialMessage', 'textarea', array(
                     'label' => 'Mensaje para Twitter',
@@ -130,6 +134,7 @@ class ActivityType extends AbstractType
                         'help_text' => 'Escribe aquí un mensaje que quieras que se vea en FB/Twitter al compartir la actividad', ), ));
 
         $builder->add('image_blob', 'file', array(
+                    'attr' => array('help_text' => 'Intenta que respete la proporcion 4/3 entre alto y ancho para que se vea bien', ),
                     'required' => false, ))
                 ->add('Guardar', 'submit', array('attr' => array('type' => 'default', 'class' => 'btn-block', 'col_size' => 'xs', 'label_col' => 7, 'widget_col' => 3)));
     }
