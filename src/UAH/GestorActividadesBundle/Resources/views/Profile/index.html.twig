@@ -61,7 +61,7 @@
                 <a href="{{path('uah_gestoractividades_profile_edit')}}" class="btn btn-default btn-block" id="btn_update_data">Actualizar datos</a>
                 <a class="btn btn-default btn-block" id="btn_generate_application">Generar un justificante</a>
                 {% if is_granted('ROLE_UAH_STAFF_PDI') %}
-                    <a href="{{path('uah_gestoractividades_activity_create')}}" class="btn btn-default btn-block" id="btn_create" >Crear un curso</a>
+                    <a href="{{path('uah_gestoractividades_activity_create')}}" class="btn btn-default btn-block" id="btn_create" >Crear una actividad</a>
                     <a href="{{path('uah_gestoractividades_profile_myactivities')}}" class="btn btn-default btn-block">Mis actividades</a>
                 {% endif %}
                 {% if is_granted('ROLE_UAH_STAFF_PAS') %}
@@ -112,7 +112,6 @@
                         {% else %}
                             <td class="hidden-xs">Estado no reconocido</td>
                         {% endif %}
-                        {#<td>{{ enrolled_activity.code }}</td>#}
 
                     </tr>
                     {% else %}
