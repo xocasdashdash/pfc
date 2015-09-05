@@ -101,6 +101,7 @@ class ActivityType extends AbstractType
                 ->add('numberOfPlacesOffered', 'integer', array(
                     'label' => 'Número de plazas',
                     'attr' => array(
+                        'step' => 1,
                         'help_text' => 'Vacío para ilimitadas', ),
                     'required' => false, ))
                 ->add('cost', 'integer', array(

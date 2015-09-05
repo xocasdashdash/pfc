@@ -576,7 +576,7 @@ class Activity
      */
     public function getNumberOfPlacesOffered()
     {
-        return is_null($this->numberOfPlacesOffered) ? 0 : $this->numberOfPlacesOffered;
+        return $this->numberOfPlacesOffered;        
     }
 
     /**
