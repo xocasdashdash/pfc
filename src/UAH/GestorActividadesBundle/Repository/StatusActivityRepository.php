@@ -3,6 +3,7 @@
 namespace UAH\GestorActividadesBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Collections\Criteria;
 
 class StatusActivityRepository extends EntityRepository
 {
@@ -21,6 +22,17 @@ class StatusActivityRepository extends EntityRepository
             'code' => 'STATUS_PENDING', ));
 
         return $resultado;
+    }
+
+    public function getEditableStatus()
+    {
+        $qb = $this->createQueryBuilder('editableStatus');
+        $criteria = Criteria::create();
+        $editableStatus = array('STATUS_DRAFT');
+        $criteria->orWhere(Criteria::expr()->in('code', $editableStatus));
+        $qb->addCriteria($criteria);
+        $res = $qb->getQuery()->getResult();
+        return $res;
     }
 
     public function getDraft()

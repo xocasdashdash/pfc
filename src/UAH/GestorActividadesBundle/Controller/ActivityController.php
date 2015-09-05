@@ -91,7 +91,7 @@ class ActivityController extends Controller
         }
 
         return $this->render('UAHGestorActividadesBundle:Activity:create.html.twig', array(
-                    'form' => $form->createView(),'fullyEditable' => true,
+                    'form' => $form->createView(), 'fullyEditable' => true,
                     'isAdmin' =>$this->isGranted('ROLE_UAH_ADMIN')  ));
     }
 
@@ -240,11 +240,10 @@ class ActivityController extends Controller
 
             $statusActivityRepo = $em->getRepository('UAHGestorActividadesBundle:Statusactivity');
 
-            if(!is_null($activity->getDateApproved())){
-                $activity->setStatus($status);                
-            }else{
+            if (!is_null($activity->getDateApproved())) {
+                $activity->setStatus($status);
+            } else {
                 $status = $statusActivityRepo->getPending();
-                
             }
             $activity->setStatus($status);
             $em->persist($activity);

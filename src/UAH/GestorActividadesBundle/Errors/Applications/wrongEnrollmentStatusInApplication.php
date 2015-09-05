@@ -18,5 +18,4 @@ class wrongEnrollmentStatusInApplication extends \UAH\GestorActividadesBundle\Er
     protected $message = 'Uno de los estados de la application no es el correcto';
     protected $code = 10;
     protected $httpCode = 400;
-    
 }

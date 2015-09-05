@@ -1,6 +1,6 @@
 <?php
 
-return array (
+return array(
   'activity.name.not-blank' => 'El nombre no puede estar vacío',
   'activity.nameEnglish.not-blank' => 'El nombre en inglés no puede estar vacío',
   'activity.minCreditsECTS.not-blank' => 'El nombre mínimo de créditos ECTS no puede estar vacio',

@@ -154,7 +154,6 @@ class EnrollmentService
             }
         }
         return $num_credits;
-        
     }
 
     public function unrecognizeEnrollments(array $unrecognizements_ids, Activity $activity)
@@ -173,7 +172,7 @@ class EnrollmentService
             if ($enrollment->getActivity() !== $activity) {
                 return new EnrollmentsErrors\wrongActivityError();
             }
-            if (!in_array($enrollment->getStatus(), $validStatuses)){
+            if (!in_array($enrollment->getStatus(), $validStatuses)) {
                 return new EnrollmentsErrors\wrongEnrollmentStatusError();
             }
             $enrollment->setStatus($defaultStatus);
@@ -182,5 +181,4 @@ class EnrollmentService
         $this->em->flush();
         return true;
     }
-
 }

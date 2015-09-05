@@ -85,9 +85,9 @@ class ActivityRepository extends EntityRepository
     public function isFullyEditable(Activity $activity)
     {
         $em = $this->getEntityManager();
-        $draft_status = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getDraft();
+        $editableStatus = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getEditableStatus();
 
-        return $draft_status === $activity->getStatus();
+        return in_array($activity->getStatus(), $editableStatus);
     }
 
     public function getPendingId()

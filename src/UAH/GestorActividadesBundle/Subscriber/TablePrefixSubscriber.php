@@ -26,7 +26,7 @@ class TablePrefixSubscriber implements \Doctrine\Common\EventSubscriber
         }
         //var_dump($classMetadata);
 
-        if (FALSE !== strpos($classMetadata->namespace, 'UAH\GestorActividadesBundle')) {
+        if (false !== strpos($classMetadata->namespace, 'UAH\GestorActividadesBundle')) {
             $classMetadata->setPrimaryTable(array('name' => $this->prefix.$classMetadata->getTableName()));
 
             foreach ($classMetadata->getAssociationMappings() as $fieldName => $mapping) {

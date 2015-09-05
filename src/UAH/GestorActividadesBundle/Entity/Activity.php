@@ -1358,5 +1358,4 @@ class Activity
     {
         return $this->getNumberOfPlacesOccupied() < $this->getNumberOfPlacesOffered();
     }
-
 }

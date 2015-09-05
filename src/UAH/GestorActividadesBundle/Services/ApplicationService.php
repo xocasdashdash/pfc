@@ -175,7 +175,7 @@ class ApplicationService
         $verifiedEnrollmentStatus = $statusEnrollmentRepo->getVerified();
         $pendingVerificationStatus = $statusEnrollmentRepo->getPendingVerificationStatus();
         foreach ($application->getEnrollments() as $enrollment) {
-            if($enrollment->getStatus() !== $pendingVerificationStatus){
+            if ($enrollment->getStatus() !== $pendingVerificationStatus) {
                 return new ApplicationErrors\wrongEnrollmentStatusInApplication();
             }
             $enrollment->setStatus($verifiedEnrollmentStatus);
