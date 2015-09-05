@@ -71,10 +71,14 @@ class Activity
      * @Assert\NotBlank(message = "activity.minCreditsECTS.not-blank")
      * @Assert\Range(
      *      min = 0,
-     *      max = 10,
+     *      max = 20,
      *      minMessage = "activity.credits.min-value",
      *      maxMessage = "activity.credits.max-value"
      * ) 
+     * @Assert\Expression(
+     *     "this.getNumberOfECTSCreditsMin() <  this.getNumberOfECTSCreditsMax()",
+     *     message="activity.minCreditsECTS.greater-than-max"
+     * )
      */
     private $numberOfECTSCreditsMin;
 
@@ -85,7 +89,7 @@ class Activity
      * @Assert\NotBlank(message = "activity.maxCreditsECTS.not-blank")
      * @Assert\Range(
      *      min = 0,
-     *      max = 10,
+     *      max = 20,
      *      minMessage = "activity.credits.min-value",
      *      maxMessage = "activity.credits.max-value"
      * ) 
@@ -99,10 +103,14 @@ class Activity
      * @Assert\NotBlank(message = "activity.minCredits.not-blank")
      * @Assert\Range(
      *      min = 0,
-     *      max = 10,
+     *      max = 20,
      *      minMessage = "activity.credits.min-value",
      *      maxMessage = "activity.credits.max-value"
-     * ) 
+     * )
+     * @Assert\Expression(
+     *     "this.getNumberOfCreditsMin() <  this.getNumberOfCreditsMax()",
+     *     message="activity.minCredits.greater-than-max"
+     * )
      */
     private $numberOfCreditsMin;
 
@@ -113,7 +121,7 @@ class Activity
      * @Assert\NotBlank(message = "activity.maxCredits.not-blank")
      * @Assert\Range(
      *      min = 0,
-     *      max = 10,
+     *      max = 20,
      *      minMessage = "activity.credits.min-value",
      *      maxMessage = "activity.credits.max-value"
      * )     

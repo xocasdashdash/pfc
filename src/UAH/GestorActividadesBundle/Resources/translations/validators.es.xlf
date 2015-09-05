@@ -34,6 +34,14 @@
         <source>activity.credits.max-value</source>
         <target>Esta número no puede ser superior a {{ limit }}</target>
       </trans-unit>
+      <trans-unit id="cfd1231cf321cf31c2f3d123f1d23f1d" resname="activity.minCredits.greater-than-max">
+        <source>activity.minCredits.greater-than-max</source>
+        <target>El número mínimo de créditos no puede ser más grande que el máximo</target>
+      </trans-unit>
+      <trans-unit id="cfd1231cf321cf31c2f14343fccabbee" resname="activity.minCreditsECTS.greater-than-max">
+        <source>activity.minCreditsECTS.greater-than-max</source>
+        <target>El número mínimo de créditos ECTS no puede ser más grande que el máximo</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
