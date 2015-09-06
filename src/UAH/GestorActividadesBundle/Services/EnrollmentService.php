@@ -106,7 +106,7 @@ class EnrollmentService
             if (false === $creditRange) {
                 $response ['type'] = 'error';
                 $response ['message'] = 'Usuario sin formato de créditos reconocido';
-            } elseif ($enrollment->getStatus() !== $statusEnrolled || $enrollment->getStatus() !== $statusNotRecognized) {
+            } elseif (!in_array($enrollment->getStatus(), array($statusEnrolled, $statusNotRecognized))) {
                 $response['type'] = 'error';
                 $response['message'] = 'El estado no es el correcto';
             } elseif ($enrollment->getActivity() !== $activity) {
