@@ -217,7 +217,8 @@ $(function() {
 
   $('.reconocer input[type=number]').on('change', function(evt) {
     $fila = $(this).closest('tr');
-    $fila.find("input[type=checkbox]").prop('checked', this.checkValidity());
+    var checkedBox = evt.target.value.length > 0 && this.checkValidity();
+    $fila.find("input[type=checkbox]").prop('checked', checkedBox);
   });
 
   $('[data-toggle="popover"]').popover({
