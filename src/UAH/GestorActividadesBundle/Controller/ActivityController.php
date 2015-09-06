@@ -77,8 +77,7 @@ class ActivityController extends Controller
     {
         $activity = new \UAH\GestorActividadesBundle\Entity\Activity();
         $form = $this->createForm(new ActivityType($this->getDoctrine()->getManager()
-                        ->getRepository('UAHGestorActividadesBundle:Category')), $activity,
-                array('isAdmin' => $this->isGranted('ROLE_UAH_ADMIN'), 'fullyEditable' => true));
+                        ->getRepository('UAHGestorActividadesBundle:Category')), $activity, array('isAdmin' => $this->isGranted('ROLE_UAH_ADMIN'), 'fullyEditable' => true));
         $form->handleRequest($request);
         if ($form->isValid()) {
             $activity = $form->getData();
@@ -93,7 +92,7 @@ class ActivityController extends Controller
 
         return $this->render('UAHGestorActividadesBundle:Activity:create.html.twig', array(
                     'form' => $form->createView(), 'fullyEditable' => true,
-                    'isAdmin' =>$this->isGranted('ROLE_UAH_ADMIN')  ));
+                    'isAdmin' => $this->isGranted('ROLE_UAH_ADMIN')));
     }
 
     /**
@@ -124,7 +123,7 @@ class ActivityController extends Controller
                     'form' => $form->createView(),
                     'activity' => $activity,
                     'fullyEditable' => $fullyEditable,
-                    'isAdmin' => $this->get('security.context')->isGranted('ROLE_UAH_ADMIN'), ));
+                    'isAdmin' => $this->get('security.context')->isGranted('ROLE_UAH_ADMIN'),));
     }
 
     /**
@@ -147,7 +146,7 @@ class ActivityController extends Controller
             return $this->redirect($this->generateUrl("uah_gestoractividades_activity_index", array('activity_id' => $activity->getId())));
         } else {
             return $this->render('UAHGestorActividadesBundle:Activity:edit.html.twig', array(
-                        'form' => $editForm->createView(), ));
+                        'form' => $editForm->createView(),));
         }
     }
 
@@ -168,7 +167,7 @@ class ActivityController extends Controller
         $enrollments = $repository->getEnrolledInActivity($activity, $filter);
         $response = $this->render('UAHGestorActividadesBundle:Activity:admin.html.twig', array(
             'enrollments' => $enrollments,
-            'activity' => $activity, ));
+            'activity' => $activity,));
         $token = $this->get('form.csrf_provider')->generateCsrfToken('administracion');
         $cookie = new Cookie('X-CSRFToken', $token, 0, '/', null, false, false);
         $response->headers->setCookie($cookie);
@@ -284,6 +283,7 @@ class ActivityController extends Controller
             $statusDraft = $em->getRepository('UAHGestorActividadesBundle:Statusactivity')->getDraft();
             $response = array();
             $num_activities = 0;
+            /* @var $activity Activity */
             foreach ($activities as $activity) {
                 $statusActivity = $activity->getStatus();
                 if ($activity->getOrganizer() !== $this->getUser()) {
@@ -298,9 +298,15 @@ class ActivityController extends Controller
                     $em->persist($activity);
                     $num_activities++;
                 } else {
-                    $response['code'] = self::APPROVAL_ERROR_INCORRECT_STATUS;
-                    $response['message'] = 'Hay un problema con el estado de la actividad:'.$activity->getId();
-                    $response['type'] = 'error';
+                    if ($statusActivity === $statusPendingApproval) {
+                        $response['code'] = self:: APPROVAL_ERROR_INCORRECT_STATUS;
+                        $response['message'] = "La actividad({$activity->getId()},{$activity->getName()}) ya esta pendiente de aprobar";
+                        $response['type'] = 'error';
+                    } else {
+                        $response['code'] = self::APPROVAL_ERROR_INCORRECT_STATUS;
+                        $response['message'] = "Hay un problema con el estado de la actividad({$activity->getId()}): {$activity->getName()}";
+                        $response['type'] = 'error';
+                    }
 
                     return new JsonResponse($response, 400);
                 }
@@ -322,4 +328,5 @@ class ActivityController extends Controller
             return new JsonResponse($response, 400);
         }
     }
+
 }

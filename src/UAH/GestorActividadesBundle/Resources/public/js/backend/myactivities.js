@@ -29,8 +29,8 @@ $(function() {
           });
         });
       }).fail(function(data) {
-        bootbox.alert("Ha habido un problema :S", function() {
-          //                        location.reload(true);
+        bootbox.alert("Ha habido un problema: " + data.responseJSON.message, function() {
+          location.reload(true);
         });
       });
     }
