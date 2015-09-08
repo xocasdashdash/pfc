@@ -43,7 +43,7 @@ class ApplicationService
         $application->setStatus($this->em->getRepository('UAHGestorActividadesBundle:Statusapplication')->getDefault());
         $application->setApplicationDateCreated(new \DateTime(date("c", time())));
         $sr = new \Symfony\Component\Security\Core\Util\SecureRandom();
-        $application->setVerificationCode(bin2hex($sr->nextBytes(10)));
+        $application->setVerificationCode(strtoupper(bin2hex($sr->nextBytes(10))));
         $application->setUser($user);
         foreach ($enrollments as $enrollment) {
             $this->addEnrollment($application, $enrollment, $user);

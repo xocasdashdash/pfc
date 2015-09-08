@@ -124,7 +124,7 @@ class ApplicationController extends Controller
         $em = $this->getDoctrine()->getManager();
         $applicationRepository = $em->getRepository('UAHGestorActividadesBundle:Application');
         $applicationDefaultStatus = $em->getRepository('UAHGestorActividadesBundle:Statusapplication')->getDefault();
-        $app = $applicationRepository->findOneBy(array('verificationCode' => $applicationCode,
+        $app = $applicationRepository->findOneBy(array('verificationCode' => strtoupper($applicationCode),
             'status' => $applicationDefaultStatus, ));
         $response = array();
         if ($app) {
