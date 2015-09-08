@@ -25,10 +25,13 @@ $(function() {
             'id': $id
           })
         }).done(function(data) {
-          bootbox.alert("Justificante verificado!");
-          location.reload();
+          bootbox.alert("Justificante verificado!", function(){
+            location.reload();    
+          });          
         }).fail(function(data) {
-          bootbox.alert("Ha habido un error al verificar el justificante:" + data.responseJSON.message);
+          bootbox.alert("Ha habido un error al verificar el justificante:" + data.responseJSON.message,function(){
+            location.reload();    
+          });
         });
       }
     });
