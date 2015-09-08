@@ -15,7 +15,7 @@ namespace UAH\GestorActividadesBundle\Errors\Applications;
  */
 class wrongEnrollmentStatusInApplication extends \UAH\GestorActividadesBundle\Errors\AbstractError
 {
-    protected $message = 'Uno de los estados de la application no es el correcto';
+    protected $message = 'Uno de los estados de las inscripciones en el justificante no es el correcto';
     protected $code = 10;
     protected $httpCode = 400;
 }
