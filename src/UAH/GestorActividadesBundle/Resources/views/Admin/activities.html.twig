@@ -119,7 +119,7 @@
                         {% elseif filter == 'approved' %}
                             {% set fechaAndStatus = activity.getDatePendingApproval|date('d/m/Y') ~ '|' ~ activity.status.nameEs %}                            
                         {% elseif filter == 'draft' %}                  
-                            {% set fechaAndStatus = '' %}
+                            {% set fechaAndStatus = ' - | ' ~ activity.status.nameEs %}
                         {% elseif filter == 'closed' %}
                             {% set fechaAndStatus = activity.getDatePendingApproval|date('d/m/Y') ~ '|' ~ activity.status.nameEs %}
                         {% else %}
