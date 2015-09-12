@@ -145,7 +145,7 @@ class ActivityRepository extends EntityRepository
                     ' ORDER BY a.date_created DESC';
             $consulta = $em->createQuery($dql);
             $consulta->setParameter('status', $status);
-            $resultado = $consulta->getArrayResult();
+            $resultado = $consulta->getResult();
 
             return $resultado;
         }
