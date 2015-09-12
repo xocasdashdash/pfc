@@ -113,20 +113,19 @@
                         <td><a href="{{ path("uah_gestoractividades_activity_index",{"activity_id": activity.id})}}">{{activity.name}}</a></td>
                         <td class="status">{{activity.getDateCreated|date('d/m/Y')}}</td>
                         {% if filter == 'pending' %}
-                            {% set fecha = activity.getDatePendingApproval|date('d/m/Y') %}
+                            {% set fechaAndStatus = activity.getDatePendingApproval|date('d/m/Y') ~ '|' ~ activity.status.nameEs %}
                         {% elseif filter == 'published' %}
-                            {% set fecha = activity.getDatePendingApproval|date('d/m/Y') %}
+                            {% set fechaAndStatus = activity.getDatePendingApproval|date('d/m/Y') ~ '|' ~ activity.status.nameEs %}
                         {% elseif filter == 'approved' %}
-                            {% set fecha = activity.getDatePendingApproval|date('d/m/Y') %}                            
+                            {% set fechaAndStatus = activity.getDatePendingApproval|date('d/m/Y') ~ '|' ~ activity.status.nameEs %}                            
                         {% elseif filter == 'draft' %}                  
-                            {% set fecha = '' %}
+                            {% set fechaAndStatus = '' %}
                         {% elseif filter == 'closed' %}
-                            {% set fecha = activity.getDatePendingApproval|date('d/m/Y') %}
-                        {% elseif filter == 'all' %}
-                            {% set fecha = '' %}
+                            {% set fechaAndStatus = activity.getDatePendingApproval|date('d/m/Y') ~ '|' ~ activity.status.nameEs %}
                         {% else %}
+                            {% set fechaAndStatus = '' %}
                         {% endif %}
-                        <td class="text-center">{{ fecha }} | {{activity.status.nameEs}}</td>
+                        <td class="text-center">{{ fechaAndStatus }}</td>
                         <td class="text-center"><input type="checkbox" value="{{activity.id}}"></td>
                     </tr>
 
