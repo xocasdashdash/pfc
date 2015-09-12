@@ -127,7 +127,7 @@ class ActivityRepository extends EntityRepository
                 ' FROM UAHGestorActividadesBundle:Activity a ' .
                 ' ORDER BY a.date_created DESC';
         $consulta = $em->createQuery($dql);
-        $resultado = $consulta->getArrayResult();
+        $resultado = $consulta->getResult();
 
         return $resultado;
     }
