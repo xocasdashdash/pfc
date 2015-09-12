@@ -123,7 +123,7 @@
                         {% elseif filter == 'closed' %}
                             {% set fechaAndStatus = activity.getDatePendingApproval|date('d/m/Y') ~ '|' ~ activity.status.nameEs %}
                         {% else %}
-                            {% set fechaAndStatus = '' %}
+                            {% set fechaAndStatus = ' - ' %}
                         {% endif %}
                         <td class="text-center">{{ fechaAndStatus }}</td>
                         <td class="text-center"><input type="checkbox" value="{{activity.id}}"></td>
