@@ -112,7 +112,21 @@
                         <td class="index">{{loop.index}}</td>
                         <td><a href="{{ path("uah_gestoractividades_activity_index",{"activity_id": activity.id})}}">{{activity.name}}</a></td>
                         <td class="status">{{activity.date_created|date('d/m/Y')}}</td>
-                        <td class="text-center">{{activity.date_approved|date('d/m/Y')}}</td>
+                        {% if filter == 'pending' %}
+                            {% set fecha = activity.date_pending_aproval|date('d/m/Y') %}
+                        {% elseif filter == 'published' %}
+                            {% set fecha = activity.date_pending_aproval|date('d/m/Y') %}
+                        {% elseif filter == 'approved' %}
+                            {% set fecha = activity.date_pending_aproval|date('d/m/Y') %}                            
+                        {% elseif filter == 'draft' %}                  
+                            {% set fecha = '' %}
+                        {% elseif filter == 'closed' %}
+                            {% set fecha = activity.date_pending_aproval|date('d/m/Y') %}
+                        {% elseif filter == 'all' %}
+                            {% set fecha = '' %}
+                        {% else %}
+                        {% endif %}
+                        <td class="text-center">{{ fecha }} | {{activity.status.nameEs}}</td>
                         <td class="text-center"><input type="checkbox" value="{{activity.id}}"></td>
                     </tr>
 

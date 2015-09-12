@@ -53,14 +53,14 @@ class AdminController extends Controller
         } elseif ($filter === 'all') {
             $status = null;
         }
-        if (is_null($status)) {
+        if (isset($status)) {
             $activities = $em->getRepository('UAHGestorActividadesBundle:Activity')->getAll();
         } else {
             $activities = $em->getRepository('UAHGestorActividadesBundle:Activity')->getAllByStatus($status);
         }
         $token = $this->get('form.csrf_provider')->generateCsrfToken('uah_admin');
         $cookie = new Cookie('X-CSRFToken', $token, 0, '/', null, false, false);
-        $response = $this->render('UAHGestorActividadesBundle:Admin:activities.html.twig', array('activities' => $activities));
+        $response = $this->render('UAHGestorActividadesBundle:Admin:activities.html.twig', array('activities' => $activities, 'filter' => $filter));
         $response->headers->setCookie($cookie);
 
         return $response;

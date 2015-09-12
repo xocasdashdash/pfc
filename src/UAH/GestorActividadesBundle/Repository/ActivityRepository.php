@@ -138,8 +138,9 @@ class ActivityRepository extends EntityRepository
             return $this->getAll();
         } else {
             $em = $this->getEntityManager();
-            $dql = ' SELECT a ' .
+            $dql = ' SELECT a, s' .
                     ' FROM UAHGestorActividadesBundle:Activity a ' .
+                    ' JOIN a.status s ' .
                     ' WHERE a.status = :status ' .
                     ' ORDER BY a.date_created DESC';
             $consulta = $em->createQuery($dql);
