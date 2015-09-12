@@ -53,7 +53,7 @@ class AdminController extends Controller
         } elseif ($filter === 'all') {
             $status = null;
         }
-        if (isset($status)) {
+        if (!isset($status)) {
             $activities = $em->getRepository('UAHGestorActividadesBundle:Activity')->getAll();
         } else {
             $activities = $em->getRepository('UAHGestorActividadesBundle:Activity')->getAllByStatus($status);
