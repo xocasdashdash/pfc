@@ -31,7 +31,7 @@ class RoleRepository extends EntityRepository
         return $this->findRole('ROLE_UAH_STUDENT');
     }
 
-    private function findRole($role)
+    public function findRole($role)
     {
         $em = $this->getEntityManager();
         $dql = "SELECT r FROM UAHGestorActividadesBundle:Role r ".

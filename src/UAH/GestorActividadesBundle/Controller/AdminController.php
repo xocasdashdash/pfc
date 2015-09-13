@@ -22,6 +22,7 @@ use Doctrine\DBAL\DBALException;
  */
 class AdminController extends Controller
 {
+
     /**
      *
      * @Security("has_role('ROLE_UAH_ADMIN')")
@@ -92,7 +93,7 @@ class AdminController extends Controller
             fclose($handle);
         });
         $response->headers->set('Content-Type', 'application/force-download');
-        $response->headers->set('Content-Disposition', 'attachment; filename="Export de datos estádisticos -filtro-'.$filter.'.csv"');
+        $response->headers->set('Content-Disposition', 'attachment; filename="Export de datos estádisticos -filtro-' . $filter . '.csv"');
 
         return $response;
     }
@@ -152,19 +153,19 @@ class AdminController extends Controller
         $activities_url = array();
         foreach ($activities as $activity) {
             $url = $this->generateUrl('uah_gestoractividades_activity_index', array(
-                'activity_id' => $activity['id'], ), true);
+                'activity_id' => $activity['id'],), true);
             $activities_url[] = $url;
         }
         if (!empty($activities_url)) {
             $pdf_dir = $this->container->getParameter('pdf_dir');
-            $result = $this->get('knp_snappy.pdf')->generate($activities_url, $pdf_dir.'Report.pdf', array(), true);
+            $result = $this->get('knp_snappy.pdf')->generate($activities_url, $pdf_dir . 'Report.pdf', array(), true);
             if (is_null($result)) {
-                $content = file_get_contents($pdf_dir.'Report.pdf');
+                $content = file_get_contents($pdf_dir . 'Report.pdf');
                 $response = new Response();
                 //set headers
                 $response->headers->set('Content-Type', 'application/pdf');
                 $response->headers->set('Content-Type', 'application/download');
-                $response->headers->set('Content-Length', filesize($pdf_dir.'Report.pdf'));
+                $response->headers->set('Content-Length', filesize($pdf_dir . 'Report.pdf'));
                 $response->headers->set('Content-Disposition', 'attachment;filename="Informe de actividades pendientes de aprobar.pdf"');
                 $response->setContent($content);
                 $response->setStatusCode(200);
@@ -192,19 +193,17 @@ class AdminController extends Controller
         $token = $this->get('form.csrf_provider')->generateCsrfToken('uah_admin');
         $cookie = new Cookie('X-CSRFToken', $token, 0, '/', null, false, false);
         $response = $this->render('UAHGestorActividadesBundle:Admin:users.html.twig', array('users_permits' => $users_permits,
-            'roles' => $roles, ));
+            'roles' => $roles,));
         $response->headers->setCookie($cookie);
 
         return $response;
     }
 
     /**
-     * @Route("/users/updatepermissions/{identity}/{permits}", defaults={"identity":"-1","permits":"ROLE_UAH_STUDENT","_format": "html"},options={"expose"=true})
-     * @ParamConverter("role", class="UAHGestorActividadesBundle:Role",options={"mapping": {"permits": "role"}})
+     * @Route("/users/updatepermissions", defaults={"_format": "html"},options={"expose"=true})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
-     * @param type $identity
      */
-    public function updatePermissionsAction($identity, Role $role, Request $request)
+    public function updatePermissionsAction(Request $request)
     {
         //Leo el permiso
         //Si el permiso que voy a poner es de SUPER_ADMIN, miro que el usuario sea SUPER_ADMIN, y quito al que estaba de SUPER_ADMIN
@@ -216,6 +215,9 @@ class AdminController extends Controller
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('uah_admin', $request->headers->get('X-CSRFToken'))) {
             $em = $this->getDoctrine()->getManager();
+            $identity = $request->get('identity');
+            $permits = $request->get('permits');
+            $role = $em->getRepository('UAHGestorActividadesBundle:Role')->findRole($permits);
             /* @var $user \UAH\GestorActividadesBundle\Entity\User */
             $user = $em->getRepository('UAHGestorActividadesBundle:User')->findOneBy(
                     array('id_usuldap' => urldecode($identity)));
@@ -278,19 +280,19 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/users/deletepermissions/{identity}", defaults={"identity":"-1","_format":"html"},options={"expose"=true})
+     * @Route("/users/deletepermissions", defaults={"_format":"html"},options={"expose"=true})
      * @Security("is_granted('ROLE_UAH_ADMIN')")
      * @param type $identity
      */
-    public function deletePermissionsAction($identity, Request $request)
+    public function deletePermissionsAction(Request $request)
     {
         //No puedo borrar los permisos de un usuario que fuera SUPER_ADMINISTRADOR
         //Al quitar permisos, lo que hago es dejarlos con los permisos por defecto, ROLE_UAH_STUDENT
         $response = array();
-
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('uah_admin', $request->headers->get('X-CSRFToken'))) {
             $em = $this->getDoctrine()->getManager();
+            $identity = $request->get('identity');
             $user = $em->getRepository('UAHGestorActividadesBundle:User')->findOneBy(
                     array('id_usuldap' => urldecode($identity)));
             $super_admin_role = $em->getRepository('UAHGestorActividadesBundle:Role')->getSuperAdmin();
@@ -358,10 +360,10 @@ class AdminController extends Controller
                 $this->get('form.csrf_provider')->isCsrfTokenValid('uah_admin', $request->headers->get('X-CSRFToken'))) {
             $em = $this->getDoctrine()->getManager();
             $role = $em->getRepository('UAHGestorActividadesBundle:Role')->findOneBy(array(
-                'role' => $request->get('uah_role'), ));
+                'role' => $request->get('uah_role'),));
             $super_admin_role = $em->getRepository('UAHGestorActividadesBundle:Role')->getSuperAdmin();
 
-            $uah_name = 'http://yo.rediris.es/soy/'.$request->get('uah_name').'@uah.es/';
+            $uah_name = 'http://yo.rediris.es/soy/' . $request->get('uah_name') . '@uah.es/';
             $securityContext = $this->container->get('security.context');
             //Compruebo que sea el Super administrador
             if ($role !== $super_admin_role) {
@@ -632,4 +634,5 @@ class AdminController extends Controller
 
         return new JsonResponse($response, $code);
     }
+
 }

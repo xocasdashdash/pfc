@@ -36,10 +36,11 @@ $(window).on('load', function() {
       if (result) {
         $.ajax({
             type: 'POST',
-            url: Routing.generate('uah_gestoractividades_admin_updatepermissions', {
+            url: Routing.generate('uah_gestoractividades_admin_updatepermissions'),
+            data:{
               identity: encodeURIComponent($idLdap),
               permits: $role
-            })
+            }
           })
           .done(function(data) {
             bootbox.alert(data.message);
@@ -63,9 +64,10 @@ $(window).on('load', function() {
       if (result) {
         $.ajax({
           type: 'POST',
-          url: Routing.generate('uah_gestoractividades_admin_deletepermissions', {
+          url: Routing.generate('uah_gestoractividades_admin_deletepermissions'),
+          data:{
             identity: encodeURIComponent($idLdap)
-          })
+          }
         }).done(function(data) {
           $fila.remove();
           $filas = $tbody.find('tr');
