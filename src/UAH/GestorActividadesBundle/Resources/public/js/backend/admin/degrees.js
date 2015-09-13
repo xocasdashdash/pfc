@@ -22,6 +22,7 @@ $(function() {
           $('#knowledge-area').val());
         $fila.find('.degree-academic-code').text($('#academic-code').val());
         $fila.data('degreeType', $('.radio-div input[type=radio]:checked').val());
+        $fila.find('button.reactivate_degree').remove();
       } else {
         bootbox.alert('Nueva titulación añadida. Recarga para verla');
       }
@@ -53,6 +54,18 @@ $(function() {
     $('.radio-div input[type=radio]').filter(function() {
       return $(this).val() === tipo;
     }).prop('checked', true);
+    $('#degree-id').val(evt.target.dataset.degreeId);
+    $('#btn_submit_degree').text('Actualizar');
+    edit = true;
+    $('#modal-create-degree').modal('show');
+  });
+  $('table').on('click', '.reactivate_degree', function(evt) {
+    $fila = $(this).closest('tr');
+    $('#degree-name').val($fila.find('.degree-name').text());
+    var knowledgeArea = $fila.find('.degree-knowledge-area').text();
+    $('#knowledge-area').selectpicker('val', knowledgeArea);
+    //$('.selectpicker').('render');
+    $('#academic-code').val($fila.find('.degree-academic-code').text());
     $('#degree-id').val(evt.target.dataset.degreeId);
     $('#btn_submit_degree').text('Actualizar');
     edit = true;

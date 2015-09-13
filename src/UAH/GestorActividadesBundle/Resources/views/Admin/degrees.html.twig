@@ -43,7 +43,7 @@
                         </li>
                         <li role="presentation" class="divider"></li>
                         <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_degrees', {filter: 'ALL'})}}">{{'Todos'|trans}}</a>
+                            <a role="menuitem" tabindex="-1" href="{{path('uah_gestoractividades_admin_degrees', {filter: 'ALL'})}}">{{'Todos (Incluido eliminados)'|trans}}</a>
                         </li>
                     </ul>
                 </li>
@@ -74,14 +74,17 @@
             </thead>
             <tbody>
                 {% for degree in degrees %}
-                    <tr id="degree-{{degree.obj.id}}" data-degree-type="{{degree.tipo}}">
+                    <tr id="degree-{{degree.id}}" data-degree-type="{{degree.status.code }}">
                         <td class="visible-md-up index">{{loop.index}}</td>
-                        <td class="degree-name">{{degree.obj.name}}</td>
-                        <td class="degree-knowledge-area visible-sm-up">{{degree.obj.knowledgeArea}}</td>
-                        <td class="degree-academic-code">{{degree.obj.academicCode}}</td>
+                        <td class="degree-name">{{degree.name}}</td>
+                        <td class="degree-knowledge-area visible-sm-up">{{degree.knowledgeArea}}</td>
+                        <td class="degree-academic-code">{{degree.academicCode}}</td>
                         <td class="text-center">
-                            <button class="btn btn-default update_degree" data-degree-id="{{degree.obj.id}}" title="{{'Actualiza los datos de este plan de estudios'|trans}}">{{'Actualizar'|trans}}</button>
-                            <button class="btn btn-default delete_degree" data-degree-id="{{degree.obj.id}}" title="{{'Desactiva este plan de estudios y deja a los que están en él, en el mismo'|trans}}">{{'Eliminar'|trans}}</button>
+                            <button class="btn btn-default update_degree" data-degree-id="{{degree.id}}" title="{{'Actualiza los datos de este plan de estudios'|trans}}">{{'Actualizar'|trans}}</button>
+                            <button class="btn btn-default delete_degree" data-degree-id="{{degree.id}}" title="{{'Desactiva este plan de estudios y deja a los que están en él, en el mismo'|trans}}">{{'Eliminar'|trans}}</button>
+                            {% if degree.status.code == 'STATUS_INACTIVE' %}
+                                <button class="btn btn-default reactivate_degree" data-degree-id="{{degree.id}}" title="{{'Actualiza los datos y  reactiva este plan de estudios'|trans}}">{{'Reactivar'|trans}}</button>
+                            {% endif %}
                         </td>
                     </tr>
 

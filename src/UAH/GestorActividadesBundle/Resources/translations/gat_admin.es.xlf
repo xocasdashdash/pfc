@@ -26,9 +26,9 @@
         <source>Ingeniería y Arquitectura</source>
         <target>Ingeniería y Arquitectura</target>
       </trans-unit>
-      <trans-unit id="32630ca913d01c4fee71bbe8ef28edea" resname="Todos">
-        <source>Todos</source>
-        <target>Todos</target>
+      <trans-unit id="32630ca913d01c4fee71bbe8ef28edea" resname="Todos (Incluido eliminados)">
+        <source>Todos (Incluido eliminados)</source>
+        <target>Todos (Incluido eliminados)</target>
       </trans-unit>
       <trans-unit id="fe0e8359b7adf30854532e8a2f72b7b9" resname="Mostrar el formulario para dar de alta nuevas titulaciones">
         <source>Mostrar el formulario para dar de alta nuevas titulaciones</source>

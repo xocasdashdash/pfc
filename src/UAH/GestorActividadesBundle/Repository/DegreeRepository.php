@@ -52,9 +52,8 @@ class DegreeRepository extends EntityRepository
             case 'ALL':
                 $em = $this->getEntityManager();
                 $active_statuses = $em->getRepository('UAHGestorActividadesBundle:Statusdegree')->getActive();
-                $dql = "SELECT d obj,s.code tipo from UAHGestorActividadesBundle:Degree d LEFT JOIN d.status s where d.status in (:active_statuses)";
+                $dql = "SELECT d, s from UAHGestorActividadesBundle:Degree d LEFT JOIN d.status s";
                 $consulta = $em->createQuery($dql);
-                $consulta->setParameter('active_statuses', $active_statuses);
                 $degrees = $consulta->getResult();
                 break;
         }
@@ -91,7 +90,7 @@ class DegreeRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
         $active_statuses = $em->getRepository('UAHGestorActividadesBundle:Statusdegree')->getActive();
-        $dql = "SELECT d obj,s.code tipo from UAHGestorActividadesBundle:Degree d LEFT JOIN d.status s where d.status in (:active_statuses) ".
+        $dql = "SELECT d, s tipo from UAHGestorActividadesBundle:Degree d LEFT JOIN d.status s where d.status in (:active_statuses) ".
                 " AND d.knowledgeArea = :knowledgeArea";
         $consulta = $em->createQuery($dql);
         $consulta->setParameter('active_statuses', $active_statuses);
