@@ -79,9 +79,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="parent-category" class="col-sm-4 control-label">{{'Categoría padre (Deja vacio para crear una categoría padre):'|trans}}</label>
+                            <label for="parent-category" class="col-sm-4 control-label">{{'Categoría padre (No seleccionar nada para crear categoría padre):'|trans}}</label>
                             <div class="col-sm-8">
-                                <select class="selectpicker" name="parent-category" title="{{'Categoria padre'}}" id="parent-category" data-width="100%">
+                                <select class="selectpicker" name="parent-category" title="{{'Crear categoria padre'}}" id="parent-category" data-width="100%">
                                     <option data-hidden="true"></option>
                                     {% for category in parent_categories %}
                                         <option value="{{category.id}}">{{category.name}}</option>
