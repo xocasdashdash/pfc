@@ -620,7 +620,7 @@ class AdminController extends Controller
             $category->setStatus($status_inactivo);
             $em->persist($category);
             $em->flush();
-            $response['message'] = $this->get('translator')->trans('Inactivo', array(), 'gat_admin');
+            $response['message'] = $this->get('translator')->trans('Inactiva', array(), 'gat_admin');
             $response['type'] = 'success';
             $code = 200;
         } else {
