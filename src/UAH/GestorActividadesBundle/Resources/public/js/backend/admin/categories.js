@@ -56,6 +56,14 @@ $(function() {
     edit = false;
     $('#parent-category').selectpicker('val', null);
   });
+  $('#modal-create-category').on('hidden.bs.modal', function() {
+    edit = false;
+  });
+  $('#modal-create-category').on('show.bs.modal',function(evt){
+      if(edit === false){
+        $('#form-create-category')[0].reset();
+      }      
+  });
 
   $('table').on('click', '.update_category', function(evt) {
     $fila = $(this).closest('tr');
@@ -66,8 +74,9 @@ $(function() {
     }
     $('#category-id').val(evt.target.dataset.categoryId);
     $('#btn_submit_category').text('Actualizar');
-    $('#modal-create-category').modal('show');
     edit = true;
+    $('#modal-create-category').modal('show');
+
   });
   $('table').on('click', '.delete_category', function(evt) {
     $category_id = $(this).data().categoryId;

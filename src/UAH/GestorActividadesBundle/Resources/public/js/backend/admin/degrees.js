@@ -33,7 +33,14 @@ $(function() {
   });
   $('#modal-create-degree').on('hidden.bs.modal', function() {
     $('#btn_submit_degree').text('Crear');
+    edit = false;
   });
+  $('#modal-create-degree').on('show.bs.modal',function(evt){
+      if(edit === false){
+        $('#form-create-degree')[0].reset();
+      }
+  });
+
   $('table').on('click', '.update_degree', function(evt) {
     $fila = $(this).closest('tr');
     $('#degree-name').val($fila.find('.degree-name').text());
@@ -47,8 +54,8 @@ $(function() {
     }).prop('checked', true);
     $('#degree-id').val(evt.target.dataset.degreeId);
     $('#btn_submit_degree').text('Actualizar');
-    $('#modal-create-degree').modal('show');
     edit = true;
+    $('#modal-create-degree').modal('show');
   });
   $('table').on('click', '.delete_degree', function(evt) {
     $degree_id = $(this).data().degreeId;

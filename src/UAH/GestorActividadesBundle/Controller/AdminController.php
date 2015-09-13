@@ -562,7 +562,7 @@ class AdminController extends Controller
                 }
                 $category->setName(trim($parameters['category-name']));
                 //Si no elijo ningún valor, llega null y con ese valor no se encuenta ninguna categoría
-                if (isset($parameters['parent-category'])) {
+                if (isset($parameters['parent-category']) && !empty($parameters['parent-category'])) {
                     if ($parameters['parent-category'] !== $parameters['category-id']) {
                         $parent_category = $em->getRepository('UAHGestorActividadesBundle:Category')
                                 ->find($parameters['parent-category']);
