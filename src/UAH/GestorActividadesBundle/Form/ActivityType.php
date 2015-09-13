@@ -26,7 +26,7 @@ class ActivityType extends AbstractType
     {
         $fullyEditable = $options['fullyEditable'];
         $isAdmin = $options['isAdmin'];
-        $categories = $this->cat_repo->getActive('qb');
+        $categoriesQB = $this->cat_repo->getActive('qb');
         $builder->add('name', null, array(
                     'label' => 'Nombre',
                     'attr' => array(
@@ -119,6 +119,7 @@ class ActivityType extends AbstractType
                     'required' => false,
                     'class' => 'UAHGestorActividadesBundle:Category',
                     //'choices' => $categories,
+                    'query_builder' => $categoriesQB,
                     'property' => 'name',
                     //'data' => $activity->getCategories(),
                     //'group_by' => 'parent_category.getname',

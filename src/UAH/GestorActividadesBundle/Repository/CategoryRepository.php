@@ -68,7 +68,8 @@ class CategoryRepository extends EntityRepository
         }else{
             $qb = $this->createQueryBuilder('c');
             $qb->select('c');
-            $qb->where($qb->expr()->eq('status', $status));
+            $qb->where('c.status = :status');
+            $qb->setParameter('status',$status);
             return $qb;                   
         }
     }
