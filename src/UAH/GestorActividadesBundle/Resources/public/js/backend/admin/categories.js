@@ -23,6 +23,7 @@ $(function() {
           $fila = $('#category-' + data.categoryId);
           $fila.find('.category-name').text($('#category-name').val());
           $fila.find('.category-knowledge-area').text($('#knowledge-area').val());
+          $fila.find('.category-status').text('Activa');
         } else {
           bootbox.alert('Nueva categoría añadida. Recarga para verla.');
         }
