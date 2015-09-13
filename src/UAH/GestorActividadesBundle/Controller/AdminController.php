@@ -216,10 +216,10 @@ class AdminController extends Controller
         if ($request->isXmlHttpRequest() && $request->headers->get("X-CSRFToken", null) !== null &&
                 $this->get('form.csrf_provider')->isCsrfTokenValid('uah_admin', $request->headers->get('X-CSRFToken'))) {
             $em = $this->getDoctrine()->getManager();
+            /* @var $user \UAH\GestorActividadesBundle\Entity\User */
             $user = $em->getRepository('UAHGestorActividadesBundle:User')->findOneBy(
                     array('id_usuldap' => urldecode($identity)));
             $super_admin_role = $em->getRepository('UAHGestorActividadesBundle:Role')->getSuperAdmin();
-            $admin_role = $em->getRepository('UAHGestorActividadesBundle:Role')->getAdmin();
             if ($user) {
                 //Ya se ha logueado alguna vez. Actualizo ROLES
                 if ($role === $super_admin_role) {
@@ -243,8 +243,9 @@ class AdminController extends Controller
                         $response['message'] = 'Solo un superadministrador puede crear otros superadministradores';
                         $code = 403;
                     }
-                } elseif ($role === $admin_role) {
-                    $user->addRole($admin_role);
+                } else {
+                    $user->clearRoles();
+                    $user->addRole($role);
                     $em->persist($user);
                     $response['type'] = 'success';
                     $response['message'] = 'Permisos actualizados';

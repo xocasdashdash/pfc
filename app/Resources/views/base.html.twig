@@ -110,7 +110,7 @@
                                 {% endif %}
                                 {% if is_granted('ROLE_PREVIOUS_ADMIN') %}
                                     <li>
-                                        <a href="{{ path('uah_gestoractividades_admin_activities', {_switch_user:'exit'}) }}">EXIT</a>
+                                        <a href="{{ path('uah_gestoractividades_admin_users', {_switch_user:'_exit'}) }}">Volver al usuario anterior</a>
                                     </li>
                                 {% endif %}
                                 <li class="hidden-sm hidden-xs navbar-right">

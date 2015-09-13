@@ -343,6 +343,11 @@ class User implements UserInterface
         return $this;
     }
 
+    public function clearRoles()
+    {
+        $this->roles->clear();
+    }
+
     /**
      * Remove roles
      *
@@ -378,6 +383,7 @@ class User implements UserInterface
 
     public function getPassword()
     {
+        
     }
 
     /**
@@ -726,4 +732,5 @@ class User implements UserInterface
         }
         return $credit_range;
     }
+
 }
