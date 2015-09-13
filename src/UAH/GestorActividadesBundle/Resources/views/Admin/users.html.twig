@@ -79,9 +79,15 @@
                         {% if user_permit.user_id is null %}
                             <td class="id_ldap hidden-xs" data-id-ldap="{{user_permit.default_permit.idUsuldap}}" >Todavía no se ha logueado </td>
 
+                        {% elseif user_permit.id_ldap != app.user.username %}
+                            
+                            <td class="id_ldap hidden-xs" data-id-ldap="{{user_permit.default_permit.idUsuldap}}" >
+                                <a href="{{ path("uah_gestoractividades_profile_index",{"_switch_user": user_permit.id_ldap})}}" class="switch_user" title="{{'Cambiarte a este usuario'|trans}}">{{user_permit.name ~ ' ' ~ user_permit.apellido1 ~ ' ' ~ user_permit.apellido2}}</a>
+                            </td>
                         {% else %}
-                            <td class="id_ldap hidden-xs" data-id-ldap="{{user_permit.default_permit.idUsuldap}}" ><a href="{{ path("uah_gestoractividades_profile_index",{"_switch_user": user_permit.id_ldap})}}" class="switch_user" title="{{'Cambiarte a este usuario'|trans}}">{{user_permit.name ~ ' ' ~ user_permit.apellido1 ~ ' ' ~ user_permit.apellido2}}</a></td>
-                            {% endif %}
+                            <td class="id_ldap hidden-xs" data-id-ldap="" >No puedes suplantar tu propio usuario</td>
+                        {% endif %}
+                        
                         <td class="text-left">{{user_permit.default_permit.idUsuldap|uahuser}}</td>
                         <td class="text-left">
                             <select class="selectpicker" title="{{'Cambiar roles de los usuarios'|trans}}">
