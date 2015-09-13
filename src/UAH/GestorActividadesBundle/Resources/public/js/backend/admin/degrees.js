@@ -38,6 +38,7 @@ $(function() {
   $('#modal-create-degree').on('show.bs.modal',function(evt){
       if(edit === false){
         $('#form-create-degree')[0].reset();
+        $('#degree-id').val(null);
       }
   });
 

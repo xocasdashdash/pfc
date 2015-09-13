@@ -62,6 +62,7 @@ $(function() {
   $('#modal-create-category').on('show.bs.modal',function(evt){
       if(edit === false){
         $('#form-create-category')[0].reset();
+        $('#category-id').val(null);
       }      
   });
 
