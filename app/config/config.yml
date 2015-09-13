@@ -18,7 +18,9 @@ framework:
         #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
     trusted_proxies: ~
-    session:         ~
+    session:         
+      default_locale: %locale%
+      lifetime:       3600
     fragments:       ~
     http_method_override: true
     #Aqui va 
