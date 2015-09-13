@@ -26,7 +26,7 @@ class ActivityType extends AbstractType
     {
         $fullyEditable = $options['fullyEditable'];
         $isAdmin = $options['isAdmin'];
-        $categories = $this->cat_repo->getActive();
+        $categories = $this->cat_repo->getActive('qb');
         $builder->add('name', null, array(
                     'label' => 'Nombre',
                     'attr' => array(
@@ -87,7 +87,8 @@ class ActivityType extends AbstractType
             'attr' => array(
                 'class' => 'celebration_dates',
                 'help_text' => 'Haz click y selecciona varias', ), ));
-
+        /* @var $activity \UAH\GestorActividadesBundle\Entity\Activity */
+        $activity = $builder->getData();
         $builder->add('assistanceControl', 'text', array('label' => 'Metodo de control de asistencia', 'attr' => array('help_text' => 'Hoja de firmas, escaneo de tarjeta...')))
                 ->add('publicityStartDateUnencoded', 'text', array(
                     'label' => 'Fecha en la que quieres que empiece a ser pública la actividad',
@@ -117,8 +118,9 @@ class ActivityType extends AbstractType
                 ->add('categories', 'entity', array(
                     'required' => false,
                     'class' => 'UAHGestorActividadesBundle:Category',
-                    'choices' => $categories,
+                    //'choices' => $categories,
                     'property' => 'name',
+                    //'data' => $activity->getCategories(),
                     //'group_by' => 'parent_category.getname',
                     'multiple' => 'true',
                     'label' => 'Categoría(s)',

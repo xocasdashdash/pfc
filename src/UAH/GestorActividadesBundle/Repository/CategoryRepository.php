@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class CategoryRepository extends EntityRepository
 {
+
     public function getAll()
     {
         $em = $this->getEntityManager();
@@ -53,15 +54,22 @@ class CategoryRepository extends EntityRepository
         } else {
             return $this->getAll();
         }
-        $dql = "SELECT c from UAHGestorActividadesBundle:Category c WHERE c.status = :status";
-        //        $dql = "SELECT c obj, count(a) from UAHGestorActividadesBundle:Category c LEFT JOIN c.activities a WHERE c.status = :status GROUP BY a.categories";
+        if ($type !== 'qb') {
+            $dql = "SELECT c from UAHGestorActividadesBundle:Category c WHERE c.status = :status";
+            //        $dql = "SELECT c obj, count(a) from UAHGestorActividadesBundle:Category c LEFT JOIN c.activities a WHERE c.status = :status GROUP BY a.categories";
 
-        $consulta = $em->createQuery($dql);
-        $consulta->setParameter('status', $status);
-        if ($type === 'obj') {
-            return $consulta->getResult();
-        } elseif ($type === 'arr') {
-            return $consulta->getArrayResult();
+            $consulta = $em->createQuery($dql);
+            $consulta->setParameter('status', $status);
+            if ($type === 'obj') {
+                return $consulta->getResult();
+            } elseif ($type === 'arr') {
+                return $consulta->getArrayResult();
+            }
+        }else{
+            $qb = $this->createQueryBuilder('c');
+            $qb->select('c');
+            $qb->where($qb->expr()->eq('status', $status));
+            return $qb;                   
         }
     }
 
@@ -76,4 +84,5 @@ class CategoryRepository extends EntityRepository
 
         return $consulta->getResult();
     }
+
 }
