@@ -1,6 +1,15 @@
 #!/bin/bash   
 APACHE_CONF_DIR=/etc/apache2
+LOCALNAME=gat.local
 #Incluir hosts en el nuevo archivo
+#ENCONTRADO=grep -Fq "$LOCALNAME" /etc/hosts; 
+if grep -Fq "$LOCALNAME" /etc/hosts; then
+  echo "ENCONTRADO!";
+else
+  echo "127.0.0.1 gat.local" >> /etc/hosts;
+  echo "::1 gat.local" >> /etc/hosts;
+fi;
+
 #Modificar gestor.conf para que cambie el directorio de destino
 cat gestorapacheconfig.conf | sed 's?$DIR_APACHE_WWW?'`pwd`/..'?' > gestor.conf
 #Copia el gestor.conf al sites-available de apache2
@@ -25,6 +34,7 @@ php ../composer.phar install
 chmod -R 0777 app/dev/cache
 chmod -R 0777 app/dev/logs
 mkdir web/cache/barcodes/code128 -p
+chmod -R 0666 web/cache/barcodes/code128
 #Genero el script de la bd
-./app/console doctrine:schema:create --dump-sql|sed 's?FK_?'UAH_GAT_FK_'?' |sed 's?IDX_?'UAH_GAT_IDX_'?' > script_creacion.sql 
+php app/console doctrine:schema:create --dump-sql|sed 's?FK_?'UAH_GAT_FK_'?' |sed 's?IDX_?'UAH_GAT_IDX_'?' > script_creacion.sql 
 cd -

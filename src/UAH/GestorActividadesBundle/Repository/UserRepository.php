@@ -13,6 +13,7 @@ use Doctrine\ORM\Query;
 
 class UserRepository extends EntityRepository
 {
+
     public function getUserPermits($filter = 'ALL')
     {
         $em = $this->getEntityManager();
@@ -35,17 +36,17 @@ class UserRepository extends EntityRepository
                 break;
         }
         if ($filter != 'ALL') {
-            $dql = " SELECT dp default_permit, u.id user_id, u.name name, u.apellido_1 apellido1, u.apellido_2 apellido2, u.id_usuldap id_ldap, r.role".
-                    " FROM UAHGestorActividadesBundle:DefaultPermit dp ".
-                    " LEFT JOIN UAHGestorActividadesBundle:User u WITH u.id_usuldap = dp.id_usuldap ".
-                    " LEFT JOIN dp.roles r".
+            $dql = " SELECT dp default_permit, u.id user_id, u.name name, u.apellido_1 apellido1, u.apellido_2 apellido2, u.id_usuldap id_ldap, r.role" .
+                    " FROM UAHGestorActividadesBundle:DefaultPermit dp " .
+                    " LEFT JOIN UAHGestorActividadesBundle:User u WITH u.id_usuldap = dp.id_usuldap " .
+                    " LEFT JOIN dp.roles r" .
                     " WHERE r = :role ";
             $consulta = $em->createQuery($dql);
             $consulta->setParameter('role', $role);
         } else {
-            $dql = " SELECT dp default_permit, u.id user_id, u.name name, u.apellido_1 apellido1, u.apellido_2 apellido2, u.id_usuldap id_ldap, r.role".
-                    " FROM UAHGestorActividadesBundle:DefaultPermit dp ".
-                    " LEFT JOIN UAHGestorActividadesBundle:User u WITH u.id_usuldap = dp.id_usuldap ".
+            $dql = " SELECT dp default_permit, u.id user_id, u.name name, u.apellido_1 apellido1, u.apellido_2 apellido2, u.id_usuldap id_ldap, r.role" .
+                    " FROM UAHGestorActividadesBundle:DefaultPermit dp " .
+                    " LEFT JOIN UAHGestorActividadesBundle:User u WITH u.id_usuldap = dp.id_usuldap " .
                     " LEFT JOIN dp.roles r";
             $consulta = $em->createQuery($dql);
         }
@@ -57,8 +58,8 @@ class UserRepository extends EntityRepository
     public function getExportData()
     {
         $em = $this->getEntityManager();
-        $dql = " SELECT dp default_permit, r.name ".
-                " FROM UAHGestorActividadesBundle:DefaultPermit dp ".
+        $dql = " SELECT dp default_permit, r.name " .
+                " FROM UAHGestorActividadesBundle:DefaultPermit dp " .
                 " LEFT JOIN dp.roles r ";
         $consulta = $em->createQuery($dql);
         $resultado = $consulta->getArrayResult();
@@ -69,4 +70,15 @@ class UserRepository extends EntityRepository
 
         return $resultado;
     }
+
+    public function getSuperAdminUsers()
+    {
+        $dql = " SELECT u FROM UAHGestorActividadesBundle:User u " .
+                " JOIN u.roles r WITH r.role = 'ROLE_UAH_SUPER_ADMIN'";
+        $em = $this->getEntityManager();
+        $query = $em->createQuery($dql);
+        $res = $query->getResult();
+        return $res;
+    }
+
 }

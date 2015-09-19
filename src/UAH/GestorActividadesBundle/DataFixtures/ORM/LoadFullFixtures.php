@@ -32,7 +32,7 @@ use DateTime;
  *
  * @author xokas
  */
-class LoadFixtures extends AbstractFixture implements OrderedFixtureInterface
+class LoadFullFixtures extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
      * {@inheritDoc}
